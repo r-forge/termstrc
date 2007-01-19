@@ -1,0 +1,631 @@
+This is pdfeTeX, Version 3.141592-1.30.6-2.2 (MiKTeX 2.5) (preloaded format=pdflatex 2006.12.13)  11 JAN 2007 12:20
+entering extended mode
+**K:/WORK/rpackages/shortrate/termstrc-vignette/termstrc.tex
+(K:\WORK\rpackages\shortrate\termstrc-vignette\termstrc.tex
+LaTeX2e <2005/12/01>
+Babel <v3.8g> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman, ngerman, french, loaded.
+(z.cls
+
+LaTeX Warning: You have requested document class `z',
+               but the document class provides `Z'.
+
+Document Class: Z 2004/10/08 1.0 Z class by Achim Zeileis
+("C:\Programme\MiKTeX 2.5\tex\latex\base\article.cls"
+Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
+("C:\Programme\MiKTeX 2.5\tex\latex\base\size10.clo"
+File: size10.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\graphics\graphicx.sty"
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Programme\MiKTeX 2.5\tex\latex\graphics\keyval.sty"
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\graphics\graphics.sty"
+Package: graphics 2006/02/20 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Programme\MiKTeX 2.5\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2005/12/29 v1.2 MiKTeX 'graphics' configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 90.
+
+("C:\Programme\MiKTeX 2.5\tex\latex\graphics\pdftex.def"
+File: pdftex.def 2006/08/14 v0.03t Graphics/color for pdfTeX
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\ltxmisc\a4wide.sty"
+Package: a4wide 1994/08/30
+
+("C:\Programme\MiKTeX 2.5\tex\latex\ntgclass\a4.sty"
+Package: a4 2004/04/15 v1.2g A4 based page layout
+))
+("C:\Programme\MiKTeX 2.5\tex\latex\graphics\color.sty"
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+("C:\Programme\MiKTeX 2.5\tex\latex\00miktex\color.cfg"
+File: color.cfg 2005/12/29 v1.1 MiKTeX 'color' configuration
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\hyperref\hyperref.sty"
+Package: hyperref 2006/09/06 v6.75e Hypertext links for LaTeX
+\@linkdim=\dimen105
+\Hy@linkcounter=\count88
+\Hy@pagecounter=\count89
+
+("C:\Programme\MiKTeX 2.5\tex\latex\hyperref\pd1enc.def"
+File: pd1enc.def 2006/09/06 v6.75e Hyperref: PDFDocEncoding definition (HO)
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\00miktex\hyperref.cfg"
+File: hyperref.cfg 2006/02/14 v1.1 MiKTeX 'hyperref' configuration
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\oberdiek\kvoptions.sty"
+Package: kvoptions 2006/08/22 v2.4 Connects package keyval with LaTeX options (
+HO)
+)
+Package hyperref Info: Hyper figures OFF on input line 2123.
+Package hyperref Info: Link nesting OFF on input line 2128.
+Package hyperref Info: Hyper index ON on input line 2131.
+Package hyperref Info: Plain pages OFF on input line 2138.
+Package hyperref Info: Backreferencing OFF on input line 2143.
+
+Implicit mode ON; LaTeX internals redefined
+Package hyperref Info: Bookmarks ON on input line 2273.
+("C:\Programme\MiKTeX 2.5\tex\latex\ltxmisc\url.sty"
+\Urlmuskip=\muskip10
+Package: url 2005/06/27  ver 3.2  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 2428.
+\Fld@menulength=\count90
+\Field@Width=\dimen106
+\Fld@charsize=\dimen107
+\Choice@toks=\toks15
+\Field@toks=\toks16
+Package hyperref Info: Hyper figures OFF on input line 2906.
+Package hyperref Info: Link nesting OFF on input line 2911.
+Package hyperref Info: Hyper index ON on input line 2914.
+Package hyperref Info: backreferencing OFF on input line 2921.
+Package hyperref Info: Link coloring OFF on input line 2926.
+\Hy@abspage=\count91
+\c@Item=\count92
+\c@Hfootnote=\count93
+)
+*hyperref using default driver hpdftex*
+("C:\Programme\MiKTeX 2.5\tex\latex\hyperref\hpdftex.def"
+File: hpdftex.def 2006/09/06 v6.75e Hyperref driver for pdfTeX
+\Fld@listcount=\count94
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\ae\ae.sty"
+Package: ae 2001/02/12 1.3 Almost European Computer Modern
+
+("C:\Programme\MiKTeX 2.5\tex\latex\base\fontenc.sty"
+Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+
+("C:\Programme\MiKTeX 2.5\tex\latex\base\t1enc.def"
+File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+)
+LaTeX Font Info:    Try loading font information for T1+aer on input line 100.
+
+("C:\Programme\MiKTeX 2.5\tex\latex\ae\t1aer.fd"
+File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
+)))
+("C:\Programme\MiKTeX 2.5\tex\latex\fancyvrb\fancyvrb.sty"
+Package: fancyvrb 1998/07/17
+
+Style option: `fancyvrb' v2.6, with DG/SPQR fixes <1998/07/17> (tvz)
+\FV@CodeLineNo=\count95
+\FV@InFile=\read1
+\FV@TabBox=\box26
+\c@FancyVerbLine=\count96
+\FV@StepNumber=\count97
+\FV@OutFile=\write3
+
+No file fancyvrb.cfg.
+) ("C:\Programme\MiKTeX 2.5\tex\latex\thumbpdf\thumbpdf.sty"
+Package: thumbpdf 2005/07/06 v3.8 Inclusion of thumbnails (HO)
+
+
+Package thumbpdf Warning: Thumbnail data file `termstrc.tpt' not found.
+
+) ("C:\Programme\MiKTeX 2.5\tex\latex\base\fontenc.sty"
+Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+
+("C:\Programme\MiKTeX 2.5\tex\latex\base\t1enc.def"
+File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+))
+("C:\Programme\MiKTeX 2.5\tex\latex\natbib\natbib.sty"
+Package: natbib 2006/09/06 7.4a (PWD)
+\bibhang=\skip43
+\bibsep=\skip44
+LaTeX Info: Redefining \cite on input line 541.
+\c@NAT@ctr=\count98
+)
+\preXLskip=\skip45
+\preLskip=\skip46
+\preMskip=\skip47
+\preSskip=\skip48
+\postMskip=\skip49
+\postSskip=\skip50
+
+
+Package hyperref Warning: Option `hyperindex' has already been used,
+(hyperref)                setting the option has no effect on input line 178.
+
+Package hyperref Info: Option `colorlinks' set `true' on input line 178.
+Package hyperref Info: Option `linktocpage' set `true' on input line 178.
+Package hyperref Info: Option `plainpages' set `false' on input line 178.
+) ("C:\Programme\MiKTeX 2.5\tex\latex\base\latexsym.sty"
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\amsmath\amsmath.sty"
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip51
+
+For additional information on amsmath, use the `?' option.
+("C:\Programme\MiKTeX 2.5\tex\latex\amsmath\amstext.sty"
+Package: amstext 2000/06/29 v2.01
+
+("C:\Programme\MiKTeX 2.5\tex\latex\amsmath\amsgen.sty"
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks17
+\ex@=\dimen108
+))
+("C:\Programme\MiKTeX 2.5\tex\latex\amsmath\amsbsy.sty"
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen109
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\amsmath\amsopn.sty"
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count99
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count100
+\leftroot@=\count101
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count102
+\DOTSCASE@=\count103
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box27
+\strutbox@=\box28
+\big@size=\dimen110
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count104
+\c@MaxMatrixCols=\count105
+\dotsspace@=\muskip11
+\c@parentequation=\count106
+\dspbrk@lvl=\count107
+\tag@help=\toks18
+\row@=\count108
+\column@=\count109
+\maxfields@=\count110
+\andhelp@=\toks19
+\eqnshift@=\dimen111
+\alignsep@=\dimen112
+\tagshift@=\dimen113
+\tagwidth@=\dimen114
+\totwidth@=\dimen115
+\lineht@=\dimen116
+\@envbody=\toks20
+\multlinegap=\skip52
+\multlinetaggap=\skip53
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\tools\bm.sty"
+Package: bm 2004/02/26 v1.1c Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup5
+\symboldletters=\mathgroup6
+\symboldsymbols=\mathgroup7
+\symboldlasy=\mathgroup8
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 137.
+LaTeX Info: Redefining \bm on input line 203.
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\amsfonts\amssymb.sty"
+Package: amssymb 2002/01/22 v2.2d
+
+("C:\Programme\MiKTeX 2.5\tex\latex\amsfonts\amsfonts.sty"
+Package: amsfonts 2001/10/25 v2.2f
+\symAMSa=\mathgroup9
+\symAMSb=\mathgroup10
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 132.
+))
+("C:\Programme\MiKTeX 2.5\tex\latex\setspace\setspace.sty"
+Package: setspace 2000/12/01 6.7 Contributed and Supported LaTeX2e package
+
+Package: `setspace' 6.7 <2000/12/01>
+) ("C:\Programme\MiKTeX 2.5\tex\latex\fancyhdr\fancyhdr.sty"
+\fancy@headwidth=\skip54
+\f@ncyO@elh=\skip55
+\f@ncyO@erh=\skip56
+\f@ncyO@olh=\skip57
+\f@ncyO@orh=\skip58
+\f@ncyO@elf=\skip59
+\f@ncyO@erf=\skip60
+\f@ncyO@olf=\skip61
+\f@ncyO@orf=\skip62
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\fancybox\fancybox.sty"
+Package: fancybox 2000/09/19 1.3
+
+Style option: `fancybox' v1.3 <2000/09/19> (tvz)
+\@fancybox=\box29
+\shadowsize=\dimen117
+\@Sbox=\box30
+\do@VerbBox=\toks22
+\the@fancyput=\toks23
+\this@fancyput=\toks24
+\EndVerbatimTokens=\toks25
+\Verbatim@Outfile=\write4
+\Verbatim@Infile=\read2
+) ("C:\Programme\MiKTeX 2.5\tex\latex\mh\empheq.sty"
+Package: empheq 2004/10/10 v2.11a Emphasizing equations (MH) 
+
+("C:\Programme\MiKTeX 2.5\tex\latex\mh\mhsetup.sty"
+Package: mhsetup 2004/10/10 v1.0b programming setup (MH)
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\mh\mathtools.sty"
+Package: mathtools 2004/10/10 v1.01a mathematical typesetting tools (MH)
+
+("C:\Programme\MiKTeX 2.5\tex\latex\tools\calc.sty"
+Package: calc 2005/08/06 v4.2 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count111
+\calc@Bcount=\count112
+\calc@Adimen=\dimen118
+\calc@Bdimen=\dimen119
+\calc@Askip=\skip63
+\calc@Bskip=\skip64
+LaTeX Info: Redefining \setlength on input line 75.
+LaTeX Info: Redefining \addtolength on input line 76.
+\calc@Ccount=\count113
+\calc@Cskip=\skip65
+)
+\g_MT_multlinerow_int=\count114
+\l_MT_multwidth_dim=\dimen120
+)
+\l_EQ_equationtype_int=\count115
+\l_EQ_alignmentmode_int=\count116
+\l_EQ_totalwidth_dim=\dimen121
+\l_EQ_displaywidth_dim=\dimen122
+\l_EQ_temp_linewidth_dim=\dimen123
+\EmphEqdelimitershortfall=\dimen124
+\EmphEqdelimiterfactor=\count117
+\g_EQ_toptag_height_dim=\dimen125
+\g_EQ_bottomtag_depth_dim=\dimen126
+\g_EQ_toprow_height_dim=\dimen127
+\g_EQ_bottomrow_depth_dim=\dimen128
+\g_EQ_widesttag_dim=\dimen129
+\EQ_mathdisplay_box=\box31
+\EQ_tag_box=\box32
+\g_EQ_temprow_int=\count118
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\base\makeidx.sty"
+Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\listings\listings.sty"
+\lst@mode=\count119
+\lst@gtempboxa=\box33
+\lst@token=\toks26
+\lst@length=\count120
+\lst@currlwidth=\dimen130
+\lst@column=\count121
+\lst@pos=\count122
+\lst@lostspace=\dimen131
+\lst@width=\dimen132
+\lst@newlines=\count123
+\lst@lineno=\count124
+\c@lstlisting=\count125
+\lst@maxwidth=\dimen133
+
+("C:\Programme\MiKTeX 2.5\tex\latex\listings\lstpatch.sty"
+File: lstpatch.sty 2004/10/17 1.3b (Carsten Heinz)
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\listings\lstmisc.sty"
+File: lstmisc.sty 2004/09/07 1.3 (Carsten Heinz)
+\c@lstnumber=\count126
+\lst@skipnumbers=\count127
+\lst@framebox=\box34
+)
+("C:\Programme\MiKTeX 2.5\tex\latex\listings\listings.cfg"
+File: listings.cfg 2004/09/05 1.3 listings configuration
+))
+Package: listings 2004/10/17 1.3b (Carsten Heinz)
+\@indexfile=\write5
+
+Writing index file termstrc.idx
+
+LaTeX Warning: Unused global option(s):
+    [11pt].
+
+(termstrc.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+ ("C:\Programme\MiKTeX 2.5\tex\context\base\supp-pdf.tex"
+("C:\Programme\MiKTeX 2.5\tex\context\base\supp-mis.tex"
+loading : Context Support Macros / Miscellaneous (2004.10.26)
+\protectiondepth=\count128
+\scratchcounter=\count129
+\scratchtoks=\toks27
+\scratchdimen=\dimen134
+\scratchskip=\skip66
+\scratchmuskip=\muskip12
+\scratchbox=\box35
+\scratchread=\read3
+\scratchwrite=\write6
+\zeropoint=\dimen135
+\onepoint=\dimen136
+\onebasepoint=\dimen137
+\minusone=\count130
+\thousandpoint=\dimen138
+\onerealpoint=\dimen139
+\emptytoks=\toks28
+\nextbox=\box36
+\nextdepth=\dimen140
+\everyline=\toks29
+\!!counta=\count131
+\!!countb=\count132
+\recursecounter=\count133
+)
+loading : Context Support Macros / PDF (2004.03.26)
+\nofMPsegments=\count134
+\nofMParguments=\count135
+\MPscratchCnt=\count136
+\MPscratchDim=\dimen141
+\MPnumerator=\count137
+\everyMPtoPDFconversion=\toks30
+)
+Package hyperref Info: Link coloring ON on input line 64.
+ ("C:\Programme\MiKTeX 2.5\tex\latex\hyperref\nameref.sty"
+Package: nameref 2006/08/15 v2.26 Cross-referencing by name of section
+
+("C:\Programme\MiKTeX 2.5\tex\latex\oberdiek\refcount.sty"
+Package: refcount 2006/02/20 v3.0 Data extraction from references (HO)
+)
+\c@section@level=\count138
+)
+LaTeX Info: Redefining \ref on input line 64.
+LaTeX Info: Redefining \pageref on input line 64.
+ (termstrc.out)
+(termstrc.out)
+\@outlinefile=\write7
+LaTeX Font Info:    Try loading font information for U+lasy on input line 64.
+ ("C:\Programme\MiKTeX 2.5\tex\latex\base\ulasy.fd"
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <7> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 64.
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 64.
+LaTeX Font Info:    Try loading font information for U+msa on input line 64.
+
+("C:\Programme\MiKTeX 2.5\tex\latex\amsfonts\umsa.fd"
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 64.
+
+("C:\Programme\MiKTeX 2.5\tex\latex\amsfonts\umsb.fd"
+File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for T1+aess on input line 64.
+
+("C:\Programme\MiKTeX 2.5\tex\latex\ae\t1aess.fd"
+File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
+) [1
+
+{psfonts.map}]
+Overfull \hbox (1.0936pt too wide) in paragraph at lines 242--244
+[][]  
+ []
+
+
+Overfull \hbox (1.0936pt too wide) in paragraph at lines 254--256
+[][]  
+ []
+
+LaTeX Font Info:    Try loading font information for T1+aett on input line 261.
+
+("C:\Programme\MiKTeX 2.5\tex\latex\ae\t1aett.fd"
+File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
+)
+
+LaTeX Font Warning: Font shape `T1/aett/bx/n' undefined
+(Font)              using `T1/aett/m/n' instead on input line 262.
+
+
+Overfull \hbox (5.0pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10 2 []
+ []
+
+[2] <pics/ns.pdf, id=142, 410.53375pt x 359.3425pt>
+File: pics/ns.pdf Graphic file (type pdf)
+ <use pics/ns.pdf>
+Overfull \hbox (1.0936pt too wide) in paragraph at lines 310--312
+[][]  
+ []
+
+
+Overfull \hbox (1.0936pt too wide) in paragraph at lines 322--324
+[][]  
+ []
+
+
+Overfull \hbox (5.0pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10 3
+ []
+
+[3 <pics/ns.pdf>]
+LaTeX Font Info:    Try loading font information for OMS+aer on input line 330.
+
+ ("C:\Programme\MiKTeX 2.5\tex\latex\ae\omsaer.fd"
+File: omsaer.fd 1999/12/27
+)
+LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 330.
+
+Overfull \hbox (5.0pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10 4 []
+ []
+
+[4] <pics/sv.pdf, id=216, 573.14125pt x 502.87875pt>
+File: pics/sv.pdf Graphic file (type pdf)
+ <use pics/sv.pdf>
+Underfull \vbox (badness 2237) has occurred while \output is active []
+
+
+Overfull \hbox (5.0pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10 5
+ []
+
+[5 <pics/sv.pdf>]
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <8> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 411.
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 411.
+
+Overfull \hbox (5.0pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10 6 []
+ []
+
+[6]
+Overfull \hbox (1.0936pt too wide) in paragraph at lines 521--523
+[][]  
+ []
+
+
+Overfull \hbox (5.0pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10 7
+ []
+
+[7]
+Overfull \hbox (5.0pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10 8 []
+ []
+
+[8
+
+]
+Overfull \hbox (5.0pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10 9
+ []
+
+[9]
+Overfull \hbox (10.0pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10 10 []
+ []
+
+[10
+
+]
+Overfull \hbox (10.0pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10 11
+ []
+
+[11] <pics/euro_nsg1.pdf, id=349, 610.28pt x 414.54875pt>
+File: pics/euro_nsg1.pdf Graphic file (type pdf)
+
+<use pics/euro_nsg1.pdf> <pics/euro_nsg2.pdf, id=350, 610.28pt x 414.54875pt>
+File: pics/euro_nsg2.pdf Graphic file (type pdf)
+
+<use pics/euro_nsg2.pdf>
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \vbox (badness 3019) has occurred while \output is active []
+
+
+Overfull \hbox (10.0pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10 12 []
+ []
+
+[12 <pics/euro_nsg1.pdf>] (termstrc.lot)
+\tf@lot=\write8
+ (termstrc.lof)
+\tf@lof=\write9
+ (termstrc.bbl
+Overfull \hbox (10.0pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10 13
+ []
+
+[13 <pics/euro_nsg2.pdf>])
+Overfull \hbox (10.0pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10 14 []
+ []
+
+[14] (termstrc.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 8208 strings out of 95419
+ 105367 string characters out of 1187409
+ 207333 words of memory out of 1193625
+ 10764 multiletter control sequences out of 60000
+ 49777 words of font info for 117 fonts, out of 1000000 for 2000
+ 14 hyphenation exceptions out of 8191
+ 35i,11n,43p,794b,2391s stack positions out of 5000i,500n,10000p,200000b,32768s
+PDF statistics:
+ 392 PDF objects out of 300000
+ 172 named destinations out of 300000
+ 125 words of extra memory for PDF output out of 10000
+<C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmtt10.pfb><C:/Programme/MiKT
+eX 2.5/fonts/type1/bluesky/cm/cmmi8.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bl
+uesky/cm/cmti12.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmbx10.pfb>
+<C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmtt9.pfb><C:/Programme/MiKTeX 
+2.5/fonts/type1/bluesky/cm/cmr5.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bluesk
+y/cm/cmmib10.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/latex-fonts/lcirc
+le1.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsy10.pfb><C:/Programm
+e/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsl10.pfb><C:/Programme/MiKTeX 2.5/fonts/t
+ype1/bluesky/cm/cmmi5.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsy7
+.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr7.pfb><C:/Programme/MiK
+TeX 2.5/fonts/type1/bluesky/cm/cmex10.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/
+bluesky/cm/cmmi7.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmmi10.pfb
+><C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmb10.pfb><C:/Programme/MiKTeX
+ 2.5/fonts/type1/bluesky/cm/cmss10.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/blu
+esky/cm/cmr10.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmti10.pfb><C
+:/Programme/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr9.pfb><C:/Programme/MiKTeX 2.5
+/fonts/type1/bluesky/cm/cmbx9.pfb><C:/Programme/MiKTeX 2.5/fonts/type1/bluesky/
+cm/cmbx12.pfb>
+Output written on termstrc.pdf (14 pages, 576315 bytes).
