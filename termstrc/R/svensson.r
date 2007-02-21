@@ -68,9 +68,11 @@ termstrc_estim <-
 
   # select given countries from bonddata
   bonddata <- bonddata[countries]
-   
-  if (length(maturity_spectrum=1)){bonddata <- bonddata} 
+  
+  # select data according to chosen maturity range
+  if (maturity_spectrum=="all"){bonddata <- bonddata} 
   else{bonddata <- maturity_range(bonddata,maturity_spectrum[1],maturity_spectrum[2])}
+ 
   
   # number of countries 
   n_countries <- length(bonddata) 
@@ -85,11 +87,11 @@ termstrc_estim <-
   p <- mapply(function(i) bonddata[[i]]$PRICE + bonddata[[i]]$ACCRUED,1:n_countries)
   names(p) <- names(bonddata)   
  
-  #?
+  #
   cf_p <- mapply(function(i) create_cashflows_matrix(bonddata[[i]],include_price=TRUE),
                  1:n_countries)
   names(cf_p) <- names(bonddata)
-  #?
+  #
   m_p <- mapply(function(i) create_maturities_matrix(bonddata[[i]],include_price=TRUE),
                 1:n_countries)
   names(m_p) <- names(bonddata)
