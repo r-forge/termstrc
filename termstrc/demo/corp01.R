@@ -13,8 +13,8 @@ b=matrix(c(1.10966150, -1.08396184, -0.35424537,  7.958904, -2.64900449, 29.8630
  			0.26592507, -0.24258357, -0.08361875,  4.835616, -0.54029496, 18.964384),
 			nrow=3,ncol=6,byrow=TRUE)
 			
-colnames(b)<-countries
-rownames(b)<-c("beta0","beta1","beta2","tau1","beta3","tau2")			
+rownames(b)<-countries
+colnames(b)<-c("beta0","beta1","beta2","tau1","beta3","tau2")			
 
 myres<- termstrc_estim(countries, bonddata, maturity_spectrum, 
     method, fit, weights, startparam=b,control)
