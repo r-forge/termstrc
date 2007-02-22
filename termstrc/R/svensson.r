@@ -84,26 +84,26 @@ termstrc_estim <-
   m <- lapply(bonddata,create_maturities_matrix)
 
   # calculate dirty prices
-  p <- mapply(function(i) bonddata[[i]]$PRICE + bonddata[[i]]$ACCRUED,1:n_countries)
+  p <- mapply(function(i) bonddata[[i]]$PRICE + bonddata[[i]]$ACCRUED,1:n_countries,SIMPLIFY=FALSE)
   names(p) <- names(bonddata)   
  
   #
   cf_p <- mapply(function(i) create_cashflows_matrix(bonddata[[i]],include_price=TRUE),
-                 1:n_countries)
+                 1:n_countries,SIMPLIFY=FALSE)
   names(cf_p) <- names(bonddata)
   #
   m_p <- mapply(function(i) create_maturities_matrix(bonddata[[i]],include_price=TRUE),
-                1:n_countries)
+                1:n_countries,SIMPLIFY=FALSE)
   names(m_p) <- names(bonddata)
   
   # calculate bond yields	
   yields <- mapply(function(i) bond_yields(cf_p[[i]],m_p[[i]]),
-                   1:n_countries)
+                   1:n_countries,SIMPLIFY=FALSE)
   names(yields) <- names(bonddata)
   
   #calculate duration
   duration <- mapply(function(i) duration(cf_p[[i]],m_p[[i]],yields[[i]][,2]),
-                   1:n_countries)
+                   1:n_countries,SIMPLIFY=FALSE)
   names(duration) <- names(bonddata)
   
   # SINGLE-CURVE ESTIMATION 
@@ -142,13 +142,13 @@ termstrc_estim <-
  #estimated prices
  
  estimated_prices <- mapply(function(i) bond_prices(method,opt_result[[i]]$par,
-                     			 m[[i]],cf[[i]])$bond_prices,1:n_countries)
+                     			 m[[i]],cf[[i]])$bond_prices,1:n_countries,SIMPLIFY=FALSE)
  names(estimated_prices) <- names(bonddata)
  
  #calculate spotrates according to chosen approach
   
  spotrates <- mapply(function(i) srates(method,opt_result[[i]]$par,
- 									yields[[i]][,1]),1:n_countries) 
+ 		    yields[[i]][,1]),1:n_countries,SIMPLIFY=FALSE) 
  
  names(spotrates)<-names(bonddata)						
  #return list of results 
