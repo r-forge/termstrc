@@ -70,10 +70,10 @@ termstrc_estim <-
   bonddata <- bonddata[countries]
   
   # select data according to chosen maturity range
-  if (maturity_spectrum=="all"){bonddata <- bonddata} 
-  else{bonddata <- maturity_range(bonddata,maturity_spectrum[1],maturity_spectrum[2])}
- 
-  
+  if (length(maturity_spectrum)==1) {bonddata <- bonddata }else
+   {bonddata <- maturity_range(bonddata,maturity_spectrum[1],maturity_spectrum[2]) }
+
+
   # number of countries 
   n_countries <- length(bonddata) 
     
