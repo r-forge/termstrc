@@ -66,7 +66,7 @@ bond_yields <- function(cashflows, m,tol=1e-10) {
   if (!is.matrix(cashflows))
     cashflows <- as.matrix(cashflows)
   if (!is.matrix(m))
-    m < -as.matrix(m)
+    m <- as.matrix(m)
 
   # create empty bond yields matrix in appropriate size
   bondyields<-matrix(0, nrow=ncol(cashflows), ncol=2)                                                                                                                     
@@ -76,7 +76,7 @@ bond_yields <- function(cashflows, m,tol=1e-10) {
 
   # traverse list of bonds
   for (i in seq(ncol(cashflows))) {
-
+                                                  
   # calculate bond price with yield 
   yield_function<-function(y) {
        t(cashflows[,i])%*%exp(-m[,i]*y)
