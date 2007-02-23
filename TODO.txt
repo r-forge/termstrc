@@ -1,0 +1,5 @@
+Plot Methode verbessern (Fensteraufteilung, Plotten ohne Spreads)
+Code bereinigen/checken
+Funktionalität erweitern(Zero Cupon Bonds, Forwardrates)
+evtl. neuen Datensatz
+Doku u. Vignette überarbeiten
