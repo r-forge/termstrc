@@ -9,10 +9,10 @@ create_cashflows_matrix <- function(country,include_price=FALSE) {
   max_cf <- max(n_of_cf)
   pos_cf <- c(0,cumsum(n_of_cf))
   
-  #calculate cashflow matrix:
-  #the number of rows of the matrix = number of 
-  #cashflows of the bond with the maximum of cashflows
-  #all missing elements of the matrix are filled up with zeros 
+  # calculate cashflow matrix:
+  # the number of rows of the matrix = number of 
+  # cashflows of the bond with the maximum of cashflows
+  # all missing elements of the matrix are filled up with zeros 
   	
   CASHFLOWMATRIX <-
     mapply(function(i) c(country$CASHFLOWS$CF[(pos_cf[i]+1):pos_cf[i+1]],
@@ -206,6 +206,7 @@ function (actual,estimated){
 # cf ... cashflows (dirty price included)
 # m ... maturities (zero included)
 # y ... bond yields
+
 duration <-
 function (cf,m,y) {
        y <- matrix(rep(y,nrow(m)),ncol=ncol(m),byrow=TRUE)
@@ -227,8 +228,9 @@ function (cf,m,y) {
 ###################################################################
 #                 Spotrate calculation                            #
 ###################################################################
-#calculate spotrate according to chosen approach, optimal parametervector
-#and maturity-vector.
+
+# calculate spotrate according to chosen approach, optimal parametervector
+# and maturity-vector.
  
  srates <- function(method,beta,m){
  		 
