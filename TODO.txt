@@ -1,5 +1,16 @@
-Plot Methode verbessern (Fensteraufteilung, Plotten ohne Spreads)
-Code bereinigen/checken
-Funktionalität erweitern(Zero Cupon Bonds, Forwardrates)
-evtl. neuen Datensatz
-Doku u. Vignette überarbeiten
+bootstrapping (reading assignment):		nawalkha p. 55 - 60	
+						fabozzi 2007 p. 135 - 156
+
+cubic splines (reading assignment): 		nawalkha p. 60 - 67
+						mcculloch	
+
+cubic splines (programming assignments):	bondtabletolist function
+						cubic splines implementation
+
+nelson/siegel/svensson (progr. assignments):	yield error minimisation
+
+wrapper function (progr. assignments):		s3 methods 
+						extractor functions
+
+ 
+
