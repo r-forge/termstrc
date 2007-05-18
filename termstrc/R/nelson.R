@@ -103,17 +103,14 @@ nelson_estim <-
   names(spot_rates)<-names(bonddata)						
 
   # return list of results 
-  result <- list(maturity_spectrum=maturity_spectrum,method=method,
+  result <- list(group=group,maturity_spectrum=maturity_spectrum,method=method,
        		fit=fit,weights=weights,n_group=n_group,
        		cashflows=cf,maturities=m,dirty_prices=p,duration=duration,
                 estimated_prices=estimated_prices,yields=yields,
                 opt_result=opt_result,spot_rates=spot_rates)
  
 
-  class(result) <- switch(method,
- 	"Nelson/Siegel" = "nelson",
- 	"Svensson" = "svensson")
-
+  class(result) <- "nelson"
   result
    }
 

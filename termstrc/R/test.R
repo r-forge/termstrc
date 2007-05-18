@@ -2,12 +2,13 @@ rm(list = ls())
 load("eurobonds.RData")
 source("nelson.R")
 source("tools.R")
+source("methods.R")
 
 group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds
 maturity_spectrum <- "all"
 method <- "Nelson/Siegel"
-fit <- "yields"
+fit <- "prices"
 weights <- "none"
 control <- list(eval.max=100000)
 

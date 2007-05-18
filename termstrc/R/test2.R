@@ -2,13 +2,14 @@ rm(list = ls())
 load("eurobonds.RData")
 source("nelson.R")
 source("tools.R")
+source("methods.R")
 
 group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds
 maturity_spectrum <- c(2,15)
 method = "Svensson"
-fit = "yields"
-weights = "duration"
+fit = "prices"
+weights = "none"
 control=list(eval.max=100000)
 
 b<-matrix(c(0.04294523, -0.01149559, -0.03321905,  1.136986, -0.01252171,  9.643836,
