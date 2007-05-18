@@ -14,6 +14,10 @@ nelson_estim <-
            
            ) {
 
+  # check inputs  
+  if(fit=="yields"&weights!="none"){
+  warning("For minimization of yield errors no weights are needed")}
+    
   # select given group from bonddata
   bonddata <- bonddata[group]
   
@@ -51,9 +55,7 @@ nelson_estim <-
   names(yields) <- names(bonddata)
   
   # calculate duration
-
-  # Baustelle: weights-function
-  
+      
   duration <- mapply(function(i) duration(cf_p[[i]],m_p[[i]],yields[[i]][,2]),
                    1:n_group,SIMPLIFY=FALSE)
   names(duration) <- names(bonddata)
@@ -64,7 +66,7 @@ nelson_estim <-
      loss_function(p[[i]],
      	bond_prices(method,b,m[[i]],cf[[i]])$bond_prices,duration[[i]][,3],weights)}
   
-  obj_fct_yields <- function(b) {    # yield error minimization, Baustelle
+  obj_fct_yields <- function(b) {    # yield error minimization
     loss_function(yields[[i]][,"Yield"],spotrates(method,b,yields[[i]][,"Maturity"]))}
     
   obj_fct <- switch(fit,
@@ -103,7 +105,7 @@ nelson_estim <-
   # return list of results 
   result <- list(maturity_spectrum=maturity_spectrum,method=method,
        		fit=fit,weights=weights,n_group=n_group,
-       		cashflows=cf,maturities=m,dirty_prices=p,
+       		cashflows=cf,maturities=m,dirty_prices=p,duration=duration,
                 estimated_prices=estimated_prices,yields=yields,
                 opt_result=opt_result,spot_rates=spot_rates)
  
@@ -113,7 +115,6 @@ nelson_estim <-
  	"Svensson" = "svensson")
 
   result
- # browser()
    }
 
 
@@ -124,9 +125,7 @@ nelson_estim <-
 nelson_siegel <-
   function(beta, m) {
     (beta[1] + beta[2]*((1-exp(-m/beta[4]))/(m/beta[4]))
-    + beta[3]*(((1-exp(-m/beta[4]))/(m/beta[4]))-exp(-m/beta[4])))
-    
-}
+    + beta[3]*(((1-exp(-m/beta[4]))/(m/beta[4]))-exp(-m/beta[4])))}
 
 ###################################################################
 #                        Spot rates Svensson                      #
@@ -142,7 +141,8 @@ svensson <-
 #                        loss function                            #
 ###################################################################
 
-loss_function <- function(p,phat,omega,weights="none") {
+loss_function <-
+  function(p,phat,omega,weights="none") {
   if (weights=="none") omega <- rep(1,length(p))
   sum(omega*((p-phat)^2))}
 
