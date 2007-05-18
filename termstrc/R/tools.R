@@ -1,49 +1,46 @@
 ###################################################################
-#            cashflows matrix for a given country                 #
+#            cashflows matrix for a given group                   #
 ###################################################################
 
-create_cashflows_matrix <- function(country,include_price=FALSE) {
+create_cashflows_matrix <- function(group,include_price=FALSE) {
   
-  n_of_cf <- summary(as.factor(country$CASHFLOWS$ISIN))
+  n_of_cf <- summary(as.factor(group$CASHFLOWS$ISIN))
   n_of_bonds <- length(n_of_cf)
   max_cf <- max(n_of_cf)
   pos_cf <- c(0,cumsum(n_of_cf))
   
-  # calculate cashflow matrix:
-  # the number of rows of the matrix = number of 
+  # the number of rows of the matrix is the number of 
   # cashflows of the bond with the maximum of cashflows
   # all missing elements of the matrix are filled up with zeros 
   	
   CASHFLOWMATRIX <-
-    mapply(function(i) c(country$CASHFLOWS$CF[(pos_cf[i]+1):pos_cf[i+1]],
+    mapply(function(i) c(group$CASHFLOWS$CF[(pos_cf[i]+1):pos_cf[i+1]],
                          rep(0,max_cf-n_of_cf[i])),
            1:n_of_bonds)
   
-  if (include_price == TRUE) {CASHFLOWMATRIX <- rbind(-(country[["PRICE"]]
-      +country[["ACCRUED"]]),CASHFLOWMATRIX)}              
-  colnames(CASHFLOWMATRIX) <- country$ISIN
+  if (include_price == TRUE) {CASHFLOWMATRIX <- rbind(-(group[["PRICE"]]
+      +group[["ACCRUED"]]),CASHFLOWMATRIX)}              
+  colnames(CASHFLOWMATRIX) <- group$ISIN
   CASHFLOWMATRIX
 }
 
 ###################################################################
-#              maturities matrix for a given country              #
+#              maturities matrix for a given group                #
 ###################################################################
 
 create_maturities_matrix <-
-  function(country,include_price=FALSE) {
+  function(group,include_price=FALSE) {
 
-  n_of_cf <- summary(as.factor(country$CASHFLOWS$ISIN))
+  n_of_cf <- summary(as.factor(group$CASHFLOWS$ISIN))
   n_of_bonds <- length(n_of_cf)
   max_cf <- max(n_of_cf)
   pos_cf <- c(0,cumsum(n_of_cf))
-  year_diff <- as.numeric(difftime(as.Date(country$CASHFLOW$DATE),
-  				as.Date(country$TODAY),units="days"))/365
+  year_diff <- as.numeric(difftime(as.Date(group$CASHFLOW$DATE),
+  				as.Date(group$TODAY),units="days"))/365
  
-  #calculate maturity matrix
-  #calculate cashflow matrix:
-  #the number of rows of the matrix = number of 
-  #maturity dates of the bond with the longest maturity
-  #all missing elements of the matrix are filled up with zeros 
+  # the number of rows of the matrix is the number of 
+  # maturity dates of the bond with the longest maturity
+  # all missing elements of the matrix are filled up with zeros 
   
   MATURITYMATRIX <-
      mapply(function(i) c(year_diff[(pos_cf[i]+1):pos_cf[i+1]],
@@ -52,39 +49,39 @@ create_maturities_matrix <-
   
   if (include_price == TRUE) {MATURITYMATRIX <- rbind(rep(0,n_of_bonds),
                            MATURITYMATRIX)}  
-  colnames(MATURITYMATRIX) <- country$ISIN
+  colnames(MATURITYMATRIX) <- group$ISIN
   MATURITYMATRIX
 }
 
 ###################################################################
-#              bond yields for a given country                    #
+#              bond yields for a given group                      #
 ###################################################################
 
-bond_yields <- function(cashflows, m,tol=1e-10) {
+bond_yields <- function(cashflows, m, tol=1e-10) {
 
-  # convert input data to matrices, if necessary
+  # convert input data to matrices if necessary
   if (!is.matrix(cashflows))
     cashflows <- as.matrix(cashflows)
   if (!is.matrix(m))
     m <- as.matrix(m)
 
   # create empty bond yields matrix in appropriate size
-  bondyields<-matrix(0, nrow=ncol(cashflows), ncol=2)                                                                                                                     
+  bondyields <- matrix(0, nrow=ncol(cashflows), ncol=2)                                                                                                                     
 
-  # put maximum of m of every bond into first column of bond yields matrix
+  # put maturity of every bond into first column of bond yields matrix
   bondyields[,1] <- apply(m, 2, max)
 
   # traverse list of bonds
   for (i in seq(ncol(cashflows))) {
                                                   
-  # calculate bond price with yield 
-  yield_function<-function(y) {
+    # present value of cash flows for root finding 
+    pvcashflows <- function(y) {
        t(cashflows[,i])%*%exp(-m[,i]*y)
     }
 
-  # calculate roots and put result into second column of bond yields matrix
+    # calculate bond yields
     
-  bondyields[i,2]<-uniroot(yield_function, c(0, 1), tol = tol,maxiter=3000)$root
+    bondyields[i,2] <- uniroot(pvcashflows, c(0, 1), tol = tol,maxiter=3000)$root
     
   }
 
@@ -105,17 +102,14 @@ m <- lapply(bonddata,create_maturities_matrix)
 colmax <- function(m) apply(m,2,max)
 m_max <- lapply(m,colmax)
 
-bonds_in_range <- function(country) names(country[which(
-                country>lower & country<upper)])
+bonds_in_range <- function(group) names(group[which(
+                group>lower & group<upper)])
 
 # list with ISINs of bonds in range
-
 isins_range <- lapply(m_max,bonds_in_range)
-
 index_set <- which(unlist(lapply(isins_range,length))>0)
 
 # list with positions of bonds in isins_range
-
 isins_range_pos <- list()
 
 for (i in 1:length(bonddata)) {
@@ -126,10 +120,9 @@ names(isins_range_pos) <- names(bonddata)
 
 # first part of bonddata for filtering
 
-if(length(bonddata[[1]])>8) N=8 else N=6
+#if(length(bonddata[[1]])>8) N=8 else N=6
 
-print(N)
-
+N = 6
 first <- function(lst) lst[c(1:N)]
 filtered <- lapply(bonddata,first)
 
@@ -165,13 +158,11 @@ names(bonddata_range) <- names(bonddata)
 bonddata_range
 
 # add TODAY from bonddata
-
 for (i in 1:length(bonddata)) {
 bonddata_range[[i]][["TODAY"]] <- bonddata[[i]][["TODAY"]]
 }
 
 # delete countries where no bonds are available
-
 bonddata_range <- bonddata_range[index_set]
 bonddata_range
 }
@@ -182,9 +173,8 @@ bonddata_range
 
 rmse <-
 function (actual,estimated) {
-			e <- actual - estimated
-			rmse <- sqrt(1/length(e)*sum((e-mean(e))^2))
-      rmse				
+	e <- actual - estimated
+	sqrt(1/length(e)*sum((e-mean(e))^2))			
       }
 
 ###################################################################
@@ -193,9 +183,9 @@ function (actual,estimated) {
       
 aabse <-
 function (actual,estimated){
-			e <- actual - estimated	
-      aabse <- 1/length(e)*sum(abs(e-mean(e)))
-		}      
+     e <- actual - estimated	
+     1/length(e)*sum(abs(e-mean(e)))
+     }      
 
 ###################################################################
 #                 Duration                                        #
@@ -216,32 +206,41 @@ function (cf,m,y) {
        cbind(d,md,omega)
     }
 
-# example
-
-#cf = matrix(c(-103, 5, 5, 105,-102,3,3,103),ncol=2)
-#m = matrix(c(0,1,2,3,0,0.5,1.5,2),ncol=2)
-#y = bond_yields(cf,m)
-#y = matrix(y[,2],ncol=2)
-
-#duration(cf,m,y)
 
 ###################################################################
 #                 Spotrate calculation                            #
 ###################################################################
 
-# calculate spotrate according to chosen approach, optimal parametervector
-# and maturity-vector.
- 
- srates <- function(method,beta,m){
- 		 
-  func<- switch(method,
- 				"Nelson/Siegel" = nelson_siegel(beta,m),
- 				"Svensson" = svensson(beta,m))
- func
- 	}
+ spotrates <- function(method,beta,m){ 
+  switch(method,
+ 	"Nelson/Siegel" = nelson_siegel(beta,m),
+ 	"Svensson" = svensson(beta,m))
+  }
+	
+###################################################################
+#                   Bond pricing function                         #
+###################################################################
 
-  				
+bond_prices <-
+  function(method="Nelson/Siegel", beta, m, cf) {
+     
+  # calculate spot rates
+  spot_rates <- spotrates(method,beta,m)
+
+  # replace NaNs by zeros
+  spot_rates[is.nan(spot_rates)] <- 0        
+     
+  # calculate discount factors
+  discount_factors <- exp(-m*spot_rates)
+
+  # calculate bond prices
+  bond_prices <- apply(cf*discount_factors, 2, sum)  
   
+  # return spot rates, discount factors and bond prices
+  return (list(spot_rates=spot_rates,
+               discount_factors=discount_factors,
+               bond_prices=bond_prices))
+}  
  
  							
 
