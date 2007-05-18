@@ -81,8 +81,7 @@ bond_yields <- function(cashflows, m, tol=1e-10) {
 
     # calculate bond yields
     
-    bondyields[i,2] <- uniroot(pvcashflows, c(0, 1), tol = tol,maxiter=3000)$root
-    
+    bondyields[i,2] <- uniroot(pvcashflows, c(0, 1), tol = tol,maxiter=3000)$root 
   }
 
   # return calculated bond yields matrix
@@ -166,44 +165,23 @@ bonddata_range[[i]][["TODAY"]] <- bonddata[[i]][["TODAY"]]
 bonddata_range <- bonddata_range[index_set]
 bonddata_range
 }
-
-###################################################################
-#                      Root mean squared error                    #
-###################################################################
-
-rmse <-
-function (actual,estimated) {
-	e <- actual - estimated
-	sqrt(1/length(e)*sum((e-mean(e))^2))			
-      }
-
-###################################################################
-#                 Average absolute error                          #
-###################################################################
-      
-aabse <-
-function (actual,estimated){
-     e <- actual - estimated	
-     1/length(e)*sum(abs(e-mean(e)))
-     }      
-
+   
 ###################################################################
 #                 Duration                                        #
 ###################################################################
 
-# calculates duration, modified duration and weights for optimization
+# duration, modified duration and weights for optimization
 
-# cf ... cashflows (dirty price included)
-# m ... maturities (zero included)
-# y ... bond yields
 
 duration <-
-function (cf,m,y) {
-       y <- matrix(rep(y,nrow(m)),ncol=ncol(m),byrow=TRUE)
-       d <- apply(cf*m*exp(-y*m),2,sum)/-cf[1,]
+function (cf_p,m_p,y) {
+       y <- matrix(rep(y,nrow(m_p)),ncol=ncol(m_p),byrow=TRUE)
+       d <- apply(cf_p*m_p*exp(-y*m_p),2,sum)/-cf_p[1,]
        md <- d/(1+y[1,])
        omega <- (1/md)*sum(1/md)
-       cbind(d,md,omega)
+       dur <- cbind(d,md,omega)
+       colnames(dur) <- c("Duration","Modified duration","Weights")
+       dur
     }
 
 
@@ -242,8 +220,26 @@ bond_prices <-
                bond_prices=bond_prices))
   
 }  
- 
- 							
+
+###################################################################
+#                      Root mean squared error                    #
+###################################################################
+
+rmse <-
+function (actual,estimated) {
+	e <- actual - estimated
+	sqrt(1/length(e)*sum((e-mean(e))^2))			
+      }
+
+###################################################################
+#                 Average absolute error                          #
+###################################################################
+      
+aabse <-
+function (actual,estimated){
+     e <- actual - estimated	
+     1/length(e)*sum(abs(e-mean(e)))
+     }   							
 
 
 
