@@ -113,6 +113,7 @@ nelson_estim <-
  	"Svensson" = "svensson")
 
   result
+ # browser()
    }
 
 
@@ -141,8 +142,8 @@ svensson <-
 #                        loss function                            #
 ###################################################################
 
-loss_function <- function(p,phat,omega=1,weights="none") {
- # if (weights=="none") omega <- rep(1,length(p))
+loss_function <- function(p,phat,omega,weights="none") {
+  if (weights=="none") omega <- rep(1,length(p))
   sum(omega*((p-phat)^2))}
 
 	

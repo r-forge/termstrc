@@ -7,7 +7,7 @@ group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds
 maturity_spectrum <- "all"
 method <- "Nelson/Siegel"
-fit <- "prices"
+fit <- "yields"
 weights <- "none"
 control <- list(eval.max=100000)
 
@@ -23,7 +23,7 @@ colnames(b) <- c("beta0","beta1","beta2","tau1")
 myres<- nelson_estim(group, bonddata, maturity_spectrum, 
    method, fit, weights, startparam=b,control)
 
-i = 3
+i = 2
 
 plot(myres$yields[[i]][,1],myres$yields[[i]][,2])
 kurve <- cbind(myres$yields[[i]][,1],spotrates(method,myres$opt_result[[i]]$par,myres$yields[[i]][,1]))
