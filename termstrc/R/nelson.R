@@ -65,8 +65,7 @@ nelson_estim <-
      	bond_prices(method,b,m[[i]],cf[[i]])$bond_prices,duration[[i]][,3],weights)}
   
   obj_fct_yields <- function(b) {    # yield error minimization, Baustelle
-    loss_function(yields[[i]][,"Yield"],bond_yields(rbind(
-    -bond_prices(method,b,m[[i]],cf[[i]])$bond_prices,cf[[i]]),m_p[[i]]))}
+    loss_function(yields[[i]][,"Yield"],spotrates(method,b,yields[[i]][,"Maturity"]))}
     
   obj_fct <- switch(fit,
                 "prices" = obj_fct_prices,
@@ -114,7 +113,7 @@ nelson_estim <-
  	"Svensson" = "svensson")
 
   result
- }
+   }
 
 
 ###################################################################
@@ -122,10 +121,10 @@ nelson_estim <-
 ###################################################################
 
 nelson_siegel <-
-  function(beta, m,) {
-    beta[1] + beta[2] * ((1-exp(-m/beta[4]))/(m/beta[4]))
-             + beta[3]*(((1-exp(-m/beta[4]))/(m/beta[4]))
-             -exp(-m/beta[4]))                    
+  function(beta, m) {
+    (beta[1] + beta[2]*((1-exp(-m/beta[4]))/(m/beta[4]))
+    + beta[3]*(((1-exp(-m/beta[4]))/(m/beta[4]))-exp(-m/beta[4])))
+    
 }
 
 ###################################################################
@@ -134,16 +133,16 @@ nelson_siegel <-
 
 svensson <-
   function(beta, m) {
-  beta[1] + beta[2] * ((1 - exp(-m/beta[4]))/(m/beta[4])) +
+  (beta[1] + beta[2] * ((1 - exp(-m/beta[4]))/(m/beta[4])) +
   beta[3] * (((1 - exp(-m/beta[4]))/(m/beta[4])) - exp(-m/beta[4])) +
-  beta[5] * (((1 - exp(-m/beta[6]))/(m/beta[6])) - exp(-m/beta[6]))}
+  beta[5] * (((1 - exp(-m/beta[6]))/(m/beta[6])) - exp(-m/beta[6])))}
 
 ###################################################################
 #                        loss function                            #
 ###################################################################
 
-loss_function <- function(p,phat,omega,weights) {
-  if (weights=="none") omega <- rep(1,length(p))
+loss_function <- function(p,phat,omega=1,weights="none") {
+ # if (weights=="none") omega <- rep(1,length(p))
   sum(omega*((p-phat)^2))}
 
 	
