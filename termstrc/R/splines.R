@@ -74,7 +74,7 @@ gi <- function(t,T,i,s){
     if(t<T[i-1]){
      g <- 0
     }
-    if(T[i-1]<=t&t<T[i]){
+    if(T[i-1]<=t&t<=T[i]){
      g <- (t-T[i-1])^3/(6*(T[i]-T[i-1]))
     }
   } 
@@ -84,8 +84,18 @@ gi <- function(t,T,i,s){
   g
 }
 
-i = 2
-t = 5
+# g(1) anschauen
+
+i = 3
+
+x = rep(0,15)
+
+for(t in 1:15){
+ x[t] <- gi(t,T,i,s)
+}
+plot(x)
+
+
 
 
 #    if(T[i]<=t&t<T[i+1]){
