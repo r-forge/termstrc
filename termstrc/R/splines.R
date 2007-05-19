@@ -1,34 +1,64 @@
 ###################################################################
-#                        Spot rates cubic slines                  #
+#                        Cubic splines estimation                 #
 ###################################################################
 
-rm(list = ls())
-source("tools.R")
+splines_estim <-
+  function(group,
+           bonddata,
+           maturity_spectrum="all"
+           ) {
 
-p <- c(96.6,93.71,91.56,90.24,89.74,90.04,91.09,92.82,95.19,98.14,101.60,105.54,109.90,114.64,119.73)
+    
+  # select given group from bonddata
+  bonddata <- bonddata[group]
 
-maturity <- seq(1,15)
-coupon <- seq(2,9,0.5)
+  
+  
+  # select data according to chosen maturity range
+  if (length(maturity_spectrum)==1) {bonddata <- bonddata }else
+   {bonddata <- maturity_range(bonddata,maturity_spectrum[1],maturity_spectrum[2]) }
 
-# cash flow matrix
+  # number of groups 
+  n_group <- length(bonddata) 
+    
+  # create cashflows matrix
+  cf <- lapply(bonddata,create_cashflows_matrix)
 
-N <- length(p)
-cf <- matrix(0,N,N)
-diag(cf) <- 100
+  # create cashflows matrix including dirty price (needed for bond yield calculation)
+  cf_p <- mapply(function(i) create_cashflows_matrix(bonddata[[i]],include_price=TRUE),
+                 1:n_group,SIMPLIFY=FALSE)
 
-for(i in 1:N) cf[1:maturity[i],i] <- cf[1:maturity[i],i]+coupon[i]
+  names(cf_p) <- names(bonddata)
 
-cf_p <- rbind(-p,cf)
+  # create maturities matrix
+  m <- lapply(bonddata,create_maturities_matrix)
 
-# maturity matrix
+  # create maturities matrix including zeros (needed for bond yield calculation)
+  m_p <- mapply(function(i) create_maturities_matrix(bonddata[[i]],include_price=TRUE),
+                1:n_group,SIMPLIFY=FALSE)
+  names(m_p) <- names(bonddata)
+  
+  # calculate dirty prices
+  p <- mapply(function(i) bonddata[[i]]$PRICE + bonddata[[i]]$ACCRUED,1:n_group,SIMPLIFY=FALSE)
+  names(p) <- names(bonddata)   
 
-m <- matrix(0,N,N)
-diag(m) <- maturity
+  positions <- mapply(function(i) order(apply(m[[i]],2,max)),1:n_group,SIMPLIFY=FALSE)
+  names(positions) <- names(bonddata)
 
-for(i in 1:N) m[1:i,i] <- seq(1,i)
 
-m_p <- rbind(rep(0,N),m)
+  cf <- mapply(function(i) cf[[i]][,positions[[i]]],1:n_group,SIMPLIFY=FALSE)
+  cf_p <- mapply(function(i) cf_p[[i]][,positions[[i]]],1:n_group,SIMPLIFY=FALSE)
+  m <- mapply(function(i) m[[i]][,positions[[i]]],1:n_group,SIMPLIFY=FALSE)
+  m_p <- mapply(function(i) m_p[[i]][,positions[[i]]],1:n_group,SIMPLIFY=FALSE)
+ 
+  
+  # calculate bond yields	
+  yields <- mapply(function(i) bond_yields(cf_p[[i]],m_p[[i]]),
+                   1:n_group,SIMPLIFY=FALSE)
+  names(yields) <- names(bonddata)
 
+browser()
+  
 # Choosing knot points (McCulloch)
 
 K <- N
@@ -47,71 +77,30 @@ T <- c(0,
        +theta*(apply(as.matrix(m[,h+1]),2,max)-apply(as.matrix(m[,h]),2,max)),
        max(m[,ncol(m)]))
 
-
-gi <- function(t,T,i,s){
-  g <- rep(NA,length(t))
-  for(j in 1:length(t)){
-    if(i==1){
-    if(T[i]<=t[j]&t[j]<T[i+1]){
-     g[j] <- (T[i])^2/6 + ((T[i])*(t[j]-T[i]))/2 + (t[j]-T[i])^2/2 - (t[j]-T[i])^3/(6*(T[i+1]-T[i]))
-    }
-    if(t[j]>=T[i+1]){
-     g[j] <- (T[i+1])*((2*T[i+1]-T[i])/6 + (t[j]-T[i+1])/2)
-    }   
-  }
-  if(i>1&i<length(T)){
-    if(t[j]<T[i-1]){
-     g[j] <- 0
-    }
-    if(T[i-1]<=t[j]&t[j]<T[i]){
-     g[j] <- (t[j]-T[i-1])^3/(6*(T[i]-T[i-1]))
-    }
-    if(T[i]<=t[j]&t[j]<T[i+1]){
-     g[j] <- (T[i]-T[i-1])^2/6 + ((T[i]-T[i-1])*(t[j]-T[i]))/2 + (t[j]-T[i])^2/2 - (t[j]-T[i])^3/(6*(T[i+1]-T[i]))
-    }
-    if(t[j]>=T[i+1]){
-     g[j] <- (T[i+1]-T[i-1])*((2*T[i+1]-T[i]-T[i-1])/6 + (t[j]-T[i+1])/2)
-    }
-  }
-   if(i==length(T)){
-    if(t[j]<T[i-1]){
-     g[j] <- 0
-    }
-    if(T[i-1]<=t[j]&t[j]<=T[i]){
-     g[j] <- (t[j]-T[i-1])^3/(6*(T[i]-T[i-1]))
-    }
-  } 
-  if(i==s){
-    g[j] <- t[j]
-  }
-}
-  g
-}
-
-
+# parameter estimation with OLS
 y <- apply(cf_p,2,sum)
-
 X <- matrix(NA,N,s)
-
 t = apply(m,2,max)
 
 for(i in 1:s){
 X[,i] <- apply(cf*gi(t,T,i,s),2,sum)
 }
 
-alpha <- coef(lm(-y~X-1))
+alpha <- coef(lm(-y~X-1))   # parameter vector
 
-t = seq(1,N,0.01)
 
-dt <- rep(1,length(t))
+dt <- rep(1,length(t))      # disccount factors
 
 for(i in 1:s){
-  dt <- dt + alpha[i]*gi(t,T,i,s)
+  dt <- dt + alpha[i]*gi(t,T,i,s)  
 }
 
-yhat <- -log(dt)/t
+spot_rates <- -log(dt)/t           # estimated yields
+
+estimated_prices <- apply(cf*dt,2,sum)
+}
 
 
-yields <- bond_yields(cf_p,m_p)
-plot(yields[,1],yields[,2],ylim=c(0,0.08))
-lines(t,yhat,type="l")
+#yields <- bond_yields(cf_p,m_p)
+#plot(yields[,1],yields[,2],ylim=c(0,0.08))
+#lines(t,spot_rates,type="l")
