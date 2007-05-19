@@ -41,7 +41,7 @@ h <- trunc(((i-1)*K)/(s-2))
 theta <- ((i-1)*K)/(s-2)-h
 
 # knot points
-T <- c(0, (T[i+1]-T[i-1])*((2*T[i+1-T[i]-T[i-1])/6+(t-T[i+1])/2)
+T <- c(0,
        apply(as.matrix(m[,h]),2,max)
        +theta*(apply(as.matrix(m[,h+1]),2,max)-apply(as.matrix(m[,h]),2,max)),
        max(m[,ncol(m)]))
@@ -50,11 +50,46 @@ T <- c(0, (T[i+1]-T[i-1])*((2*T[i+1-T[i]-T[i-1])/6+(t-T[i+1])/2)
 gi <- function(t,T,i,s){
   if(i==1){
     if(T[i]<=t&t<T[i+1]){
-    g <- (T[i]-T[i-1])^2/6 + ((T[i]-T[i-1])*(t-T[i]))/2 + (t-T[i])^2/2 - (t-T[i])^3/(6*(T[i+1]-T[i]))}
+     g <- (T[i])^2/6 + ((T[i])*(t-T[i]))/2 + (t-T[i])^2/2 - (t-T[i])^3/(6*(T[i+1]-T[i]))
+    }
+    if(t>=T[i+1]){
+     g <- (T[i+1])*((2*T[i+1]-T[i])/6 + (t-T[i+1])/2)
+    }   
   }
+  if(i>1&i<length(T)){
+    if(t<T[i-1]){
+     g <- 0
+    }
+    if(T[i-1]<=t&t<T[i]){
+     g <- (t-T[i-1])^3/(6*(T[i]-T[i-1]))
+    }
+    if(T[i]<=t&t<T[i+1]){
+     g <- (T[i]-T[i-1])^2/6 + ((T[i]-T[i-1])*(t-T[i]))/2 + (t-T[i])^2/2 - (t-T[i])^3/(6*(T[i+1]-T[i]))
+    }
+    if(t>=T[i+1]){
+     g <- (T[i+1]-T[i-1])*((2*T[i+1]-T[i]-T[i-1])/6 + (t-T[i+1])/2)
+    }
+  }
+   if(i==length(T)){
+    if(t<T[i-1]){
+     g <- 0
+    }
+    if(T[i-1]<=t&t<T[i]){
+     g <- (t-T[i-1])^3/(6*(T[i]-T[i-1]))
+    }
+  } 
+  if(i==s){
+    g <- t
+  }
+  g
 }
-  
-   # if(t>=T[i+1]){
-   # print("Hello")
-                                        #g <- (T[i+1]-T[i-1])#*((2*T[i+1]-T[i]-T[i-1])/6 + (t-T[i+1])/2)
-    # }  
+
+i = 2
+t = 5
+
+
+#    if(T[i]<=t&t<T[i+1]){
+#    g <- (T[i]-T[i-1])^2/6 + ((T[i]-T[i-1])*(t-T[i]))/2 + (t-T[i])^2/2 - (t-T[i])^3/(6*(T[i+1]-T[i]))
+#    }
+#    if(t>=T[i+1]){
+#     g <- (T[i+1]-T[i-1])*((2*T[i+1]-T[i]-T[i-1])/6 + (t-T[i+1])/2)
