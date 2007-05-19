@@ -57,31 +57,42 @@ splines_estim <-
                    1:n_group,SIMPLIFY=FALSE)
   names(yields) <- names(bonddata)
 
-browser()
   
 # Choosing knot points (McCulloch)
 
-K <- N
-
+K <- mapply(function(i) ncol(m[[i]]),1:n_group,SIMPLIFY=FALSE)
+names(K) <- names(bonddata)
+  
 # number of basis functions
-s <- round(sqrt(K))
+s <-  mapply(function(i) round(sqrt(K[[i]])),1:n_group,SIMPLIFY=FALSE)
+names(s) <- names(bonddata)
+  
+i <- mapply(function(i) 2:(s[[i]]-2),1:n_group,SIMPLIFY=FALSE)
+names(i) <- names(bonddata)
 
-i = 2:(s-2)
+h <-  mapply(function(j) trunc(((i[[j]]-1)*K[[j]])/(s[[j]]-2)),1:n_group,SIMPLIFY=FALSE)
+names(h) <- names(bonddata)
+            
+theta <- mapply(function(j)((i[[j]]-1)*K[[j]])/(s[[j]]-2)-h[[j]],1:n_group,SIMPLIFY=FALSE)
+names(theta) <- names(bonddata)
 
-h <- trunc(((i-1)*K)/(s-2))
-theta <- ((i-1)*K)/(s-2)-h
-
+  
 # knot points
-T <- c(0,
-       apply(as.matrix(m[,h]),2,max)
-       +theta*(apply(as.matrix(m[,h+1]),2,max)-apply(as.matrix(m[,h]),2,max)),
-       max(m[,ncol(m)]))
-
+T <- mapply(function(i) c(0,
+       apply(as.matrix(m[[i]][,h[[i]]]),2,max)
+       +theta[[i]]*(apply(as.matrix(m[[i]][,h[[i]]+1]),2,max)-apply(as.matrix(m[[i]][,h[[i]]]),2,max)),
+       max(m[[i]][,ncol(m[[i]])])),1:n_group,SIMPLIFY=FALSE)
+names(T) <- names(bonddata)
+  
 # parameter estimation with OLS
-y <- apply(cf_p,2,sum)
+y <- mapply(function(i) apply(cf_p[[i]],2,sum),1:n_group,SIMPLIFY=FALSE)
+names(y) <- names(bonddata)
+  
 X <- matrix(NA,N,s)
-t = apply(m,2,max)
+t = mapply(function(i) apply(m[[i]],2,max),1:n_group,SIMPLIFY=FALSE)
+names(t) <- names(bonddata)
 
+  
 for(i in 1:s){
 X[,i] <- apply(cf*gi(t,T,i,s),2,sum)
 }
