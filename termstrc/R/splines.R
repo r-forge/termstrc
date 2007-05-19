@@ -3,6 +3,7 @@
 ###################################################################
 
 rm(list = ls())
+source("tools.R")
 
 p <- c(96.6,93.71,91.56,90.24,89.74,90.04,91.09,92.82,95.19,98.14,101.60,105.54,109.90,114.64,119.73)
 
@@ -48,58 +49,69 @@ T <- c(0,
 
 
 gi <- function(t,T,i,s){
-  if(i==1){
-    if(T[i]<=t&t<T[i+1]){
-     g <- (T[i])^2/6 + ((T[i])*(t-T[i]))/2 + (t-T[i])^2/2 - (t-T[i])^3/(6*(T[i+1]-T[i]))
+  g <- rep(NA,length(t))
+  for(j in 1:length(t)){
+    if(i==1){
+    if(T[i]<=t[j]&t[j]<T[i+1]){
+     g[j] <- (T[i])^2/6 + ((T[i])*(t[j]-T[i]))/2 + (t[j]-T[i])^2/2 - (t[j]-T[i])^3/(6*(T[i+1]-T[i]))
     }
-    if(t>=T[i+1]){
-     g <- (T[i+1])*((2*T[i+1]-T[i])/6 + (t-T[i+1])/2)
+    if(t[j]>=T[i+1]){
+     g[j] <- (T[i+1])*((2*T[i+1]-T[i])/6 + (t[j]-T[i+1])/2)
     }   
   }
   if(i>1&i<length(T)){
-    if(t<T[i-1]){
-     g <- 0
+    if(t[j]<T[i-1]){
+     g[j] <- 0
     }
-    if(T[i-1]<=t&t<T[i]){
-     g <- (t-T[i-1])^3/(6*(T[i]-T[i-1]))
+    if(T[i-1]<=t[j]&t[j]<T[i]){
+     g[j] <- (t[j]-T[i-1])^3/(6*(T[i]-T[i-1]))
     }
-    if(T[i]<=t&t<T[i+1]){
-     g <- (T[i]-T[i-1])^2/6 + ((T[i]-T[i-1])*(t-T[i]))/2 + (t-T[i])^2/2 - (t-T[i])^3/(6*(T[i+1]-T[i]))
+    if(T[i]<=t[j]&t[j]<T[i+1]){
+     g[j] <- (T[i]-T[i-1])^2/6 + ((T[i]-T[i-1])*(t[j]-T[i]))/2 + (t[j]-T[i])^2/2 - (t[j]-T[i])^3/(6*(T[i+1]-T[i]))
     }
-    if(t>=T[i+1]){
-     g <- (T[i+1]-T[i-1])*((2*T[i+1]-T[i]-T[i-1])/6 + (t-T[i+1])/2)
+    if(t[j]>=T[i+1]){
+     g[j] <- (T[i+1]-T[i-1])*((2*T[i+1]-T[i]-T[i-1])/6 + (t[j]-T[i+1])/2)
     }
   }
    if(i==length(T)){
-    if(t<T[i-1]){
-     g <- 0
+    if(t[j]<T[i-1]){
+     g[j] <- 0
     }
-    if(T[i-1]<=t&t<=T[i]){
-     g <- (t-T[i-1])^3/(6*(T[i]-T[i-1]))
+    if(T[i-1]<=t[j]&t[j]<=T[i]){
+     g[j] <- (t[j]-T[i-1])^3/(6*(T[i]-T[i-1]))
     }
   } 
   if(i==s){
-    g <- t
+    g[j] <- t[j]
   }
+}
   g
 }
 
-# g(1) anschauen
 
-i = 3
+y <- apply(cf_p,2,sum)
 
-x = rep(0,15)
+X <- matrix(NA,N,s)
 
-for(t in 1:15){
- x[t] <- gi(t,T,i,s)
+t = apply(m,2,max)
+
+for(i in 1:s){
+X[,i] <- apply(cf*gi(t,T,i,s),2,sum)
 }
-plot(x)
+
+alpha <- coef(lm(-y~X-1))
+
+t = seq(1,N,0.01)
+
+dt <- rep(1,length(t))
+
+for(i in 1:s){
+  dt <- dt + alpha[i]*gi(t,T,i,s)
+}
+
+yhat <- -log(dt)/t
 
 
-
-
-#    if(T[i]<=t&t<T[i+1]){
-#    g <- (T[i]-T[i-1])^2/6 + ((T[i]-T[i-1])*(t-T[i]))/2 + (t-T[i])^2/2 - (t-T[i])^3/(6*(T[i+1]-T[i]))
-#    }
-#    if(t>=T[i+1]){
-#     g <- (T[i+1]-T[i-1])*((2*T[i+1]-T[i]-T[i-1])/6 + (t-T[i+1])/2)
+yields <- bond_yields(cf_p,m_p)
+plot(yields[,1],yields[,2],ylim=c(0,0.08))
+lines(t,yhat,type="l")
