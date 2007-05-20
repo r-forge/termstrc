@@ -47,6 +47,9 @@ T <- c(0,
        +theta*(apply(as.matrix(m[,h+1]),2,max)-apply(as.matrix(m[,h]),2,max)),
        max(m[,ncol(m)]))
 
+# use own knot points
+#T <- seq(0,15,1.5)
+#s <- length(T)+1
 
 gi <- function(t,T,i,s){
   g <- rep(NA,length(t))
