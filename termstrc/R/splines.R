@@ -67,7 +67,7 @@ names(K) <- names(bonddata)
 s <-  mapply(function(i) round(sqrt(K[[i]])),1:n_group,SIMPLIFY=FALSE)
 names(s) <- names(bonddata)
   
-i <- mapply(function(i) 2:(s[[i]]-2),1:n_group,SIMPLIFY=FALSE)
+i <- mapply(function(i) 2:(s[[i]]-2),1:n_group,SIMPLIFY=FALSE)  # only used for knot point finding
 names(i) <- names(bonddata)
 
 h <-  mapply(function(j) trunc(((i[[j]]-1)*K[[j]])/(s[[j]]-2)),1:n_group,SIMPLIFY=FALSE)
@@ -83,34 +83,73 @@ T <- mapply(function(i) c(0,
        +theta[[i]]*(apply(as.matrix(m[[i]][,h[[i]]+1]),2,max)-apply(as.matrix(m[[i]][,h[[i]]]),2,max)),
        max(m[[i]][,ncol(m[[i]])])),1:n_group,SIMPLIFY=FALSE)
 names(T) <- names(bonddata)
+
+# use own knot points
+# T <- seq(0,15,1.5)
+# s <- length(T)+1
   
 # parameter estimation with OLS
 y <- mapply(function(i) apply(cf_p[[i]],2,sum),1:n_group,SIMPLIFY=FALSE)
 names(y) <- names(bonddata)
-  
-X <- matrix(NA,N,s)
-t = mapply(function(i) apply(m[[i]],2,max),1:n_group,SIMPLIFY=FALSE)
-names(t) <- names(bonddata)
 
   
-for(i in 1:s){
-X[,i] <- apply(cf*gi(t,T,i,s),2,sum)
+X <- list()
+
+# k ... group index
+# j ... column index (bond)
+# sidx ... index for spline function  
+
+
+for (k in 1:n_group){  
+X[[k]] <- matrix(NA,ncol(m[[k]]),s[[k]])
+                 
+for(sidx in 1:s[[k]]){
+X[[k]][,sidx] <- apply(cf[[k]]*mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]])),2,sum)
+}
 }
 
-alpha <- coef(lm(-y~X-1))   # parameter vector
+names(X) <- names(bonddata)
+  
+alpha <- mapply(function(k) coef(lm(-y[[k]]~X[[k]]-1)),1:n_group) # parameter vector
 
+dt <- list()
+  
+for (k in 1:n_group){
+  dt[[k]] <- matrix(1,nrow(m[[k]]),ncol(m[[k]]))
+  for(sidx in 1:s[[k]]){
+  dt[[k]] <- dt[[k]] + alpha[[k]][sidx]* mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]]))
+  }
+}  
 
-dt <- rep(1,length(t))      # disccount factors
+browser()
 
-for(i in 1:s){
-  dt <- dt + alpha[i]*gi(t,T,i,s)  
+k <-1
+t <- seq(0,30,0.5)
+
+dt2 <- list()
+dt2[[k]] <- rep(1,length(t))
+               
+for(sidx in 1:s[[k]]){  
+dt2[[k]] <- dt2[[k]] + alpha[[k]][sidx]*gi(t,T[[k]],sidx,s[[k]])
 }
 
-spot_rates <- -log(dt)/t           # estimated yields
+spot_rates <- -log(dt2[[k]])/t           # estimated yields
 
-estimated_prices <- apply(cf*dt,2,sum)
+estimated_prices <- list()
+estimated_prices <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),1:n_group,SIMPLIFY=FALSE)
+
+yhat <- mapply(function(k) bond_yields(rbind(-estimated_prices[[k]],cf[[k]]),m_p[[k]]),1:n_group,SIMPLIFY=FALSE)
+
+
+ k = 2 
+ plot(yields[[k]],ylim=c(0,0.06))
+ #lines(m[[k]][,ncol(m[[k]])],-log(dt[[k]][,ncol(m[[k]])])/m[[k]][,ncol(m[[k]])]) 
+ points(yhat[[k]][,1],yhat[[k]][,2],col="blue")
+ plot(t,spot_rates,type="l")
+ points(yields[[k]][,1],yields[[k]][,2]) 
 }
 
+#-log(dt[[k]][,ncol(m[[k]])])/m[[k]][,ncol(m[[k]])]
 
 #yields <- bond_yields(cf_p,m_p)
 #plot(yields[,1],yields[,2],ylim=c(0,0.08))
