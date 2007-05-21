@@ -108,7 +108,7 @@ nelson_estim <-
                 
   # calculate spread curves              	    
  	if(n_group != 1) { 
-   scurves <- ycurves[,2] - ycurves[,3:n_group]	    
+   scurves <- ycurves[,3:(n_group+1)] - ycurves[,2] 	    
     } else scurves = "none" 
  
  # return list of results
