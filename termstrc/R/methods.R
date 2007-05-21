@@ -74,12 +74,34 @@ plot.nelson <-
     par(mfrow=c(1,2))
     
     ## plot all yield curves together
-    matplot(x$ycurves[,1],x$ycurves[,2:(x$n_group+1)],type="l",
-    		col=1:x$n_group,lty=1,lwd=2,
+   # matplot(x$ycurves[,1],x$ycurves[,2:(x$n_group+1)],type="l",
+    		
+   
+    matplot(x$ycurves[,1], x$ycurves[, which.max(unlist(lapply(x$y,max))) +1 ], type="l",
+    col=1,lty=1,lwd=2,
+   
    
     xlab="Maturities",
     ylab="Yields")
-    xlim=c(maturity_min,maturity_max))
+    #xlim=c(maturity_min,maturity_max))
+   
+	for(k in c( (1:x$n_group)[- which.max(unlist(lapply(x$y,max)))]))
+	{
+		
+		
+	spoint <- which(x$ycurves[,1] > unlist(lapply(x$y,max))[k])[1]
+			   
+    lines(x$ycurves[1:spoint ,1],
+    	  x$ycurves[1:spoint ,k+1],col=k+1)
+    
+    lines(x$ycurves[((spoint+1) : nrow(x$ycurves) ) ,1],
+    	  x$ycurves[((spoint+1) : nrow(x$ycurves) ) ,k+1],col=k+1, lty=5)
+    	  
+    	  
+    	  }
+    
+    
+    
     title("Yield curves")
     legend("bottomright",legend=names(x$opt_result),col=1:x$n_group,lty=1,lwd=2)
     grid()
