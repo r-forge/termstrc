@@ -6,7 +6,7 @@ source("methods.R")
 
 group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds
-maturity_spectrum <- "all"
+matrange <- "all"
 method <- "Nelson/Siegel"
 fit <- "prices"
 weights <- "none"
@@ -21,7 +21,7 @@ rownames(b) <- group
 
 colnames(b) <- c("beta0","beta1","beta2","tau1")
 
-myres<- nelson_estim(group, bonddata, maturity_spectrum, 
+myres<- nelson_estim(group, bonddata, matrange, 
    method, fit, weights, startparam=b,control)
 
 i = 2
