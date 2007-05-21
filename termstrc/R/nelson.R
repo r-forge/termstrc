@@ -5,7 +5,7 @@
 nelson_estim <-
   function(group,
            bonddata,
-           maturity_spectrum="all",
+           matrange="all",
            method="Nelson/Siegel",
            fit = "prices",
            weights="none",
@@ -22,8 +22,8 @@ nelson_estim <-
   bonddata <- bonddata[group]
   
   # select data according to chosen maturity range
-  if (length(maturity_spectrum)==1) {bonddata <- bonddata }else
-   {bonddata <- maturity_range(bonddata,maturity_spectrum[1],maturity_spectrum[2]) }
+  if (length(matrange)==1) {bonddata <- bonddata }else
+   {bonddata <- maturity_range(bonddata,matrange[1],matrange[2]) }
 
   # number of groups 
   n_group <- length(bonddata) 
@@ -46,11 +46,11 @@ nelson_estim <-
   p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,1:n_group,SIMPLIFY=FALSE)
     
   # calculate bond yields	
-  yields <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
+  y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    1:n_group,SIMPLIFY=FALSE)
  
   # calculate duration   
-  duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],yields[[k]][,2]),
+  duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],y[[k]][,2]),
                    1:n_group,SIMPLIFY=FALSE)
      
   # objective function 
@@ -59,7 +59,7 @@ nelson_estim <-
      	bond_prices(method,b,m[[k]],cf[[k]])$bond_prices,duration[[k]][,3],weights)}
   
   obj_fct_yields <- function(b) {    # yield error minimization
-    loss_function(yields[[k]][,"Yield"],spotrates(method,b,yields[[k]][,"Maturity"]))}
+    loss_function(y[[k]][,"Yield"],spotrates(method,b,y[[k]][,"Maturity"]))}
     
   obj_fct <- switch(fit,
                 "prices" = obj_fct_prices,
@@ -77,32 +77,45 @@ nelson_estim <-
   # calculate optimal parameter vector
   opt_result <- list()
 
+  # use apply ?  
   for (k in 1:n_group){
-    opt_result[[k]] <- nlminb(startparam[k,],obj_fct, 
-     lower = lower_bounds, upper = upper_bounds,control=control)
+    opt_result[[k]] <-# mapply(function(k)
+                  nlminb(startparam[k,],obj_fct, lower = lower_bounds,
+                  upper = upper_bounds,control=control)#,
+                  #1:n_group,SIMPLIFY=FALSE)
   }   
  
   # theoretical bond prices with estimated parameters
-  estimated_prices <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
+  phat <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
        m[[k]],cf[[k]])$bond_prices,1:n_group,SIMPLIFY=FALSE)
                          
   # calculate spotrates according to chosen approach
-  spot_rates <- mapply(function(k) spotrates(method,opt_result[[k]]$par,
- 		    yields[[k]][,1]),1:n_group,SIMPLIFY=FALSE) 
+  yhat <- mapply(function(k) spotrates(method,opt_result[[k]]$par,
+ 		    y[[k]][,1]),1:n_group,SIMPLIFY=FALSE) 
   
-  # return list of results 
-  result <- list(group=group,maturity_spectrum=maturity_spectrum,method=method,
-       		       fit=fit,weights=weights,n_group=n_group,
-       		       cashflows=cf,maturities=m,dirty_prices=p,duration=duration,
-                 estimated_prices=estimated_prices,yields=yields,
-                 opt_result=opt_result,spot_rates=spot_rates)
+  # return list of results
+  
+  result <- list(group=group,          # e.g. countries, rating classes
+                 matrange=matrange,    # maturity range of bonds
+                 method=method,        # method (Nelson/Siegel or Svensson)
+       		 fit=fit,              # fitting method (prices or yields)
+                 weights=weights,      # weighting type for estimation
+                 n_group=n_group,      # number of groups
+       		 cf=cf,                # cashflow matrix
+                 m=m,                  # maturity matrix
+                 duration=duration,    # duration, modified duration, weights
+                 p=p,                  # dirty prices
+                 phat=phat,            # estimated prices
+                 y=y,                  # maturities and yields
+                 yhat=yhat,            # estimated yields
+                 opt_result=opt_result)
  
-  #assign names to result list 
-  for ( i in 8:length(result)) names(result[[i]]) <- names(bonddata)
+  # assign names to results list 
+  for ( i in 7:length(result)) names(result[[i]]) <- names(bonddata)
     
   class(result) <- "nelson"
   result
-   }
+ }
 
 
 ###################################################################

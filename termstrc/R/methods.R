@@ -28,8 +28,17 @@ print.nelson <-
 
  
 ###################################################################
-#            plot-method for termstrc_singlecurve                 #
+#                    plot-method for nelson                       #
 ###################################################################
+
+# TODO:
+# - plot individual curves with each range, scatter plot of yields and estimated curve
+# - plot all yield curves together, max of x-axis is maturity of longest bond over all groups
+# - plot extrapolated curves dashed
+# - for one group item no spread curves
+# - save all plot in pdf
+
+# plot.nelson(myres,matrange=c(0,15) oder default='all',)
 
 plot.termstrc_singlecurve <-
   function(x,maturity_min=1,maturity_max=15,spread_curves=TRUE,...) {
@@ -97,13 +106,13 @@ plot.termstrc_singlecurve <-
 
 summary.nelson <-
     function(x) {
-    RMSE_p <- mapply(function(i) rmse(x$dirty_prices[[i]],x$estimated_prices[[i]]),1:x$n_group)
-    AABSE_p <- mapply(function(i) aabse(x$dirty_prices[[i]],x$estimated_prices[[i]]),1:x$n_group)
-    RMSE_y <- mapply(function(i) rmse(x$yields[[i]][,2],x$spot_rates[[i]]),1:x$n_group)
-    AABSE_y <- mapply(function(i) aabse(x$yields[[i]][,2],x$spot_rates[[i]]),1:x$n_group)
+    RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),1:x$n_group)
+    AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),1:x$n_group)
+    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]]),1:x$n_group)
+    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]]),1:x$n_group)
     
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
-    colnames(gof) <- names(x$dirty_prices)
+    colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields","AABSE-Yields")
     cat("---------------------------------------------------\n")
     cat("Goodness of fit tests:\n")
