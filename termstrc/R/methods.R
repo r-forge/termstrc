@@ -40,43 +40,45 @@ print.nelson <-
 
 # plot.nelson(myres,matrange=c(0,15) oder default='all',)
 
-plot.termstrc_singlecurve <-
-  function(x,maturity_min=1,maturity_max=15,spread_curves=TRUE,...) {
-    # calculate theoretical yield curves
-     yield_curves <- switch(x$method,
-              "Nelson/Siegel" = mapply(function(i) 
-              					nelson_siegel(x$opt_result[[i]]$par,
-              					seq(maturity_min,maturity_max,0.01)),
-              					1:x$n_group),
-              					
-              "Svensson" = mapply(function(i) svensson(x$opt_result[[i]]$par,
-              				seq(maturity_min,maturity_max,0.01)),1:x$n_group))
-              				
+plot.nelson <-
+  function(x,matrange = c(min(unlist(lapply(x$y,min))),max(unlist(lapply(x$y,max)))),...) {
+   
+    # check plot maturity conformity
+    if( matrange[2] > max(unlist(lapply(x$y,max)))) {matrange[1] <- max(unlist(lapply(x$y,max)))
+     warning("The maximum plot maturity range has been set to the maxium maturity of the bond with the longest maturity" )
+    }
+     
+    if( matrange[1] < min(unlist(lapply(x$y,min)))) {matrange[1] <- min(unlist(lapply(x$y,min)))
+     warning("The minium plot maturity range has been set to the minium maturity of the bond with the longest maturity" )
+    }
+                       				
     # plot each yield curve seperately
-    par(mfrow=c(2,2))
-    for (i in 1:x$n_group) {
-      plot(seq(maturity_min,maturity_max,0.01),yield_curves[,i],
+    for (k in 1:x$n_group  ) {
+         
+      plot(x$ycurves[,1] ,x$ycurves[,k+1],
       type="l",
       ylim=c(0,0.05),
+      xlim=c(max(floor(min(x$y[[k]][,1])),matrange[1]), min(ceiling(max(x$y[[k]][,1])),matrange[2])),
       xlab="Maturities",
-      ylab="Yields",
+      ylab="Zero-coupon yields",
       lwd=2,
       col="steelblue")
-      title(names(x$opt_result)[i])
+      title(names(x$opt_result)[k])
       grid()
-      points(x$yields[[i]],col="red")
-      par(ask=TRUE)
+      points(x$y[[k]],col="red") 
+      par(ask=TRUE) 
     }
+    
     
     
     par(mfrow=c(1,2))
     
     ## plot all yield curves together
-    matplot(seq(maturity_min,maturity_max,0.01),yield_curves,type="l",
+    matplot(x$ycurves[,1],x$ycurves[,2:(x$n_group+1)],type="l",
     		col=1:x$n_group,lty=1,lwd=2,
    
     xlab="Maturities",
-    ylab="Yields",
+    ylab="Yields")
     xlim=c(maturity_min,maturity_max))
     title("Yield curves")
     legend("bottomright",legend=names(x$opt_result),col=1:x$n_group,lty=1,lwd=2)

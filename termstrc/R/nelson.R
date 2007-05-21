@@ -44,7 +44,7 @@ nelson_estim <-
   
   # calculate dirty prices
   p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,1:n_group,SIMPLIFY=FALSE)
-    
+  
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    1:n_group,SIMPLIFY=FALSE)
@@ -92,15 +92,34 @@ nelson_estim <-
   # calculate spotrates according to chosen approach
   yhat <- mapply(function(k) spotrates(method,opt_result[[k]]$par,
  		    y[[k]][,1]),1:n_group,SIMPLIFY=FALSE) 
+   
   
-  # return list of results
-  
-  result <- list(group=group,          # e.g. countries, rating classes
+  # calculate yield curves  
+  ycurves <- switch(method,
+              "Nelson/Siegel" = mapply(function(k)
+		            nelson_siegel(opt_result[[k]]$par,
+                seq(min(unlist(lapply(y,min))),max(unlist(lapply(y,max))),0.01)),
+                1:n_group),
+
+              "Svensson" = mapply(function(k) svensson(opt_result[[k]]$par,
+                seq(min(unlist(lapply(y,min))),max(unlist(lapply(y,max))),0.01)),1:n_group))
+                
+  ycurves <-  cbind(c(seq(min(unlist(lapply(y,min))),max(unlist(lapply(y,max))),0.01)),ycurves)             	
+                
+  # calculate spread curves              	    
+ 	if(n_group != 1) { 
+   scurves <- ycurves[,2] - ycurves[,3:n_group]	    
+    } else scurves = "none" 
+ 
+ # return list of results
+ result <- list(group=group,          # e.g. countries, rating classes
                  matrange=matrange,    # maturity range of bonds
                  method=method,        # method (Nelson/Siegel or Svensson)
        		 fit=fit,              # fitting method (prices or yields)
                  weights=weights,      # weighting type for estimation
-                 n_group=n_group,      # number of groups
+                 n_group=n_group,      # number of groups,
+                 ycurves=ycurves,      # yield curves
+                 scurves=scurves,      # spread curves
        		 cf=cf,                # cashflow matrix
                  m=m,                  # maturity matrix
                  duration=duration,    # duration, modified duration, weights
@@ -108,10 +127,11 @@ nelson_estim <-
                  phat=phat,            # estimated prices
                  y=y,                  # maturities and yields
                  yhat=yhat,            # estimated yields
-                 opt_result=opt_result)
- 
+                 opt_result=opt_result                             
+                 )
+                 
   # assign names to results list 
-  for ( i in 7:length(result)) names(result[[i]]) <- names(bonddata)
+  for ( i in 9:length(result)) names(result[[i]]) <- names(bonddata)
     
   class(result) <- "nelson"
   result
