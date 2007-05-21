@@ -32,42 +32,34 @@ nelson_estim <-
   cf <- lapply(bonddata,create_cashflows_matrix)
 
   # create cashflows matrix including dirty price (needed for bond yield calculation)
-  cf_p <- mapply(function(i) create_cashflows_matrix(bonddata[[i]],include_price=TRUE),
+  cf_p <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE),
                  1:n_group,SIMPLIFY=FALSE)
-
-  names(cf_p) <- names(bonddata)
-
+  
   # create maturities matrix
   m <- lapply(bonddata,create_maturities_matrix)
 
   # create maturities matrix including zeros (needed for bond yield calculation)
-  m_p <- mapply(function(i) create_maturities_matrix(bonddata[[i]],include_price=TRUE),
+  m_p <- mapply(function(k) create_maturities_matrix(bonddata[[k]],include_price=TRUE),
                 1:n_group,SIMPLIFY=FALSE)
-  names(m_p) <- names(bonddata)
   
   # calculate dirty prices
-  p <- mapply(function(i) bonddata[[i]]$PRICE + bonddata[[i]]$ACCRUED,1:n_group,SIMPLIFY=FALSE)
-  names(p) <- names(bonddata)   
- 
+  p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,1:n_group,SIMPLIFY=FALSE)
+    
   # calculate bond yields	
-  yields <- mapply(function(i) bond_yields(cf_p[[i]],m_p[[i]]),
+  yields <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    1:n_group,SIMPLIFY=FALSE)
-  names(yields) <- names(bonddata)
-  
-  # calculate duration
-      
-  duration <- mapply(function(i) duration(cf_p[[i]],m_p[[i]],yields[[i]][,2]),
-                   1:n_group,SIMPLIFY=FALSE)
-  names(duration) <- names(bonddata)
-  
-  # objective function
  
+  # calculate duration   
+  duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],yields[[k]][,2]),
+                   1:n_group,SIMPLIFY=FALSE)
+     
+  # objective function 
   obj_fct_prices <- function(b) {    # price error minimization
-     loss_function(p[[i]],
-     	bond_prices(method,b,m[[i]],cf[[i]])$bond_prices,duration[[i]][,3],weights)}
+     loss_function(p[[k]],
+     	bond_prices(method,b,m[[k]],cf[[k]])$bond_prices,duration[[k]][,3],weights)}
   
   obj_fct_yields <- function(b) {    # yield error minimization
-    loss_function(yields[[i]][,"Yield"],spotrates(method,b,yields[[i]][,"Maturity"]))}
+    loss_function(yields[[k]][,"Yield"],spotrates(method,b,yields[[k]][,"Maturity"]))}
     
   obj_fct <- switch(fit,
                 "prices" = obj_fct_prices,
@@ -85,31 +77,29 @@ nelson_estim <-
   # calculate optimal parameter vector
   opt_result <- list()
 
-  for (i in 1:n_group){
-    opt_result[[i]] <- nlminb(startparam[i,],obj_fct, 
+  for (k in 1:n_group){
+    opt_result[[k]] <- nlminb(startparam[k,],obj_fct, 
      lower = lower_bounds, upper = upper_bounds,control=control)
-  }
-  names(opt_result) <- names(bonddata)
+  }   
  
   # theoretical bond prices with estimated parameters
-  estimated_prices <- mapply(function(i) bond_prices(method,opt_result[[i]]$par,
-       m[[i]],cf[[i]])$bond_prices,1:n_group,SIMPLIFY=FALSE)
-  names(estimated_prices) <- names(bonddata)
- 
+  estimated_prices <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
+       m[[k]],cf[[k]])$bond_prices,1:n_group,SIMPLIFY=FALSE)
+                         
   # calculate spotrates according to chosen approach
-  spot_rates <- mapply(function(i) spotrates(method,opt_result[[i]]$par,
- 		    yields[[i]][,1]),1:n_group,SIMPLIFY=FALSE) 
- 
-  names(spot_rates)<-names(bonddata)						
-
+  spot_rates <- mapply(function(k) spotrates(method,opt_result[[k]]$par,
+ 		    yields[[k]][,1]),1:n_group,SIMPLIFY=FALSE) 
+  
   # return list of results 
   result <- list(group=group,maturity_spectrum=maturity_spectrum,method=method,
-       		fit=fit,weights=weights,n_group=n_group,
-       		cashflows=cf,maturities=m,dirty_prices=p,duration=duration,
-                estimated_prices=estimated_prices,yields=yields,
-                opt_result=opt_result,spot_rates=spot_rates)
+       		       fit=fit,weights=weights,n_group=n_group,
+       		       cashflows=cf,maturities=m,dirty_prices=p,duration=duration,
+                 estimated_prices=estimated_prices,yields=yields,
+                 opt_result=opt_result,spot_rates=spot_rates)
  
-
+  #assign names to result list 
+  for ( i in 8:length(result)) names(result[[i]]) <- names(bonddata)
+    
   class(result) <- "nelson"
   result
    }
