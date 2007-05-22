@@ -94,21 +94,24 @@ nelson_estim <-
  		    y[[k]][,1]),1:n_group,SIMPLIFY=FALSE) 
    
   
-  # calculate yield curves  
-  ycurves <- switch(method,
+  # calculate zero coupon yield curves  
+  zcy_curves <- switch(method,
               "Nelson/Siegel" = mapply(function(k)
 		            nelson_siegel(opt_result[[k]]$par,
-                seq(min(unlist(lapply(y,min))),max(unlist(lapply(y,max))),0.01)),
+                seq(floor(min(mapply(function(i) min(y[[i]][,1]), 1:n_group))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.01)),
                 1:n_group),
 
               "Svensson" = mapply(function(k) svensson(opt_result[[k]]$par,
-                seq(min(unlist(lapply(y,min))),max(unlist(lapply(y,max))),0.01)),1:n_group))
+                seq(floor(min(mapply(function(i) min(y[[i]][,1])), 1:n_group)),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.01)),1:n_group))
                 
-  ycurves <-  cbind(c(seq(min(unlist(lapply(y,min))),max(unlist(lapply(y,max))),0.01)),ycurves)             	
+  zcy_curves <-  cbind(c(seq(floor(min(mapply(function(i) min(y[[i]][,1]), 1:n_group))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]),1:n_group))),0.01)),zcy_curves)             	
                 
   # calculate spread curves              	    
  	if(n_group != 1) { 
-   scurves <- ycurves[,3:(n_group+1)] - ycurves[,2] 	    
+   scurves <- zcy_curves[,3:(n_group+1)] - zcy_curves[,2] 	    
     } else scurves = "none" 
  
  # return list of results
@@ -118,7 +121,7 @@ nelson_estim <-
        		 fit=fit,              # fitting method (prices or yields)
                  weights=weights,      # weighting type for estimation
                  n_group=n_group,      # number of groups,
-                 ycurves=ycurves,      # yield curves
+                 zcy_curves=zcy_curves,      # zero coupon yield curves
                  scurves=scurves,      # spread curves
        		 cf=cf,                # cashflow matrix
                  m=m,                  # maturity matrix

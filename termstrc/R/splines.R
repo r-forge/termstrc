@@ -46,7 +46,7 @@ splines_estim <-
   m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
     
   # calculate bond yields	
-  yields <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
+  y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    1:n_group,SIMPLIFY=FALSE)
     
   # Choosing knot points (McCulloch)
@@ -73,7 +73,7 @@ splines_estim <-
   # s <- length(T)+1
   
   # parameter estimation with OLS
-  y <- mapply(function(k) apply(cf_p[[k]],2,sum),1:n_group,SIMPLIFY=FALSE)
+  Y <- mapply(function(k) apply(cf_p[[k]],2,sum),1:n_group,SIMPLIFY=FALSE)
    
   X <- list()
 
@@ -89,47 +89,67 @@ splines_estim <-
    }
   }
   
-  alpha <- mapply(function(k) coef(lm(-y[[k]]~X[[k]]-1)),1:n_group) # parameter vector
-
+  alpha <- mapply(function(k) coef(lm(-Y[[k]]~X[[k]]-1)),1:n_group) # parameter vector
+ 
+  # calculate discount factor matrix 
   dt <- list()
-  
-  for (k in 1:n_group){
+   for (k in 1:n_group){
    dt[[k]] <- matrix(1,nrow(m[[k]]),ncol(m[[k]]))
    for(sidx in 1:s[[k]]){
     dt[[k]] <- dt[[k]] + alpha[[k]][sidx]* mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]]))
    }
   }  
 
-  browser()
-
- k <-1
- t <- seq(0,30,0.5)
-
- dt2 <- list()
- dt2[[k]] <- rep(1,length(t))
-               
- for(sidx in 1:s[[k]]){  
- dt2[[k]] <- dt2[[k]] + alpha[[k]][sidx]*gi(t,T[[k]],sidx,s[[k]])
- }
-
- spot_rates <- -log(dt2[[k]])/t           # estimated yields
-
- estimated_prices <- list()
- estimated_prices <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),1:n_group,SIMPLIFY=FALSE)
-
- yhat <- mapply(function(k) bond_yields(rbind(-estimated_prices[[k]],cf[[k]]),m_p[[k]]),1:n_group,SIMPLIFY=FALSE)
-
-
- k = 2 
- plot(yields[[k]],ylim=c(0,0.06))
- #lines(m[[k]][,ncol(m[[k]])],-log(dt[[k]][,ncol(m[[k]])])/m[[k]][,ncol(m[[k]])]) 
- points(yhat[[k]][,1],yhat[[k]][,2],col="blue")
- plot(t,spot_rates,type="l")
- points(yields[[k]][,1],yields[[k]][,2]) 
+  # calculate estimated prices 
+  phat <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),1:n_group,SIMPLIFY=FALSE)
+  
+  # calculate estimated yields 
+  yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),1:n_group,SIMPLIFY=FALSE)
+  
+  # calculate estimated zero coupon yield curves
+  t <- c(seq(0.01,0.4,0.1),seq(0.5,ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.5))
+  
+  
+  zcy_curves <- matrix(NA,nrow=length(t),ncol=n_group+1)
+  zcy_curves[,1] <- t 
+   
+  dt_zcy <- list()
+  for( l in 1:n_group) {
+   dt_zcy[[l]] <- rep(1,length(t))
+    for(sidx in 1:s[[l]]){  
+    dt_zcy[[l]] <- dt_zcy[[l]] + alpha[[l]][sidx]*gi(t,T[[l]],sidx,s[[l]])
+   }
+  zcy_curves[,l+1] <- -log(dt_zcy[[l]])/t          
+  }
+  
+  # calculate spread curves              	    
+ 	if(n_group != 1) { 
+   scurves <- zcy_curves[,3:(n_group+1)] - zcy_curves[,2] 	    
+    } else scurves = "none" 
+ 
+ #browser()
+ # return list of results
+ result <- list(  group=group,          # e.g. countries, rating classes
+                  matrange=matrange,    # maturity range of bonds
+                  n_group=n_group,      # number of groups,
+                  zcy_curves=zcy_curves, # zero coupon yield curves
+                  scurves=scurves,      # spread curves
+                  cf=cf,                # cashflow matrix
+                  m=m,                  # maturity matrix
+                  p=p,                  # dirty prices
+                  phat=phat,            # estimated prices
+                  y=y,                  # maturities and yields
+                  yhat=yhat,            # estimated yields
+                  alpha=alpha           # cubic splines parameters                             
+                 )
+                 
+  # assign names to results list 
+  for ( i in 6:length(result)) names(result[[i]]) <- names(bonddata)
+    
+  class(result) <- "cubicsplines"
+  result
+ 
 }
 
-#-log(dt[[k]][,ncol(m[[k]])])/m[[k]][,ncol(m[[k]])]
 
-#yields <- bond_yields(cf_p,m_p)
-#plot(yields[,1],yields[,2],ylim=c(0,0.08))
-#lines(t,spot_rates,type="l")
+

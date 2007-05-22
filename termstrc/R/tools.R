@@ -247,7 +247,7 @@ function (actual,estimated){
 
 gi <-
 function(t,T,i,s){
-  g <- rep(NA,length(t))
+  g <- rep(0,length(t))
   for(j in 1:length(t)){
     if(i==1){
     if(T[i]<=t[j]&t[j]<T[i+1]){
