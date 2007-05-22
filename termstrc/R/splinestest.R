@@ -6,10 +6,10 @@ source("methods.R")
 
 group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds
-maturity_spectrum <- "all"
+matrange <- "all"
 
 
-myres<- splines_estim(group, bonddata, maturity_spectrum)
+myres<- splines_estim(group, bonddata, matrange)
 
 #print(myres)
 #summary(myres)
