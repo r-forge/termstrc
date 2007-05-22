@@ -24,14 +24,4 @@ colnames(b) <- c("beta0","beta1","beta2","tau1")
 myres<- nelson_estim(group, bonddata, matrange, 
    method, fit, weights, startparam=b,control)
 
-i = 2
 
-plot(myres$yields[[i]][,1],myres$yields[[i]][,2])
-kurve <- cbind(myres$yields[[i]][,1],spotrates(method,myres$opt_result[[i]]$par,myres$yields[[i]][,1]))
-reihung = order(kurve[,1])
-kurve <- kurve[reihung,]
-lines(kurve[,1],kurve[,2])
-
-#print(myres)
-#summary(myres)
-#plot(myres)
