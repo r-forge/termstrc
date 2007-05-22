@@ -243,21 +243,21 @@ plot.cubicsplines <-
                        				
     # plot each yield curve seperately
     for (k in 1:x$n_group  ) {
-         
+      #Sp   
       plot(x$zcy_curves[,1] ,x$zcy_curves[,k+1],
       type="l",
       ylim=c(0, max(x$y[[k]][,2]) + 0.01 ),
-      xlim=c(max(floor(min(x$y[[k]][,1])),matrange[1]), min(ceiling(max(x$y[[k]][,1])),matrange[2])),
+      xlim=c(0,max(x$y[[k]][,1])),
       xlab="Maturities",
       ylab="",
       lwd=2,
       col="steelblue")
-      title(names(x$opt_result)[k])
-      title("Spread curves")
+      title(names(x$alpha)[k])
       legend("bottomright",legend=c("Zero-coupon yield curve","Yields"),col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
       grid()
-      points(x$y[[k]],col="red") 
-      if(pdf == FALSE) par(ask=TRUE) 
+      points(x$y[[k]],col="red")
+      abline(v=c(x$T[[k]]),lty=2) 
+      #if(pdf == FALSE) par(ask=TRUE) 
     }
      
      

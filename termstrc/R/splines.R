@@ -107,7 +107,7 @@ splines_estim <-
   yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),1:n_group,SIMPLIFY=FALSE)
   
   # calculate estimated zero coupon yield curves
-  t <- c(seq(0.01,0.4,0.1),seq(0.5,ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.5))
+  t <- c(seq(0.01,0.4,0.1),seq(0.5,ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.01))
   
   
   zcy_curves <- matrix(NA,nrow=length(t),ncol=n_group+1)
@@ -132,6 +132,7 @@ splines_estim <-
  result <- list(  group=group,          # e.g. countries, rating classes
                   matrange=matrange,    # maturity range of bonds
                   n_group=n_group,      # number of groups,
+                  T=T,                  #knot points 
                   zcy_curves=zcy_curves, # zero coupon yield curves
                   scurves=scurves,      # spread curves
                   cf=cf,                # cashflow matrix
@@ -144,7 +145,7 @@ splines_estim <-
                  )
                  
   # assign names to results list 
-  for ( i in 6:length(result)) names(result[[i]]) <- names(bonddata)
+  for ( i in 5:length(result)) names(result[[i]]) <- names(bonddata)
     
   class(result) <- "cubicsplines"
   result
