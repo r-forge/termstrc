@@ -41,7 +41,15 @@ print.nelson <-
 # plot.nelson(myres,matrange=c(0,15) oder default='all',)
 
 plot.nelson <-
-  function(x,matrange = c(min(unlist(lapply(x$y,min))),max(unlist(lapply(x$y,max)))),...) {
+  function(x,matrange = c( min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
+                           max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)))
+                          ,...) {
+   
+     
+     # min and max maturity of all bonds in the sample 
+     samplemat <- c( min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
+                           max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group))) 
+  
    
      # check plot maturity conformity
     
@@ -53,12 +61,12 @@ plot.nelson <-
      warning("The minium plot maturity range undercuts the choosen minimum maturity considered for the estimation")}
     }
    
-    if( matrange[2] > max(unlist(lapply(x$y,max)))) {matrange[1] <- max(unlist(lapply(x$y,max)))
+    if( matrange[2] > samplemat[2]) {matrange[2] <-  samplemat[2]
      warning("The maximum plot maturity range has been set to the maxium maturity of the bond with the longest maturity" )
      }
      
-    if( matrange[1] < min(unlist(lapply(x$y,min)))) {matrange[1] <- min(unlist(lapply(x$y,min)))
-     warning("The minium plot maturity range has been set to the minium maturity of the bond with the longest maturity" )
+    if( matrange[1] < samplemat[1]) {matrange[1] <- samplemat[1]
+     warning("The minium plot maturity range has been set to the minium maturity of the bond with the shortest maturity" )
      }
                        				
     # plot each yield curve seperately
@@ -79,12 +87,12 @@ plot.nelson <-
     }
       
     # plot all zero coupon yield curves together
-    plot(x$ycurves[,1], x$ycurves[, which.max(unlist(lapply(x$y,max))) +1 ], type="l",
-    col=which.max(unlist(lapply(x$y,max))),lty=1,lwd=2,
+    plot(x$ycurves[,1], x$ycurves[, which.max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)) +1 ], type="l",
+    col=which.max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)),lty=1,lwd=2,
     xlab="Maturities",
     ylab="Zero-Coupon yields",
-    xlim=c(max(floor(min(unlist(lapply(x$y,min)))),matrange[1]), min(ceiling(max(unlist(lapply(x$y,max)))),matrange[2])),
-    ylim=c(0,0.05))
+    xlim=c(max(floor(samplemat[1]),matrange[1]), min(ceiling(samplemat[2]),matrange[2])),
+    ylim= c(min(x$ycurves[,2:x$n_group+1]),max(x$ycurves[,2:x$n_group+1] )))
     
    
 	  for(k in c( (1:x$n_group)[- which.max(unlist(lapply(x$y,max)))]))
@@ -99,24 +107,25 @@ plot.nelson <-
     grid()
     
     # plot spread curves    
-    if ( scurves != "none") {
-    matplot(x$ycurves[,1], x$scurves[, which.max(unlist(lapply(x$y,max)))-1], type="l"),
-    #col=which.max(unlist(lapply(x$y,max))),lty=1,lwd=2,
-    #xlab="Maturities",
-    #ylab="Zero-Coupon yields",
-    #xlim=c(max(floor(min(unlist(lapply(x$y,min)))),matrange[1]), min(ceiling(max(unlist(lapply(x$y,max)))),matrange[2])),
-    #ylim=c(0,0.05))
+    if ( is.character(x$scurves) == FALSE ) {
+    matplot(x$ycurves[,1], x$scurves[, which.max(unlist(lapply(x$y,max)))-1], type="l",
+    col=which.max(unlist(lapply(x$y,max))),lty=1,lwd=2,
+    xlab="Maturities",
+    ylab="Spread",
+    xlim= c(max(floor(samplemat[1]),matrange[1]), min(ceiling(samplemat[2]),matrange[2])),
+    ylim=c(min(x$scurves[,1:x$n_group-1]),max(x$scurves[,1:x$n_group-1] )))
     
-    #for(k in c((1:x$n_group)[- which.max(unlist(lapply(x$y,max)))])[-1])
-	  #{
-     #spoint <- which(x$ycurves[,1] > unlist(lapply(x$y,max))[k])[1] 
-    # lines(x$scurves[1:spoint ,1],x$ycurves[1:spoint ,k+1],col=k, lwd=2)
-    # lines(x$ycurves[((spoint+1) : nrow(x$ycurves) ) ,1],
-    # x$scurves[((spoint+1) : nrow(x$ycurves) ) ,k+1],col=k, lty=5, lwd=2)
- 	  #} 
-    #title("Zero-coupon yield curves")
-    #legend("bottomright",legend=names(x$opt_result),col=1:x$n_group,lty=1,lwd=2)
-    #grid()
+    for(k in c((1:x$n_group))[c(-1,- which.max(unlist(lapply(x$y,max))))])
+	  {
+     spoint <- which(x$ycurves[,1] > unlist(lapply(x$y,max))[k])[1] 
+     
+     lines(x$ycurves[1:spoint ,1],x$scurves[1:spoint ,k-1],col=k, lwd=2)
+     lines(x$ycurves[((spoint+1) : nrow(x$ycurves) ) ,1],
+     x$scurves[((spoint+1) : nrow(x$ycurves) ) ,k-1],col=k, lty=5, lwd=2)
+ 	  } 
+    title("Spread curves")
+    legend("topleft",legend=names(x$opt_result[-1]),col=2:x$n_group,lty=1,lwd=2)
+    grid()
     
     
     }                    
