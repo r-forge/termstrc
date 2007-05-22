@@ -3,7 +3,6 @@
 #                print-method for nelson                          #
 ###################################################################
 
-
 print.nelson <- 
   function(x,...) {
   cat("---------------------------------------------------\n")
@@ -25,32 +24,22 @@ print.nelson <-
   cat("\n")
   }
 
-
- 
 ###################################################################
 #                    plot-method for nelson                       #
 ###################################################################
 
-# TODO:
-# - plot individual curves with each range, scatter plot of yields and estimated curve
-# - plot all yield curves together, max of x-axis is maturity of longest bond over all groups
-# - plot extrapolated curves dashed
-# - for one group item no spread curves
-# - save all plot in pdf
-
-# plot.nelson(myres,matrange=c(0,15) oder default='all',)
-
 plot.nelson <-
   function(x,matrange = c( min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
                            max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)))
-                          ,...) {
+                          ,pdf=FALSE, ...) {
    
+     if(pdf== TRUE) pdf( file="termstrc_ouput.pdf",... )
+     
      
      # min and max maturity of all bonds in the sample 
      samplemat <- c( min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
                            max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group))) 
   
-   
      # check plot maturity conformity
     
     if(x$matrange != "all") {
@@ -74,7 +63,7 @@ plot.nelson <-
          
       plot(x$ycurves[,1] ,x$ycurves[,k+1],
       type="l",
-      ylim=c(0,0.05),
+      ylim=c(0, max(x$y[[k]][,2]) + 0.01 ),
       xlim=c(max(floor(min(x$y[[k]][,1])),matrange[1]), min(ceiling(max(x$y[[k]][,1])),matrange[2])),
       xlab="Maturities",
       ylab="Zero-coupon yields",
@@ -83,7 +72,7 @@ plot.nelson <-
       title(names(x$opt_result)[k])
       grid()
       points(x$y[[k]],col="red") 
-      par(ask=TRUE) 
+      if(pdf == FALSE) par(ask=TRUE) 
     }
       
     # plot all zero coupon yield curves together
@@ -92,7 +81,7 @@ plot.nelson <-
     xlab="Maturities",
     ylab="Zero-Coupon yields",
     xlim=c(max(floor(samplemat[1]),matrange[1]), min(ceiling(samplemat[2]),matrange[2])),
-    ylim= c(min(x$ycurves[,2:x$n_group+1]),max(x$ycurves[,2:x$n_group+1] )))
+    ylim= c(0,max(x$ycurves[,2:x$n_group+1] )))
     
    
 	  for(k in c( (1:x$n_group)[- which.max(unlist(lapply(x$y,max)))]))
@@ -130,9 +119,8 @@ plot.nelson <-
     
     }                    
   
+   if(pdf== TRUE) dev.off()
 }  
-
-
 
 ###################################################################
 #                 summary-method for nelson                       #
