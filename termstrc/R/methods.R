@@ -243,7 +243,7 @@ plot.cubicsplines <-
                        				
     # plot each yield curve seperately
     for (k in 1:x$n_group  ) {
-      #Sp   
+      #Sprungstelle, max bis letzten knotenpunkt plotten !  
       plot(x$zcy_curves[,1] ,x$zcy_curves[,k+1],
       type="l",
       ylim=c(0, max(x$y[[k]][,2]) + 0.01 ),
@@ -279,7 +279,7 @@ plot.cubicsplines <-
      x$zcy_curves[((spoint+1) : nrow(x$zcy_curves) ) ,k+1],col=k, lty=5, lwd=2)
  	  } 
     title("Zero-coupon yield curves")
-    legend("bottomright",legend=names(x$opt_result),col=1:x$n_group,lty=1,lwd=2)
+    legend("bottomright",legend=names(x$alpha),col=1:x$n_group,lty=1,lwd=2)
     grid()
     
     # plot spread curves    
@@ -300,7 +300,7 @@ plot.cubicsplines <-
      x$scurves[((spoint+1) : nrow(x$zcy_curves) ) ,k-1],col=k, lty=5, lwd=2)
  	  } 
     title("Spread curves")
-    legend("topleft",legend=names(x$opt_result[-1]),col=2:x$n_group,lty=1,lwd=2)
+    legend("topleft",legend=names(x$alpha[-1]),col=2:x$n_group,lty=1,lwd=2)
     grid()
     
     
