@@ -70,7 +70,6 @@ plot.nelson <-
       lwd=2,
       col="steelblue")
       title(names(x$opt_result)[k])
-      title("Spread curves")
       legend("bottomright",legend=c("Zero-coupon yield curve","Yields"),col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
       grid()
       points(x$y[[k]],col="red") 
@@ -134,8 +133,8 @@ summary.nelson <-
     function(x) {
     RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),1:x$n_group)
     AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),1:x$n_group)
-    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]]),1:x$n_group)
-    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]]),1:x$n_group)
+    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
+    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
     
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
@@ -193,8 +192,8 @@ summary.cubicsplines <-
     function(x) {
     RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),1:x$n_group)
     AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),1:x$n_group)
-    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]]),1:x$n_group)
-    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]]),1:x$n_group)
+    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
+    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
     
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)

@@ -88,10 +88,16 @@ nelson_estim <-
   # theoretical bond prices with estimated parameters
   phat <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
        m[[k]],cf[[k]])$bond_prices,1:n_group,SIMPLIFY=FALSE)
-                         
+
+
+  # TO DO
+
+  # calculate estimated yields 
+  yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),1:n_group,SIMPLIFY=FALSE)
+  
   # calculate spotrates according to chosen approach
-  yhat <- mapply(function(k) spotrates(method,opt_result[[k]]$par,
- 		    y[[k]][,1]),1:n_group,SIMPLIFY=FALSE) 
+ # yhat <- mapply(function(k) spotrates(method,opt_result[[k]]$par,
+ 	#	    y[[k]][,1]),1:n_group,SIMPLIFY=FALSE) 
    
   
   # calculate zero coupon yield curves  
@@ -114,8 +120,8 @@ nelson_estim <-
    scurves <- zcy_curves[,3:(n_group+1)] - zcy_curves[,2] 	    
     } else scurves = "none" 
  
- # return list of results
- result <- list(group=group,          # e.g. countries, rating classes
+ # return list of results 
+ result <- list(group=group,           # e.g. countries, rating classes
                  matrange=matrange,    # maturity range of bonds
                  method=method,        # method (Nelson/Siegel or Svensson)
        		 fit=fit,              # fitting method (prices or yields)
