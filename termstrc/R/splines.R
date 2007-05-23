@@ -127,10 +127,11 @@ splines_estim <-
   zcy_curves[[k]][,2] <- -log(dt_zcy[[k]])/t[[k]]          
   }
   
+  
   # calculate spread curves              	    
- 	if(n_group != 1) {    
-   scurves <- mapply(function(k) (zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), 1:n_group))]]),2] -
-   zcy_curves[[1]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), 1:n_group))]]),2]), 2:n_group)
+ 	if(n_group != 1) {  
+   scurves <- as.matrix( mapply(function(k) (zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), 1:n_group))]]),2] -
+   zcy_curves[[1]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), 1:n_group))]]),2]), 2:n_group))
    
     } else scurves = "none" 
  
