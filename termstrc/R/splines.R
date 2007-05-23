@@ -100,7 +100,7 @@ splines_estim <-
    }
   }  
 
-   browser()
+   
   # calculate estimated prices 
   phat <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),1:n_group,SIMPLIFY=FALSE)
   
@@ -113,24 +113,28 @@ splines_estim <-
   
   t <- mapply(function(k) seq(0.01, max(T[[k]]),0.01), 1:n_group) 
   
-  zcy_curves <- matrix(NA,nrow=length(t),ncol=n_group+1)
-  zcy_curves[,1] <- t 
-          
+  zcy_curves <- mapply(function(k) cbind(t[[k]],matrix(NA,nrow=length(t[[k]]),ncol=1)), 1:n_group)
+  
+  #browser()
+  
+         
   dt_zcy <- list()
   for( k in 1:n_group) {
    dt_zcy[[k]] <- rep(1,length(t[[k]]))
     for(sidx in 1:s[[k]]){  
-    dt_zcy[[k]] <- dt_zcy[[k]] + alpha[[k]][sidx]*gi(t,T[[k]],sidx,s[[l]])
+    dt_zcy[[k]] <- dt_zcy[[k]] + alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]])
    }
-  zcy_curves[,l+1] <- -log(dt_zcy[[l]])/t          
+  zcy_curves[[k]][,2] <- -log(dt_zcy[[k]])/t[[k]]          
   }
   
   # calculate spread curves              	    
- 	if(n_group != 1) { 
-   scurves <- zcy_curves[,3:(n_group+1)] - zcy_curves[,2] 	    
+ 	if(n_group != 1) {    
+   scurves <- mapply(function(k) (zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), 1:n_group))]]),2] -
+   zcy_curves[[1]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), 1:n_group))]]),2]), 2:n_group)
+   
     } else scurves = "none" 
  
- #browser()
+
  # return list of results
  result <- list(  group=group,          # e.g. countries, rating classes
                   matrange=matrange,    # maturity range of bonds
