@@ -100,24 +100,27 @@ splines_estim <-
    }
   }  
 
+   browser()
   # calculate estimated prices 
   phat <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),1:n_group,SIMPLIFY=FALSE)
   
   # calculate estimated yields 
   yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),1:n_group,SIMPLIFY=FALSE)
   
+ 
   # calculate estimated zero coupon yield curves
-  t <- c(seq(0.01,0.4,0.1),seq(0.5,ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.01))
+  #t <- c(seq(0.01,0.4,0.1),seq(0.5,ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.01))
   
+  t <- mapply(function(k) seq(0.01, max(T[[k]]),0.01), 1:n_group) 
   
   zcy_curves <- matrix(NA,nrow=length(t),ncol=n_group+1)
   zcy_curves[,1] <- t 
-   
+          
   dt_zcy <- list()
-  for( l in 1:n_group) {
-   dt_zcy[[l]] <- rep(1,length(t))
-    for(sidx in 1:s[[l]]){  
-    dt_zcy[[l]] <- dt_zcy[[l]] + alpha[[l]][sidx]*gi(t,T[[l]],sidx,s[[l]])
+  for( k in 1:n_group) {
+   dt_zcy[[k]] <- rep(1,length(t[[k]]))
+    for(sidx in 1:s[[k]]){  
+    dt_zcy[[k]] <- dt_zcy[[k]] + alpha[[k]][sidx]*gi(t,T[[k]],sidx,s[[l]])
    }
   zcy_curves[,l+1] <- -log(dt_zcy[[l]])/t          
   }
