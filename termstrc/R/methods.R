@@ -8,9 +8,9 @@ print.nelson <-
   cat("---------------------------------------------------\n")
   cat("Parameters for Nelson/Siegel, Svensson estimation:\n")
   cat("\n")
-  cat("Method:",method,"\n")
-  cat("Fitted:",fit,"\n")
-  cat("Weights:",weights,"\n")
+  cat("Method:",x$method,"\n")
+  cat("Fitted:",x$fit,"\n")
+  cat("Weights:",x$weights,"\n")
   cat("\n")
   cat("---------------------------------------------------\n")
   cat("\n")
@@ -29,20 +29,18 @@ print.nelson <-
 ###################################################################
 
 plot.nelson <-
-  function(x,matrange = c( min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
-                           max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)))
-                          ,pdf=FALSE, ...) {
+  function(x,matrange=c(min(mapply(function(i) min(x$y[[i]][,1]),1:x$n_group)),
+                        max(mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)))
+                        ,pdf=FALSE, ...) {
    
      if(pdf== TRUE) pdf( file="termstrc_ouput.pdf",... )
      
-     
      # min and max maturity of all bonds in the sample 
-     samplemat <- c( min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
-                           max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group))) 
+     samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
+                    max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group))) 
   
      # check plot maturity conformity
-    
-    if(x$matrange != "all") {
+    if(x$matrange[1] != "all") {
     if(matrange[2]>  x$matrange[2]) { matrange[2] <-  x$matrange[2]
      warning("The maximum plot maturity range exceeds the choosen maximum maturity considered for the estimation")}
    
@@ -64,66 +62,69 @@ plot.nelson <-
       plot(x$zcy_curves[,1] ,x$zcy_curves[,k+1]*100,
       type="l",
       ylim=c(0, max(x$y[[k]][,2]) + 0.01 )*100,
-      xlim=c(max(floor(min(x$y[[k]][,1])),matrange[1]), min(ceiling(max(x$y[[k]][,1])),matrange[2])),
+      xlim=c(max(floor(min(x$y[[k]][,1])),matrange[1]),
+             min(ceiling(max(x$y[[k]][,1])),matrange[2])),
       xlab="Maturities (in years) ",
       ylab="Percent",
       lwd=2,
       col="steelblue")
       title(names(x$opt_result)[k])
-      legend("bottomright",legend=c("Zero-coupon yield curve","Yields"),col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
+      legend("bottomright",legend=c("Zero-coupon yield curve","Yields"),
+              col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
       grid()
       points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red") 
       if(pdf == FALSE) par(ask=TRUE) 
     }
-     
-     
-      
-    # plot all zero coupon yield curves together
-    plot(x$zcy_curves[,1], x$zcy_curves[, which.max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)) +1 ]*100, type="l",
-    col=which.max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)),lty=1,lwd=2,
-    xlab="Maturities (in years)",
-    ylab="Zero-Coupon yields (in percent)",
-    xlim=c(max(floor(samplemat[1]),matrange[1]), min(ceiling(samplemat[2]),matrange[2])),
-    ylim= c(0,max(x$zcy_curves[,2:x$n_group+1] ))*100)
     
+    # plot all zero coupon yield curves together
+    if ( is.character(x$scurves) == FALSE ) {
+     plot(x$zcy_curves[,1], x$zcy_curves[,
+      which.max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)) +1 ]*100,
+      type="l",col=which.max(mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)),
+      lty=1,lwd=2,xlab="Maturities (in years)",
+      ylab="Zero-Coupon yields (in percent)",
+      xlim=c(max(floor(samplemat[1]),matrange[1]), 
+             min(ceiling(samplemat[2]),matrange[2])),
+      ylim= c(0,max(x$zcy_curves[,2:(x$n_group+1)] ))*100)
    
-	  for(k in c( (1:x$n_group)[- which.max(unlist(lapply(x$y,max)))]))
-	  {
-     spoint <- which(x$zcy_curves[,1] > unlist(lapply(x$y,max))[k])[1] 
-     lines(x$zcy_curves[1:spoint ,1],x$zcy_curves[1:spoint ,k+1]*100,col=k, lwd=2)
+	  for(k in c((1:x$n_group)[-which.max(mapply(function(i) max(x$y[[i]][,1]),
+                                         1:x$n_group))]))
+	  {spoint <- which(x$zcy_curves[,1] > 
+                      mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)[k])[1] 
+     lines(x$zcy_curves[1:spoint ,1],x$zcy_curves[1:spoint,k+1]*100,col=k,lwd=2)
      lines(x$zcy_curves[((spoint+1) : nrow(x$zcy_curves) ) ,1],
-     x$zcy_curves[((spoint+1) : nrow(x$zcy_curves) ) ,k+1]*100,col=k, lty=5, lwd=2)
+     x$zcy_curves[((spoint+1) : nrow(x$zcy_curves)),k+1]*100,col=k,lty=5,lwd=2)
  	  } 
     title("Zero-coupon yield curves")
     legend("bottomright",legend=names(x$opt_result),col=1:x$n_group,lty=1,lwd=2)
     grid()
-    
+   }
+                                        
     # plot spread curves    
-    if ( is.character(x$scurves) == FALSE ) {
-    matplot(x$zcy_curves[,1], x$scurves[, which.max(unlist(lapply(x$y,max)))-1]*10000, type="l",
-    col=which.max(unlist(lapply(x$y,max))),lty=1,lwd=2,
+   if ( is.character(x$scurves) == FALSE ) {
+    plot(0,0, type="n",
+    col=(which.max(mapply(function(i) max(x$y[[i]][,1]),
+                                         1:x$n_group)[-1]) + 1),lty=1,lwd=2,
     xlab="Maturities (in years)",
     ylab="Spread (in bps)",
-    xlim= c(max(floor(samplemat[1]),matrange[1]), min(ceiling(samplemat[2]),matrange[2])),
-    ylim=c(min(x$scurves[,1:x$n_group-1]),max(x$scurves[,1:x$n_group-1] ))*10000)
+    xlim= c(max(floor(samplemat[1]),matrange[1]),
+            min(ceiling(samplemat[2]),matrange[2])),
+    ylim=c(min(x$scurves[,1:x$n_group-1]),max(x$scurves[,1:x$n_group-1]))*10000)
     
-    
-    for(k in c((1:x$n_group))[c(-1,- which.max(unlist(lapply(x$y,max))))])
-	  {
-     spoint <- which(x$zcy_curves[,1] > unlist(lapply(x$y,max))[k])[1] 
-     
-     lines(x$zcy_curves[1:spoint ,1],x$scurves[1:spoint ,k-1]*10000,col=k, lwd=2)
+    for(k in c(2:x$n_group))
+    {spoint <- which(x$zcy_curves[,1] > mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)[k])[1] 
+     lines(x$zcy_curves[1:spoint ,1],x$scurves[1:spoint ,k-1]*10000,col=k,lwd=2)
      lines(x$zcy_curves[((spoint+1) : nrow(x$zcy_curves) ) ,1],
-     x$scurves[((spoint+1) : nrow(x$zcy_curves) ) ,k-1]*10000,col=k, lty=5, lwd=2)
+     x$scurves[((spoint+1) : nrow(x$zcy_curves) ) ,k-1]*10000,col=k,lty=5,lwd=2)
  	  } 
     title("Spread curves")
     legend("topleft",legend=names(x$opt_result[-1]),col=2:x$n_group,lty=1,lwd=2)
     grid()
-    
-    
-    }                    
+   
+   }                    
   
    if(pdf== TRUE) dev.off()
+   
 }  
 
 ###################################################################
@@ -213,19 +214,17 @@ summary.cubicsplines <-
 ###################################################################
 
 plot.cubicsplines <-
-  function(x,matrange = c( 0,
-                           max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)))
-                          ,pdf=FALSE, ...) {
-   
+  function(x,matrange =c(0,
+                        max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)))
+                        ,pdf=FALSE, ...) {
+  
      if(pdf== TRUE) pdf( file="termstrc_ouput.pdf",... )
      
-     
      # min and max maturity of all bonds in the sample 
-     samplemat <- c( min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
-                           max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group))) 
+     samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
+                    max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group))) 
   
      # check plot maturity conformity
-    
     if(x$matrange != "all") {
     if(matrange[2]>  x$matrange[2]) { matrange[2] <-  x$matrange[2]
      warning("The maximum plot maturity range exceeds the choosen maximum maturity considered for the estimation")}
@@ -237,8 +236,7 @@ plot.cubicsplines <-
     if( matrange[2] > samplemat[2]) {matrange[2] <-  samplemat[2]
      warning("The maximum plot maturity range has been set to the maxium maturity of the bond with the longest maturity" )
      }
- 
-                       				
+                   				
     # plot each zero cupon yield curve seperately
     for (k in 1:x$n_group  ) {  
       plot(x$zcy_curves[[k]][,1] ,x$zcy_curves[[k]][,2]*100,
@@ -250,7 +248,8 @@ plot.cubicsplines <-
       lwd=2,
       col="steelblue")
       title(group[k])
-      legend("bottomright",legend=c("Zero-coupon yield curve","Yields"),col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
+      legend("bottomright",legend=c("Zero-coupon yield curve","Yields"),
+              col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
       grid()
       points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red")
       abline(v=c(x$T[[k]]),lty=2, col="darkgrey") 
@@ -259,32 +258,44 @@ plot.cubicsplines <-
     
     
     # plot all zero cupon yield curves together
-    
-      plot(x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1] ,
-      		x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,2]*100,
-      type="l",
-      ylim=c(0,max(x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,2])+ 0.01 )*100,
-      xlim=c(max(0,matrange[1]),min(matrange[2],max(x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1]))),
-      xlab="Maturities (in years)",
-      ylab="Percent",
-      lwd=2,
-      col=which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group)))
-         grid()
-      title("Zero coupon yield curves") 
+    if ( is.character(x$scurves) == FALSE ){
+    plot(x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]),
+                                 1:x$n_group))]][,1],
+      		x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]),
+                                  1:x$n_group))]][,2]*100,
+     type="l",
+     ylim=c(0,
+                max(x$zcy_curves[[which.max(mapply(function(k) 
+                max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,2])+ 0.01 )*100,
+     xlim=c(max(0,matrange[1]),min(matrange[2],
+              max(x$zcy_curves[[which.max(mapply(function(k) 
+              max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1]))),
+     xlab="Maturities (in years)",
+     ylab="Percent",
+     lwd=2,
+     col=which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group)))
+     grid()
+     title("Zero coupon yield curves") 
       
-	  for(k in c( (1:x$n_group)[- which.max(unlist(lapply(x$y,max)))]))
+	  for(k in c( (1:x$n_group)[- which.max(mapply(function(k) 
+              max(x$zcy_curves[[k]][,1]), 1:x$n_group)) ]))
 	  {lines(x$zcy_curves[[k]][,1] ,
       		x$zcy_curves[[k]][,2]*100, lwd=2,col=k )
 		}
-		
 	  legend("bottomright",legend=x$group,col=1:x$n_group, lty=1, lwd=2)	
+    }
+    
     # plot spread curves    
     if ( is.character(x$scurves) == FALSE ) {
-    matplot(x$zcy_curves[[which.min(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1], x$scurves[,1:(x$n_group-1)]*10000, type="l",
+    matplot(x$zcy_curves[[which.min(mapply(function(k)
+             max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1],
+             x$scurves[,1:(x$n_group-1)]*10000, type="l",
     col=2:x$n_group,lty=1,lwd=2,
     xlab="Maturities",
     ylab="Spread (in bps)",
-    xlim= c(max(0,matrange[1]), min(max(x$zcy_curves[[which.min(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1]),matrange[2])),
+    xlim= c(max(0,matrange[1]),
+            min(max(x$zcy_curves[[which.min(mapply(function(k)
+            max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1]),matrange[2])),
     ylim=c(min(x$scurves),max(x$scurves ))*10000)
     title("Spread curves")
     legend("topleft",legend=x$group[-1],col=2:x$n_group,lty=1,lwd=2)

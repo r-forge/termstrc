@@ -16,7 +16,8 @@ nelson_estim <-
 
   # check inputs  
   if(fit=="yields"&weights!="none"){
-  warning("For minimization of yield errors no weights are needed")}
+  warning("For minimization of yield errors no weights are needed")
+  weights <- "none"}
     
   # select given group from bonddata
   bonddata <- bonddata[group]
@@ -52,14 +53,19 @@ nelson_estim <-
   # calculate duration   
   duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],y[[k]][,2]),
                    1:n_group,SIMPLIFY=FALSE)
-     
+  
+  #browser()   
   # objective function 
   obj_fct_prices <- function(b) {    # price error minimization
      loss_function(p[[k]],
      	bond_prices(method,b,m[[k]],cf[[k]])$bond_prices,duration[[k]][,3],weights)}
   
-  obj_fct_yields <- function(b) {    # yield error minimization
-    loss_function(y[[k]][,"Yield"],spotrates(method,b,y[[k]][,"Maturity"]))}
+  #obj_fct_yields <- function(b) {    # yield error minimization
+  #  loss_function(y[[k]][,"Yield"],spotrates(method,b,y[[k]][,"Maturity"]))}
+  
+   obj_fct_yields <- function(b) {  
+    loss_function(y[[k]][,2],bond_yields(rbind(
+    -bond_prices(method,b,m[[k]],cf[[k]])$bond_prices,cf[[k]]),m_p[[k]])[,2],duration[[k]][,3],weights)} 
     
   obj_fct <- switch(fit,
                 "prices" = obj_fct_prices,
@@ -79,26 +85,17 @@ nelson_estim <-
 
   # use apply ?  
   for (k in 1:n_group){
-    opt_result[[k]] <-# mapply(function(k)
+    opt_result[[k]] <- #mapply(function(k)
                   nlminb(startparam[k,],obj_fct, lower = lower_bounds,
-                  upper = upper_bounds,control=control)#,
-                  #1:n_group,SIMPLIFY=FALSE)
+                  upper = upper_bounds,control=control)#,1:n_group,SIMPLIFY=FALSE)
   }   
  
   # theoretical bond prices with estimated parameters
   phat <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
        m[[k]],cf[[k]])$bond_prices,1:n_group,SIMPLIFY=FALSE)
 
-
-  # TO DO
-
   # calculate estimated yields 
   yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),1:n_group,SIMPLIFY=FALSE)
-  
-  # calculate spotrates according to chosen approach
- # yhat <- mapply(function(k) spotrates(method,opt_result[[k]]$par,
- 	#	    y[[k]][,1]),1:n_group,SIMPLIFY=FALSE) 
-   
   
   # calculate zero coupon yield curves  
   zcy_curves <- switch(method,
@@ -109,7 +106,7 @@ nelson_estim <-
                 1:n_group),
 
               "Svensson" = mapply(function(k) svensson(opt_result[[k]]$par,
-                seq(floor(min(mapply(function(i) min(y[[i]][,1])), 1:n_group)),
+                seq(floor(min(mapply(function(i) min(y[[i]][,1]), 1:n_group))),
                            ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.01)),1:n_group))
                 
   zcy_curves <-  cbind(c(seq(floor(min(mapply(function(i) min(y[[i]][,1]), 1:n_group))),
