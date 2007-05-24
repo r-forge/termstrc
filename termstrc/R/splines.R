@@ -11,7 +11,7 @@ splines_estim <-
     
   # select given group from bonddata
   bonddata <- bonddata[group]
-  
+
   # select data according to chosen maturity range
   if (length(maturity_spectrum)==1) {bonddata <- bonddata }else
    {bonddata <- maturity_range(bonddata,maturity_spectrum[1],maturity_spectrum[2]) }
@@ -45,6 +45,7 @@ splines_estim <-
   m <- mapply(function(k) m[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
   m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
     
+  
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    1:n_group,SIMPLIFY=FALSE)
@@ -62,6 +63,8 @@ splines_estim <-
              
   theta <- mapply(function(k)((i[[k]]-1)*K[[k]])/(s[[k]]-2)-h[[k]],1:n_group,SIMPLIFY=FALSE)
     
+  #browser()
+  #fehler wenn matrange != "all" 
   # knot points
   T <- mapply(function(k) c(0,
        apply(as.matrix(m[[k]][,h[[k]]]),2,max)
@@ -89,7 +92,7 @@ splines_estim <-
    }
   }
   
-  alpha <- mapply(function(k) coef(lm(-Y[[k]]~X[[k]]-1)),1:n_group) # parameter vector
+  alpha <- mapply(function(k) coef(lm(-Y[[k]]~X[[k]]-1)),1:n_group,SIMPLIFY=FALSE) # parameter vector
  
   # calculate discount factor matrix 
   dt <- list()
@@ -109,15 +112,10 @@ splines_estim <-
   
  
   # calculate estimated zero coupon yield curves
-  #t <- c(seq(0.01,0.4,0.1),seq(0.5,ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.01))
+  t <- mapply(function(k) seq(0.01, max(T[[k]]),0.01), 1:n_group,SIMPLIFY=FALSE) 
   
-  t <- mapply(function(k) seq(0.01, max(T[[k]]),0.01), 1:n_group) 
-  
-  zcy_curves <- mapply(function(k) cbind(t[[k]],matrix(NA,nrow=length(t[[k]]),ncol=1)), 1:n_group)
-  
-  #browser()
-  
-         
+  zcy_curves <- mapply(function(k) cbind(t[[k]],matrix(NA,nrow=length(t[[k]]),ncol=1)), 1:n_group,SIMPLIFY=FALSE)
+        
   dt_zcy <- list()
   for( k in 1:n_group) {
    dt_zcy[[k]] <- rep(1,length(t[[k]]))
