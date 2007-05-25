@@ -1,9 +1,8 @@
 \name{duration}
 \alias{duration}
-\title{ Function for the calculation of the duration.}
+\title{Calculation of the duration, modified duration and duration based weights.}
 \description{
-Function for the calculation of the duration, the modified duration and the weights used for
-the optimisation}
+Function for the calculation of the duration, the modified duration and duration based weights}
 \usage{
 duration(cf, m, y)
 }
@@ -21,7 +20,7 @@ duration(cf, m, y)
   \item{column 2}{Consists of the calculated modified duration}
   \item{column 3}{Consists of the calculated duration based weights}
 }
-\references{Yield Curve Modelling at the Bank of Canda, David Bolder and David Streliski, Technical Report No 84 Bank of Canada 1999, p.42 }
+\references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canda.\emph{Technical Report No 84 Bank of Canada}}
 
 \author{Robert Ferstl, Josef Hayden }
 

@@ -1,5 +1,5 @@
-\name{srates}
-\alias{srates}
+\name{spotrates}
+\alias{spotrates}
 
 \title{Function for the calculation of the spot rates }
 \description{
@@ -8,7 +8,7 @@
 }
 
 \usage{
-srates(method, beta, m)
+spotrates(method, beta, m)
 }
 
 
@@ -31,4 +31,3 @@ srates(method, beta, m)
 %\examples{}
 
 \keyword{ }
-

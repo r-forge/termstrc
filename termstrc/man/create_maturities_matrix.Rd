@@ -1,9 +1,9 @@
 \name{create_maturities_matrix}
 \alias{create_maturities_matrix}
 
-\title{ Function for the creation of the maturity matrix  }
+\title{ Function for the creation of a maturity matrix }
 \description{
-  Creates a matrix of maturities for a specified country with bonds 
+  Creates a matrix of maturities for a specified group with bonds 
   in columns. The number of rows is the number of cashflows for the bond with the longest maturity.
 
 }

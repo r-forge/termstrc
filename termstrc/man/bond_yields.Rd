@@ -1,9 +1,9 @@
 \name{bond_yields}
 \alias{bond_yields}
 
-\title{ Function for the calculation of bond yields}
+\title{Bond yield calculation}
 
-\description{Function for the calculation of the bond yields. }
+\description{Function for the calculation of bond yields.}
 
 \usage{
 bond_yields(cashflows, m, tol = 1e-10)
@@ -20,7 +20,7 @@ bond_yields(cashflows, m, tol = 1e-10)
 matrix with the bond yields and the associated maturity 
 }
 
-\references{Yield Curve Modelling at the Bank of Canda, David Bolder and David Streliski, Technical Report No 84 Bank of Canada 1999, p.41 }
+\references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canda.\emph{Technical Report No 84 Bank of Canada}}
 
 \author{ Robert Ferstl, Josef Hayden }
 %\note{}
