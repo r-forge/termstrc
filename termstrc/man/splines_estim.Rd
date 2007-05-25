@@ -25,7 +25,14 @@ splines_estim(group, bonddata, maturity_spectrum = "all")
   ...
 }
 \references{
-Yield Curve Modelling at the Bank of Canda, David Bolder and David Streliski, Technical Report No 84 Bank of Canada 1999.
+
+J.Huston and McCulloch (1971):
+Measuring the Term Structure of Interest Rates.
+\emp{The Journal of Business, \bold{44} 19--31.} 
+
+David Bolder and David Streliski (1999):
+Yield Curve Modelling at the Bank of Canada.
+\emph{Technical Report No 84 Bank of Canada} 
 }
 
 \author{Robert Ferstl, Josef Hayden}

@@ -17,7 +17,7 @@ aabse(actual, estimated)
 \deqn{AABSE=\frac{1}{n}\sum{|e-\overline{e}|}}
 }
 %\value{}
-\references{Yield Curve Modelling at the Bank of Canda, David Bolder and David Streliski, Technical Report No 84 Bank of Canada 1999, p.25 }
+\references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canda.\emph{Technical Report No 84 Bank of Canada}}
 
 \author{Robert Ferstl, Josef Hayden}
 \seealso{\code{\link{rmse}}}

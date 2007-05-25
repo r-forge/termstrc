@@ -5,7 +5,7 @@
 splines_estim <-
   function(group,
            bonddata,
-           maturity_spectrum="all"
+           matrange="all"
            ) {
 
     
@@ -13,8 +13,8 @@ splines_estim <-
   bonddata <- bonddata[group]
 
   # select data according to chosen maturity range
-  if (length(maturity_spectrum)==1) {bonddata <- bonddata }else
-   {bonddata <- maturity_range(bonddata,maturity_spectrum[1],maturity_spectrum[2]) }
+  if (length(matrange)==1) {bonddata <- bonddata }else
+   {bonddata <- maturity_range(bonddata,matrange[1],matrange[2]) }
 
   # number of groups 
   n_group <- length(bonddata) 
@@ -44,8 +44,7 @@ splines_estim <-
   cf_p <- mapply(function(k) cf_p[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
   m <- mapply(function(k) m[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
   m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
-    
-  
+   
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    1:n_group,SIMPLIFY=FALSE)
@@ -55,9 +54,10 @@ splines_estim <-
     
   # number of basis functions
   s <-  mapply(function(k) round(sqrt(K[[k]])),1:n_group,SIMPLIFY=FALSE)
-    
+  
+  
   # only used for knot point finding
-  i <- mapply(function(k) 2:(s[[k]]-2),1:n_group,SIMPLIFY=FALSE)  
+  i <- mapply(function(k) 2:(max(2,(s[[k]]-2))),1:n_group,SIMPLIFY=FALSE)  
   
   h <-  mapply(function(k) trunc(((i[[k]]-1)*K[[k]])/(s[[k]]-2)),1:n_group,SIMPLIFY=FALSE)
              
@@ -68,7 +68,7 @@ splines_estim <-
   # knot points
   T <- mapply(function(k) c(0,
        apply(as.matrix(m[[k]][,h[[k]]]),2,max)
-       +theta[[k]]*(apply(as.matrix(m[[k]][,h[[k]]+1]),2,max)-apply(as.matrix(m[[k]][,h[[k]]]),2,max)),
+       + theta[[k]]*(apply(as.matrix(m[[k]][,h[[k]]+1]),2,max)-apply(as.matrix(m[[k]][,h[[k]]]),2,max)),
        max(m[[k]][,ncol(m[[k]])])),1:n_group,SIMPLIFY=FALSE)
  
   # use own knot points

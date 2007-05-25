@@ -10,9 +10,10 @@ Term Structure and Credit Spread Estimation
 
 
 \description{
-The package includes two widely-used term structure estimation procedures, 
-the parametric Nelson and Siegel approach and the Svensson approach.
-Moreover the traditional way of credit spread calculation is implemented. 
+The package offers functions for the estimation of zero-coupon yield (spread) curves 
+based on three widely-used term structure estimation procedeures, i.e. the
+parametrice Nelson and Siegel , the Svensson (1994) approach and the cubic splines approach of
+J.Huston and McCulloch (1971).  
 }
 
 
@@ -20,8 +21,8 @@ Moreover the traditional way of credit spread calculation is implemented.
 \tabular{ll}{
 Package: \tab termstrc\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2006-11-27\cr
+Version: \tab 0.3\cr
+Date: \tab 2007-05-25\cr
 License: \tab GPL \cr
 }
 }
@@ -29,22 +30,29 @@ License: \tab GPL \cr
 
 \author{Robert Ferstl, Josef Hayden
 
-Maintainer: Robert Ferstl <robert.ferstl@wu-wien.ac.at>
-
-Special thanks to the Finance Management Science Lab 2005 
+Maintainer: Robert Ferstl <robert.ferstl@wu-wien.ac.at>, Josef Hayden <josef.hayden@wu-wien.ac.at>
 
 }
 
 
 \references{
- Charles R. Nelson and Andrew F. Siegel. Parsimonious modeling of yield curves. The Journal 
-of Business, 60(4):473Ð489, Oct 1987. 
 
-Lars E.O. Svensson. Estimating and interpreting forward interest rates: Sweden 1992 -1994. 
-Technical Reports 4871, National Bureau of Economic Research, Inc, Sep 1994.
+David Bolder and David Streliski (1999):
+Yield Curve Modelling at the Bank of Canada.
+\emph{Technical Report No 84 Bank of Canada} 
 
-Yield Curve Modelling at the Bank of Canda, David Bolder and David Streliski, Technical Report No 84 Bank of Canada 1999.
+J.Huston and McCulloch (1971):
+Measuring the Term Structure of Interest Rates.
+\emp{The Journal of Business, \bold{44} 19--31.} 
 
+Charles R. Nelson and Andrew F. Siegel (1987): 
+Parsimonious modeling of yield curves.
+\empd{The Journal of Business}, \bold{60(4)}:473--489.
+
+Lars E.O. Svensson (1994): 
+Estimating and interpreting forward interest rates: Sweden 1992 -1994. 
+\emph{Technical Reports 4871, National Bureau of Economic Research}. 
+ 
 }
 
 \keyword{ package }

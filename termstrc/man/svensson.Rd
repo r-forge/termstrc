@@ -16,8 +16,11 @@ svensson(beta, m)
 \value{
 returns a vector consisting of the calculated spot rates 
 }
-\references{Lars E.O. Svensson. Estimating and interpreting forward interest rates: Sweden 1992 -1994. 
-Technical Reports 4871, National Bureau of Economic Research, Inc, Sep 1994.  }
+\references{
+Lars E.O. Svensson (1994):
+Estimating and interpreting forward interest rates: Sweden 1992 -1994. 
+\emph{Technical Reports 4871, National Bureau of Economic Research}. }
+
 \author{Robert Ferstl, Josef Hayden }
 \note{For details please refer to the vignette of the package or to the article of Svensson}
 
