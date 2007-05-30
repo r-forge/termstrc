@@ -1,0 +1,28 @@
+\name{summary.cubicsplines}
+\alias{summary.cubicsplines}
+
+\title{S3 summary method for cubicsplines }
+\description{
+  S3 summary method for objects of the class \code{cubicsplines}
+}
+\usage{
+summary.cubicsplines(object,...)
+}
+
+\arguments{
+  \item{object}{object of the class \code{cubicsplines}}
+  \item{\dots}{other arguments}
+}
+\details{
+ The summary method for an object of the class \code{nelson} prints the
+ solution of the goodness of fit tests (RMSE, AABSE) of the optimization. 
+}
+%\value{}
+%\references{ }
+\author{Robert Ferstl, Josef Hayden }
+%\note{}
+\seealso{\code{\link{plot.cubicsplines}},\code{\link{print.cubicsplines}}, \code{\link{rmse}},\code{\link{aabse}}}
+\examples{}
+
+\keyword{ }
+
