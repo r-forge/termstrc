@@ -1,16 +1,92 @@
-bootstrapping (reading assignment):		nawalkha p. 55 - 60	
-						fabozzi 2007 p. 135 - 156
+* print methoden sollten argument x retournieren
 
-cubic splines (reading assignment): 		nawalkha p. 60 - 67
-						mcculloch	
+* Statt
 
-cubic splines (programming assignments):	bondtabletolist function
-						cubic splines implementation
+  if(pdf == FALSE)
 
-nelson/siegel/svensson (progr. assignments):	yield error minimisation
+  nur
 
-wrapper function (progr. assignments):		s3 methods 
-						extractor functions
+  if(pdf)
+
+  Statt if ( is.character(x$scurves) == FALSE ) nur
+        if ( is.character(x$scurves) )
+
+* Statt 1 : irgendwas besser seq_len(irgendwas) [2.4.0 or better]
+
+  Statt 1:length(x$alpha[[i]]) ginge auch seq_along(x$alpha[[i]])
+
+  Statt seq(ncol(cashflows)) besser seq_len(ncol(cashflows))
+
+* [Bei summary.FOO: summary rechnet summaries aus, retourniert objekt der
+   klasse summary.FOO und fuer das schreibt man eine print methode]
+
+* Bei modifikation von graphical pars:
+
+       op <- par(ask = TRUE)
+       on.exit(par(op))
+
+* Statt summary(as.factor(group$CASHFLOWS$ISIN)) besser
+    length(unique(group$CASHFLOWS$ISIN))
+       
+* Rd \title in title style
+
+* Im -package.Rd das
+
+\details{
+\tabular{ll}{
+Package: \tab termstrc\cr
+Type: \tab Package\cr
+Version: \tab 0.3\cr
+Date: \tab 2007-05-25\cr
+License: \tab GPL \cr
+}
+}
+
+  raus.
+
+  Ditto maintainers.
+
+* data/*.Rd ???
+
+* Codetools:
+
+* checking R code for possible problems ... NOTE
+plot.cubicsplines: no visible binding for global variable ÔgroupÕ
+
+from
+
+      title(group[k])
+
+* checking Rd \usage sections ... NOTE
+S3 methods shown with full name in documentation object 'plot.cubicsplines':
+  plot.cubicsplines
+
+S3 methods shown with full name in documentation object 'plot.nelson':
+  plot.nelson
+
+S3 methods shown with full name in documentation object 'print.cubicsplines':
+  print.cubicsplines
+
+S3 methods shown with full name in documentation object 'print.nelson':
+  print.nelson
+
+S3 methods shown with full name in documentation object 'summary.cubicsplines':
+  summary.cubicsplines
+
+S3 methods shown with full name in documentation object 'summary.nelson':
+  summary.nelson
+
+Fix: statt
+
+\usage{
+summary.nelson(object,...)
+}
+
+besser
+
+\usage{
+\method{summary}{nelson}(object,...)
+}
 
  
 
