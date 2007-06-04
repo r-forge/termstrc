@@ -1,5 +1,7 @@
 * print methoden sollten argument x retournieren
 
+-> erledigt!
+
 * Statt
 
   if(pdf == FALSE)
@@ -10,6 +12,8 @@
 
   Statt if ( is.character(x$scurves) == FALSE ) nur
         if ( is.character(x$scurves) )
+
+-> was tun wenn FALSE?
 
 * Statt 1 : irgendwas besser seq_len(irgendwas) [2.4.0 or better]
 
