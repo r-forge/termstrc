@@ -22,6 +22,7 @@ print.nelson <-
           "6"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2")) 
   print.default(parameters)
   cat("\n")
+  x
   }
 
 ###################################################################
@@ -33,7 +34,7 @@ plot.nelson <-
                         max(mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)))
                         ,pdf=FALSE, ...) {
    
-     if(pdf== TRUE) pdf( file="termstrc_ouput.pdf",... )
+     if(pdf) pdf( file="termstrc_ouput.pdf",... )
      
      # min and max maturity of all bonds in the sample 
      samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
@@ -182,6 +183,7 @@ print.cubicsplines <-
   names(x$alpha[[i]]) <- paste("alpha",c(1:length(x$alpha[[i]])))
   print.default(x$alpha[[i]])
   cat("\n")
+  x
   }
   
  
