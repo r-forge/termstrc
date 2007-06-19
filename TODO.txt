@@ -24,6 +24,8 @@
 * [Bei summary.FOO: summary rechnet summaries aus, retourniert objekt der
    klasse summary.FOO und fuer das schreibt man eine print methode]
 
+-> erledigt!
+
 * Bei modifikation von graphical pars:
 
        op <- par(ask = TRUE)
@@ -31,6 +33,9 @@
 
 * Statt summary(as.factor(group$CASHFLOWS$ISIN)) besser
     length(unique(group$CASHFLOWS$ISIN))
+
+-> das macht was anderes! es würde im prinzip nur die anzahl der bonds ausgeben.
+    daher hab ich nix geändert.
        
 * Rd \title in title style
 
@@ -49,6 +54,9 @@ License: \tab GPL \cr
   raus.
 
   Ditto maintainers.
+
+-> erledigt! man könnte jedoch schönere description schreiben und references noch
+   ausbauen, sowie den text mit Rforge abgleichen bzw. späterem Abstract von Paper
 
 * data/*.Rd ???
 

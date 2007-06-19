@@ -23,5 +23,5 @@ x <- nelson_estim(group, bonddata, matrange,
 
 print(x)
 summary(x)
-plot(x)
+plot(x,pdf=TRUE)
 

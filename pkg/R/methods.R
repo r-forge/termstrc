@@ -65,7 +65,7 @@ plot.nelson <-
       ylim=c(0, max(x$y[[k]][,2]) + 0.01 )*100,
       xlim=c(max(floor(min(x$y[[k]][,1])),matrange[1]),
              min(ceiling(max(x$y[[k]][,1])),matrange[2])),
-      xlab="Maturities (in years) ",
+      xlab="Maturities (years) ",
       ylab="Percent",
       lwd=2,
       col="steelblue")
@@ -82,8 +82,8 @@ plot.nelson <-
      plot(x$zcy_curves[,1], x$zcy_curves[,
       which.max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)) +1 ]*100,
       type="l",col=which.max(mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)),
-      lty=1,lwd=2,xlab="Maturities (in years)",
-      ylab="Zero-Coupon yields (in percent)",
+      lty=1,lwd=2,xlab="Maturities (years)",
+      ylab="Zero-Coupon yields (%)",
       xlim=c(max(floor(samplemat[1]),matrange[1]), 
              min(ceiling(samplemat[2]),matrange[2])),
       ylim= c(0,max(x$zcy_curves[,2:(x$n_group+1)] ))*100)
@@ -106,8 +106,8 @@ plot.nelson <-
     plot(0,0, type="n",
     col=(which.max(mapply(function(i) max(x$y[[i]][,1]),
                                          1:x$n_group)[-1]) + 1),lty=1,lwd=2,
-    xlab="Maturities (in years)",
-    ylab="Spread (in bps)",
+    xlab="Maturities (years)",
+    ylab="Spread (basis points)",
     xlim= c(max(floor(samplemat[1]),matrange[1]),
             min(ceiling(samplemat[2]),matrange[2])),
     ylim=c(min(x$scurves[,1:x$n_group-1]),max(x$scurves[,1:x$n_group-1]))*10000)
@@ -143,13 +143,6 @@ summary.nelson <-
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields","AABSE-Yields")
-    cat("---------------------------------------------------\n")
-    cat("Goodness of fit tests:\n")
-    cat("---------------------------------------------------\n")
-    cat("\n")
-    print.default(gof)
-    cat("\n")
-    cat("\n")
     convergencegroup <- as.matrix(apply(as.matrix(mapply(function(i) x$opt_result[[i]]$convergence,
                               1:length(x$opt_result))),1,
                               function(x) if(x==1) "no convergence" else "converged"))
@@ -158,17 +151,37 @@ summary.nelson <-
     convergence <- as.matrix(mapply(function(i) x$opt_result[[i]]$message,1:length(x$opt_result)))
     colnames(convergence) <- "Solver message"
     rownames(convergence) <- x$group
+    sumry <- list(gof,convergencegroup,convergence)
+    names(sumry) <- c("gof","convergencegroup","convergence")
+    class(sumry) <- "summary.nelson"
+    sumry
+}
+
+###################################################################
+#                 print-method for summary.nelson                 #
+###################################################################
+
+print.summary.nelson <-
+    function(x,...) {
+    cat("---------------------------------------------------\n")
+    cat("Goodness of fit tests:\n")
+    cat("---------------------------------------------------\n")
+    cat("\n")
+    print.default(x$gof)
+    cat("\n")
+    cat("\n")
     cat("---------------------------------------------------\n")
     cat("Convergence information:\n")
     cat("---------------------------------------------------\n")
     cat("\n")
-    print.default(convergencegroup)
+    print.default(x$convergencegroup)
     cat("\n")
-    print.default(convergence)
+    print.default(x$convergence)
     cat("\n")
     cat("\n")
-   
-} 
+    x
+}
+ 
 ###################################################################
 #                print-method for cubic splines                   #
 ###################################################################
@@ -185,8 +198,6 @@ print.cubicsplines <-
   cat("\n")
   x
   }
-  
- 
  }
  
  ###################################################################
@@ -200,27 +211,26 @@ summary.cubicsplines <-
     AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),1:x$n_group)
     RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
     AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
-    
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields","AABSE-Yields")
-    cat("---------------------------------------------------\n")
-    cat("Goodness of fit tests:\n")
-    cat("---------------------------------------------------\n")
-    cat("\n")
-    print.default(gof)
-    cat("\n")
-   
+    class(gof) <- "summary.cubicsplines"
+    gof
 } 
 
 ###################################################################
-#            print-method for summary cubic splines               #
+#            print-method for summary.cubicsplines                #
 ###################################################################
 
 print.summary.cubicsplines <-
     function(x,...) {
-
-x
+    cat("---------------------------------------------------\n")
+    cat("Goodness of fit tests:\n")
+    cat("---------------------------------------------------\n")
+    cat("\n")
+    print.default(x)
+    cat("\n")
+    x
 }
 
 ###################################################################
@@ -257,7 +267,7 @@ plot.cubicsplines <-
       type="l",
       ylim=c(0,max(x$zcy_curves[[k]][,2]) + 0.01 )*100,
       xlim=c(max(0,matrange[1]),min(max(x$zcy_curves[[k]][,1]),matrange[2])),
-      xlab="Maturities (in years)",
+      xlab="Maturities (years)",
       ylab="Percent",
       lwd=2,
       col="steelblue")
@@ -284,7 +294,7 @@ plot.cubicsplines <-
      xlim=c(max(0,matrange[1]),min(matrange[2],
               max(x$zcy_curves[[which.max(mapply(function(k) 
               max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1]))),
-     xlab="Maturities (in years)",
+     xlab="Maturities (years)",
      ylab="Percent",
      lwd=2,
      col=which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group)))
@@ -305,8 +315,8 @@ plot.cubicsplines <-
              max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1],
              x$scurves[,1:(x$n_group-1)]*10000, type="l",
     col=2:x$n_group,lty=1,lwd=2,
-    xlab="Maturities",
-    ylab="Spread (in bps)",
+    xlab="Maturities (years)",
+    ylab="Spread (basis points)",
     xlim= c(max(0,matrange[1]),
             min(max(x$zcy_curves[[which.min(mapply(function(k)
             max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1]),matrange[2])),

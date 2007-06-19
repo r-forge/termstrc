@@ -16,25 +16,6 @@ parametrice Nelson and Siegel , the Svensson (1994) approach and the cubic splin
 J.Huston and McCulloch (1971).  
 }
 
-
-\details{
-\tabular{ll}{
-Package: \tab termstrc\cr
-Type: \tab Package\cr
-Version: \tab 0.3\cr
-Date: \tab 2007-05-25\cr
-License: \tab GPL \cr
-}
-}
-
-
-\author{Robert Ferstl, Josef Hayden
-
-Maintainer: Robert Ferstl <robert.ferstl@wu-wien.ac.at>, Josef Hayden <josef.hayden@wu-wien.ac.at>
-
-}
-
-
 \references{
 
 David Bolder and David Streliski (1999):
@@ -55,4 +36,4 @@ Estimating and interpreting forward interest rates: Sweden 1992 -1994.
  
 }
 
-\keyword{ package }
+\keyword{package}
