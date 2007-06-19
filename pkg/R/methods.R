@@ -214,6 +214,16 @@ summary.cubicsplines <-
 } 
 
 ###################################################################
+#            print-method for summary cubic splines               #
+###################################################################
+
+print.summary.cubicsplines <-
+    function(x,...) {
+
+x
+}
+
+###################################################################
 #                plot-method for cubic splines                    #
 ###################################################################
 
@@ -222,7 +232,7 @@ plot.cubicsplines <-
                         max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)))
                         ,pdf=FALSE, ...) {
   
-     if(pdf== TRUE) pdf( file="termstrc_ouput.pdf",... )
+     if(pdf) pdf( file="termstrc_ouput.pdf",... )
      
      # min and max maturity of all bonds in the sample 
      samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
