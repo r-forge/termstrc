@@ -1,12 +1,12 @@
 \name{summary.nelson}
 \alias{summary.nelson}
 
-\title{ S3 summary method }
+\title{ S3 Summary Method }
 \description{
   S3 summary method for objects of the class \code{nelson}
 }
 \usage{
-summary.nelson(object,...)
+\method{summary}{nelson}(object,...)
 }
 
 \arguments{

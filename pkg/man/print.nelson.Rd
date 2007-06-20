@@ -1,13 +1,13 @@
 \name{print.nelson}
 \alias{print.nelson}
 
-\title{  S3 print method  }
+\title{  S3 Print Method  }
 
 \description{
  S3 print method for an object of the class \code{nelson}
 }
 \usage{
-print.nelson(x,...)
+\method{print}{nelson}(x,...)
 }
 \arguments{
   \item{x}{object of the class \code{nelson}}

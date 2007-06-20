@@ -1,7 +1,7 @@
 \name{bond_yields}
 \alias{bond_yields}
 
-\title{Bond yield calculation}
+\title{Bond Yield Calculation}
 
 \description{Function for the calculation of bond yields.}
 

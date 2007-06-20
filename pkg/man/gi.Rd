@@ -1,7 +1,7 @@
 \name{gi}
 \alias{gi}
 
-\title{ Cubic functions }
+\title{ Cubic Functions }
 \description{
   Calculation of the cubic functions according to an approach of
   J. Huston McCulloch (1971)

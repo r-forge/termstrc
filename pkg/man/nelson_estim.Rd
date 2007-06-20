@@ -1,6 +1,6 @@
 \name{nelson_estim}
 \alias{nelson_estim}
-\title{ Term structure and credit spread estimation with Nelson/Siegel and Svensson method}
+\title{ Term Structure and Credit Spread Estimation with Nelson/Siegel and Svensson Method}
 \description{
  Term structure and credit spread estimation with Nelson/Siegel and Svensson method
 }

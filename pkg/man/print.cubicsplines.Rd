@@ -1,13 +1,13 @@
 \name{print.cubicsplines}
 \alias{print.cubicsplines}
 
-\title{S3 print method for cubicsplines}
+\title{S3 Print Method for Cubicsplines}
 
 \description{
  S3 print method for an object of the class \code{cubicsplines}
 }
 \usage{
-print.cubicsplines(x,...)
+\method{print}{cubicsplines}(x,...)
 }
 \arguments{
   \item{x}{object of the class \code{cubicsplines}}

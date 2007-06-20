@@ -1,7 +1,7 @@
 \name{loss_function}
 \alias{loss_function}
 
-\title{Loss function used for the term structure estimation }
+\title{Loss Function used for the Term Structure Estimation }
 \description{
   The loss function defines the objective function used for the optimisation. 
   
@@ -24,7 +24,7 @@ loss_function(p, phat, omega, weights)
 %\value{}
 \references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canda.\emph{Technical Report No 84 Bank of Canada}}
 \author{Robert Ferstl, Josef Hayden}
-%\note{ ~~further notes~~}
-%\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
+%\note{ }
+%\seealso{ }
 %\examples{}
 \keyword{}

@@ -1,7 +1,7 @@
 \name{bond_prices}
 \alias{bond_prices}
 
-\title{Bond price calculation }
+\title{Bond Price Calculation }
 \description{
   Function for the calculation of bond prices according to the chosen approach 
   (Nelson and Siegel or Svensson) based on the cashflows and maturities of the bonds. 

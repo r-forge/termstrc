@@ -1,7 +1,7 @@
 \name{aabse}
 \alias{aabse}
 
-\title{Average absolute mean error}
+\title{Average Absolute Mean Error}
 
 \description{Average absolute mean error}
 \usage{

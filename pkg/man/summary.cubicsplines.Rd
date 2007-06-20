@@ -1,12 +1,12 @@
 \name{summary.cubicsplines}
 \alias{summary.cubicsplines}
 
-\title{S3 summary method for cubicsplines }
+\title{S3 Summary Method for Cubicsplines }
 \description{
   S3 summary method for objects of the class \code{cubicsplines}
 }
 \usage{
-summary.cubicsplines(object,...)
+\method{summary}{cubicsplines}(object,...)
 }
 
 \arguments{

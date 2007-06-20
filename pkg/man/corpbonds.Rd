@@ -1,7 +1,7 @@
 \name{corpbonds}
 \alias{corpbonds}
 \docType{data}
-\title{Corporate bonds}
+\title{Corporate Bonds}
 \description{Corporate bonds}
 \usage{data(corpbonds)}
 
