@@ -12,7 +12,7 @@
 \arguments{
    \item{x}{object of the class \code{summary.nelson}}
    \item{\dots}{other arguments}
-
+}
 %\details{}
 
 %\value{}
