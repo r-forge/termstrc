@@ -43,14 +43,19 @@ splines_estim(group,
   \item{alpha}{OLS coefficients of cubic splines estimation}
 }
 \references{
+David Bolder and David Streliski (1999):
+Yield Curve Modelling at the Bank of Canada.
+\emph{Technical Report No 84 Bank of Canada} 
+
 
 J.Huston McCulloch (1971):
 Measuring the Term Structure of Interest Rates.
 \emph{The Journal of Business, \bold{44} 19--31.} 
 
-David Bolder and David Streliski (1999):
-Yield Curve Modelling at the Bank of Canada.
-\emph{Technical Report No 84 Bank of Canada} 
+Sanjay K. Nawalkha and Gloria M. Soto and Natalia K. Beliaeva (2005):
+Interest Rate Risk Modeling : The Fixed Income Valuation Course
+\emph{Wiley Finance, \bold{60--67}}
+
 }
 
 \author{Robert Ferstl, Josef Hayden}

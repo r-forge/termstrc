@@ -302,6 +302,17 @@ Encoding: Cp1252
   pdf = {McCulloch1971.pdf}
 }
 
+@BOOK{Nawalkha2005,
+  title = {Interest Rate Risk Modeling : The Fixed Income Valuation Course},
+  publisher = {Wiley},
+  year = {2005},
+  author = {Sanjay K. Nawalkha and Gloria M. Soto and Natalia K. Beliaeva},
+  isbn = {0471427241},
+  owner = {jhayden},
+  price = {$85.45},
+  timestamp = {2007.06.20}
+}
+
 @ARTICLE{Nelson1987,
   author = {{Charles R.} Nelson AND {Andrew F.} Siegel},
   title = {Parsimonious Modeling of Yield Curves},

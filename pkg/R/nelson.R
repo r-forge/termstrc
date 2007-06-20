@@ -28,31 +28,34 @@ nelson_estim <-
 
   # number of groups 
   n_group <- length(bonddata) 
+  
+  # group sequence
+  sgroup <- seq(n_group)
     
   # create cashflows matrix
   cf <- lapply(bonddata,create_cashflows_matrix)
 
   # create cashflows matrix including dirty price (needed for bond yield calculation)
   cf_p <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE),
-                 1:n_group,SIMPLIFY=FALSE)
+                 sgroup,SIMPLIFY=FALSE)
   
   # create maturities matrix
   m <- lapply(bonddata,create_maturities_matrix)
 
   # create maturities matrix including zeros (needed for bond yield calculation)
   m_p <- mapply(function(k) create_maturities_matrix(bonddata[[k]],include_price=TRUE),
-                1:n_group,SIMPLIFY=FALSE)
+                sgroup,SIMPLIFY=FALSE)
   
   # calculate dirty prices
-  p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,1:n_group,SIMPLIFY=FALSE)
+  p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
   
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
-                   1:n_group,SIMPLIFY=FALSE)
+                   sgroup,SIMPLIFY=FALSE)
  
   # calculate duration   
   duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],y[[k]][,2]),
-                   1:n_group,SIMPLIFY=FALSE)
+                   sgroup,SIMPLIFY=FALSE)
   
   #browser()   
   # objective function 
@@ -84,33 +87,33 @@ nelson_estim <-
   opt_result <- list()
 
   # use apply ?  
-  for (k in 1:n_group){
+  for (k in sgroup){
     opt_result[[k]] <- #mapply(function(k)
                   nlminb(startparam[k,],obj_fct, lower = lower_bounds,
-                  upper = upper_bounds,control=control)#,1:n_group,SIMPLIFY=FALSE)
+                  upper = upper_bounds,control=control)#,sgroup,SIMPLIFY=FALSE)
   }   
  
   # theoretical bond prices with estimated parameters
   phat <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
-       m[[k]],cf[[k]])$bond_prices,1:n_group,SIMPLIFY=FALSE)
+       m[[k]],cf[[k]])$bond_prices,sgroup,SIMPLIFY=FALSE)
 
   # calculate estimated yields 
-  yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),1:n_group,SIMPLIFY=FALSE)
+  yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
   
   # calculate zero coupon yield curves  
   zcy_curves <- switch(method,
               "Nelson/Siegel" = mapply(function(k)
 		            nelson_siegel(opt_result[[k]]$par,
-                seq(floor(min(mapply(function(i) min(y[[i]][,1]), 1:n_group))),
-                           ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.01)),
-                1:n_group),
+                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),
+                sgroup),
 
               "Svensson" = mapply(function(k) svensson(opt_result[[k]]$par,
-                seq(floor(min(mapply(function(i) min(y[[i]][,1]), 1:n_group))),
-                           ceiling(max(mapply(function(i) max(y[[i]][,1]), 1:n_group))),0.01)),1:n_group))
+                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),sgroup))
                 
-  zcy_curves <-  cbind(c(seq(floor(min(mapply(function(i) min(y[[i]][,1]), 1:n_group))),
-                           ceiling(max(mapply(function(i) max(y[[i]][,1]),1:n_group))),0.01)),zcy_curves)             	
+  zcy_curves <-  cbind(c(seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]),sgroup))),0.01)),zcy_curves)             	
                 
   # calculate spread curves              	    
  	if(n_group != 1) { 

@@ -18,50 +18,53 @@ splines_estim <-
 
   # number of groups 
   n_group <- length(bonddata) 
+  
+  # group sequence
+  sgroup <- seq(n_group)
     
   # create cashflows matrix
   cf <- lapply(bonddata,create_cashflows_matrix)
 
   # create cashflows matrix including dirty price (needed for bond yield calculation)
   cf_p <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE),
-                 1:n_group,SIMPLIFY=FALSE)
+                 sgroup,SIMPLIFY=FALSE)
     
   # create maturities matrix
   m <- lapply(bonddata,create_maturities_matrix)
 
   # create maturities matrix including zeros (needed for bond yield calculation)
   m_p <- mapply(function(k) create_maturities_matrix(bonddata[[k]],include_price=TRUE),
-                1:n_group,SIMPLIFY=FALSE)
+                sgroup,SIMPLIFY=FALSE)
     
   # calculate dirty prices
-  p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,1:n_group,SIMPLIFY=FALSE)
+  p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
   
   # index for ordering
-  positions <- mapply(function(k) order(apply(m[[k]],2,max)),1:n_group,SIMPLIFY=FALSE)
+  positions <- mapply(function(k) order(apply(m[[k]],2,max)),sgroup,SIMPLIFY=FALSE)
   
   # order matrices 
-  cf <- mapply(function(k) cf[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
-  cf_p <- mapply(function(k) cf_p[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
-  m <- mapply(function(k) m[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
-  m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],1:n_group,SIMPLIFY=FALSE)
+  cf <- mapply(function(k) cf[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
+  cf_p <- mapply(function(k) cf_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
+  m <- mapply(function(k) m[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
+  m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
    
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
-                   1:n_group,SIMPLIFY=FALSE)
+                   sgroup,SIMPLIFY=FALSE)
     
   # Choosing knot points (McCulloch)
-  K <- mapply(function(k) ncol(m[[k]]),1:n_group,SIMPLIFY=FALSE)
+  K <- mapply(function(k) ncol(m[[k]]),sgroup,SIMPLIFY=FALSE)
     
   # number of basis functions
-  s <-  mapply(function(k) round(sqrt(K[[k]])),1:n_group,SIMPLIFY=FALSE)
+  s <-  mapply(function(k) round(sqrt(K[[k]])),sgroup,SIMPLIFY=FALSE)
   
   
   # only used for knot point finding
-  i <- mapply(function(k) 2:(max(2,(s[[k]]-2))),1:n_group,SIMPLIFY=FALSE)  
+  i <- mapply(function(k) 2:(max(2,(s[[k]]-2))),sgroup,SIMPLIFY=FALSE)  
   
-  h <-  mapply(function(k) trunc(((i[[k]]-1)*K[[k]])/(s[[k]]-2)),1:n_group,SIMPLIFY=FALSE)
+  h <-  mapply(function(k) trunc(((i[[k]]-1)*K[[k]])/(s[[k]]-2)),sgroup,SIMPLIFY=FALSE)
              
-  theta <- mapply(function(k)((i[[k]]-1)*K[[k]])/(s[[k]]-2)-h[[k]],1:n_group,SIMPLIFY=FALSE)
+  theta <- mapply(function(k)((i[[k]]-1)*K[[k]])/(s[[k]]-2)-h[[k]],sgroup,SIMPLIFY=FALSE)
     
   #browser()
   #fehler wenn matrange != "all" 
@@ -69,14 +72,14 @@ splines_estim <-
   T <- mapply(function(k) c(0,
        apply(as.matrix(m[[k]][,h[[k]]]),2,max)
        + theta[[k]]*(apply(as.matrix(m[[k]][,h[[k]]+1]),2,max)-apply(as.matrix(m[[k]][,h[[k]]]),2,max)),
-       max(m[[k]][,ncol(m[[k]])])),1:n_group,SIMPLIFY=FALSE)
+       max(m[[k]][,ncol(m[[k]])])),sgroup,SIMPLIFY=FALSE)
  
   # use own knot points
   # T <- seq(0,15,1.5)
   # s <- length(T)+1
   
   # parameter estimation with OLS
-  Y <- mapply(function(k) apply(cf_p[[k]],2,sum),1:n_group,SIMPLIFY=FALSE)
+  Y <- mapply(function(k) apply(cf_p[[k]],2,sum),sgroup,SIMPLIFY=FALSE)
    
   X <- list()
 
@@ -84,7 +87,7 @@ splines_estim <-
   # j ... column index (bond)
   # sidx ... index for spline function  
  
-  for (k in 1:n_group){  
+  for (k in sgroup){  
   X[[k]] <- matrix(NA,ncol(m[[k]]),s[[k]])
                  
    for(sidx in 1:s[[k]]){
@@ -92,11 +95,11 @@ splines_estim <-
    }
   }
   
-  alpha <- mapply(function(k) coef(lm(-Y[[k]]~X[[k]]-1)),1:n_group,SIMPLIFY=FALSE) # parameter vector
+  alpha <- mapply(function(k) coef(lm(-Y[[k]]~X[[k]]-1)),sgroup,SIMPLIFY=FALSE) # parameter vector
  
   # calculate discount factor matrix 
   dt <- list()
-   for (k in 1:n_group){
+   for (k in sgroup){
    dt[[k]] <- matrix(1,nrow(m[[k]]),ncol(m[[k]]))
    for(sidx in 1:s[[k]]){
     dt[[k]] <- dt[[k]] + alpha[[k]][sidx]* mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]]))
@@ -105,19 +108,19 @@ splines_estim <-
 
    
   # calculate estimated prices 
-  phat <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),1:n_group,SIMPLIFY=FALSE)
+  phat <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),sgroup,SIMPLIFY=FALSE)
   
   # calculate estimated yields 
-  yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),1:n_group,SIMPLIFY=FALSE)
+  yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
   
  
   # calculate estimated zero coupon yield curves
-  t <- mapply(function(k) seq(0.01, max(T[[k]]),0.01), 1:n_group,SIMPLIFY=FALSE) 
+  t <- mapply(function(k) seq(0.01, max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
   
-  zcy_curves <- mapply(function(k) cbind(t[[k]],matrix(NA,nrow=length(t[[k]]),ncol=1)), 1:n_group,SIMPLIFY=FALSE)
+  zcy_curves <- mapply(function(k) cbind(t[[k]],matrix(NA,nrow=length(t[[k]]),ncol=1)), sgroup,SIMPLIFY=FALSE)
         
   dt_zcy <- list()
-  for( k in 1:n_group) {
+  for( k in sgroup) {
    dt_zcy[[k]] <- rep(1,length(t[[k]]))
     for(sidx in 1:s[[k]]){  
     dt_zcy[[k]] <- dt_zcy[[k]] + alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]])
@@ -128,8 +131,8 @@ splines_estim <-
   
   # calculate spread curves              	    
  	if(n_group != 1) {  
-   scurves <- as.matrix( mapply(function(k) (zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), 1:n_group))]]),2] -
-   zcy_curves[[1]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), 1:n_group))]]),2]), 2:n_group))
+   scurves <- as.matrix( mapply(function(k) (zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), sgroup))]]),2] -
+   zcy_curves[[1]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), sgroup))]]),2]), 2:n_group))
    
     } else scurves = "none" 
  

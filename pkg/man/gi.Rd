@@ -9,20 +9,25 @@
 \usage{gi(t, T, i, s)}
 
 \arguments{
-  \item{t}{\code{t}}
-  \item{T}{\code{T}}
-  \item{i}{\code{i}}
-  \item{s}{\code{s}}
+  \item{t}{maturity }
+  \item{T}{knot points}
+  \item{i}{index}
+  \item{s}{number of basis functions}}
 }
-\details{...}
-\value{
- \item{g}{..g...}
- }
+%\details{...}
+%\value{
+% \item{g}{..g...}
+% }
 \references{ 
 
 J. Huston McCulloch (1971):
 Measuring the Term Structure of Interest Rates.
 \emph{The Journal of Business, \bold{44} 19--31.} 
+
+
+Sanjay K. Nawalkha and Gloria M. Soto and Natalia K. Beliaeva (2005):
+Interest Rate Risk Modeling : The Fixed Income Valuation Course
+\emph{Wiley Finance, \bold{60--67}}
 
  }
 \author{Rober Ferstl, Josef Hayden }
