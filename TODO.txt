@@ -13,13 +13,15 @@
   Statt if ( is.character(x$scurves) == FALSE ) nur
         if ( is.character(x$scurves) )
 
--> was tun wenn FALSE?
+-> erledigt!
 
 * Statt 1 : irgendwas besser seq_len(irgendwas) [2.4.0 or better]
 
   Statt 1:length(x$alpha[[i]]) ginge auch seq_along(x$alpha[[i]])
 
   Statt seq(ncol(cashflows)) besser seq_len(ncol(cashflows))
+
+-> erledigt!  
 
 * [Bei summary.FOO: summary rechnet summaries aus, retourniert objekt der
    klasse summary.FOO und fuer das schreibt man eine print methode]
@@ -31,6 +33,8 @@
        op <- par(ask = TRUE)
        on.exit(par(op))
 
+-> erledigt ! (allerdings anders gelöst) 
+
 * Statt summary(as.factor(group$CASHFLOWS$ISIN)) besser
     length(unique(group$CASHFLOWS$ISIN))
 
@@ -38,6 +42,8 @@
     daher hab ich nix geändert.
        
 * Rd \title in title style
+-> erledigt !
+
 
 * Im -package.Rd das
 
@@ -60,6 +66,9 @@ License: \tab GPL \cr
 
 * data/*.Rd ???
 
+
+-> erledigt!   
+
 * Codetools:
 
 * checking R code for possible problems ... NOTE
@@ -68,6 +77,8 @@ plot.cubicsplines: no visible binding for global variable ÔgroupÕ
 from
 
       title(group[k])
+
+-> erledigt!      
 
 * checking Rd \usage sections ... NOTE
 S3 methods shown with full name in documentation object 'plot.cubicsplines':
@@ -100,5 +111,7 @@ besser
 \method{summary}{nelson}(object,...)
 }
 
- 
+-> erledigt!   
+
+* Bug g(i) function  
 

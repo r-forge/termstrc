@@ -1,7 +1,7 @@
 \name{spotrates}
 \alias{spotrates}
 
-\title{Function for the calculation of the spot rates }
+\title{Function for the Calculation of the Spot Rates }
 \description{
  The function calculates the spot rates for the chosen approach, a provided maturity vector and
  parameter set

@@ -1,7 +1,7 @@
 \name{eurobonds}
 \alias{eurobonds}
 \docType{data}
-\title{European government bonds}
+\title{European Government Bonds}
 \description{European government bonds}
 
 \usage{data(eurobonds)}

@@ -1,6 +1,6 @@
 \name{rmse}
 \alias{rmse}
-\title{Root mean-square error}
+\title{Root Mean Square Error}
 \description{Root mean square error}
 
 \usage{

@@ -1,7 +1,7 @@
 \name{maturity_range}
 \alias{maturity_range}
 
-\title{Maturity range for bond data set }
+\title{Maturity Range for Bond Data Set }
 
 \description{
    The function restricts a bond data set to a specified maturity range.
@@ -21,7 +21,7 @@ maturity_range(bonddata, lower, upper)
 
 %\value{}
 
-%\references{ ~put references to the literature/web site here ~ }
+%\references{ }
 
 \author{Robert Ferstl, Josef Hayden}
 

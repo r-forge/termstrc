@@ -72,7 +72,7 @@ bond_yields <- function(cashflows, m, tol=1e-10) {
   bondyields[,1] <- apply(m, 2, max)
 
   # traverse list of bonds
-  for (i in seq(ncol(cashflows))) {
+  for (i in seq_len(ncol(cashflows))) {
                                                   
     # present value of cash flows for root finding 
     pvcashflows <- function(y) {
@@ -111,7 +111,7 @@ index_set <- which(unlist(lapply(isins_range,length))>0)
 # list with positions of bonds in isins_range
 isins_range_pos <- list()
 
-for (i in 1:length(bonddata)) {
+for (i in seq_along(bonddata)) {
         isins_range_pos[[i]] <- which(bonddata[[i]]$ISIN %in% 
             isins_range[[i]])
     }
@@ -128,7 +128,7 @@ first <- function(lst) lst[N]
 filtered <- lapply(bonddata,first)
 
 bonddata_range <- list()
-for (i in 1:length(bonddata)) {
+for (i in seq_along(bonddata)) {
 bonddata_range[[i]] <- as.list(as.data.frame(filtered[[i]])
                        [isins_range_pos[[i]],])
 # convert to character                       
@@ -141,13 +141,13 @@ names(bonddata_range) <- names(bonddata)
 # list with positions of cashflows in isins_range
 
 isins_range_pos <- list()
-for (i in 1:length(bonddata)) {
+for (i in seq_along(bonddata)) {
 isins_range_pos[[i]] <- which(bonddata[[i]][["CASHFLOWS"]]
                         [["ISIN"]]%in%isins_range[[i]])
 }
 names(isins_range_pos) <- names(bonddata)
 
-for (i in 1:length(bonddata)) {
+for (i in seq_along(bonddata)) {
 CASHFLOWS <- as.list(as.data.frame(bonddata[[i]]
              [["CASHFLOWS"]])[isins_range_pos[[i]],])
 CASHFLOWS$ISIN <- as.character(CASHFLOWS$ISIN)
@@ -159,7 +159,7 @@ names(bonddata_range) <- names(bonddata)
 bonddata_range
 
 # add TODAY from bonddata
-for (i in 1:length(bonddata)) {
+for (i in seq_along(bonddata)) {
 bonddata_range[[i]][["TODAY"]] <- bonddata[[i]][["TODAY"]]
 }
 
@@ -250,7 +250,7 @@ function (actual,estimated){
 gi <-
 function(t,T,i,s){
   g <- rep(0,length(t))
-  for(j in 1:length(t)){
+  for(j in seq_along(t)){
     if(i==1){
     if(T[i]<=t[j]&t[j]<T[i+1]){
      g[j] <- (T[i])^2/6 + ((T[i])*(t[j]-T[i]))/2 + (t[j]-T[i])^2/2 - (t[j]-T[i])^3/(6*(T[i+1]-T[i]))

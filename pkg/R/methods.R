@@ -14,7 +14,7 @@ print.nelson <-
   cat("\n")
   cat("---------------------------------------------------\n")
   cat("\n")
-  parameters <- mapply(function(i) x$opt_result[[i]]$par,1:length(x$opt_result))
+  parameters <- mapply(function(i) x$opt_result[[i]]$par,seq_along(x$opt_result))
   colnames(parameters) <- names(x$opt_result)
   n_par <- as.character(nrow(parameters))
   rownames(parameters) <- switch(n_par,
@@ -34,7 +34,8 @@ plot.nelson <-
                         max(mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)))
                         ,pdf=FALSE, ...) {
    
-     if(pdf) pdf( file="termstrc_ouput.pdf",... )
+    
+     if(pdf) pdf( file="termstrc_ouput.pdf",... ) else par(ask=TRUE)  
      
      # min and max maturity of all bonds in the sample 
      samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
@@ -74,11 +75,11 @@ plot.nelson <-
               col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
       grid()
       points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red") 
-      if(pdf == FALSE) par(ask=TRUE) 
+      
     }
     
     # plot all zero coupon yield curves together
-    if ( is.character(x$scurves) == FALSE ) {
+    if (is.numeric(x$scurves)) {
      plot(x$zcy_curves[,1], x$zcy_curves[,
       which.max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)) +1 ]*100,
       type="l",col=which.max(mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)),
@@ -102,7 +103,7 @@ plot.nelson <-
    }
                                         
     # plot spread curves    
-   if ( is.character(x$scurves) == FALSE ) {
+   if (is.numeric(x$scurves)) {
     plot(0,0, type="n",
     col=(which.max(mapply(function(i) max(x$y[[i]][,1]),
                                          1:x$n_group)[-1]) + 1),lty=1,lwd=2,
@@ -124,7 +125,9 @@ plot.nelson <-
    
    }                    
   
-   if(pdf== TRUE) dev.off()
+   
+   if(pdf) dev.off() else par(ask=FALSE) 
+   
    
 }  
 
@@ -144,11 +147,11 @@ summary.nelson <-
     colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields","AABSE-Yields")
     convergencegroup <- as.matrix(apply(as.matrix(mapply(function(i) x$opt_result[[i]]$convergence,
-                              1:length(x$opt_result))),1,
+                              seq_along(x$opt_result))),1,
                               function(x) if(x==1) "no convergence" else "converged"))
     colnames(convergencegroup) <- "Convergence ()"
     rownames(convergencegroup) <- x$group
-    convergence <- as.matrix(mapply(function(i) x$opt_result[[i]]$message,1:length(x$opt_result)))
+    convergence <- as.matrix(mapply(function(i) x$opt_result[[i]]$message,seq_along(x$opt_result)))
     colnames(convergence) <- "Solver message"
     rownames(convergence) <- x$group
     sumry <- list(gof,convergencegroup,convergence)
@@ -193,7 +196,7 @@ print.cubicsplines <-
   cat("\n")
   for(i in 1:x$n_group) {
   print.default(paste(names(x$alpha)[[i]],":",sep=""))
-  names(x$alpha[[i]]) <- paste("alpha",c(1:length(x$alpha[[i]])))
+  names(x$alpha[[i]]) <- paste("alpha",c(seq_along(x$alpha[[i]])))
   print.default(x$alpha[[i]])
   cat("\n")
   x
@@ -242,7 +245,7 @@ plot.cubicsplines <-
                         max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)))
                         ,pdf=FALSE, ...) {
   
-     if(pdf) pdf( file="termstrc_ouput.pdf",... )
+     if(pdf) pdf( file="termstrc_ouput.pdf",... )  else par(ask=TRUE) 
      
      # min and max maturity of all bonds in the sample 
      samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
@@ -271,7 +274,7 @@ plot.cubicsplines <-
       ylab="Percent",
       lwd=2,
       col="steelblue")
-      title(group[k])
+      title(x$group[k])
       legend("bottomright",legend=c("Zero-coupon yield curve","Yields"),
               col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
       grid()
@@ -282,7 +285,7 @@ plot.cubicsplines <-
     
     
     # plot all zero cupon yield curves together
-    if ( is.character(x$scurves) == FALSE ){
+    if (is.numeric(x$scurves)){
     plot(x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]),
                                  1:x$n_group))]][,1],
       		x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]),
@@ -310,7 +313,7 @@ plot.cubicsplines <-
     }
     
     # plot spread curves    
-    if ( is.character(x$scurves) == FALSE ) {
+    if (is.numeric(x$scurves)) {
     matplot(x$zcy_curves[[which.min(mapply(function(k)
              max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1],
              x$scurves[,1:(x$n_group-1)]*10000, type="l",
@@ -326,5 +329,5 @@ plot.cubicsplines <-
     grid()
     }                    
   
-   if(pdf== TRUE) dev.off()
+   if(pdf) dev.off() else par(ask=FALSE) 
 }  

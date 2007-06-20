@@ -1,7 +1,7 @@
 \name{splines_estim}
 \alias{splines_estim}
 
-\title{Term structure and credit spread estimation with cubic splines method}
+\title{Term Structure and Credit Spread Estimation with Cubic Splines Method}
 \description{
   Term structure and credit spread estimation with cubic splines method
 }

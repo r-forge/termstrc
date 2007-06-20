@@ -1,12 +1,12 @@
 \name{plot.cubicsplines}
 \alias{plot.cubicsplines}
 
-\title{S3 plot method for cubicplines }
+\title{S3 Plot Method for Cubicplines }
 \description{
  S3 plot method for an object of the class \code{cubicsplines}
 }
 \usage{
-plot.cubicsplines(x,matrange,pdf=FALSE,...)
+\method{plot}{cubicsplines}(x,matrange,pdf=FALSE,...)
 }
 \arguments{
   \item{x}{object of the class \code{cubicsplines}}

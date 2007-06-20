@@ -1,7 +1,7 @@
 \name{svensson}
 \alias{svensson}
 
-\title{Spot rate function according to Svensson }
+\title{Spot Rate Function according to Svensson }
 \description{This function calculates the spot-rates for certain maturity dates and a parameter vector
   according to Svensson.}
 \usage{

@@ -1,6 +1,6 @@
 \name{duration}
 \alias{duration}
-\title{Duration, modified duration and duration based weights}
+\title{Duration, modified Duration and Duration based Weights}
 \description{
   Duration, modified duration and duration based weights}
 \usage{

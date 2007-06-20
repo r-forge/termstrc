@@ -1,12 +1,12 @@
 \name{plot.nelson}
 \alias{plot.nelson}
 
-\title{S3 plot method }
+\title{S3 Plot Method }
 \description{
  S3 plot method for an object of the class \code{nelson}
 }
 \usage{
-plot.nelson(x,matrange,pdf=FALSE,...)
+\method{plot}{nelson}(x,matrange,pdf=FALSE,...)
 }
 \arguments{
   \item{x}{ object of the class \code{nelson}}

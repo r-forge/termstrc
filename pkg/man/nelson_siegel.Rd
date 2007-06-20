@@ -1,7 +1,7 @@
 \name{nelson_siegel}
 \alias{nelson_siegel}
 
-\title{Spot rate function according to Nelson/Siegel}
+\title{Spot Rate Function according to Nelson/Siegel}
 \description{
     This function calculates the spotrates for certain maturity dates and a parameter vector
   according to Nelson/Siegel.
