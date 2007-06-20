@@ -126,4 +126,6 @@ besser
 * references erweitern
 -> erledigt!  
 
+* Rd files für print.summary.*
+-> erledigt!  
   
