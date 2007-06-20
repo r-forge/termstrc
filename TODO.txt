@@ -128,4 +128,8 @@ besser
 
 * Rd files für print.summary.*
 -> erledigt!  
+
+* McCulloch (1975) dazuschreiben
+
+
   
