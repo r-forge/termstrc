@@ -66,7 +66,7 @@ splines_estim <-
              
   theta <- mapply(function(k)((i[[k]]-1)*K[[k]])/(s[[k]]-2)-h[[k]],sgroup,SIMPLIFY=FALSE)
     
-#  browser()
+  browser()
   #fehler wenn matrange != "all" 
   # knot points
   T <- mapply(function(k) c(0,
