@@ -30,16 +30,16 @@ print.nelson <-
 ###################################################################
 
 plot.nelson <-
-  function(x,matrange=c(min(mapply(function(i) min(x$y[[i]][,1]),1:x$n_group)),
-                        max(mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)))
+  function(x,matrange=c(min(mapply(function(i) min(x$y[[i]][,1]),seq(x$n_group))),
+                        max(mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))))
                         ,pdf=FALSE, ...) {
    
     
-     if(pdf) pdf( file="termstrc_ouput.pdf",... ) else par(ask=TRUE)  
+     if(pdf) pdf( file="termstrc_results.pdf",... ) else par(ask=TRUE)  
      
      # min and max maturity of all bonds in the sample 
-     samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
-                    max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group))) 
+     samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
+                    max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))) 
   
      # check plot maturity conformity
     if(x$matrange[1] != "all") {
@@ -59,19 +59,19 @@ plot.nelson <-
      }
                        				
     # plot each yield curve seperately
-    for (k in 1:x$n_group  ) {
+    for (k in seq(x$n_group)  ) {
          
       plot(x$zcy_curves[,1] ,x$zcy_curves[,k+1]*100,
       type="l",
       ylim=c(0, max(x$y[[k]][,2]) + 0.01 )*100,
       xlim=c(max(floor(min(x$y[[k]][,1])),matrange[1]),
              min(ceiling(max(x$y[[k]][,1])),matrange[2])),
-      xlab="Maturities (years) ",
+      xlab="Maturity (years) ",
       ylab="Percent",
       lwd=2,
       col="steelblue")
       title(names(x$opt_result)[k])
-      legend("bottomright",legend=c("Zero-coupon yield curve","Yields"),
+      legend("bottomright",legend=c("Zero-coupon yield curve","Yield to maturity"),
               col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
       grid()
       points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red") 
@@ -81,24 +81,24 @@ plot.nelson <-
     # plot all zero coupon yield curves together
     if (is.numeric(x$scurves)) {
      plot(x$zcy_curves[,1], x$zcy_curves[,
-      which.max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)) +1 ]*100,
-      type="l",col=which.max(mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)),
-      lty=1,lwd=2,xlab="Maturities (years)",
+      which.max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group))) +1 ]*100,
+      type="l",col=which.max(mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))),
+      lty=1,lwd=2,xlab="Maturity (years)",
       ylab="Zero-Coupon yields (%)",
       xlim=c(max(floor(samplemat[1]),matrange[1]), 
              min(ceiling(samplemat[2]),matrange[2])),
       ylim= c(0,max(x$zcy_curves[,2:(x$n_group+1)] ))*100)
    
-	  for(k in c((1:x$n_group)[-which.max(mapply(function(i) max(x$y[[i]][,1]),
-                                         1:x$n_group))]))
+	  for(k in c((seq(x$n_group))[-which.max(mapply(function(i) max(x$y[[i]][,1]),
+                                         seq(x$n_group)))]))
 	  {spoint <- which(x$zcy_curves[,1] > 
-                      mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)[k])[1] 
+                      mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group))[k])[1] 
      lines(x$zcy_curves[1:spoint ,1],x$zcy_curves[1:spoint,k+1]*100,col=k,lwd=2)
      lines(x$zcy_curves[((spoint+1) : nrow(x$zcy_curves) ) ,1],
      x$zcy_curves[((spoint+1) : nrow(x$zcy_curves)),k+1]*100,col=k,lty=5,lwd=2)
  	  } 
     title("Zero-coupon yield curves")
-    legend("bottomright",legend=names(x$opt_result),col=1:x$n_group,lty=1,lwd=2)
+    legend("bottomright",legend=names(x$opt_result),col=seq(x$n_group),lty=1,lwd=2)
     grid()
    }
                                         
@@ -106,15 +106,15 @@ plot.nelson <-
    if (is.numeric(x$scurves)) {
     plot(0,0, type="n",
     col=(which.max(mapply(function(i) max(x$y[[i]][,1]),
-                                         1:x$n_group)[-1]) + 1),lty=1,lwd=2,
-    xlab="Maturities (years)",
+                                         seq(x$n_group))[-1]) + 1),lty=1,lwd=2,
+    xlab="Maturity (years)",
     ylab="Spread (basis points)",
     xlim= c(max(floor(samplemat[1]),matrange[1]),
             min(ceiling(samplemat[2]),matrange[2])),
-    ylim=c(min(x$scurves[,1:x$n_group-1]),max(x$scurves[,1:x$n_group-1]))*10000)
+    ylim=c(min(x$scurves[,seq(x$n_group)-1]),max(x$scurves[,seq(x$n_group)-1]))*10000)
     
     for(k in c(2:x$n_group))
-    {spoint <- which(x$zcy_curves[,1] > mapply(function(i) max(x$y[[i]][,1]),1:x$n_group)[k])[1] 
+    {spoint <- which(x$zcy_curves[,1] > mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))[k])[1] 
      lines(x$zcy_curves[1:spoint ,1],x$scurves[1:spoint ,k-1]*10000,col=k,lwd=2)
      lines(x$zcy_curves[((spoint+1) : nrow(x$zcy_curves) ) ,1],
      x$scurves[((spoint+1) : nrow(x$zcy_curves) ) ,k-1]*10000,col=k,lty=5,lwd=2)
@@ -138,10 +138,10 @@ plot.nelson <-
 summary.nelson <-
     function(object,...) {
     x <- object
-    RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),1:x$n_group)
-    AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),1:x$n_group)
-    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
-    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
+    RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
+    AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
+    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]][,2]),seq(x$n_group))
+    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]][,2]),seq(x$n_group))
     
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
@@ -194,7 +194,7 @@ print.cubicsplines <-
   cat("---------------------------------------------------\n")
   cat("Parameters for Cubic splines estimation:\n")
   cat("\n")
-  for(i in 1:x$n_group) {
+  for(i in seq(x$n_group)) {
   print.default(paste(names(x$alpha)[[i]],":",sep=""))
   names(x$alpha[[i]]) <- paste("alpha",c(seq_along(x$alpha[[i]])))
   print.default(x$alpha[[i]])
@@ -210,10 +210,10 @@ print.cubicsplines <-
 summary.cubicsplines <-
     function(object,...) {
     x <- object
-    RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),1:x$n_group)
-    AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),1:x$n_group)
-    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
-    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]][,2]),1:x$n_group)
+    RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
+    AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
+    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2],x$yhat[[i]][,2]),seq(x$n_group))
+    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2],x$yhat[[i]][,2]),seq(x$n_group))
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields","AABSE-Yields")
@@ -242,14 +242,14 @@ print.summary.cubicsplines <-
 
 plot.cubicsplines <-
   function(x,matrange =c(0,
-                        max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group)))
+                        max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group))))
                         ,pdf=FALSE, ...) {
   
-     if(pdf) pdf( file="termstrc_ouput.pdf",... )  else par(ask=TRUE) 
+     if(pdf) pdf( file="termstrc_results.pdf",... )  else par(ask=TRUE) 
      
      # min and max maturity of all bonds in the sample 
-     samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), 1:x$n_group)),
-                    max(mapply(function(i) max(x$y[[i]][,1]), 1:x$n_group))) 
+     samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
+                    max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))) 
   
      # check plot maturity conformity
     if(x$matrange != "all") {
@@ -265,17 +265,17 @@ plot.cubicsplines <-
      }
                    				
     # plot each zero cupon yield curve seperately
-    for (k in 1:x$n_group  ) {  
+    for (k in seq(x$n_group)  ) {  
       plot(x$zcy_curves[[k]][,1] ,x$zcy_curves[[k]][,2]*100,
       type="l",
       ylim=c(0,max(x$zcy_curves[[k]][,2]) + 0.01 )*100,
       xlim=c(max(0,matrange[1]),min(max(x$zcy_curves[[k]][,1]),matrange[2])),
-      xlab="Maturities (years)",
+      xlab="Maturity (years)",
       ylab="Percent",
       lwd=2,
       col="steelblue")
       title(x$group[k])
-      legend("bottomright",legend=c("Zero-coupon yield curve","Yields"),
+      legend("bottomright",legend=c("Zero-coupon yield curve","Yield to maturity"),
               col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
       grid()
       points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red")
@@ -287,42 +287,42 @@ plot.cubicsplines <-
     # plot all zero cupon yield curves together
     if (is.numeric(x$scurves)){
     plot(x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]),
-                                 1:x$n_group))]][,1],
+                                 seq(x$n_group)))]][,1],
       		x$zcy_curves[[which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]),
-                                  1:x$n_group))]][,2]*100,
+                                  seq(x$n_group)))]][,2]*100,
      type="l",
      ylim=c(0,
                 max(x$zcy_curves[[which.max(mapply(function(k) 
-                max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,2])+ 0.01 )*100,
+                max(x$zcy_curves[[k]][,1]), seq(x$n_group)))]][,2])+ 0.01 )*100,
      xlim=c(max(0,matrange[1]),min(matrange[2],
               max(x$zcy_curves[[which.max(mapply(function(k) 
-              max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1]))),
-     xlab="Maturities (years)",
+              max(x$zcy_curves[[k]][,1]), seq(x$n_group)))]][,1]))),
+     xlab="Maturity (years)",
      ylab="Percent",
      lwd=2,
-     col=which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), 1:x$n_group)))
+     col=which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), seq(x$n_group))))
      grid()
      title("Zero coupon yield curves") 
       
-	  for(k in c( (1:x$n_group)[- which.max(mapply(function(k) 
-              max(x$zcy_curves[[k]][,1]), 1:x$n_group)) ]))
+	  for(k in c( (seq(x$n_group))[- which.max(mapply(function(k) 
+              max(x$zcy_curves[[k]][,1]), seq(x$n_group))) ]))
 	  {lines(x$zcy_curves[[k]][,1] ,
       		x$zcy_curves[[k]][,2]*100, lwd=2,col=k )
 		}
-	  legend("bottomright",legend=x$group,col=1:x$n_group, lty=1, lwd=2)	
+	  legend("bottomright",legend=x$group,col=seq(x$n_group), lty=1, lwd=2)	
     }
     
     # plot spread curves    
     if (is.numeric(x$scurves)) {
     matplot(x$zcy_curves[[which.min(mapply(function(k)
-             max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1],
+             max(x$zcy_curves[[k]][,1]), seq(x$n_group)))]][,1],
              x$scurves[,1:(x$n_group-1)]*10000, type="l",
     col=2:x$n_group,lty=1,lwd=2,
-    xlab="Maturities (years)",
+    xlab="Maturity (years)",
     ylab="Spread (basis points)",
     xlim= c(max(0,matrange[1]),
             min(max(x$zcy_curves[[which.min(mapply(function(k)
-            max(x$zcy_curves[[k]][,1]), 1:x$n_group))]][,1]),matrange[2])),
+            max(x$zcy_curves[[k]][,1]), seq(x$n_group)))]][,1]),matrange[2])),
     ylim=c(min(x$scurves),max(x$scurves ))*10000)
     title("Spread curves")
     legend("topleft",legend=x$group[-1],col=2:x$n_group,lty=1,lwd=2)

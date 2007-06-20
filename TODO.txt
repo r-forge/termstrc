@@ -20,6 +20,9 @@
   Statt 1:length(x$alpha[[i]]) ginge auch seq_along(x$alpha[[i]])
 
   Statt seq(ncol(cashflows)) besser seq_len(ncol(cashflows))
+  
+  1:n_group  -> sgroup
+  1:x$n_group -> seq(x$n_group)
 
 -> erledigt!  
 
@@ -65,7 +68,6 @@ License: \tab GPL \cr
    ausbauen, sowie den text mit Rforge abgleichen bzw. späterem Abstract von Paper
 
 * data/*.Rd ???
-
 
 -> erledigt!   
 
@@ -115,3 +117,13 @@ besser
 
 * Bug g(i) function  
 
+* Grafiken Beschriftung
+  Yields -> Yield to maturity
+  Maturities -> Maturity
+  
+-> erledigt!  
+
+* references erweitern
+-> erledigt!  
+
+  
