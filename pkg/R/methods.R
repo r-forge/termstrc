@@ -252,7 +252,7 @@ plot.cubicsplines <-
                     max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))) 
   
      # check plot maturity conformity
-    if(x$matrange != "all") {
+    if(x$matrange[1] != "all") {
     if(matrange[2]>  x$matrange[2]) { matrange[2] <-  x$matrange[2]
      warning("The maximum plot maturity range exceeds the choosen maximum maturity considered for the estimation")}
    
