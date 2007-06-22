@@ -45,6 +45,10 @@ J. Huston McCulloch (1971):
 Measuring the Term Structure of Interest Rates.
 \emph{The Journal of Business, \bold{44} 19--31.} 
 
+J. Huston McCulloch (1975):
+The Tax-Adjusted Yield Curve.
+\emph{The Journal of Finance, \bold{30} 811--830.} 
+
 
 Sanjay K. Nawalkha and Gloria M. Soto and Natalia K. Beliaeva (2005):
 Interest Rate Risk Modeling : The Fixed Income Valuation Course
