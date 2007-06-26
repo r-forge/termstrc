@@ -9,7 +9,7 @@ load("eurobonds.RData")
 
 group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds
-matrange <- c(2,10) 
+matrange <- c(2,15)
 
 x <- splines_estim(group, bonddata, matrange)
 

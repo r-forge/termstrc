@@ -53,12 +53,15 @@ splines_estim <-
                    sgroup,SIMPLIFY=FALSE)
     
   # Choosing knot points (McCulloch)
-  K <- mapply(function(k) ncol(m[[k]]),sgroup,SIMPLIFY=FALSE)
+  
     
   # number of basis functions
   s <-  mapply(function(k) round(sqrt(K[[k]])),sgroup,SIMPLIFY=FALSE)
   
+  #if(sum(s>3) < length(s))  stop("For cubic splines estimation more than 9 observations per group
+  #are required!")
   
+  browser()
   # only used for knot point finding
   i <- mapply(function(k) 2:(max(2,(s[[k]]-2))),sgroup,SIMPLIFY=FALSE)  
   
@@ -66,15 +69,15 @@ splines_estim <-
              
   theta <- mapply(function(k)((i[[k]]-1)*K[[k]])/(s[[k]]-2)-h[[k]],sgroup,SIMPLIFY=FALSE)
     
-  browser()
+  
   #fehler wenn matrange != "all" 
   # knot points
-  T <- mapply(function(k) c(0,
+  T <- mapply(function(k) if(s[[k]]>3) c(0,
        apply(as.matrix(m[[k]][,h[[k]]]),2,max)
        + theta[[k]]*(apply(as.matrix(m[[k]][,h[[k]]+1]),2,max)-apply(as.matrix(m[[k]][,h[[k]]]),2,max)),
-       max(m[[k]][,ncol(m[[k]])])),sgroup,SIMPLIFY=FALSE)
+       max(m[[k]][,ncol(m[[k]])])) else c(0,max(m[[k]][,ncol(m[[k]])])),sgroup,SIMPLIFY=FALSE)
  
-  # use own knot points
+  # useT own knot points
   # T <- seq(0,15,1.5)
   # s <- length(T)+1
   
