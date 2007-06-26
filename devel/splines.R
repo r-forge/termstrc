@@ -58,9 +58,9 @@ splines_estim <-
   # number of basis functions
   s <-  mapply(function(k) round(sqrt(K[[k]])),sgroup,SIMPLIFY=FALSE)
   
-  if(sum(s>3) != length(s))  stop("For cubic splines estimation more than 9 observations p
+  #if(sum(s>3) != length(s))  stop("For cubic splines estimation more than 9 observations p
   
-  browser()
+  #browser()
   # only used for knot point finding
   i <- mapply(function(k) 2:(max(2,(s[[k]]-2))),sgroup,SIMPLIFY=FALSE)  
   
