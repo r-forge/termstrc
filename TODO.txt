@@ -134,4 +134,6 @@ besser
 * McCulloch (1975) dazuschreiben
 -> erledigt!
 
+* check plot ranges warning messages 
+
   
