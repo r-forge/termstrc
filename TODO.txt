@@ -117,6 +117,8 @@ besser
 
 * Bug g(i) function  
 
+-> eldedigt !
+
 * Grafiken Beschriftung
   Yields -> Yield to maturity
   Maturities -> Maturity
