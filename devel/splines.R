@@ -54,12 +54,11 @@ splines_estim <-
     
   # Choosing knot points (McCulloch)
   
-    
+  K <- mapply(function(k) ncol(m[[k]]),sgroup,SIMPLIFY=FALSE)  
   # number of basis functions
   s <-  mapply(function(k) round(sqrt(K[[k]])),sgroup,SIMPLIFY=FALSE)
   
-  #if(sum(s>3) < length(s))  stop("For cubic splines estimation more than 9 observations per group
-  #are required!")
+  if(sum(s>3) != length(s))  stop("For cubic splines estimation more than 9 observations p
   
   browser()
   # only used for knot point finding
