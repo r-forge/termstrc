@@ -1,7 +1,7 @@
 Package: termstrc
 Type: Package
 Title: Term Structure and Credit Spread Estimation
-Version: 0.3
+Version: 1.0
 Date: 2006-12-15
 Author: Robert Ferstl, Josef Hayden
 Maintainer: Robert Ferstl <robert.ferstl@wu-wien.ac.at> 
