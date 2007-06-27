@@ -44,18 +44,20 @@ plot.nelson <-
      # check plot maturity conformity
     if(x$matrange[1] != "all") {
     if(matrange[2]>  x$matrange[2]) { matrange[2] <-  x$matrange[2]
-     warning("The maximum plot maturity range exceeds the choosen maximum maturity considered for the estimation")}
+       warning("The plot range for the maturity violates the estimation maturity range") 
+     }
    
     if(matrange[1] <  x$matrange[1]) { matrange[1] <-  x$matrange[1]
-     warning("The minium plot maturity range undercuts the choosen minimum maturity considered for the estimation")}
+       warning("The plot range for the maturity violates the estimation maturity range") 
+     }
     }
    
     if( matrange[2] > samplemat[2]) {matrange[2] <-  samplemat[2]
-     warning("The maximum plot maturity range has been set to the maxium maturity of the bond with the longest maturity" )
+       warning("The plot range for the maturity violates the estimation maturity range") 
      }
      
     if( matrange[1] < samplemat[1]) {matrange[1] <- samplemat[1]
-     warning("The minium plot maturity range has been set to the minium maturity of the bond with the shortest maturity" )
+       warning("The plot range for the maturity violates the estimation maturity range") 
      }
                        				
     # plot each yield curve seperately
@@ -203,7 +205,7 @@ print.cubicsplines <-
   }
  }
  
- ###################################################################
+###################################################################
 #            summary-method for cubic splines                      #
 ###################################################################
 
@@ -241,7 +243,7 @@ print.summary.cubicsplines <-
 ###################################################################
 
 plot.cubicsplines <-
-  function(x,matrange =c(0,
+  function(x,matrange =c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group))))
                         ,pdf=FALSE, ...) {
   
@@ -254,14 +256,16 @@ plot.cubicsplines <-
      # check plot maturity conformity
     if(x$matrange[1] != "all") {
     if(matrange[2]>  x$matrange[2]) { matrange[2] <-  x$matrange[2]
-     warning("The maximum plot maturity range exceeds the choosen maximum maturity considered for the estimation")}
+       warning("The plot range for the maturity violates the estimation maturity range") 
+    }
    
     if(matrange[1] <  x$matrange[1]) { matrange[1] <-  x$matrange[1]
-     warning("The minium plot maturity range undercuts the choosen minimum maturity considered for the estimation")}
+       warning("The plot range for the maturity violates the estimation maturity range") 
+     }
     }
    
     if( matrange[2] > samplemat[2]) {matrange[2] <-  samplemat[2]
-     warning("The maximum plot maturity range has been set to the maxium maturity of the bond with the longest maturity" )
+       warning("The plot range for the maturity violates the estimation maturity range") 
      }
                    				
     # plot each zero cupon yield curve seperately

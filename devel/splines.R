@@ -58,33 +58,26 @@ splines_estim <-
   # number of basis functions
   s <-  mapply(function(k) round(sqrt(K[[k]])),sgroup,SIMPLIFY=FALSE)
   
+  # only perfom spline estimation if number of bonds per group >= 9
   if(sum(s>=3) != length(s))  stop(cat("Estimation aborted:
     For cubic splines estimation more than 9 observations per group are required","\n",
     "Check group(s):", group[which((s>=3)==FALSE)]),
     "\n" )
   
-  
-  #check group
-  #browser()
   # only used for knot point finding
   i <- mapply(function(k) 2:(max(2,(s[[k]]-2))),sgroup,SIMPLIFY=FALSE)  
   
   h <-  mapply(function(k) trunc(((i[[k]]-1)*K[[k]])/(s[[k]]-2)),sgroup,SIMPLIFY=FALSE)
              
   theta <- mapply(function(k)((i[[k]]-1)*K[[k]])/(s[[k]]-2)-h[[k]],sgroup,SIMPLIFY=FALSE)
-    
-  
-  #fehler wenn matrange != "all" 
+
   # knot points
   T <- mapply(function(k) if(s[[k]]>3) c(0,
        apply(as.matrix(m[[k]][,h[[k]]]),2,max)
        + theta[[k]]*(apply(as.matrix(m[[k]][,h[[k]]+1]),2,max)-apply(as.matrix(m[[k]][,h[[k]]]),2,max)),
        max(m[[k]][,ncol(m[[k]])])) else c(0,max(m[[k]][,ncol(m[[k]])])),sgroup,SIMPLIFY=FALSE)
  
-  # useT own knot points
-  # T <- seq(0,15,1.5)
-  # s <- length(T)+1
-  
+ 
   # parameter estimation with OLS
   Y <- mapply(function(k) apply(cf_p[[k]],2,sum),sgroup,SIMPLIFY=FALSE)
    
