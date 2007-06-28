@@ -22,7 +22,7 @@ loss_function(p, phat, omega, weights)
 % For details please refer to the vignette of the package or to reference.
 %}
 %\value{}
-\references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canda.\emph{Technical Report No 84 Bank of Canada}}
+\references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canada.\emph{Technical Report No 84 Bank of Canada}}
 \author{Robert Ferstl, Josef Hayden}
 %\note{ }
 %\seealso{ }

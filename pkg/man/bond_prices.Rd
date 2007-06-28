@@ -16,8 +16,8 @@ bond_prices(method = "Nelson/Siegel", beta, m, cf)
   		or \code{"Svensson"} for the Svensson approach}
   \item{beta}{parameter vector, is linked to the chosen approach}
   \item{m}{maturities matrix, consists
-  of the maturity dates which are appendant to the cashflows of the bonds   }
-  \item{cf}{ cashfows matrix}
+  of the maturity dates which are appended to the cashflows of the bonds   }
+  \item{cf}{ cashflows matrix}
  }
 %\details{}
 \value{
@@ -29,7 +29,7 @@ bond_prices(method = "Nelson/Siegel", beta, m, cf)
   \item{bond_prices}{bond prices}
 }
 
-\references{\emph{Yield Curve Modelling at the Bank of Canda, David Bolder and David Streliski}, Technical Report No 84 Bank of Canada 1999, p.39 }
+\references{\emph{Yield Curve Modelling at the Bank of Canada, David Bolder and David Streliski}, Technical Report No 84 Bank of Canada 1999, p.39 }
 
 \author{ Robert Ferstl, Josef Hayden }
 \note{  

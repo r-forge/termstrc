@@ -35,7 +35,7 @@ Interest Rate Risk Modeling : The Fixed Income Valuation Course
 \emph{Wiley Finance, \bold{60--67}}
 
  }
-\author{Rober Ferstl, Josef Hayden }
+\author{Robert Ferstl, Josef Hayden }
 %\note{ }
 %\seealso{  }
 %\examples{e.g. example from the textbook }

@@ -6,7 +6,7 @@
 \usage{data(corpbonds)}
 
 \details{
-The data set eurobonds consists of bonds of the ratingclasses AAA ,AA+,
+The data set eurobonds consists of bonds of the rating classes AAA ,AA+,
 AA, AA-, A+, A, A-, BBB+, BBB, BBB-
 }
 

@@ -8,7 +8,7 @@ duration(cf_p, m_p, y)
 }
 
 \arguments{
-  \item{cf_p}{cashflow matrix (including prices)}
+  \item{cf_p}{cashflows matrix (including prices)}
   \item{m_p}{maturity matrix (including prices)}
   \item{y}{yield of the bond}
 }
@@ -17,7 +17,7 @@ duration(cf_p, m_p, y)
   The function returns a matrix with three columns, i.e. duration,
   modified duration and duration based weights. 
 }
-\references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canda.\emph{Technical Report No 84 Bank of Canada}}
+\references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canada.\emph{Technical Report No 84 Bank of Canada}}
 
 \author{Robert Ferstl, Josef Hayden }
 

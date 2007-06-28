@@ -16,7 +16,7 @@ splines_estim(group,
                e.g. \code{c("GERMANY","AUSTRIA")}}
   \item{bonddata}{a dataset of bonds in list format}
   \item{matrange}{use \code{"all"} for no restrictions, or restrict the
-    maturity range used for the estimation with \code{c(lower,uppper)} }
+    maturity range used for the estimation with \code{c(lower,upper)} }
 }
 \details{
   \item{\code{group}}{The first element of the vector will be used as the
@@ -29,16 +29,16 @@ splines_estim(group,
 
   \item{group}{groups used from data set}
   \item{matrange}{maturity range}
-  \item{n_group}{the number of groups used for the optimization}
+  \item{n_group}{the number of groups used for the optimisation}
   \item{zcy_curves}{values for plotting the estimated zero-coupon yield curves}
   \item{scurves}{values for plotting the spread curves}
-  \item{cf}{cashflow matrix for all specified groups}
+  \item{cf}{cashflows matrix for all specified groups}
   \item{m}{maturity matrix for all specified groups}
   \item{duration}{duration, weighted duration and duration based weights}
   \item{p}{dirty prices}
   \item{phat}{estimated bond prices}
   \item{y}{bond yields}
-  \item{yhat}{theoretical bond yields calculated whith the estimated
+  \item{yhat}{theoretical bond yields calculated with the estimated
     bond prices \code{phat}}
   \item{alpha}{OLS coefficients of cubic splines estimation}
 }

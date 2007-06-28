@@ -18,7 +18,7 @@
 
 \details{
 A plot of the estimated zero-coupon yield curve including the calculated yields for each specified group of bonds is offered. 
-In addition all zero-coupon yield curves are plotted in one graphic and afterwards the spreadcurves are plotted. 
+In addition all zero-coupon yield curves are plotted in one graphic and afterwards the spread curves are plotted. 
 The occurrence of a partially dashed line in a graphic indicates that the the curve has been extrapolated. 
 }
  

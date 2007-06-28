@@ -18,9 +18,9 @@ nelson_estim(group,
                e.g. \code{c("GERMANY","AUSTRIA")}}
   \item{bonddata}{a dataset of bonds in list format}
   \item{matrange}{use \code{"all"} for no restrictions, or restrict the
-    maturity range used for the estimation with \code{c(lower,uppper)} }
+    maturity range used for the estimation with \code{c(lower,upper)} }
   \item{method}{\code{"Nelson/Siegel"} or \code{"Svensson"} }
-  \item{fit}{use \code{"prices"} (\code{"yields"}) for minimizing the squared price (yield) error}
+  \item{fit}{use \code{"prices"} (\code{"yields"}) for minimising the squared price (yield) error}
   \item{weights}{If a weighted minimisation of the squared price deviation is required, use \code{"duration"}, otherwise \code{"none"} }
   \item{startparam}{matrix of start parameters, for the Nelson/Siegel (Svensson) method 4 (6) parameters for each each group are required (one row per group).}
   \item{control}{list of control parameters for the function \code{nlminb}}
@@ -43,17 +43,17 @@ The function \code{nelson_estim} returns a list with the following elements or s
   \item{matrange}{Includes the chosen maturity range}
   \item{method}{Includes the chosen estimation method}
   \item{fit}{Includes the chosen objective function}
-  \item{weights}{type of weighting used in optimization}
-  \item{n_group}{the number of groups used for the optimization}
+  \item{weights}{type of weighting used in optimisation}
+  \item{n_group}{the number of groups used for the optimisation}
   \item{zcy_curves}{values for plotting the estimated zero-coupon yield curves}
   \item{scurves}{values for plotting the spread curves}
-  \item{cf}{cashflow matrix for all specified groups}
+  \item{cf}{cashflows matrix for all specified groups}
   \item{m}{maturity matrix for all specified groups}
   \item{duration}{duration, weighted duration and duration based weights}
   \item{p}{dirty prices}
   \item{phat}{estimated bond prices}
   \item{y}{bond yields}
-  \item{yhat}{theoretical bond yields calculated whith the estimated
+  \item{yhat}{theoretical bond yields calculated with the estimated
     bond prices \code{phat}}
   \item{opt_result}{the optimal parameter vector for the specified groups according to the chosen estimation approach}
    

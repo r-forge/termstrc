@@ -15,7 +15,7 @@ spotrates(method, beta, m)
 
 \arguments{
   \item{method}{\code{"Nelson/Siegel"},\code{"Svensson"}}
-  \item{beta}{ paramater set  }
+  \item{beta}{ parameter set  }
   \item{m}{maturity vector }
 }
 %\details{}

@@ -14,7 +14,7 @@
   \item{\dots}{other arguments}  
 }
 \details{
- The print method for an object of fhe class \code{cubicsplines} prints  important input parameters of the optimisation and the results of the regression (i.e. the parameter of the cubic spline functions). 
+ The print method for an object of the class \code{cubicsplines} prints  important input parameters of the optimisation and the results of the regression (i.e. the parameter of the cubic spline functions). 
 }
 
 

@@ -3,7 +3,7 @@
 
 \title{Spot Rate Function according to Nelson/Siegel}
 \description{
-    This function calculates the spotrates for certain maturity dates and a parameter vector
+    This function calculates the spot rates for certain maturity dates and a parameter vector
   according to Nelson/Siegel.
 }
 \usage{
