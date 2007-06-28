@@ -1,7 +1,7 @@
 \name{create_cashflows_matrix}
 \alias{create_cashflows_matrix}
 
-\title{Cashflow Matrix Creation}
+\title{Cashflows Matrix Creation}
 \description{
   Creates a matrix of cashflows for a specified group of  bonds. The number of rows is the number of cashflows for the bond with the longest maturity.
 

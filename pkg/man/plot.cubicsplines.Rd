@@ -1,7 +1,7 @@
 \name{plot.cubicsplines}
 \alias{plot.cubicsplines}
 
-\title{S3 Plot Method for Cubicplines }
+\title{S3 Plot Method for Cubic Splines }
 \description{
  S3 plot method for an object of the class \code{cubicsplines}
 }
@@ -17,7 +17,7 @@
 
 \details{
 A plot of the estimated zero-coupon yield curve including the calculated yields for each specified group of bonds is offered. The occurrence of dashed vertical lines in a graphic represents the nodes used for the cubic splines estimation. 
-In addition all zero-coupon yield curves are plotted in one graphic and afterwards the spreadcurves are plotted. 
+In addition all zero-coupon yield curves are plotted in one graphic and afterwards the spread curves are plotted. 
 }
  
 %\value{ }

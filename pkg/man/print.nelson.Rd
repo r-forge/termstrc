@@ -14,7 +14,7 @@
   \item{\dots}{other arguments}
 }
 \details{
- The print method for an object of fhe class \code{nelson} prints
+ The print method for an object of the class \code{nelson} prints
  important input parameters of the optimisation and the results of the optimisation (i.e. the optimal parameter vector). 
 }
 
