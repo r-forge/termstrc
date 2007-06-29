@@ -16,7 +16,7 @@ Use the function \code{str()} to explore the data set.
  
 Every element of the list except \code{$RATING, $NAME} is required for the estimation. The elements 
 \code{$COUPONRATE, $PRICE} are not necessarily required. The calculation of the accrued interest 
-is not implemented and has therefore be provided by the user. For the included datasets the list element
+is not implemented and has therefore be provided by the user. For the provided datasets the list element
 \code{$ACCRUED} includes the accrued interests. 
 }
 

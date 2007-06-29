@@ -17,7 +17,7 @@ bond_yields(cashflows, m, tol = 1e-10)
 %\details{}
 
 \value{
-matrix with the bond yields and the associated maturity 
+matrix with the bond yields and the associated maturities 
 }
 
 \references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canada.\emph{Technical Report No 84 Bank of Canada}}

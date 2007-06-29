@@ -18,7 +18,7 @@ The package offers several widely-used term structure estimation procedures,
 
 Bank for International Settlements (2005).
 Zero-coupon yield curves: technical documentation.
-\emph{BIS Papers,\bold{No. 25}}
+\emph{BIS Papers, \bold{No. 25}}
 
 
 Robert R. Bliss (2007):

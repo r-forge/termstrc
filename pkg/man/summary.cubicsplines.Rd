@@ -14,14 +14,14 @@
   \item{\dots}{other arguments}
 }
 \details{
- The summary method for an object of the class \code{nelson} prints the
- solution of the goodness of fit tests (RMSE, AABSE) of the optimization. 
+ The summary method for an object of the class \code{cubicsplines} prints the
+ solution of the goodness of fit tests (RMSE, AABSE) of the optimisation. 
 }
 %\value{}
 %\references{ }
 \author{Robert Ferstl, Josef Hayden }
 %\note{}
-\seealso{\code{\link{plot.cubicsplines}},\code{\link{print.cubicsplines}}, \code{\link{rmse}},\code{\link{aabse}}}
+\seealso{\code{\link{plot.cubicsplines}}, \code{\link{print.cubicsplines}}, \code{\link{rmse}}, \code{\link{aabse}}}
 \examples{}
 
 \keyword{ }

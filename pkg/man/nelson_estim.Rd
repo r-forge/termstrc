@@ -40,9 +40,9 @@ nelson_estim(group,
 The function \code{nelson_estim} returns a list with the following elements or sub-lists:
 
   \item{group}{groups used from data set}
-  \item{matrange}{Includes the chosen maturity range}
-  \item{method}{Includes the chosen estimation method}
-  \item{fit}{Includes the chosen objective function}
+  \item{matrange}{includes the chosen maturity range}
+  \item{method}{includes the chosen estimation method}
+  \item{fit}{includes the chosen objective function}
   \item{weights}{type of weighting used in optimisation}
   \item{n_group}{the number of groups used for the optimisation}
   \item{zcy_curves}{values for plotting the estimated zero-coupon yield curves}
@@ -73,7 +73,7 @@ Yield Curve Modelling at the Bank of Canada.
 
  }
 \author{Robert Ferstl, Josef Hayden}
-\seealso{for another estimation method see \code{\link{nelson_estim}}}
+\seealso{for another estimation method see \code{\link{splines_estim}}}
 \examples{ 
 demo(euro01)
 }

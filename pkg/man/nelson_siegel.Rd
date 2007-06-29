@@ -24,8 +24,7 @@ of Business}, \bold{60(4)}:473--489.}
 
 \author{ Robert Ferstl, Josef Hayden }
 
-\note{ For details please refer to the vignette of the package or the article of Nelson and Siegel.
-}
+
 \examples{
 
 nelson_siegel(rep(0.01,4),1:30)
