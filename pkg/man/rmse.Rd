@@ -13,7 +13,7 @@ rmse(actual, estimated)
 }
 \details{
   Calculation of the RMSE according to the formula:
-\deqn{RMSE=\sqrt{\frac{1}{n}\sum_{i=1}{n}{(e_i-\overline{e_i})^2}}}
+\deqn{RMSE=\sqrt{\frac{1}{n}\sum_{i=1}^{n}{(e_i-\overline{e_i})^2}}}
 
 }
 \references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canada.\emph{Technical Report No 84 Bank of Canada}.}
