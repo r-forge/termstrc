@@ -28,7 +28,7 @@ The occurrence of a partially dashed line in a graphic indicates that the the cu
 
 %\note{ }
 
-\seealso{ \code{\link{print.nelson}},\code{\link{summary.nelson}}}
+\seealso{ \code{\link{print.nelson}}, \code{\link{summary.nelson}}}
 %\examples{}
 \keyword{  }
 

@@ -24,7 +24,7 @@
 \author{Robert Ferstl, Josef Hayden}
 %\note{ }
 
-\seealso{\code{\link{plot.cubicsplines}},\code{\link{summary.cubicsplines}} }
+\seealso{\code{\link{plot.cubicsplines}}, \code{\link{summary.cubicsplines}} }
 
 %\examples{}
 

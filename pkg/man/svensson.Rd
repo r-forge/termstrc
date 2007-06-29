@@ -22,8 +22,6 @@ Estimating and interpreting forward interest rates: Sweden 1992 -1994.
 \emph{Technical Reports 4871, National Bureau of Economic Research}. }
 
 \author{Robert Ferstl, Josef Hayden }
-\note{For details please refer to the vignette of the package or to the article of Svensson}
-
 
 \examples{
  svensson(c(0.07,0.3,0.05,0.1,0.08,0.2),1:30)

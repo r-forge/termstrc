@@ -22,14 +22,14 @@ bond_prices(method = "Nelson/Siegel", beta, m, cf)
 %\details{}
 \value{
   
-  The function bond prices returns a list with:
+  Returns a list with:
   
   \item{spot_rates}{spot rates}
   \item{discount_factors}{discount factors}
   \item{bond_prices}{bond prices}
 }
 
-\references{\emph{Yield Curve Modelling at the Bank of Canada, David Bolder and David Streliski}, Technical Report No 84 Bank of Canada 1999, p.39 }
+\references{David Bolder and David Streliski (1999): Yield Curve Modelling at the Bank of Canada.\emph{Technical Report No 84 Bank of Canada}}
 
 \author{ Robert Ferstl, Josef Hayden }
 \note{  

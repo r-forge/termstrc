@@ -60,7 +60,7 @@ The Tax-Adjusted Yield Curve.
 
 Sanjay K. Nawalkha and Gloria M. Soto and Natalia K. Beliaeva (2005):
 Interest Rate Risk Modeling : The Fixed Income Valuation Course
-\emph{Wiley Finance, \bold{60--67}}
+\emph{Wiley Finance,60--67}
 
 }
 

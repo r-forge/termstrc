@@ -22,7 +22,7 @@
 %\references{ }
 \author{Robert Ferstl, Josef Hayden }
 %\note{}
-\seealso{ \code{\link{nlminb}},\code{\link{plot.nelson}},\code{\link{print.nelson}},\code{\link{rmse}},\code{\link{aabse}}}
+\seealso{ \code{\link{nlminb}}, \code{\link{plot.nelson}}, \code{\link{print.nelson}}, \code{\link{rmse}}, \code{\link{aabse}}}
 \examples{}
 
 \keyword{ }

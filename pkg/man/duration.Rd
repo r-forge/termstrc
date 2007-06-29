@@ -8,8 +8,8 @@ duration(cf_p, m_p, y)
 }
 
 \arguments{
-  \item{cf_p}{cashflows matrix (including prices)}
-  \item{m_p}{maturity matrix (including prices)}
+  \item{cf_p}{cashflows matrix}
+  \item{m_p}{maturity matrix}
   \item{y}{yield of the bond}
 }
 %\details{}

@@ -4,7 +4,7 @@
 \title{ Cubic Functions }
 \description{
   Calculation of the cubic functions according to an approach of
-  J. Huston McCulloch (1971)
+  McCulloch (1975)
 }
 \usage{gi(t, T, i, s)}
 
@@ -32,7 +32,7 @@ The Tax-Adjusted Yield Curve.
 
 Sanjay K. Nawalkha and Gloria M. Soto and Natalia K. Beliaeva (2005):
 Interest Rate Risk Modeling : The Fixed Income Valuation Course
-\emph{Wiley Finance, \bold{60--67}}
+\emph{Wiley Finance,60--67}
 
  }
 \author{Robert Ferstl, Josef Hayden }
