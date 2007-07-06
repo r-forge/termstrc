@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.30.4-2.2 (Web2C 7.5.5) (format=pdflatex 2006.6.8)  26 JAN 2007 11:27
+This is pdfeTeX, Version 3.141592-1.30.4-2.2 (Web2C 7.5.5) (format=pdflatex 2006.6.8)  6 JUL 2007 10:37
 entering extended mode
 \write18 enabled.
 **fs_termstrc.tex
@@ -816,10 +816,10 @@ LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10> not available
 
  (./fs_termstrc.aux) ) 
 Here is how much of TeX's memory you used:
- 8483 strings out of 95125
- 154364 string characters out of 1182970
+ 8482 strings out of 95125
+ 154354 string characters out of 1182970
  2215522 words of memory out of 4670275
- 11298 multiletter control sequences out of 10000+50000
+ 11297 multiletter control sequences out of 10000+50000
  59955 words of font info for 69 fonts, out of 2000000 for 2000
  58 hyphenation exceptions out of 5000
  43i,16n,56p,319b,470s stack positions out of 5000i,500n,6000p,200000b,40000s
@@ -841,4 +841,4 @@ sr/local/teTeX/share/texmf.tetex/fonts/type1/bluesky/cm/cmr10.pfb></usr/local/t
 eTeX/share/texmf.tetex/fonts/type1/urw/times/utmri8a.pfb></usr/local/teTeX/shar
 e/texmf.tetex/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/teTeX/share/texmf
 .tetex/fonts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on fs_termstrc.pdf (13 pages, 224238 bytes).
+Output written on fs_termstrc.pdf (13 pages, 224240 bytes).
