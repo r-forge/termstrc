@@ -34,7 +34,7 @@
 
 \lstdefinelanguage{R}%
   {keywords={c,list, matrix, nrow,ncol,rownames,colnames,nelson_estim, print, summary, plot,byrow},%
-   otherkeywords={!,!=,~,$,*,\&,\%/\%,\%*\%,\%\%,<-,<<-,_,/},%
+   otherkeywords={!,!=,~,$,*,\&,\%/\%,\%*\%,\%\%,<-,<<-,/},%
    alsoother={._$},%
    sensitive,%
    morecomment=[l]\#,%
@@ -242,8 +242,8 @@ stringstyle=\color{stringcolor}}
 		 \end{equation*}
 	\end{block}
     	\begin{block}{Minimisation problem}
-	 $$\min_{\mathbf{b} \in G} F(\mathbf{b}) $$
-	 $$ \mathbf{b} \in G =   \{ \mathbf{b} \in \mathds{R}^4 ; \mathds{R}^6 : \mathbf{lb} \leq \mathbf{b} \leq \mathbf{ub}  \}$$
+	 $$\min_{\bm{b} \in G} F(\bm{b}) $$
+	 $$ \bm{b} \in G =   \{ \bm{b} \in \mathds{R}^4 ; \mathds{R}^6 : \mathbf{lb} \leq \bm{b} \leq \mathbf{ub}  \}$$
 	\end{block}
 	
 	\begin{block}{Parameter constraints}
@@ -291,19 +291,19 @@ x <- nelson_estim(group, bonddata, matrange,
 	\frametitle{Term Strucuture Estimation \\ Notation III}
 
 	\begin{block}{Cubic functions matrix}
-	
+	$$\bm{G}_{\left[n \times m\right]} = \{  g(m_{ij},l) \} \qquad   l = 1\dots INT[\sqrt{m}]$$
 	\end{block}
 	
 	\begin{block}{Predictor matrix}
-	
+	$$\bm{X}_{\left[m \times s\right]}=$$
 	\end{block}
 	
 	\begin{block}{Response vector}
-	
+	$$\bm{y}_{\left[m \times 1\right]}=$$
 	\end{block}
 	
 	\begin{block}{Parameter vector}
-	
+	$$\bm{\hat \alpha}_{\left[s \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}$$
 	\end{block}
 	
 	
@@ -325,7 +325,17 @@ x <- nelson_estim(group, bonddata, matrange,
 \begin{frame} [containsverbatim]
 	\frametitle{Example}
 	\begin{lstlisting}
-	
+	data(eurobonds)
+
+	group <- c("GERMANY", "AUSTRIA", "ITALY")
+	bonddata <- eurobonds
+	matrange <- "all"  
+
+	x <- splines_estim(group, bonddata, matrange)
+
+	print(x)
+	summary(x)
+	plot(x)
 	\end{lstlisting}
 	
 \end{frame}
