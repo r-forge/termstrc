@@ -33,7 +33,7 @@
 
 
 \lstdefinelanguage{R}%
-  {keywords={c,list, matrix, nrow,ncol,rownames,colnames,nelson_estim, print, summary, plot},%
+  {keywords={c,list, matrix, nrow,ncol,rownames,colnames,nelson_estim, print, summary, plot,byrow},%
    otherkeywords={!,!=,~,$,*,\&,\%/\%,\%*\%,\%\%,<-,<<-,_,/},%
    alsoother={._$},%
    sensitive,%
@@ -271,9 +271,9 @@ weights <- "none"
 control <- list(eval.max=100000)
 
 b <- matrix(c(0.02, -0.01, -0.025,  1,
- 			0.026, -0.011, -0.0262,    1,
-			0.025, -0.015, -0.025,    1),
-			nrow=3,ncol=4,byrow=TRUE)
+ 	0.026, -0.011, -0.0262,    1,
+	0.025, -0.015, -0.025,    1),
+	nrow=3,ncol=4,byrow=TRUE)
 			
 rownames(b) <- group
 
@@ -285,8 +285,32 @@ x <- nelson_estim(group, bonddata, matrange,
 
 
 \section{Cubic Splines}
-
 \subsection{Notation}
+\begin{frame}
+
+	\frametitle{Term Strucuture Estimation \\ Notation III}
+
+	\begin{block}{Cubic functions matrix}
+	
+	\end{block}
+	
+	\begin{block}{Predictor matrix}
+	
+	\end{block}
+	
+	\begin{block}{Response vector}
+	
+	\end{block}
+	
+	\begin{block}{Parameter vector}
+	
+	\end{block}
+	
+	
+
+
+\end{frame}
+
 
 
 
@@ -297,110 +321,13 @@ x <- nelson_estim(group, bonddata, matrange,
 
 
 
-% \begin{frame}
-%   \frametitle{Term structure and credit spread estimation} 
-%   \begin{itemize}
-%   \item estimate zero-coupon yield curves and credit spread curves from market data
-%   \item usual way for calculation of \textcolor{craneblue}{\textbf{credit spread curves}} 
-%   \end{itemize}
-% \begin{equation*}
-%   \label{spread}
-% cs_j(\bm{m}) = s_j(\bm{m,b}) - s_{ref}(\bm{m,b})
-% \end{equation*}
 
-%  \vspace{0.5cm}
-% \begin{tabular}{ll}
-% $cs_j(\bm{m})$ & credit-spread between country $j$ and reference country $ref$ \\
-% $s_j(\bm{m,b})$ &spot-rate curve of country $j$ with maturity vector  $\bm{m}$ \\
-% $s_{ref}(\bm{m,b})$ & spot-rate curve of the reference country
-% \end{tabular}
-
-
-% %\begin{center}
-% %	\includegraphics[width=0.97\textwidth]{curves}
-% %\end{center}
-% \end{frame}
-
-
-% \begin{frame}
-%   \frametitle{Nelson and Siegel (1987) approach}
-%   %\framesubtitle{Untertitel sind optional.}
-%    \begin{beamerboxesrounded}[shadow=true]{Instantaneous forward rates}
-% \begin{equation*}
-% 	    f(m,\bm{b}) = \beta_0 + \beta_1 \exp(-\frac{m}{\tau_1}) + \beta_2 \frac{m}{\tau_1} \exp(-\frac{m}{\tau_1})
-% \end{equation*}
-%  \end{beamerboxesrounded} 
-
-%  \vspace{1.5cm}
-
-% \begin{beamerboxesrounded}[shadow=true]{Spot rates}
-% \begin{equation*}\label{nelson}
-%     s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right)
-% \end{equation*}
-% \end{beamerboxesrounded}
-
-% %\begin{center}
-% %	\includegraphics[width=0.65\textwidth]{fignelson}
-% %\end{center}
-% \end{frame}
-
-
-% \begin{frame}
-%   \frametitle{Svensson (1994) approach}
-%  \begin{itemize}
-%    \item Svensson (1994) extended the functional form by two additional parameters which allows for a second hump-shape
-%  \end{itemize}
-
-% \begin{beamerboxesrounded}[shadow=true]{Instantaneous forward rates}
-% \begin{equation*}
-% 	    f(m,\bm{b}) = \beta_0 + \beta_1 \exp(-\frac{m}{\tau_1}) + \beta_2 \frac{m}{\tau_1} \exp(-\frac{m}{\tau_1})+\beta_3 \frac{m}{\tau_2} \exp(-\frac{m}{\tau_2})
-% \end{equation*}
-% \end{beamerboxesrounded}
-% \vspace{0.5cm}
-% \begin{beamerboxesrounded}[shadow=true]{Spot rates}
-% \begin{multline*}\label{svspot}
-%     s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right) \\+ \beta_3\left(\frac{1-\exp(-\frac{m}{\tau_2})}{\frac{m}{\tau_2}} - \exp(-\frac{m}{\tau_2})\right)
-% \end{multline*}
-% \end{beamerboxesrounded}
-% \end{frame}
-
-% \begin{frame}
-% 	\frametitle{Decomposition of the Svensson forward rate function}
+\begin{frame} [containsverbatim]
+	\frametitle{Example}
+	\begin{lstlisting}
 	
-% 	\begin{center}
-% 	\includegraphics[width=0.8\textwidth]{sv.pdf}
-% 	\end{center}
-
-% \end{frame}
-
-
-
-
-% \begin{frame}
-% 	\frametitle{Term structure estimation procedure \newline Objective function}
-
-% 	\begin{itemize}
-% 		\item Minimization of the weighted pricing or yield errors
-% 	\end{itemize}
-% 	\begin{beamerboxesrounded}[shadow=true]{Objective function}
-% 		\begin{equation*}
-% 		 \bm{b}_{opt} = \min_{b}\left(\left(\bm{\iota}_{\left[1 \times n\right]}\left[\bm{C}\cdot\bm{D}\right] - 		\bm{p}^d\right)^2 \bm{w}\bm{\iota}_{\left[m \times 1\right]} \right)
-% 		 \end{equation*}
-% 	\end{beamerboxesrounded}
+	\end{lstlisting}
 	
-% 	\begin{itemize}
-% 		\item The parameter vector is subject to constraints ($\beta_0 >0, \tau_1>0, \tau_2>0$)
-% 	\end{itemize}
-
-
-% \end{frame}
-
-
-
-
-
-\begin{frame}
-	\frametitle{Examples}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
