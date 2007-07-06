@@ -14,7 +14,7 @@
 \usepackage{times}
 \usepackage{graphicx}
 \usepackage[T1]{fontenc}
-\usepackage{amssymb,amsmath,amsthm, amsbsy, bm}
+\usepackage{amssymb,amsmath,amsthm, amsbsy, bm,dsfont}
 \newcommand{\bs}{\boldsymbol}
 \newcommand{\dd}{\mathrm{d}}
 \beamertemplatenavigationsymbolsempty
@@ -23,6 +23,30 @@
 \DeclareMathOperator{\V}{V\mathbb{V}}
 \DeclareMathOperator{\VaR}{VaR}
 \DeclareMathOperator{\CVaR}{CVaR}
+
+
+
+
+%for R Syntaxhighlighting
+\usepackage{listings}
+\usepackage{color}
+
+
+\lstdefinelanguage{R}%
+  {keywords={c,list, matrix, nrow,ncol,rownames,colnames,nelson_estim, print, summary, plot},%
+   otherkeywords={!,!=,~,$,*,\&,\%/\%,\%*\%,\%\%,<-,<<-,_,/},%
+   alsoother={._$},%
+   sensitive,%
+   morecomment=[l]\#,%
+   morestring=[d]",%
+   morestring=[d]'% 
+  }
+
+
+
+
+
+
 
 \title[Term Structure and Credit Spread Estimation with R]{Term Structure and Credit Spread \\Estimation with R}
 
@@ -46,6 +70,30 @@ Vienna University of Economics and Business Administration}
 
 
 \begin{document}
+%define colors for syntax highlighting
+\definecolor{darkblue}{rgb}{0,0,.5}
+\definecolor{darkred}{rgb}{0.4,0.0,0}
+\definecolor{commentcolor}{rgb}{0,0.5,0.25}
+\definecolor{stringcolor}{rgb}{0.5,0.0,0}
+
+\definecolor{myblue}{rgb}{.8, .8, 1}
+\newcommand*\mybluebox[1]{%
+\colorbox{myblue}{\hspace{1em}#1\hspace{1em}}}
+
+
+%settings for R syntaxhighlighting
+\lstset{basicstyle=\ttfamily\small,
+keywordstyle=\bfseries\color{darkblue},
+stringstyle=\ttfamily,
+showstringspaces=false,
+language=R,
+identifierstyle=,
+commentstyle=\color{commentcolor},
+stringstyle=\color{stringcolor}}
+
+
+
+
 
 \frame{\titlepage}
 
@@ -108,40 +156,40 @@ Vienna University of Economics and Business Administration}
 % str(eurobonds)
 
 \begin{frame}
-	\frametitle{Term structure estimation procedure \newline Notation I}
+	\frametitle{Term Structure Estimation Procedure \newline Notation I}
 	\begin{beamerboxesrounded}[shadow=true]{Maturity matrix $\bm{M}$}
 		\begin{equation*}\label{maturitym}
 		\bm{M}_{\left[n\times m\right]} = \{m_{ij}\}
 		\end{equation*}
 	\end{beamerboxesrounded}
+	
 	\vspace{0.3cm}
 	\begin{beamerboxesrounded}[shadow=true]{Cashflow matrix $\bm{C}$}
 		 \begin{equation*}\label{cashflowm}	
 		\bm{C}_{\left[n\times m\right]} = \{c_{ij}\}
 		\end{equation*}
 	\end{beamerboxesrounded}
-	\vspace{0.3cm}
-	\begin{beamerboxesrounded}[shadow=true]{Discount factor matrix $\bm{D}$}
-		\begin{equation*}\label{discountm}
-		\bm{D}_{\left[n\times m\right]} = \{d_{ij}\}; \qquad d_{ij}=e^{-m_{ij}s(m_{ij},\bm{b})}
-		\end{equation*}
-	\end{beamerboxesrounded}
+	
 	\vspace{0.3cm}
 	\begin{beamerboxesrounded}[shadow=true]{Clean price vector $\bm{p}^c$}
 		 \begin{equation*}\label{pc}
 		\bm{p}^c_{\left[1\times m\right]} = \{p^c_j\}
 		\end{equation*}
 	\end{beamerboxesrounded}	
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Term structure estimation procedure \newline Notation II}
+	
+	\vspace{0.3cm}
 	\begin{beamerboxesrounded}[shadow=true]{Accrued interest vector $\bm{a}$}
 		\begin{equation*}\label{a}
 		\bm{a}_{\left[1\times m\right]} = \{a_j\}
 		\end{equation*}
 	\end{beamerboxesrounded}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Term Structure Estimation Procedure \newline Notation II}
+	
 	\vspace{0.2cm}
 	\begin{beamerboxesrounded}[shadow=true]{Dirty price vector $\bm{p}^d$}
 		\begin{equation*}\label{pd}
@@ -151,24 +199,88 @@ Vienna University of Economics and Business Administration}
 		\bm{p}^d=\bm{p}^c+\bm{a}
 		\end{displaymath}
 	\end{beamerboxesrounded}
+	
+	\vspace{0.2cm}
+	\begin{beamerboxesrounded}[shadow=true]{Discount factor matrix $\bm{D}$}
+		\begin{equation*}\label{discountm}
+		\bm{D}_{\left[n\times m\right]} = \{d_{ij}\}; \qquad d_{ij}=e^{-m_{ij}s(m_{ij},\bm{b})}
+		\end{equation*}
+	\end{beamerboxesrounded}	
+	
+	\end{frame}
+
+\section{Nelson/Siegel and Svensson Method}
+\subsection{Notation}
+\begin{frame}
+	\frametitle{Spotrate Functions}
+	\begin{block}{Nelson/Siegel:}
+	\begin{equation*}\label{nelson}
+   	 s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - 	\exp(-\frac{m}{\tau_1})\right)
+	\end{equation*}
+	\end{block}
+	
+	\begin{block}{Svensson:}
+	\begin{multline*}\label{svspot}
+  	  s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - 	\exp(-\frac{m}{\tau_1})\right) \\+ \beta_3\left(\frac{1-\exp(-\frac{m}{\tau_2})}{\frac{m}{\tau_2}} - \exp(-\frac{m}{\tau_2})\right)
+	\end{multline*}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Minimisation of the weighted pricing errors}
 	\vspace{0.2cm}
 	\begin{beamerboxesrounded}[shadow=true]{Weights vector $\bm{w}$}
 		\begin{equation*}\label{weights}
    		\bm{w}_{\left[1\times m\right]}= \{w_j\}; \qquad   w_j=\frac{\frac{1}{D_j}}{\sum_{i=1}^m\frac{1}{D_i}}
 		\end{equation*}
 	\end{beamerboxesrounded}	
+	
+	\begin{block}{Objective function}
+	\begin{equation*}
+	F= \left(\left(\bm{\iota}_{\left[1 \times n\right]}\left[\bm{C}\cdot\bm{D}\right] - 		\bm{p}^d\right)^2 \bm{w}\bm{\iota}_{\left[m \times 1\right]} \right)
+		 \end{equation*}
+	\end{block}
+    	\begin{block}{Minimisation problem}
+	 $$\min_{\mathbf{b} \in G} F(\mathbf{b}) $$
+	 $$ \mathbf{b} \in G =   \{ \mathbf{b} \in \mathds{R}^4 ; \mathds{R}^6 : \mathbf{lb} \leq \mathbf{b} \leq \mathbf{ub}  \}$$
+	\end{block}
+	
+	\begin{block}{Parameter constraints}
+	$$\beta_0 >0, \tau_1>0, \tau_2>0$$
+	\end{block}
+	
+
 \end{frame}
 
-\begin{frame} \frametitle{Term Structure Estimation}
-  
-\end{frame}
 
+\subsection{Example}
 
-\section{Nelson/Siegel and Svensson Method}
-\subsection{Notation}
+\begin{frame} [containsverbatim]\frametitle{Example}
+  % \beamergotobutton{boxmuller}
 
-\begin{frame} \frametitle{Bla}
-   \beamergotobutton{boxmuller}
+\begin{lstlisting}
+data(eurobonds)
+
+group <- c("GERMANY", "AUSTRIA", "ITALY")
+bonddata <- eurobonds
+matrange <- c(2,10)
+method <- "Nelson/Siegel"
+fit <- "prices"
+weights <- "none"
+control <- list(eval.max=100000)
+
+b <- matrix(c(0.02, -0.01, -0.025,  1,
+ 			0.026, -0.011, -0.0262,    1,
+			0.025, -0.015, -0.025,    1),
+			nrow=3,ncol=4,byrow=TRUE)
+			
+rownames(b) <- group
+
+colnames(b) <- c("beta0","beta1","beta2","tau1")
+x <- nelson_estim(group, bonddata, matrange, 
+                  method, fit, weights, startparam=b,control)
+\end{lstlisting}
 \end{frame}
 
 
@@ -299,10 +411,27 @@ Vienna University of Economics and Business Administration}
   \scriptsize
   \beamertemplatearticlebibitems
   
+  
+
+
+
+
+
+%Charles R. Nelson and Andrew F. Siegel (1987): Parsimonious modeling of yield curves. The Journal of Business, 60(4):473Ð489.
+
+%Lars E.O. Svensson (1994): Estimating and interpreting forward interest rates: Sweden 1992 -1994. Technical Reports 4871, National Bureau of Economic Research.
+  
+  
+  
    \bibitem{BIS2005}
    Bank for International Settlements
    \newblock Zero-coupon yield curves: technical documentation
    \newblock {\em BIS Papers}, No. 25, October 2005
+   
+   \bibitem{Bliss2007}
+   Robert R. Bliss 
+   \newblock Testing term structure estimation methods. 
+   \newblock {\em Advances in Futures and Options Research}, No. 9, p. 197--232 , 2007
   
   \bibitem{Bolder1999}
    David Bolder, David Streliski
@@ -314,12 +443,31 @@ Vienna University of Economics and Business Administration}
     \newblock Estimation of the Term Structure of Interest Rates - A Parametric Approach
     \newblock {\em OeNB, Working Paper}, No. 37, 1999
 
-\framebreak
   \bibitem{Jankowitsch2004}
     Rainer Jankowitsch, Stefan Pichler
     \newblock Parsimonious Estimation of Credit Spreads
     \newblock {\em The Journal of Fixed Income}, 14(3):49--63, 2004
     
+    \bibitem{Ioannadis2003}
+    Michalis Ioannides
+    \newblock A comparison of yield curve estimation techniques using UK data.
+    newblock {\em Journal of Banking \& Finance}, 27, 1--26
+    
+    \bibitem{McCulloch1971}
+    J. Huston McCulloch
+    \newblock Measuring the Term Structure of Interest Rates
+    \newblock {\em The Journal of Business}, 44, 19--31
+    
+     \bibitem{McCulloch1975}
+    J. Huston McCulloch
+    \newblock  The Tax-Adjusted Yield Curve
+    \newblock {\em The Journal of Finance}, 30, 811--830
+    
+    \bibitem{Nwalkhaetal2005}
+     Sanjay K. Nawalkha and Gloria M. Soto and Natalia K. Beliaeva
+     \newblock Interest Rate Risk Modeling
+     \newblock{\em The Fixed Income Valuation Course}, Wiley Finance 2005
+      
     \bibitem{Nelson1987}
     Charles R. Nelson, Andrew F. Siegel
     \newblock Parsimonious Modeling of Yield Curves
