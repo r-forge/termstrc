@@ -289,17 +289,17 @@ x <- nelson_estim(group, bonddata, matrange,
 \begin{frame}
 
 	\frametitle{Term Strucuture Estimation \\ Notation III}
-
+	%basic relationsship !!
 	\begin{block}{Cubic functions matrix}
-	$$\bm{G}_{\left[n \times m\right]} = \{  g(m_{ij},l) \} \qquad   l = 1\dots INT[\sqrt{m}]$$
+	$$\bm{G}_{\left[n \times m\right]} = \{  g_{ij}(m_{ij},l) \} \qquad   l = 1\dots s ; s= INT[\sqrt{m}]$$
 	\end{block}
 	
 	\begin{block}{Predictor matrix}
-	$$\bm{X}_{\left[m \times s\right]}=$$
+	$$\bm{X}_{\left[m \times s\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}_{\left[n\times m\right]}(l) \right)^t$$
 	\end{block}
 	
 	\begin{block}{Response vector}
-	$$\bm{y}_{\left[m \times 1\right]}=$$
+	$$\bm{y}_{\left[m \times 1\right]}=  \bm{p}^d_{\left[1\times m\right]}  - \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]}   $$
 	\end{block}
 	
 	\begin{block}{Parameter vector}
@@ -310,16 +310,6 @@ x <- nelson_estim(group, bonddata, matrange,
 
 
 \end{frame}
-
-
-
-
-\section{Conclusion}
-
-
-
-
-
 
 
 \begin{frame} [containsverbatim]
@@ -339,6 +329,28 @@ x <- nelson_estim(group, bonddata, matrange,
 	\end{lstlisting}
 	
 \end{frame}
+
+
+\section{Conclusion}
+\begin{frame}\frametitle{Conclusion}
+
+\begin{itemize}
+\item  \textbf{termstrc} includes the two widley used term structure estimation methods
+\item  two data sets and demo examples are provided
+\item nearly completely vecorised code
+\item the package offers the common S3 methods
+\item already available at \textbf{CRAN}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\Large \begin{center}Thank You for Your Attention !! \end{center}
+\end{frame}
+
+
+
+
 
 \begin{frame}[allowframebreaks]
  \frametitle<presentation>{References}
