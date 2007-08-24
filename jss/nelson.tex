@@ -4,9 +4,30 @@
 
 
 \begin{equation}
-  \label{eq:nelsonspot}
+  \label{eq:nelson-spot}
    s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right)
 \end{equation}
+
+ 
+
+
+
+\begin{multline}\label{eq:svensson-spot}
+    s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right) \\+ \beta_3\left(\frac{1-\exp(-\frac{m}{\tau_2})}{\frac{m}{\tau_2}} - \exp(-\frac{m}{\tau_2})\right)
+\end{multline}
+
+
+\begin{equation}\label{eq:weights}
+  \bm{w}_{\left[1\times m\right]}= \{w_j\}; \qquad   w_j=\frac{\frac{1}{D_j}}{\sum_{i=1}^m\frac{1}{D_i}}
+\end{equation}
+
+
+\begin{equation}\label{eq:objfct-nelson}
+	F=\left( \bm{\iota}_{\left[1 \times n\right]}\left[\bm{C}\cdot\bm{D}\right] - 		\bm{p}^d\right)^2 \bm{w}\bm{\iota}_{\left[m \times 1\right]}
+\end{equation}
+
+
+
 
 
 %%% Local Variables: 
