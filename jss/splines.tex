@@ -2,6 +2,20 @@
 \label{sec:cubic-splines}
 
 
+	$$\bm{G}_{\left[n \times m\right]} = \{  g_{ij}(m_{ij},l) \} \qquad   l = 1\dots s ; s= INT[\sqrt{m}]$$
+
+	
+
+	$$\bm{X}_{\left[m \times s\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}_{\left[n\times m\right]}(l) \right)^t$$
+
+	
+
+	$$\bm{y}_{\left[m \times 1\right]}=  \bm{p}^d_{\left[1\times m\right]}  - \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]}   $$
+
+	
+
+	$$\bm{\hat \alpha}_{\left[s \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}$$
+
 
 
 %%% Local Variables: 
