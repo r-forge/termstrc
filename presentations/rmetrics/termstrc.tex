@@ -286,6 +286,35 @@ x <- nelson_estim(group, bonddata, matrange,
 
 \section{Cubic Splines}
 \subsection{Notation}
+
+\begin{frame} 
+\frametitle{Cubic splines }
+
+\begin{itemize}
+\item introduced by McCulloch (1975)
+\item term structure is divided in segments
+\item cubic functions are used to fit the term structure
+\end{itemize}
+
+\begin{beamerboxesrounded}[shadow=true]{Discount factor matrix $\bm{D}$}
+		\begin{equation*}
+		\bm{D}_{\left[n\times m\right]} = \{d_{ij}\}; \qquad d_{ij}= 1 + \sum_{l=1}^{s}\alpha_l g_{ij}(m_{ij},l)
+		\end{equation*}
+	\end{beamerboxesrounded}	
+
+
+
+
+\end{frame}
+
+
+
+
+
+ 
+
+
+
 \begin{frame}
 
 	\frametitle{Term Strucuture Estimation \\ Notation III}
@@ -337,9 +366,8 @@ x <- nelson_estim(group, bonddata, matrange,
 \begin{itemize}
 \item  \textbf{termstrc} includes the two widley used term structure estimation methods
 \item  two data sets and demo examples are provided
-\item nearly completely vecorised code
 \item the package offers the common S3 methods
-\item already available at \textbf{CRAN}
+\item already available at \textbf{CRAN} !
 
 \end{itemize}
 \end{frame}

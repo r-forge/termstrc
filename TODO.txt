@@ -135,5 +135,10 @@ besser
 -> erledigt!
 
 * check plot ranges warning messages 
+-> erledigt!
+
+* increase performance of cubic splines estimation
+
+* adjust date in DESCRIPTION file 
 
   
