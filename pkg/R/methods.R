@@ -169,7 +169,7 @@ summary.nelson <-
 print.summary.nelson <-
     function(x,...) {
     cat("---------------------------------------------------\n")
-    cat("Goodness of fit tests:\n")
+    cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
     cat("\n")
     print.default(x$gof)
@@ -230,7 +230,7 @@ summary.cubicsplines <-
 print.summary.cubicsplines <-
     function(x,...) {
     cat("---------------------------------------------------\n")
-    cat("Goodness of fit tests:\n")
+    cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
     cat("\n")
     print.default(x)
