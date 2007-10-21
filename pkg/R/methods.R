@@ -219,8 +219,10 @@ summary.cubicsplines <-
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields","AABSE-Yields")
-    class(gof) <- "summary.cubicsplines"
-    gof
+    sumry <- list(gof)
+    names(sumry) <- c("gof")
+    class(sumry) <- "summary.cubicsplines"
+    sumry
 } 
 
 ###################################################################
@@ -233,9 +235,9 @@ print.summary.cubicsplines <-
     cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
     cat("\n")
-    print.default(x)
+    print.default(x$gof)
     cat("\n")
-    x
+    x$gof
 }
 
 ###################################################################
