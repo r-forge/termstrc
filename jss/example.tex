@@ -1,7 +1,165 @@
 \section{Practical application}
 \label{sec:pract-appl}
 
+\subsection{Nelson/Siegel}
 
+\begin{Schunk}
+\begin{Sinput}
+> data(eurobonds)
+> group <- c("GERMANY", "AUSTRIA", "ITALY")
+> bonddata <- eurobonds
+> matrange <- c(2, 12)
+> method <- "Nelson/Siegel"
+> fit <- "prices"
+> weights <- "none"
+> control <- list(eval.max = 1e+05)
+> b <- matrix(c(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1), nrow = 3, ncol = 4, byrow = TRUE)
+> rownames(b) <- group
+> colnames(b) <- c("beta0", "beta1", "beta2", "tau1")
+\end{Sinput}
+\end{Schunk}
+
+\begin{Schunk}
+\begin{Sinput}
+> x <- nelson_estim(group, bonddata, matrange, method, fit, weights, startparam = b, control)
+> print(x)
+\end{Sinput}
+\begin{Soutput}
+---------------------------------------------------
+Parameters for Nelson/Siegel, Svensson estimation:
+
+Method: Nelson/Siegel 
+Fitted: prices 
+Weights: none 
+
+---------------------------------------------------
+
+             GERMANY     AUSTRIA       ITALY
+beta_0  4.190261e-02  0.04167176  0.04645067
+beta_1 -1.905208e-02 -0.01716245 -0.02012130
+beta_2  2.041106e-07 -0.01451569 -0.02134967
+tau_1   4.015677e+00  2.11920366  2.39845097
+
+---------------------------------------------------
+Parameters for Nelson/Siegel, Svensson estimation:
+
+Method: Nelson/Siegel 
+Fitted: prices 
+Weights: none 
+
+---------------------------------------------------
+
+             GERMANY     AUSTRIA       ITALY
+beta_0  4.190261e-02  0.04167176  0.04645067
+beta_1 -1.905208e-02 -0.01716245 -0.02012130
+beta_2  2.041106e-07 -0.01451569 -0.02134967
+tau_1   4.015677e+00  2.11920366  2.39845097
+\end{Soutput}
+\end{Schunk}
+
+\begin{Schunk}
+\begin{Sinput}
+> summary(x)
+\end{Sinput}
+\begin{Soutput}
+---------------------------------------------------
+Goodness of fit:
+---------------------------------------------------
+
+                  GERMANY      AUSTRIA        ITALY
+RMSE-Prices  1.059299e-01 2.868050e-02 0.0790745094
+AABSE-Prices 6.160572e-02 2.000659e-02 0.0561561089
+RMSE-Yields  1.324351e-04 4.051508e-05 0.0001240929
+AABSE-Yields 8.946562e-05 2.994114e-05 0.0001016403
+
+
+---------------------------------------------------
+Convergence information:
+---------------------------------------------------
+
+        Convergence ()
+GERMANY "converged"   
+AUSTRIA "converged"   
+ITALY   "converged"   
+
+        Solver message            
+GERMANY "relative convergence (4)"
+AUSTRIA "relative convergence (4)"
+ITALY   "relative convergence (4)"
+\end{Soutput}
+\end{Schunk}
+
+\begin{center}
+\begin{Schunk}
+\begin{Sinput}
+> par(mfrow = c(3, 2), cex = 0.55)
+> plot(x)
+\end{Sinput}
+\end{Schunk}
+\includegraphics{example-004}
+\end{center}
+
+\subsection{Cubic Splines}
+
+\begin{Schunk}
+\begin{Sinput}
+> data(eurobonds)
+> group <- c("GERMANY", "AUSTRIA", "ITALY")
+> bonddata <- eurobonds
+> matrange <- "all"
+\end{Sinput}
+\end{Schunk}
+
+\begin{Schunk}
+\begin{Sinput}
+> x <- splines_estim(group, bonddata, matrange)
+> print(x)
+\end{Sinput}
+\begin{Soutput}
+---------------------------------------------------
+Parameters for Cubic splines estimation:
+
+[1] "GERMANY:"
+      alpha 1       alpha 2       alpha 3       alpha 4       alpha 5 
+-0.0031562638 -0.0001804021  0.0008893256  0.0009869789 -0.0235685086 
+
+[1] "AUSTRIA:"
+      alpha 1       alpha 2       alpha 3       alpha 4 
+-0.0030226383  0.0007101622  0.0010939255 -0.0234513152 
+
+[1] "ITALY:"
+      alpha 1       alpha 2       alpha 3       alpha 4       alpha 5       alpha 6 
+-1.319834e-03 -2.612472e-03 -3.871354e-05  1.264864e-03  6.204093e-04 -2.481481e-02 
+\end{Soutput}
+\end{Schunk}
+
+
+\begin{Schunk}
+\begin{Sinput}
+> summary(x)
+\end{Sinput}
+\begin{Soutput}
+---------------------------------------------------
+Goodness of fit:
+---------------------------------------------------
+
+                  GERMANY      AUSTRIA        ITALY
+RMSE-Prices  1.818950e+01 1.386148e+01 2.283539e+01
+AABSE-Prices 1.406844e+01 8.328159e+00 1.536100e+01
+RMSE-Yields  1.224657e-04 1.114989e-04 1.499874e-04
+AABSE-Yields 8.282076e-05 8.727466e-05 1.155357e-04
+\end{Soutput}
+\end{Schunk}
+
+\begin{center}
+\begin{Schunk}
+\begin{Sinput}
+> par(mfrow = c(3, 2), cex = 0.55)
+> plot(x)
+\end{Sinput}
+\end{Schunk}
+\includegraphics{example-008}
+\end{center}
 
 %%% Local Variables: 
 %%% mode: latex
