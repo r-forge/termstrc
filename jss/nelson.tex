@@ -9,18 +9,39 @@
 \item derivation via Laguerre function
 \end{itemize}
 
+\cite{Nelson1987} propose a parsimonious  model of  the instantaneous forward rate as a solution to a second-order differential equation for the case of equal roots.
+
+\begin{equation}
+  \label{eq:laguerre}
+  f(m,\bm{b}) = \beta_0+\beta_1\exp\left(-\frac{m}{\tau_1}\right)+\beta_2\left[\left(\frac{m}{\tau_1}\right)\exp\left(-\frac{m}{\tau_1}\right)\right]
+\end{equation}
+
+
+The spot rate is the average of the instantaneous forward rates. 
+
+\begin{equation}
+  \label{eq:intspotrate}
+  s(m,\bm{b})=\frac{1}{m}\int_0^mf(m,\bm{b})\,dm
+\end{equation}
+
+
 \begin{equation}
   \label{eq:nelson-spot}
    s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right)
 \end{equation}
 
+\input{curveshape.tex}
  
-
+\cite{Svensson1994} extension
 
 
 \begin{multline}\label{eq:svensson-spot}
     s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right) \\+ \beta_3\left(\frac{1-\exp(-\frac{m}{\tau_2})}{\frac{m}{\tau_2}} - \exp(-\frac{m}{\tau_2})\right)
 \end{multline}
+
+
+
+
 
 
 \begin{equation}\label{eq:weights}
