@@ -6,7 +6,7 @@ matrange <- c(2,12)
 method <- "Nelson/Siegel"
 fit <- "prices"
 weights <- "none"
-control <- list(eval.max=100000)
+control <- list(eval.max=100000, iter.max=500)
 
 b <- matrix(c(0,0,0, 1,
  			0,0,0, 1,
