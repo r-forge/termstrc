@@ -4,6 +4,10 @@
 \subsection{Nelson/Siegel}
 
 <<>>=
+library(termstrc)
+@
+
+<<>>=
 data(eurobonds)
 group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds

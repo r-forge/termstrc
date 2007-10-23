@@ -57,16 +57,12 @@ nelson_estim <-
   duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],y[[k]][,2]),
                    sgroup,SIMPLIFY=FALSE)
   
-  #browser()   
   # objective function 
   obj_fct_prices <- function(b) {    # price error minimization
      loss_function(p[[k]],
      	bond_prices(method,b,m[[k]],cf[[k]])$bond_prices,duration[[k]][,3],weights)}
   
-  #obj_fct_yields <- function(b) {    # yield error minimization
-  #  loss_function(y[[k]][,"Yield"],spotrates(method,b,y[[k]][,"Maturity"]))}
-  
-   obj_fct_yields <- function(b) {  
+  obj_fct_yields <- function(b) {  
     loss_function(y[[k]][,2],bond_yields(rbind(
     -bond_prices(method,b,m[[k]],cf[[k]])$bond_prices,cf[[k]]),m_p[[k]])[,2],duration[[k]][,3],weights)} 
     
@@ -86,11 +82,10 @@ nelson_estim <-
   # calculate optimal parameter vector
   opt_result <- list()
 
-  # use apply ?  
   for (k in sgroup){
-    opt_result[[k]] <- #mapply(function(k)
+    opt_result[[k]] <- 
                   nlminb(startparam[k,],obj_fct, lower = lower_bounds,
-                  upper = upper_bounds,control=control)#,sgroup,SIMPLIFY=FALSE)
+                  upper = upper_bounds,control=control)
   }   
  
   # theoretical bond prices with estimated parameters

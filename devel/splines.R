@@ -7,7 +7,7 @@ splines_estim <-
            bonddata,
            matrange="all"
            ) {
-
+Rprof()
     
   # select given group from bonddata
   bonddata <- bonddata[group]
@@ -86,7 +86,13 @@ splines_estim <-
   # k ... group index
   # j ... column index (bond)
   # sidx ... index for spline function  
- 
+ browser()
+
+G <- list(list())
+mapply(function(k) mapply(function(sidx) G[[k]][[sidx]] <- mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]])),1:s[[k]]),sgroup)
+
+
+  
   for (k in sgroup){  
   X[[k]] <- matrix(NA,ncol(m[[k]]),s[[k]])
                  
@@ -158,6 +164,7 @@ splines_estim <-
     
   class(result) <- "cubicsplines"
   result
+Rprof(NULL)
  
 }
 

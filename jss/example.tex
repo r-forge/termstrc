@@ -5,6 +5,12 @@
 
 \begin{Schunk}
 \begin{Sinput}
+> library(termstrc)
+\end{Sinput}
+\end{Schunk}
+
+\begin{Schunk}
+\begin{Sinput}
 > data(eurobonds)
 > group <- c("GERMANY", "AUSTRIA", "ITALY")
 > bonddata <- eurobonds
@@ -13,7 +19,8 @@
 > fit <- "prices"
 > weights <- "none"
 > control <- list(eval.max = 1e+05)
-> b <- matrix(c(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1), nrow = 3, ncol = 4, byrow = TRUE)
+> b <- matrix(c(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1), nrow = 3, 
++     ncol = 4, byrow = TRUE)
 > rownames(b) <- group
 > colnames(b) <- c("beta0", "beta1", "beta2", "tau1")
 \end{Sinput}
@@ -21,7 +28,8 @@
 
 \begin{Schunk}
 \begin{Sinput}
-> x <- nelson_estim(group, bonddata, matrange, method, fit, weights, startparam = b, control)
+> x <- nelson_estim(group, bonddata, matrange, method, fit, weights, 
++     startparam = b, control)
 > print(x)
 \end{Sinput}
 \begin{Soutput}
@@ -96,7 +104,7 @@ ITALY   "relative convergence (4)"
 > plot(x)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{example-004}
+\includegraphics{example-005}
 \end{center}
 
 \subsection{Cubic Splines}
@@ -128,8 +136,10 @@ Parameters for Cubic splines estimation:
 -0.0030226383  0.0007101622  0.0010939255 -0.0234513152 
 
 [1] "ITALY:"
-      alpha 1       alpha 2       alpha 3       alpha 4       alpha 5       alpha 6 
--1.319834e-03 -2.612472e-03 -3.871354e-05  1.264864e-03  6.204093e-04 -2.481481e-02 
+      alpha 1       alpha 2       alpha 3       alpha 4       alpha 5 
+-1.319834e-03 -2.612472e-03 -3.871354e-05  1.264864e-03  6.204093e-04 
+      alpha 6 
+-2.481481e-02 
 \end{Soutput}
 \end{Schunk}
 
@@ -158,7 +168,7 @@ AABSE-Yields 8.282076e-05 8.727466e-05 1.155357e-04
 > plot(x)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{example-008}
+\includegraphics{example-009}
 \end{center}
 
 %%% Local Variables: 
