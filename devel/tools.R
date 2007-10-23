@@ -119,9 +119,6 @@ names(isins_range_pos) <- names(bonddata)
 
 # first part of bonddata for filtering
 
-#if(length(bonddata[[1]])>8) N=8 else N=6
-#N = 6
-
 N <- which(names(bonddata[[1]]) %in% c("ISIN","MATURITYDATE","STARTDATE","COUPONRATE","PRICE","ACCRUED"))
 
 first <- function(lst) lst[N]
