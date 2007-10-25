@@ -9,6 +9,95 @@
 \item derivation via Laguerre function
 \end{itemize}
 
+\subsubsection*{Maturity matrix $\bm{M}$}
+
+\begin{equation}\label{maturitym}
+\bm{M}_{\left[n\times m\right]}:= \{m_{ij}\}
+\end{equation}
+
+The number of rows $n$ is determined through the number of cashflows of the bond $j$ with the longest maturity. For each bond $j$ exists a column with the corresponding cashflow dates. Dates after the maturity of the bond $j$ are filled up with zeros till the maturity date of the bond with the longest maturity. One element $m_{ij}$ of the matrix  refers, therefore, to the maturity date of  the $i$-th cashflow of the $j$-th bond.
+
+\subsubsection*{Cashflow matrix $\bm{C}$}
+
+ \begin{equation}\label{cashflowm}
+\bm{C}_{\left[n\times m\right]}:= \{c_{ij}\}
+\end{equation}
+
+ The cashflow matrix is defined analogously to the maturity matrix.  One element $c_{ij}$  of the matrix refers to the $i$-th cashflow of the $j$-th bond. Note, that the last cashflow of a each bond includes the redemption payment.
+
+\subsubsection*{Discount factor matrix $\bm{D}$}
+
+ \begin{equation}\label{discountm}
+\bm{D}_{\left[n\times m\right]}:= \{d_{ij}\}
+\end{equation}
+
+ The discount factor matrix is also defined analogously to the maturity matrix. One element $d_{ij}$ of the matrix refers to the discount factor associated with  the $i$-th cashflow of the $j$-th bond. An individual discount factor $d_{ij}$ is constructed as
+
+\begin{displaymath}
+d_{ij}=e^{-m_{ij}s(m_{ij},b)},
+\end{displaymath}
+
+where $s(m_{ij},b)$ is the Nelson/Siegel or Svensson spot rate function defined in equation (\ref{nsspot}) and (\ref{svspot}).
+
+\subsubsection*{Clean price vector $\bm{p}^c$}
+
+  \begin{equation}\label{pc}
+\bm{p}^c_{\left[1\times m\right]}:= \{p^c_j\}
+\end{equation}
+
+$p_{c_j}$ is the quoted price of the $j$-th bond ($j=1...m$).
+
+\subsubsection*{Accrued interest vector $\bm{a}$}
+
+  \begin{equation}\label{a}
+\bm{a}_{\left[1\times m\right]}:= \{a_j\}
+\end{equation}
+
+Different conventions for the calculation of accrued interest are used in the market. A basic form for the $j$-th bond is as follows.
+
+\begin{equation}
+    a_j= \frac{\mbox{number of days since last coupon payment}}{\mbox{number of days in current coupon period}}\cdot \mbox{coupon}_j
+\end{equation}
+ 	
+
+\subsubsection*{Dirty price vector $\bm{p}^d$}
+
+\begin{equation}\label{pd}
+    \bm{p}^d_{\left[1\times m\right]}:= \{p^d_j\}
+\end{equation}
+
+The dirty price vector is the sum of the clean price vector and the accrued interest vector and consists of the dirty prices of all bonds $j$.
+
+\begin{displaymath}
+\bm{p}^d=\bm{p}^c+\bm{a}
+\end{displaymath}
+
+\subsubsection*{Weights vector $\bm{w}$}
+
+\begin{equation}\label{weights}
+    \bm{w}_{\left[1\times m\right]}:= \{w_j\}
+\end{equation}
+
+Whereas $\omega_j$ is the weight for bond $j$ with Duration $d_j$:
+
+\begin{displaymath}
+    w_j=\frac{\frac{1}{d_j}}{\sum_{i=1}^m\frac{1}{d_i}}
+\end{displaymath}
+
+
+The duration for a bond $j$ is a weighted average of the time to cashflows.
+%old definition
+%\begin{equation}
+  %\label{duration}
+ % D=\frac{C\sum_{i=1}^n\delta(m_i)m_i+\delta(m_n)Rm_n}{C\sum_{i=1}^n\delta(m_i)+\delta(m_n)R}=\frac{1}{p_c+a}\left[C\sum_{i=1}^n\delta(m_i)m_i+\delta(m_n)Rm_n\right]
+%\end{equation}
+
+\begin{equation}\label{duration}
+d_j= \frac{\bm{C}_{\left[n \times j\right]} \left(\bm{D}_{\left[n\times j\right]} \cdot \bm{M}_{\left[n\times j\right]}\right)^t} {\bm{C}_{\left[n \times j\right]}\left(\bm{D}_{\left[n\times j\right]}\right)^t}
+\end{equation}
+
+Whereas $(\cdot)$ denotes a element by element multiplication and $( )^t$ the transposed matrix (vector).
+
 \cite{Nelson1987} propose a parsimonious  model of  the instantaneous forward rate as a solution to a second-order differential equation for the case of equal roots.
 
 \begin{equation}
@@ -31,6 +120,8 @@ The spot rate is the average of the instantaneous forward rates.
 \end{equation}
 
 \input{curveshape.tex}
+
+%\input{curveflex.tex}
  
 \cite{Svensson1994} extension
 
@@ -41,6 +132,18 @@ The spot rate is the average of the instantaneous forward rates.
 
 
 
+with a parameter vector ${\bm{b}} = \left(\beta_0,\beta_1,\beta_2,\tau_1,\beta_3,\tau_2\right)$.
+
+The impact of the parameters can be described as follows \citep[see][p.7]{Bolder1999}:
+
+\begin{itemize}
+\item $\beta_0$ is the asymptotic value of the forward rate (spot rate) function.  The curve will tend towards the asymptote as the time to maturity approaches  $\infty$ ($\beta_0 >0$).
+\item $\beta_1$ determines the starting (short-term) value of the curve in terms of deviation from the asymptote (the sum $\beta_0$ and $\beta_1$) is the vertical intercept. Moreover, it defines the basic speed with which the curve tends toward its long-term trend.
+\item $\tau_1$ specifies the position of the first hump or the U-shape on the curve ($\tau_1>0$).
+\item $\beta_2$ determines the magnitude and direction of the hump. If $\beta_2 >0$  a hump will occur at  $\tau_1$, whereas $\beta_2<0$, a U-shaped value will occur at $\tau_1$.
+\item $\tau_2$ specifies the position of the second hump or the U-shape on the curve ($\tau_2>0$).
+\item $\beta_3$ analogously  to  $\beta_2$ determines the magnitude and direction of the second hump.
+\end{itemize}
 
 
 
