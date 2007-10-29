@@ -8,8 +8,96 @@
 
 \end{itemize}
 
+\cite{McCulloch1975} defines a $k$-parameter spline with $k-1$ knot points $d_l$. We sort the cashflow matrix $\bm{C}$ and the maturity matrix $\bm{M}$ such that the $m$ bonds are arranged in ascending order by their maturity dates. The following specification places an equal number of bonds between adjacent knots. It sets $d_1=0$ and $d_{k-1}=m_m$. $m_j$ is the maturity date of the $j$-th bond.
 
-	$$\bm{G}_{\left[n \times m\right]} = \{  g_{ij}(m_{ij},l) \} \qquad   l = 1\dots s ; s= INT[\sqrt{m}]$$
+
+\begin{equation}
+  \label{eq:A.1a}
+  d_l = m_h+\theta(m_{h+1}-m_h)
+\end{equation}
+
+where
+
+\begin{equation}
+ \label{eq:A.1b}
+  h = \mbox{greates integer in }\frac{(l-1)m}{k-2}
+\end{equation}
+
+and
+
+\begin{equation}
+  \label{eq:A.1c}
+  \theta = \frac{(j-1)n}{k-2}-h.
+\end{equation}
+
+\cite{McCulloch1971} sets the  number of basis functions to the integer nearest to the square root of the number of observed bonds. This allows a smooth fit of the discount function.
+
+\begin{equation}
+  \label{eq:nofknots}
+  k = \mbox{INT}\left[\sqrt{m}\right]
+\end{equation}
+
+
+In order to generate the family of cubic splines relative to these knots, we define for $m_{ij}<d_{l-1}$
+
+\begin{equation}
+  \label{eq:A.2}
+  g_l(m_{ij})=0.
+\end{equation}
+
+
+For $d_{l-1}\leq m_{ij} <d_l$, we define
+
+\begin{equation}
+  \label{eq:A.3}
+  g_l(m_{ij})=\frac{(m_{ij}-d_{l-1})^3}{6(d_l-d_{l-1})}
+\end{equation}
+
+When $d_l\leq m_{ij}< d_{l+1}$, we define
+
+\begin{equation}
+  \label{eq:A.4a}
+  g_l(m_{ij}) = \frac{c^2}{6}+\frac{ce}{2}+\frac{e^2}{2}-\frac{e^3}{6(d_{l+1}-d_l)}
+\end{equation}
+
+where
+
+\begin{equation}
+  \label{eq:A.4b}
+  c = d_l-d_{l-1}
+\end{equation}
+
+and 
+
+\begin{equation}
+  \label{eq:A.4c}
+  e = m_{ij}-d_l
+\end{equation}
+
+For $d_{l+1}\leq m_{ij}$, define
+
+\begin{equation}
+  \label{eq:A.5}
+  g_l(m_{ij}) = (d_{l+1}-d_{l-1})\left[\frac{2d_{l+1}-d_l-d_{l-1}}{6}+\frac{m_{ij}-d_{l+1}}{2}\right]
+\end{equation}
+
+(Set $d_{l-1}=d_l=0$ when $l=1$.)
+
+The above formulas apply when $l<k$. When $l=k$, we define
+
+\begin{equation}
+  \label{eq:A.6}
+ g _k(m_{ij}) = m_{ij},
+\end{equation}
+
+regardless of $m_{ij}$.
+
+The basis functions in equations \eqref{eq:A.2}-\eqref{eq:A.6} are calulated for the maturities of each cashflow and summarized in the matrix
+
+\begin{equation}
+\label{eq:basisfctmatrix}	
+\bm{G}_{\left [n \times m\right]} = \{g_{ij}\}.
+\end{equation}
 
 	
 

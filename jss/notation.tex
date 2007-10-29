@@ -8,7 +8,11 @@
 \bm{M}_{\left[n\times m\right]}:= \{m_{ij}\}
 \end{equation}
 
-The number of rows $n$ is determined through the number of cashflows of the bond $j$ with the longest maturity. For each bond $j$ exists a column with the corresponding cashflow dates. Dates after the maturity of the bond $j$ are filled up with zeros till the maturity date of the bond with the longest maturity. One element $m_{ij}$ of the matrix  refers, therefore, to the maturity date of  the $i$-th cashflow of the $j$-th bond.
+The number of rows $n$ is determined through the number of cashflows of the bond $j$ with the longest maturity. For each bond $j$ exists a column with the corresponding cashflow dates. Dates after the maturity of the bond $j$ are filled up with zeros till the maturity date of the bond with the longest maturity. One element $m_{ij}$ of the matrix  refers, therefore, to the maturity date of  the $i$-th cashflow of the $j$-th bond. We denote with $m_j$ the maturity of the last cashflow, i.e. the maturity of the $j$-th bond.
+
+\begin{equation}\label{weights}
+    \bm{m}_{\left[1\times m\right]}:= \{m_j\}
+\end{equation}
 
 \subsubsection*{Cashflow matrix $\bm{C}$}
 
