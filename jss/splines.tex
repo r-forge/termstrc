@@ -8,6 +8,8 @@
 
 \end{itemize}
 
+\subsection{Knot point selection}
+
 \cite{McCulloch1975} defines a $k$-parameter spline with $k-1$ knot points $d_l$. We sort the cashflow matrix $\bm{C}$ and the maturity matrix $\bm{M}$ such that the $m$ bonds are arranged in ascending order by their maturity dates. The following specification places an equal number of bonds between adjacent knots. It sets $d_1=0$ and $d_{k-1}=m_m$. $m_j$ is the maturity date of the $j$-th bond.
 
 
@@ -99,7 +101,8 @@ The basis functions in equations \eqref{eq:A.2}-\eqref{eq:A.6} are calulated for
 \bm{G}_{\left [n \times m\right]} = \{g_{ij}\}.
 \end{equation}
 
-	
+
+\subsection{Regression fitting of the discount function}
 
 	$$\bm{X}_{\left[m \times s\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}_{\left[n\times m\right]}(l) \right)^t$$
 
@@ -107,9 +110,13 @@ The basis functions in equations \eqref{eq:A.2}-\eqref{eq:A.6} are calulated for
 
 	$$\bm{y}_{\left[m \times 1\right]}=  \bm{p}^d_{\left[1\times m\right]}  - \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]}   $$
 
-	
 
-	$$\bm{\hat \alpha}_{\left[s \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}$$
+Parameter estimation with OLS.
+	
+\begin{equation}
+\label{eq:paramspline}
+\bm{\hat \alpha}_{\left[s \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}
+\end{equation}
 
 
 
