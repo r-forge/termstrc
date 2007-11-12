@@ -10,7 +10,7 @@
 
 \subsection{Knot point selection}
 
-\cite{McCulloch1975} defines a $k$-parameter spline with $k-1$ knot points $d_l$. We sort the cashflow matrix $\bm{C}$ and the maturity matrix $\bm{M}$ such that the $m$ bonds are arranged in ascending order by their maturity dates. The following specification places an equal number of bonds between adjacent knots. It sets $d_1=0$ and $d_{k-1}=m_m$. $m_j$ is the maturity date of the $j$-th bond.
+\cite{McCulloch1975} defines a $k$-parameter spline with $k-1$ knot points $d_l$. We sort the cashflow matrix $\bm{C}$ and the maturity matrix $\bm{M}$ such that the $m$ bonds are arranged in ascending order by their maturity dates. The following specification places an approximately equal number of bonds between adjacent knots. It sets $d_1=0$ and $d_{k-1}=m_m$. $m_j$ is the maturity date of the $j$-th bond.
 
 
 \begin{equation}
@@ -29,10 +29,10 @@ and
 
 \begin{equation}
   \label{eq:A.1c}
-  \theta = \frac{(j-1)n}{k-2}-h.
+  \theta = \frac{(l-1)m}{k-2}-h.
 \end{equation}
 
-\cite{McCulloch1971} sets the  number of basis functions to the integer nearest to the square root of the number of observed bonds. This allows a smooth fit of the discount function.
+\cite{McCulloch1971} sets the  number of basis functions $k$ to the integer nearest to the square root of the number of observed bonds. This allows a smooth fit of the discount function.
 
 \begin{equation}
   \label{eq:nofknots}
@@ -40,6 +40,7 @@ and
 \end{equation}
 
 
+allgemeiner Satz über Funktionen ....
 In order to generate the family of cubic splines relative to these knots, we define for $m_{ij}<d_{l-1}$
 
 \begin{equation}
@@ -69,7 +70,7 @@ where
   c = d_l-d_{l-1}
 \end{equation}
 
-and 
+and $e$ is the 
 
 \begin{equation}
   \label{eq:A.4c}
@@ -94,7 +95,7 @@ The above formulas apply when $l<k$. When $l=k$, we define
 
 regardless of $m_{ij}$.
 
-The basis functions in equations \eqref{eq:A.2}-\eqref{eq:A.6} are calulated for the maturities of each cashflow and summarized in the matrix
+The basis functions in equations \eqref{eq:A.2}-\eqref{eq:A.6} are calulated for the maturities of each cashflow $m_{i,j}$ and summarized in the matrix
 
 \begin{equation}
 \label{eq:basisfctmatrix}	
