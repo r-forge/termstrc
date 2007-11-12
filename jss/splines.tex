@@ -10,8 +10,7 @@
 
 \subsection{Knot point selection}
 
-\cite{McCulloch1975} defines a $k$-parameter spline with $k-1$ knot points $d_l$. We sort the cashflow matrix $\bm{C}$ and the maturity matrix $\bm{M}$ such that the $m$ bonds are arranged in ascending order by their maturity dates. The following specification places an approximately equal number of bonds between adjacent knots. It sets $d_1=0$ and $d_{k-1}=m_m$. $m_j$ is the maturity date of the $j$-th bond.
-
+\cite{McCulloch1975} defines a $k$-parameter spline with $k-1$ knot points $d_l$. We sort the cashflow matrix $\bm{C}$ and the maturity matrix $\bm{M}$ such that the $m$ bonds are arranged in ascending order by their maturity dates. The following specification places an approximately equal number of bonds between adjacent knots. It sets $d_1=0$ and $d_{k-1}=m_m$. $m_j$ is the maturity date of the $j$-th bond. For $1<l<k-1$ we find the further knot points.
 
 \begin{equation}
   \label{eq:A.1a}
@@ -45,7 +44,7 @@ In order to generate the family of cubic splines relative to these knots, we def
 
 \begin{equation}
   \label{eq:A.2}
-  g_l(m_{ij})=0.
+  g^l_{i,j}=0.
 \end{equation}
 
 
@@ -53,14 +52,14 @@ For $d_{l-1}\leq m_{ij} <d_l$, we define
 
 \begin{equation}
   \label{eq:A.3}
-  g_l(m_{ij})=\frac{(m_{ij}-d_{l-1})^3}{6(d_l-d_{l-1})}
+  g^l_{i.j}=\frac{(m_{ij}-d_{l-1})^3}{6(d_l-d_{l-1})}
 \end{equation}
 
 When $d_l\leq m_{ij}< d_{l+1}$, we define
 
 \begin{equation}
   \label{eq:A.4a}
-  g_l(m_{ij}) = \frac{c^2}{6}+\frac{ce}{2}+\frac{e^2}{2}-\frac{e^3}{6(d_{l+1}-d_l)}
+  g^l_{i,j} = \frac{c^2}{6}+\frac{ce}{2}+\frac{e^2}{2}-\frac{e^3}{6(d_{l+1}-d_l)}
 \end{equation}
 
 where
@@ -81,7 +80,7 @@ For $d_{l+1}\leq m_{ij}$, define
 
 \begin{equation}
   \label{eq:A.5}
-  g_l(m_{ij}) = (d_{l+1}-d_{l-1})\left[\frac{2d_{l+1}-d_l-d_{l-1}}{6}+\frac{m_{ij}-d_{l+1}}{2}\right]
+  g^l_{i,j} = (d_{l+1}-d_{l-1})\left[\frac{2d_{l+1}-d_l-d_{l-1}}{6}+\frac{m_{ij}-d_{l+1}}{2}\right]
 \end{equation}
 
 (Set $d_{l-1}=d_l=0$ when $l=1$.)
@@ -90,7 +89,7 @@ The above formulas apply when $l<k$. When $l=k$, we define
 
 \begin{equation}
   \label{eq:A.6}
- g _k(m_{ij}) = m_{ij},
+ g^l_{i,j} = m_{ij},
 \end{equation}
 
 regardless of $m_{ij}$.
@@ -99,17 +98,21 @@ The basis functions in equations \eqref{eq:A.2}-\eqref{eq:A.6} are calulated for
 
 \begin{equation}
 \label{eq:basisfctmatrix}	
-\bm{G}_{\left [n \times m\right]} = \{g_{ij}\}.
+\bm{G}_{\left [n \times m\right]}^l= \{g_{ij}^l\}.
 \end{equation}
 
 
 \subsection{Regression fitting of the discount function}
 
-	$$\bm{X}_{\left[m \times s\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}_{\left[n\times m\right]}(l) \right)^t$$
+We fit for $k$ basis functions 
+
+	$$\bm{X}_{\left[m \times k\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}^l_{\left[n\times m\right]}\right)^\top$$
 
 	
 
 	$$\bm{y}_{\left[m \times 1\right]}=  \bm{p}^d_{\left[1\times m\right]}  - \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]}   $$
+Whereas $(\cdot)$ denotes again a element by element multiplication and $( )^{\top}$ the transposed matrix (vector)
+
 
 
 Parameter estimation with OLS.
@@ -119,7 +122,7 @@ Parameter estimation with OLS.
 \bm{\hat \alpha}_{\left[s \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}
 \end{equation}
 
-
+Discount function
 
 %%% Local Variables: 
 %%% mode: latex
