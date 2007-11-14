@@ -140,5 +140,11 @@ besser
 * increase performance of cubic splines estimation
 
 * adjust date in DESCRIPTION file 
+-> erledigt!
 
-  
+* manual knot point selection 
+
+* extend summary statistics for cubic splines 
+-> erledigt !
+
+* adapt cubic splines zyc_curves plot method for plotting confidence intervalls  

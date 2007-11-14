@@ -1,0 +1,16 @@
+load("eurobonds.RData")
+
+source("methods.R")
+source("splines.R")
+source("tools.R")
+
+
+group <- c("GERMANY", "AUSTRIA", "ITALY")
+bonddata <- eurobonds
+matrange <- c(2,12)  
+
+x <- splines_estim(group, bonddata, matrange)
+
+print(x)
+summary(x)
+plot(x)
