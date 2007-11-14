@@ -8,13 +8,20 @@
 
 \end{itemize}
 
+Discount function
+
+\begin{equation}
+  \label{eq:df_spline}
+  d(m_{i,j})=1+\sum_{l=1}^k\alpha_lg^l(m_{i,j})
+\end{equation}
+
 \subsection{Knot point selection}
 
-\cite{McCulloch1975} defines a $k$-parameter spline with $k-1$ knot points $d_l$. We sort the cashflow matrix $\bm{C}$ and the maturity matrix $\bm{M}$ such that the $m$ bonds are arranged in ascending order by their maturity dates. The following specification places an approximately equal number of bonds between adjacent knots. It sets $d_1=0$ and $d_{k-1}=m_m$. $m_j$ is the maturity date of the $j$-th bond. For $1<l<k-1$ we find the further knot points.
+\cite{McCulloch1975} defines a $k$-parameter spline with $k-1$ knot points $q_l$. We sort the cashflow matrix $\bm{C}$ and the maturity matrix $\bm{M}$ such that the $m$ bonds are arranged in ascending order by their maturity dates. The following specification places an approximately equal number of bonds between adjacent knots. It sets $q_1=0$ and $q_{k-1}=m_m$. $m_j$ is the maturity date of the $j$-th bond. For $1<l<k-1$ we find the further knot points.
 
 \begin{equation}
   \label{eq:A.1a}
-  d_l = m_h+\theta(m_{h+1}-m_h)
+  q_l = m_h+\theta(m_{h+1}-m_h)
 \end{equation}
 
 where
@@ -40,56 +47,56 @@ and
 
 
 allgemeiner Satz über Funktionen ....
-In order to generate the family of cubic splines relative to these knots, we define for $m_{ij}<d_{l-1}$
+In order to generate the family of cubic splines relative to these knots, we define for $m_{ij}<q_{l-1}$
 
 \begin{equation}
   \label{eq:A.2}
-  g^l_{i,j}=0.
+  g^l(m_{i,j})=0.
 \end{equation}
 
 
-For $d_{l-1}\leq m_{ij} <d_l$, we define
+For $q_{l-1}\leq m_{ij} <q_l$, we define
 
 \begin{equation}
   \label{eq:A.3}
-  g^l_{i.j}=\frac{(m_{ij}-d_{l-1})^3}{6(d_l-d_{l-1})}
+  g^l(m_{i,j})=\frac{(m_{ij}-q_{l-1})^3}{6(q_l-q_{l-1})}
 \end{equation}
 
-When $d_l\leq m_{ij}< d_{l+1}$, we define
+When $q_l\leq m_{ij}< q_{l+1}$, we define
 
 \begin{equation}
   \label{eq:A.4a}
-  g^l_{i,j} = \frac{c^2}{6}+\frac{ce}{2}+\frac{e^2}{2}-\frac{e^3}{6(d_{l+1}-d_l)}
+  g^l(m_{i,j}) = \frac{c^2}{6}+\frac{ce}{2}+\frac{e^2}{2}-\frac{e^3}{6(q_{l+1}-q_l)}
 \end{equation}
 
 where
 
 \begin{equation}
   \label{eq:A.4b}
-  c = d_l-d_{l-1}
+  c = q_l-q_{l-1}
 \end{equation}
 
 and $e$ is the 
 
 \begin{equation}
   \label{eq:A.4c}
-  e = m_{ij}-d_l
+  e = m_{ij}-q_l
 \end{equation}
 
-For $d_{l+1}\leq m_{ij}$, define
+For $q_{l+1}\leq m_{ij}$, define
 
 \begin{equation}
   \label{eq:A.5}
-  g^l_{i,j} = (d_{l+1}-d_{l-1})\left[\frac{2d_{l+1}-d_l-d_{l-1}}{6}+\frac{m_{ij}-d_{l+1}}{2}\right]
+  g^l(m_{i,j}) = (q_{l+1}-q_{l-1})\left[\frac{2q_{l+1}-q_l-q_{l-1}}{6}+\frac{m_{ij}-q_{l+1}}{2}\right]
 \end{equation}
 
-(Set $d_{l-1}=d_l=0$ when $l=1$.)
+(Set $q_{l-1}=q_l=0$ when $l=1$.)
 
 The above formulas apply when $l<k$. When $l=k$, we define
 
 \begin{equation}
   \label{eq:A.6}
- g^l_{i,j} = m_{ij},
+ g^l(m_{i,j})= m_{ij},
 \end{equation}
 
 regardless of $m_{ij}$.
@@ -100,11 +107,13 @@ The basis functions in equations \eqref{eq:A.2}-\eqref{eq:A.6} are calulated for
 \label{eq:basisfctmatrix}	
 \bm{G}_{\left [n \times m\right]}^l= \{g_{ij}^l\}.
 \end{equation}
+where $g_{i,j}^l=g^l(m_{i,j})$.
+
 
 
 \subsection{Regression fitting of the discount function}
 
-We fit for $k$ basis functions 
+We estimate the unknown parameters in \eqref{eq:df_spline} with OLS.  We fit for $l=1\dots k$ basis functions 
 
 	$$\bm{X}_{\left[m \times k\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}^l_{\left[n\times m\right]}\right)^\top$$
 
