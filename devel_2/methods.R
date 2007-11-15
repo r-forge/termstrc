@@ -75,7 +75,6 @@ plot.nelson <-
       title(names(x$opt_result)[k])
       legend("bottomright",legend=c("Zero-coupon yield curve","Yield to maturity"),
               col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
-      grid()
       points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red") 
       
     }
@@ -101,7 +100,6 @@ plot.nelson <-
  	  } 
     title("Zero-coupon yield curves")
     legend("bottomright",legend=names(x$opt_result),col=seq(x$n_group),lty=1,lwd=2)
-    grid()
    }
                                         
     # plot spread curves    
@@ -123,7 +121,6 @@ plot.nelson <-
  	  } 
     title("Spread curves")
     legend("topleft",legend=names(x$opt_result[-1]),col=2:x$n_group,lty=1,lwd=2)
-    grid()
    
    }                    
   
@@ -287,16 +284,20 @@ plot.cubicsplines <-
     for (k in seq(x$n_group)  ) {  
       plot(x$zcy_curves[[k]][,1] ,x$zcy_curves[[k]][,2]*100,
       type="l",
-      ylim=c(0,max(x$zcy_curves[[k]][,2]) + 0.01 )*100,
+      ylim=c(0,max(x$zcy_curves[[k]][,2],x$zcy_curves[[k]][,3]) + 0.01 )*100,
       xlim=c(max(0,matrange[1]),min(max(x$zcy_curves[[k]][,1]),matrange[2])),
       xlab="Maturity (years)",
       ylab="Percent",
       lwd=2,
       col="steelblue")
+      # lower ci         
+      lines(x$zcy_curves[[k]][,1],x$zcy_curves[[k]][,3]*100, type="l", lty=3, col="steelblue" )   
+      # upper ci 
+      lines(x$zcy_curves[[k]][,1],x$zcy_curves[[k]][,4]*100, type="l", lty=3, col="steelblue" )    
+      
       title(x$group[k])
-      legend("bottomright",legend=c("Zero-coupon yield curve","Yield to maturity"),
-              col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
-      grid()
+      legend("bottomright",legend=c("Zero-coupon yield curve", "95 % Confidence intervall" ,"Yield to maturity", "Knot points")
+      , col=c("steelblue","steelblue","red", "darkgrey"), lty = c(1,3,-1,2), pch=c(-1,-1,21,-1))
       points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red")
       abline(v=c(x$T[[k]]),lty=2, col="darkgrey") 
       if(pdf == FALSE) par(ask=TRUE) 
@@ -320,7 +321,6 @@ plot.cubicsplines <-
      ylab="Percent",
      lwd=2,
      col=which.max(mapply(function(k) max(x$zcy_curves[[k]][,1]), seq(x$n_group))))
-     grid()
      title("Zero coupon yield curves") 
       
 	  for(k in c( (seq(x$n_group))[- which.max(mapply(function(k) 
@@ -345,7 +345,6 @@ plot.cubicsplines <-
     ylim=c(min(x$scurves),max(x$scurves ))*10000)
     title("Spread curves")
     legend("topleft",legend=x$group[-1],col=2:x$n_group,lty=1,lwd=2)
-    grid()
     }                    
   
    if(pdf) dev.off() else par(ask=FALSE) 
