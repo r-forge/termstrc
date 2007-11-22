@@ -12,8 +12,10 @@ Discount function
 
 \begin{equation}
   \label{eq:df_spline}
-  d(m_{i,j})=1+\sum_{l=1}^k\alpha_lg^l(m_{i,j})
+  d(m_{i,j})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
 \end{equation}
+
+$+\bm{\epsilon}$ in discount function?
 
 \subsection{Knot point selection}
 
@@ -128,7 +130,7 @@ Parameter estimation with OLS.
 	
 \begin{equation}
 \label{eq:paramspline}
-\bm{\hat \alpha}_{\left[k \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}
+\bm{\hat \beta}_{\left[k \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}
 \end{equation}
 
 \subsection{Confidence intervals}

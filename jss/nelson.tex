@@ -64,11 +64,21 @@ The discount factor for any maturity can be calculated as follows.
 d(m_{ij})=e^{-m_{ij}s(m_{ij},b)},
 \end{displaymath}
 
-where $s(m_{ij},b)$ is the Nelson/Siegel or Svensson spot rate function defined in \eqref{eq:intspotrate} and \eqref{eq:nelson-spot}
+where $s(m_{ij},b)$ is the Nelson/Siegel or Svensson spot rate function defined in \eqref{eq:intspotrate} and \eqref{eq:nelson-spot}.
 
+Theoretical prices are defined as
+
+\begin{equation}
+  \label{eq:theorprices}
+  \bm{\hat{p}}_{[1\times m]} = \bm{\iota}_{[1\times n]}\bm{C}_{[n\times m]}\cdot\bm{D}_{[n\times m]}+\bm{\epsilon}_{[1\times m]}
+\end{equation}
+
+where $\bm{\epsilon}$ is a vector of idiosyncratic errors.
+
+The goal is to minimize the squared pricing errors, which can also be weighted.
 
 \begin{equation}\label{eq:objfct-nelson}
-	F=\left( \bm{\iota}_{\left[1 \times n\right]}\left[\bm{C}\cdot\bm{D}\right] - 		\bm{p}^d\right)^2 \bm{w}\bm{\iota}_{\left[m \times 1\right]}
+	F=\left(\bm{\hat{p}} - \bm{p}^d\right)^2 \bm{w}\bm{\iota}_{\left[m \times 1\right]}
 \end{equation}
 
 \begin{equation}
