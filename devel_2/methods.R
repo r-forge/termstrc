@@ -296,7 +296,7 @@ plot.cubicsplines <-
       lines(x$zcy_curves[[k]][,1],x$zcy_curves[[k]][,4]*100, type="l", lty=3, col="steelblue" )    
       
       title(x$group[k])
-      legend("bottomright",legend=c("Zero-coupon yield curve", "95 % Confidence intervall" ,"Yield to maturity", "Knot points")
+      legend("bottomright",legend=c("Zero-coupon yield curve", "95 % Confidence intervall" ,"Yield to 		maturity", "Knot points")
       , col=c("steelblue","steelblue","red", "darkgrey"), lty = c(1,3,-1,2), pch=c(-1,-1,21,-1))
       points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red")
       abline(v=c(x$T[[k]]),lty=2, col="darkgrey") 
