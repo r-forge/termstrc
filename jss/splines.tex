@@ -115,12 +115,12 @@ where $g_{i,j}^l=g^l(m_{i,j})$.
 
 We estimate the unknown parameters in \eqref{eq:df_spline} with OLS.  We fit for $l=1\dots k$ basis functions 
 
-	$$\bm{X}_{\left[m \times k\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}^l_{\left[n\times m\right]}\right)^\top$$
+	$$\bm{X}_{\left[m \times k\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \bm{\iota}_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}^l_{\left[n\times m\right]}\right)^\top$$
 
 	
 
-	$$\bm{y}_{\left[m \times 1\right]}=  \bm{p}^d_{\left[1\times m\right]}  - \iota_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]}   $$
-Whereas $(\cdot)$ denotes again a element by element multiplication and $( )^{\top}$ the transposed matrix (vector)
+	$$\bm{y}_{\left[m \times 1\right]}= \left(\bm{p}^d_{\left[1\times m\right]}  - \bm{\iota}_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]}\right)^\top   $$
+Whereas $(\cdot)$ denotes again a element by element multiplication and $( )^{\top}$ the transposed matrix (vector).
 
 
 
@@ -128,10 +128,12 @@ Parameter estimation with OLS.
 	
 \begin{equation}
 \label{eq:paramspline}
-\bm{\hat \alpha}_{\left[s \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}
+\bm{\hat \alpha}_{\left[k \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}
 \end{equation}
 
-Discount function
+\subsection{Confidence intervals}
+
+
 
 %%% Local Variables: 
 %%% mode: latex
