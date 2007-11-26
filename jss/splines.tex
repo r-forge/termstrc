@@ -117,11 +117,21 @@ where $g_{i,j}^l=g^l(m_{i,j})$.
 
 We estimate the unknown parameters in \eqref{eq:df_spline} with OLS.  We fit for $l=1\dots k$ basis functions 
 
+\begin{equation}
+  \label{eq:spline1}
+  \bm{p}_{\left[1\times m\right]}= \bm{\iota}_{\left[1\times n\right]}\left(\bm{C}_{\left[n\times m\right]}\cdot\bm{D}_{\left[n\times m\right]}\right)+ \bm{\epsilon}_{\left[1\times m\right]}
+\end{equation}
+\begin{equation}
+  \label{eq:dfmatrixspline}
+   \bm{D}_{\left[n\times m\right]}=1+
+\end{equation}
+
 	$$\bm{X}_{\left[m \times k\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \bm{\iota}_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}^l_{\left[n\times m\right]}\right)^\top$$
 
 	
 
-	$$\bm{y}_{\left[m \times 1\right]}= \left(\bm{p}^d_{\left[1\times m\right]}  - \bm{\iota}_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]}\right)^\top   $$
+	$$\bm{y}_{\left[m \times 1\right]}= \left(\bm{p}_{\left[1\times m\right]}  - \bm{\iota}_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]}\right)^\top   $$
+
 Whereas $(\cdot)$ denotes again a element by element multiplication and $( )^{\top}$ the transposed matrix (vector).
 
 
