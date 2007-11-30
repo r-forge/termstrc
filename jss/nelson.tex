@@ -70,21 +70,23 @@ Theoretical prices are defined as
 
 \begin{equation}
   \label{eq:theorprices}
-  \bm{\hat{p}}_{[1\times m]} = \bm{\iota}_{[1\times n]}\bm{C}_{[n\times m]}\cdot\bm{D}_{[n\times m]}+\bm{\epsilon}_{[1\times m]}
+  \bm{p}_{[1\times m]} = \bm{\iota}_{[1\times n]}\bm{C}_{[n\times m]}\cdot\bm{D}_{[n\times m]}+\bm{\epsilon}_{[1\times m]}
 \end{equation}
 
-where $\bm{\epsilon}$ is a vector of idiosyncratic errors.
+where $\bm{\iota}$ is a vetor of ones and  $\bm{\epsilon}$ is a vector of idiosyncratic errors.
 
 The goal is to minimize the squared pricing errors, which can also be weighted.
 
 \begin{equation}\label{eq:objfct-nelson}
-	F=\left(\bm{\hat{p}} - \bm{p}^d\right)^2 \bm{w}\bm{\iota}_{\left[m \times 1\right]}
+	F=\left(\bm{p} - \bm{\hat{p}}\right)^2 \bm{w}\bm{\iota}_{\left[m \times 1\right]}
 \end{equation}
 
 \begin{equation}
   \label{eq:objfct-nelsonmin}
-  \min_{\bm{b} \in G} F(\bm{b})
+  \argmin_{\bm{b} \in G} F(\bm{b})
 \end{equation}
+
+box-constraints
 
 	
 	 $$ \bm{b} \in G =   \{ \bm{b} \in \mathbb{R}^4 ; \mathbb{R}^6 : \mathbf{lb} \leq \bm{b} \leq \mathbf{ub}  \}$$

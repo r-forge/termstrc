@@ -115,18 +115,21 @@ where $g_{i,j}^l=g^l(m_{i,j})$.
 
 \subsection{Regression fitting of the discount function}
 
-We estimate the unknown parameters in \eqref{eq:df_spline} with OLS.  We fit for $l=1\dots k$ basis functions 
+The dirty prices are expressend as sum of the discounted cashflows plus an idiosyncratic error.
 
 \begin{equation}
   \label{eq:fairpricespline}
   \bm{p}_{\left[1\times m\right]}= \bm{\iota}_{\left[1\times n\right]}\left(\bm{C}_{\left[n\times m\right]}\cdot\bm{D}_{\left[n\times m\right]}\right)+ \bm{\epsilon}_{\left[1\times m\right]}
 \end{equation}
+
+The discount factor matrix is expressed as weighted sum of the $l=1\dots k$ basis functions.
+
 \begin{equation}
   \label{eq:dfmatrixspline}
    \bm{D}_{\left[n\times m\right]}=1+\beta_1\bm{G}^1+\cdots + \beta_k\bm{G}^k
 \end{equation}
 
-We substitute \eqref{dfmatrixspline} in \eqref{fairpricespline} and get an expression which is linear in the paramter vector $\bm{\beta}=(\beta^1,\dots,\beta^k)$.
+We substitute \eqref{eq:dfmatrixspline} in \eqref{eq:fairpricespline} and get an expression which is linear in the parameter vector $\bm{\beta}=(\beta^1,\dots,\beta^k)$.
 
 \begin{eqnarray}
   \label{eq:splineparam}
