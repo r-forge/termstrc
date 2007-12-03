@@ -148,3 +148,4 @@ besser
 -> erledigt !
 
 * adapt cubic splines zyc_curves plot method for plotting confidence intervalls  
+-> erledigt ! 
