@@ -95,8 +95,12 @@ splines_estim <-
    }
   }
   
-  alpha <- mapply(function(k) coef(lm(-Y[[k]]~X[[k]]-1)),sgroup,SIMPLIFY=FALSE) # parameter vector
- 
+
+  # perfom OLS regression 
+  regout <- mapply(function(k) lm(-Y[[k]]~X[[k]]-1),sgroup,SIMPLIFY=FALSE) # parameter vector
+    
+  alpha <- lapply(regout, coef)
+  
   # calculate discount factor matrix 
   dt <- list()
    for (k in sgroup){
@@ -117,24 +121,38 @@ splines_estim <-
   # calculate estimated zero coupon yield curves
   t <- mapply(function(k) seq(0.01, max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
   
-  zcy_curves <- mapply(function(k) cbind(t[[k]],matrix(NA,nrow=length(t[[k]]),ncol=1)), sgroup,SIMPLIFY=FALSE)
-        
+  zcy_curves <- mapply(function(k) cbind(t[[k]],matrix(NA,nrow=length(t[[k]]),ncol=3)), sgroup,SIMPLIFY=FALSE)
+  
+
+     
   dt_zcy <- list()
+  dt_zcy_ci_lw <- list()
+  dt_zcy_ci_up <- list()
+  
   for( k in sgroup) {
-   dt_zcy[[k]] <- rep(1,length(t[[k]]))
+   dt_zcy[[k]] <- matrix(1,nrow=length(t[[k]]), ncol=3)
+ 
+    
     for(sidx in 1:s[[k]]){  
-    dt_zcy[[k]] <- dt_zcy[[k]] + alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]])
+    dt_zcy[[k]][,1] <- dt_zcy[[k]][,1] + alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]])
+    #lower ci
+    dt_zcy[[k]][,2] <- dt_zcy[[k]][,2] + (alpha[[k]][sidx] + qt(0.025,(nrow(m[[k]])-2))*summary(regout[[k]])$coefficients[sidx,2] )*gi(t[[k]],T[[k]],sidx,s[[k]])
+    #upper ci 
+    dt_zcy[[k]][,3] <- dt_zcy[[k]][,3] + (alpha[[k]][sidx] + qt(0.975,(nrow(m[[k]])-2))*summary(regout[[k]])$coefficients[sidx,2] )*gi(t[[k]],T[[k]],sidx,s[[k]])
+        
+    
    }
-  zcy_curves[[k]][,2] <- -log(dt_zcy[[k]])/t[[k]]          
+  zcy_curves[[k]][,2:4] <- -log(dt_zcy[[k]])/t[[k]]
+  
   }
-  
-  
+
+    #browser() 
   # calculate spread curves              	    
  	if(n_group != 1) {  
    scurves <- as.matrix( mapply(function(k) (zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), sgroup))]]),2] -
    zcy_curves[[1]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), sgroup))]]),2]), 2:n_group))
    
-    } else scurves = "none" 
+    } else scurves = "none" 
  
 
  # return list of results
@@ -150,7 +168,8 @@ splines_estim <-
                   phat=phat,            # estimated prices
                   y=y,                  # maturities and yields
                   yhat=yhat,            # estimated yields
-                  alpha=alpha           # cubic splines parameters                             
+                  alpha=alpha,           # cubic splines parameters                             
+                  regout=regout         # OLS output
                  )
                  
   # assign names to results list 
