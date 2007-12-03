@@ -14,7 +14,7 @@ nelson_siegel(beta, m)
   \item{beta}{ a vector of parameters \eqn{(\beta_0, \beta_1, \beta_2, \tau_1)} }
   \item{m}{ one maturity (or a vector of maturities) }
   }
-}
+
 %\details{}
  
 \value{returns a vector consisting of the calculated spot rates}

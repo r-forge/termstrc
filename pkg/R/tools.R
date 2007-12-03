@@ -225,7 +225,7 @@ bond_prices <-
 ###################################################################
 
 rmse <-
-function (actual,estimated) {
+function(actual,estimated) {
 	e <- actual - estimated
 	sqrt(1/length(e)*sum((e-mean(e))^2))			
       }
@@ -235,7 +235,7 @@ function (actual,estimated) {
 ###################################################################
       
 aabse <-
-function (actual,estimated){
+function(actual,estimated){
      e <- actual - estimated	
      1/length(e)*sum(abs(e-mean(e)))
      }   							
