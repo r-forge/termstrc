@@ -136,9 +136,9 @@ splines_estim <-
     for(sidx in 1:s[[k]]){  
     dt_zcy[[k]][,1] <- dt_zcy[[k]][,1] + alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]])
     #lower ci
-    dt_zcy[[k]][,2] <- dt_zcy[[k]][,2] + (alpha[[k]][sidx] + qt(0.025,(nrow(m[[k]])-2))*summary(regout[[k]])$coefficients[sidx,2] )*gi(t[[k]],T[[k]],sidx,s[[k]])
+    dt_zcy[[k]][,2] <- dt_zcy[[k]][,2] + (alpha[[k]][sidx] + qt(0.025,(nrow(m[[k]])-length(alpha[[k]])))*summary(regout[[k]])$coefficients[sidx,2] )*gi(t[[k]],T[[k]],sidx,s[[k]])
     #upper ci 
-    dt_zcy[[k]][,3] <- dt_zcy[[k]][,3] + (alpha[[k]][sidx] + qt(0.975,(nrow(m[[k]])-2))*summary(regout[[k]])$coefficients[sidx,2] )*gi(t[[k]],T[[k]],sidx,s[[k]])
+    dt_zcy[[k]][,3] <- dt_zcy[[k]][,3] + (alpha[[k]][sidx] + qt(0.975,(nrow(m[[k]])-length(alpha[[k]])))*summary(regout[[k]])$coefficients[sidx,2] )*gi(t[[k]],T[[k]],sidx,s[[k]])
         
     
    }
