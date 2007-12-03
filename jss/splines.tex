@@ -12,7 +12,7 @@ Discount function
 
 \begin{equation}
   \label{eq:df_spline}
-  d(m_{i,j})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
+  d(m_{i,j},\bm{\beta})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
 \end{equation}
 
 $+\bm{\epsilon}$ in discount function?
@@ -167,9 +167,34 @@ Parameter estimation with OLS.
 \bm{\hat \beta}_{\left[k \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}
 \end{equation}
 
-\subsection{Confidence intervals}
+The estimated parameters can be used to calculate the discount function in \eqref{eq:df_spline} for any given maturity $m$ between the first and the last knot point, which can then be converted to zero-coupon yields.
 
 
+
+\begin{equation}
+  \label{eq:transformdf}
+  s(m,\bm{\beta}) = \frac{-\ln d(m,\bm{\beta})}{m}
+\end{equation}
+
+
+\subsection{Prediction intervals}
+
+\begin{equation}
+  \label{eq:yhat}
+  \bm{\hat{y}}=\bm{X}\bm{\hat{\beta}}
+\end{equation}
+
+
+\begin{equation}
+  \label{eq:predint}
+ \mbox{P}\left[\bm{\hat{y}}\pm t_{\alpha/2}\cdot \se(\bm{\hat{y}-y})\right]=0.95
+\end{equation}
+
+
+\begin{equation}
+  \label{eq:printvdf}
+  d(m_{i,j})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
+\end{equation}
 
 %%% Local Variables: 
 %%% mode: latex
