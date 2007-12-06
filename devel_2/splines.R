@@ -110,6 +110,7 @@ splines_estim <-
    }
   }  
 
+  browser()
    
   # calculate estimated prices 
   phat <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),sgroup,SIMPLIFY=FALSE)

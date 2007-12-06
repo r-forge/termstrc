@@ -196,29 +196,25 @@ The estimated parameters can be used to calculate the discount function in \eqre
   d(m_{i,j})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
 \end{equation}
 
-
-
-
-
 Under the assumption of a normal distributed disturbence term $\bm{\epsilon}$ the conditional 
 distribution of $\bm{b}$ given $\bm{X}$ can be expressed as
 
 \begin{equation}
   \label{eq:bddistrb}
   \bm{b}|\bm{X} \sim N\left[\bm{\hat \beta}, \sigma^2\bm{X^\top}\bm{X}^{-1}\right]
- 
 \end{equation}
+
 If the elements of $\bm{\epsilon}$ are independently identically distributed with mean zero and finite
 variance $\sigma^2$ and $x_{iK}$ is such that the Grenander conditions are met, 
 then the asymptotic distribution fo $\bm{b}$ is
 
+
 \begin{equation}
   \label{eq:badistrb}
  \bm{b}\sim N\left[\bm{\hat \beta},\frac{\sigma^2}{n}\bm{Q}^{-1}\right]
-
 \end{equation}
-Whereas $\frac{1}{n}\bm{Q}^{-1}$ is estimated with $\left(\bm{X}^\top\bm{X}\right)^{-1}$ and $\sigma^2$ with $\bm{\frac{e^\top e}{(n-K)}}$.
 
+Whereas $\frac{1}{n}\bm{Q}^{-1}$ is estimated with $\left(\bm{X}^\top\bm{X}\right)^{-1}$ and $\sigma^2$ with $\bm{\frac{e^\top e}{(n-K)}}$.
 
 Assuming a multivariate normal distribution for $\bm{b}$ the discount fuction is also normally distributed
 
@@ -233,12 +229,9 @@ Therefore a we suggest a truncated normal distribution for $d(m_{i,j})$
  
 The denisty of the truncated normal distribution can be written as
 
-
 \begin{equation}
   \label{eq:dtdistrb}
-  
   f\left(d(m_{i,j})|d(m_{i,j}> 0)\right) = \frac{\frac{1}{\sigma}\phi (\frac{d-\mu}{\sigma} )}{1 - \Phi(\frac{-\mu}{\sigma})} 
-
 \end{equation}
 In order to obtain the mean and variance of the truncated normal distribution we 
 use the moment generation fuction, which is:
@@ -248,31 +241,29 @@ use the moment generation fuction, which is:
   \label{eq:mgf}
 M(t) = E[e^{td(m_{i,j}}|d(m_{i,j}) > 0] = \frac{\int_0^{-\infty}e^{ty}f(y)dy}{1-\Phi(\frac{-\mu}{\sigma})} =
 e^{ut + \sigma^2t^2/2}\frac{1 - \Phi(\frac{-\mu}{\sigma} - \sigma t)}{1- \Phi(\frac{-\mu}{\sigma})}
-
 \end{equation}
 From the moment generating function the mean and the variance can be derived
+
+
 
 \begin{equation}
   \label{eq:edtd}
 E\left[d(m_{i,j})|d(m_{i,j})\right] = M'(t)|_{t=0} = \mu + \sigma\frac{\phi(\frac{-\mu}{\sigma})}{1 - \Phi(\frac{-\mu}{\sigma})}
-
 \end{equation}
 
-\begin{equation}
+\begin{eqnarray}
   \label{eq:vdtd}
-
-Var[d(m_{i,j})|d(m_{i,j})>0] = E\left[d(m_{i,j})^2|d(m_{i,j})\right] = M''(t)|_{t=0} = \sigma^2\left[1+ \frac{\frac{-\mu}{\sigma}\phi(\frac{-\mu}{\sigma})}{1-\Phi(\frac{-\mu}{\sigma})} -\left(\frac{\phi(\frac{-\mu}{\sigma})}{1-\Phi(\frac{-\mu}{\sigma})^2} \right)\right]
-
-\end{equation}
+Var[d(m_{i,j})|d(m_{i,j})>0] = E\left[d(m_{i,j})^2|d(m_{i,j})\right] = M''(t)|_{t=0} \nonumber \\
+=  \sigma^2\left[1+ \frac{\frac{-\mu}{\sigma}\phi(\frac{-\mu}{\sigma})}{1-\Phi(\frac{-\mu}{\sigma})} -\left(\frac{\phi(\frac{-\mu}{\sigma})}{1-\Phi(\frac{-\mu}{\sigma})^2} \right)\right]
+\end{eqnarray}
 The $1-\alpha$ confidence interval for $d(m_{i,j})$, assuming a truncated normal distribution,
 can be written as
 
 \begin{equation}
   \label{eq:cfdtd}
-
 \mbox{P}[c_1\le d(m_{i,j}) \le c_2] = \int_{c_1}^{c_2}f(y(m_{i,j}|y(m_{i,j})>0)dy =  1 - \alpha
-
 \end{equation}
+
 
 
 
