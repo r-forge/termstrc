@@ -177,7 +177,7 @@ The estimated parameters can be used to calculate the discount function in \eqre
 \end{equation}
 
 
-\subsection{Confidence Intervalls}
+\subsection{Confidence Intervals}
 
 \begin{equation}
   \label{eq:yhat}
@@ -241,8 +241,38 @@ The denisty of the truncated normal distribution can be written as
 
 \end{equation}
 In order to obtain the mean and variance of the truncated normal distribution we 
-use the moment generation fuction
+use the moment generation fuction, which is:
 
+
+\begin{equation}
+  \label{eq:mgf}
+M(t) = E[e^{td(m_{i,j}}|d(m_{i,j}) > 0] = \frac{\int_0^{-\infty}e^{ty}f(y)dy}{1-\Phi(\frac{-\mu}{\sigma})} =
+e^{ut + \sigma^2t^2/2}\frac{1 - \Phi(\frac{-\mu}{\sigma} - \sigma t)}{1- \Phi(\frac{-\mu}{\sigma})}
+
+\end{equation}
+From the moment generating function the mean and the variance can be derived
+
+\begin{equation}
+  \label{eq:edtd}
+E\left[d(m_{i,j})|d(m_{i,j})\right] = M'(t)|_{t=0} = \mu + \sigma\frac{\phi(\frac{-\mu}{\sigma})}{1 - \Phi(\frac{-\mu}{\sigma})}
+
+\end{equation}
+
+\begin{equation}
+  \label{eq:vdtd}
+
+Var[d(m_{i,j})|d(m_{i,j})>0] = E\left[d(m_{i,j})^2|d(m_{i,j})\right] = M''(t)|_{t=0} = \sigma^2\left[1+ \frac{\frac{-\mu}{\sigma}\phi(\frac{-\mu}{\sigma})}{1-\Phi(\frac{-\mu}{\sigma})} -\left(\frac{\phi(\frac{-\mu}{\sigma})}{1-\Phi(\frac{-\mu}{\sigma})^2} \right)\right]
+
+\end{equation}
+The $1-\alpha$ confidence interval for $d(m_{i,j})$, assuming a truncated normal distribution,
+can be written as
+
+\begin{equation}
+  \label{eq:cfdtd}
+
+\mbox{P}[c_1\le d(m_{i,j}) \le c_2] = \int_{c_1}^{c_2}f(y(m_{i,j}|y(m_{i,j})>0)dy =  1 - \alpha
+
+\end{equation}
 
 
 
