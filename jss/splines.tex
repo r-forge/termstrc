@@ -164,7 +164,7 @@ Parameter estimation with OLS.
 	
 \begin{equation}
 \label{eq:paramspline}
-\bm{\hat \beta}_{\left[k \times 1\right]}= \left( \bm{X}^t   \bm{X}\right )^{-1}\bm{X}^t \bm{y}
+\bm{\hat \beta}_{\left[k \times 1\right]}= \left( \bm{X}^\top   \bm{X}\right )^{-1}\bm{X}^\top \bm{y}
 \end{equation}
 
 The estimated parameters can be used to calculate the discount function in \eqref{eq:df_spline} for any given maturity $m$ between the first and the last knot point, which can then be converted to zero-coupon yields.
@@ -177,7 +177,7 @@ The estimated parameters can be used to calculate the discount function in \eqre
 \end{equation}
 
 
-\subsection{Prediction intervals}
+\subsection{Confidence Intervalls}
 
 \begin{equation}
   \label{eq:yhat}
@@ -195,6 +195,56 @@ The estimated parameters can be used to calculate the discount function in \eqre
   \label{eq:printvdf}
   d(m_{i,j})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
 \end{equation}
+
+
+
+
+
+Under the assumption of a normal distributed disturbence term $\bm{\epsilon}$ the conditional 
+distribution of $\bm{b}$ given $\bm{X}$ can be expressed as
+
+\begin{equation}
+  \label{eq:bddistrb}
+  \bm{b}|\bm{X} \sim N\left[\bm{\hat \beta}, \sigma^2\bm{X^\top}\bm{X}^{-1}\right]
+ 
+\end{equation}
+If the elements of $\bm{\epsilon}$ are independently identically distributed with mean zero and finite
+variance $\sigma^2$ and $x_{iK}$ is such that the Grenander conditions are met, 
+then the asymptotic distribution fo $\bm{b}$ is
+
+\begin{equation}
+  \label{eq:badistrb}
+ \bm{b}\sim N\left[\bm{\hat \beta},\frac{\sigma^2}{n}\bm{Q}^{-1}\right]
+
+\end{equation}
+Whereas $\frac{1}{n}\bm{Q}^{-1}$ is estimated with $\left(\bm{X}^\top\bm{X}\right)^{-1}$ and $\sigma^2$ with $\bm{\frac{e^\top e}{(n-K)}}$.
+
+
+Assuming a multivariate normal distribution for $\bm{b}$ the discount fuction is also normally distributed
+
+\begin{equation}
+  \label{eq:ddistr}
+  d(m_{i,j}) \sim N\left[1+\bm{g}^\top\bm{\hat\beta},\bm{g}^\top\left[\sigma^2(\bm{X^\top X})^{-1} \right]\bm{g} \right]
+\end{equation} 
+
+Economically $d(m_{i,j})>0 \qquad  \forall m_{i,j}> 0$.
+Therefore a we suggest a truncated normal distribution for $d(m_{i,j})$
+
+ 
+The denisty of the truncated normal distribution can be written as
+
+
+\begin{equation}
+  \label{eq:dtdistrb}
+  
+  f\left(d(m_{i,j})|d(m_{i,j}> 0)\right) = \frac{\frac{1}{\sigma}\phi (\frac{d-\mu}{\sigma} )}{1 - \Phi(\frac{-\mu}{\sigma})} 
+
+\end{equation}
+In order to obtain the mean and variance of the truncated normal distribution we 
+use the moment generation fuction
+
+
+
 
 %%% Local Variables: 
 %%% mode: latex
