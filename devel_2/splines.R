@@ -123,19 +123,27 @@ splines_estim <-
   
   zcy_curves <- mapply(function(k) cbind(t[[k]],matrix(NA,nrow=length(t[[k]]),ncol=3)), sgroup,SIMPLIFY=FALSE)
   
- #browser()
+  
  
- # calculate mean and variance of the distribution of the discount function 
+  # calculate mean and variance of the distribution of the discount function 
  
 
- # mean_d = dt_zcy[[]][,1]
- mean_d <- mapply(function(k) apply(mapply(function(sidx) alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]],SIMPLIFY=FALSE),1,sum) +1, sgroup, SIMPLIFY=FALSE)
+  # mean_d = dt_zcy[[]][,1]
+  mean_d <- mapply(function(k) apply(mapply(function(sidx) alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]]),1,sum) +1, sgroup, SIMPLIFY=FALSE)
 
- # variance covariance matrix for estimated ols parameters 
- Sigma <- lapply(regout,vcov)
+  # variance covariance matrix for estimated ols parameters 
+  Sigma <- lapply(regout,vcov)
 
- var_d <- mapply(function(k) apply(mapply(function(sidx) gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]]),1,function(x) t(x)%*%Sigma[[k]]%*%x), sgroup, SIMPLIFY=FALSE) 
+  var_d <- mapply(function(k) apply(mapply(function(sidx) gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]]),1,function(x) t(x)%*%Sigma[[k]]%*%x), sgroup, SIMPLIFY=FALSE) 
  
+  library(msm)
+  # confidence interval for truncated normal distribution 
+  cl_t <- mapply(function(k) qtnorm(rep(0.05,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower= rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE)	
+	
+  cu_t <- mapply(function(k) qtnorm(rep(0.975,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower=rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE) 
+  
+  browser()
+
 
   dt_zcy <- list()
   dt_zcy_ci_lw <- list()
@@ -158,7 +166,7 @@ splines_estim <-
   
   }
 
-    browser() 
+   # browser() 
   # calculate spread curves              	    
  	if(n_group != 1) {  
    scurves <- as.matrix( mapply(function(k) (zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), sgroup))]]),2] -
