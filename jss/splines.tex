@@ -1,3 +1,4 @@
+\newpage
 \section{Cubic splines}
 \label{sec:cubic-splines}
 
@@ -15,7 +16,6 @@ Discount function
   d(m_{i,j},\bm{\beta})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
 \end{equation}
 
-$+\bm{\epsilon}$ in discount function?
 
 \subsection{Knot point selection}
 
@@ -167,6 +167,8 @@ Parameter estimation with OLS.
 \bm{\hat \beta}_{\left[k \times 1\right]}= \left( \bm{X}^\top   \bm{X}\right )^{-1}\bm{X}^\top \bm{y}
 \end{equation}
 
+\textcolor{red}{Can OLS estimators be infeasible due to large amount of zeros in $\bm{X}$?}
+
 The estimated parameters can be used to calculate the discount function in \eqref{eq:df_spline} for any given maturity $m$ between the first and the last knot point, which can then be converted to zero-coupon yields.
 
 
@@ -199,9 +201,7 @@ The estimated parameters can be used to calculate the discount function in \eqre
 
 
 \cite{Greene2002}
-Under the assumption of a normal distributed disturbence term $\bm{\epsilon}$ the conditional 
-distribution of $\bm{b}$ given $\bm{X}$ can be expressed as
-
+Under the assumption of a normal distributed disturbence term $\bm{\epsilon}$ the conditional distribution of $\bm{b}$ given $\bm{X}$ can be expressed as
 
 
 \begin{equation}
@@ -209,9 +209,7 @@ distribution of $\bm{b}$ given $\bm{X}$ can be expressed as
   \bm{b}|\bm{X} \sim N\left[\bm{\hat \beta}, \sigma^2\bm{X^\top}\bm{X}^{-1}\right]
 \end{equation}
 
-If the elements of $\bm{\epsilon}$ are independently identically distributed with mean zero and finite
-variance $\sigma^2$ and $x_{iK}$ is such that the Grenander conditions are met, 
-then the asymptotic distribution fo $\bm{b}$ is
+If the elements of $\bm{\epsilon}$ are independently identically distributed with mean zero and finite variance $\sigma^2$ and $x_{iK}$ is such that the Grenander conditions are met, then the asymptotic distribution fo $\bm{b}$ is
 
 
 \begin{equation}
@@ -228,17 +226,23 @@ Assuming a multivariate normal distribution for $\bm{b}$ the discount fuction is
   \label{eq:ddistr}
   d(m_{i,j}) \sim N\left[1+\bm{g}^\top\bm{\hat\beta},\bm{g}^\top\left[\sigma^2(\bm{X^\top X})^{-1} \right]\bm{g} \right]
 \end{equation} 
+\textcolor{red}{Always write $d(m_{i,j},\bm{\beta})$ ?}
 
-Economically $d(m_{i,j})>0 \qquad  \forall m_{i,j}> 0$.
-Therefore a we suggest a truncated normal distribution for $d(m_{i,j})$
+From an economic point of view only positive interest rates make sense. Therefore, all discount factors for which a cashflow occurs are nonnegative, $d(m_{i,j})>0 \qquad  \forall m_{i,j}> 0$. \textcolor{red}{Explain this more in detail in section \ref{sec:notation}.}
+
+
+\cite{McCulloch1975} plots error bands above and below one standard error of the best estimate. A confidence interval that would have been constructed the usual way, could get to the negative. Negative discount factors can not be transformed to spot rates with \eqref{eq:transformdf}. Therefore a we suggest to use the truncated normal distribution for the construction of the confidence interval of the discount function $d(m_{i,j})$.
 
  
-The denisty of the truncated normal distribution can be written as
+The density of the truncated normal distribution can be written as
 
 \begin{equation}
   \label{eq:dtdistrb}
   f\left(d(m_{i,j})|d(m_{i,j}> 0)\right) = \frac{\frac{1}{\sigma}\phi (\frac{d-\mu}{\sigma} )}{1 - \Phi(\frac{-\mu}{\sigma})} 
 \end{equation}
+
+\textcolor{red}{$d(m_{i,j})>0$}
+
 In order to obtain the mean and variance of the truncated normal distribution we 
 use the moment generation fuction, which is:
 
@@ -270,7 +274,7 @@ can be written as
 \mbox{P}[c_1\le d(m_{i,j}) \le c_2] = \int_{c_1}^{c_2}f(y(m_{i,j}|y(m_{i,j})>0)dy =  1 - \alpha
 \end{equation}
 
-
+The upper and the lower confidence intervall $c_1$ and $c_2$ for the discount function are converted with \eqref{eq:transformdf} to a confidence interval for the spot rate function. Because $c_1$ is forced to be non negative with the truncated normal distribution, it is now possible to evaluate the logarithm in the transformation to the spot rate function.
 
 
 %%% Local Variables: 
