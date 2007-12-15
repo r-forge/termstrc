@@ -142,6 +142,11 @@ splines_estim <-
 	
   cu_t <- mapply(function(k) qtnorm(rep(0.975,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower=rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE) 
   
+  
+    cl <- mapply(function(k) qnorm(rep(0.05,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower= rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE)	
+	
+  cu <- mapply(function(k) qnorm(rep(0.975,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower=rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE) 
+  
   browser()
 
 
