@@ -79,28 +79,22 @@ splines_estim <-
  
  
   # parameter estimation with OLS
+  # dependent variable
   Y <- mapply(function(k) apply(cf_p[[k]],2,sum),sgroup,SIMPLIFY=FALSE)
-   
-  X <- list()
+  
 
   # k ... group index
-  # j ... column index (bond)
   # sidx ... index for spline function  
- 
-  for (k in sgroup){  
-  X[[k]] <- matrix(NA,ncol(m[[k]]),s[[k]])
-                 
-   for(sidx in 1:s[[k]]){
-   X[[k]][,sidx] <- apply(cf[[k]]*mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]])),2,sum)
-   }
-  }
-  
+  # independetn variable	
+  X <- mapply(function(k) mapply(function(sidx)  apply(cf[[k]]*mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]])),2,sum), 1:s[[k]] ),sgroup)
 
   # perfom OLS regression 
   regout <- mapply(function(k) lm(-Y[[k]]~X[[k]]-1),sgroup,SIMPLIFY=FALSE) # parameter vector
-    
+  
+  # estimated paramters  
   alpha <- lapply(regout, coef)
   
+  browser()
   # calculate discount factor matrix 
   dt <- list()
    for (k in sgroup){
@@ -111,6 +105,9 @@ splines_estim <-
   }  
 
    
+
+   
+   
   # calculate estimated prices 
   phat <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),sgroup,SIMPLIFY=FALSE)
   
@@ -118,35 +115,27 @@ splines_estim <-
   yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
   
  
-  # calculate estimated zero coupon yield curves
+  # maturity interval
   t <- mapply(function(k) seq(0.01, max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
-  
-  zcy_curves <- mapply(function(k) cbind(t[[k]],matrix(NA,nrow=length(t[[k]]),ncol=3)), sgroup,SIMPLIFY=FALSE)
-  
 
-     
-  dt_zcy <- list()
-  dt_zcy_ci_lw <- list()
-  dt_zcy_ci_up <- list()
-  
-  for( k in sgroup) {
-   dt_zcy[[k]] <- matrix(1,nrow=length(t[[k]]), ncol=3)
  
-    
-    for(sidx in 1:s[[k]]){  
-    dt_zcy[[k]][,1] <- dt_zcy[[k]][,1] + alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]])
-    #lower ci
-    dt_zcy[[k]][,2] <- dt_zcy[[k]][,2] + (alpha[[k]][sidx] + qt(0.025,(nrow(m[[k]])-length(alpha[[k]])))*summary(regout[[k]])$coefficients[sidx,2] )*gi(t[[k]],T[[k]],sidx,s[[k]])
-    #upper ci 
-    dt_zcy[[k]][,3] <- dt_zcy[[k]][,3] + (alpha[[k]][sidx] + qt(0.975,(nrow(m[[k]])-length(alpha[[k]])))*summary(regout[[k]])$coefficients[sidx,2] )*gi(t[[k]],T[[k]],sidx,s[[k]])
-        
-    
-   }
-  zcy_curves[[k]][,2:4] <- -log(dt_zcy[[k]])/t[[k]]
-  
-  }
+  # calculate mean and variance of the distribution of the discount function 
+  mean_d <- mapply(function(k) apply(mapply(function(sidx) alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]]),1,sum) +1, sgroup, SIMPLIFY=FALSE)
 
-    #browser() 
+  # variance covariance matrix for estimated ols parameters 
+  Sigma <- lapply(regout,vcov)
+
+  var_d <- mapply(function(k) apply(mapply(function(sidx) gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]]),1,function(x) t(x)%*%Sigma[[k]]%*%x), sgroup, SIMPLIFY=FALSE) 
+  
+  # lower 95% confidence interval
+    cl <- mapply(function(k) qnorm(rep(0.025,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower= rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE)	
+  # upper 95 % confidence interval	
+  cu <- mapply(function(k) qnorm(rep(0.975,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower=rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE) 
+  
+  # zero cupon yield curves for maturity interal t 
+ zcy_curves <-  mapply(function(k)  cbind(t[[k]],-log(mean_d[[k]])/t[[k]],-log(cl[[k]])/t[[k]], -log(cu[[k]])/t[[k]]),sgroup, SIMPLIFY=FALSE )  
+  
+  
   # calculate spread curves              	    
  	if(n_group != 1) {  
    scurves <- as.matrix( mapply(function(k) (zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), sgroup))]]),2] -

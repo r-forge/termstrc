@@ -233,48 +233,9 @@ From an economic point of view only positive interest rates make sense. Therefor
 
 \cite{McCulloch1975} plots error bands above and below one standard error of the best estimate. A confidence interval that would have been constructed the usual way, could get to the negative. Negative discount factors can not be transformed to spot rates with \eqref{eq:transformdf}. Therefore a we suggest to use the truncated normal distribution for the construction of the confidence interval of the discount function $d(m_{i,j})$.
 
- 
-The density of the truncated normal distribution can be written as
-
-\begin{equation}
-  \label{eq:dtdistrb}
-  f\left(d(m_{i,j})|d(m_{i,j}> 0)\right) = \frac{\frac{1}{\sigma}\phi (\frac{d-\mu}{\sigma} )}{1 - \Phi(\frac{-\mu}{\sigma})} 
-\end{equation}
-
-\textcolor{red}{$d(m_{i,j})>0$}
-
-In order to obtain the mean and variance of the truncated normal distribution we 
-use the moment generation fuction, which is:
-
-
-\begin{equation}
-  \label{eq:mgf}
-M(t) = E[e^{td(m_{i,j}}|d(m_{i,j}) > 0] = \frac{\int_0^{-\infty}e^{ty}f(y)dy}{1-\Phi(\frac{-\mu}{\sigma})} =
-e^{ut + \sigma^2t^2/2}\frac{1 - \Phi(\frac{-\mu}{\sigma} - \sigma t)}{1- \Phi(\frac{-\mu}{\sigma})}
-\end{equation}
-From the moment generating function the mean and the variance can be derived
 
 
 
-\begin{equation}
-  \label{eq:edtd}
-E\left[d(m_{i,j})|d(m_{i,j})\right] = M'(t)|_{t=0} = \mu + \sigma\frac{\phi(\frac{-\mu}{\sigma})}{1 - \Phi(\frac{-\mu}{\sigma})}
-\end{equation}
-
-\begin{eqnarray}
-  \label{eq:vdtd}
-Var[d(m_{i,j})|d(m_{i,j})>0] = E\left[d(m_{i,j})^2|d(m_{i,j})\right] = M''(t)|_{t=0} \nonumber \\
-=  \sigma^2\left[1+ \frac{\frac{-\mu}{\sigma}\phi(\frac{-\mu}{\sigma})}{1-\Phi(\frac{-\mu}{\sigma})} -\left(\frac{\phi(\frac{-\mu}{\sigma})}{1-\Phi(\frac{-\mu}{\sigma})^2} \right)\right]
-\end{eqnarray}
-The $1-\alpha$ confidence interval for $d(m_{i,j})$, assuming a truncated normal distribution,
-can be written as
-
-\begin{equation}
-  \label{eq:cfdtd}
-\mbox{P}[c_1\le d(m_{i,j}) \le c_2] = \int_{c_1}^{c_2}f(y(m_{i,j}|y(m_{i,j})>0)dy =  1 - \alpha
-\end{equation}
-
-The upper and the lower confidence intervall $c_1$ and $c_2$ for the discount function are converted with \eqref{eq:transformdf} to a confidence interval for the spot rate function. Because $c_1$ is forced to be non negative with the truncated normal distribution, it is now possible to evaluate the logarithm in the transformation to the spot rate function.
 
 
 %%% Local Variables: 
