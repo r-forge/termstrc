@@ -94,7 +94,7 @@ splines_estim <-
   # estimated paramters  
   alpha <- lapply(regout, coef)
   
-  browser()
+  
   # calculate discount factor matrix 
   dt <- list()
    for (k in sgroup){
