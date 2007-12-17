@@ -104,7 +104,7 @@ splines_estim <-
    }
   }  
 
-   
+   test <- mapply(function(sidx) alpha[[k]][sidx]*mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]])), 1:s[[k]],SIMPLIFY=FALSE)
 
    
    
