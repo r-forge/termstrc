@@ -7,7 +7,7 @@ source("tools.R")
 
 group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds
-matrange <- c(0,12)
+matrange <- "all"
 
 x <- splines_estim(group, bonddata, matrange)
 
