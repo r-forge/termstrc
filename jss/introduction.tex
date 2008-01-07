@@ -1,32 +1,44 @@
 \newpage
 \section{Introduction}
 
-\textcolor{red}{\textbf{Definition of the problem}}
+% Defintion of the problem
 
-see \cite{Lin2002, Zangari1997}
+The term structure of interest rates or the zero-coupon yield curve is the relationship between fixed income investments with only one payment at maturity, and the time to maturity of these cashflows. It is used in various areas of application, e.g. risk management, financial engineering, portfolio management. The zero-coupon yield curve is the basis to value other fixed income instruments. Basically, we can calculate the net present value (NPV) of any cash flow with it. For example, the fair price of a bond is just the sum of its discounted cash flows. By comparing it to the price on the market we can identify mispriced securities.
 
-The term structure of interest rate is the relationship between zero-coupon bonds and their time to maturity.
+We give the definitions of a few basic terms used in the fixed income literature. A \emph{discount bond} or \emph{zero-coupon bond} is a fixed income investment with only one payment at maturity. The \emph{spot rate} or \emph{zero-coupon rate} is the interest paid on a discount bond. With continuous compounding the fair price of a discount bond paying \$1 at maturitydate  $m_t$ is given by
 
-Prices of discount bonds are not observed, construct such prices by estimating the so-called term structure of interest rates from a set of coupon bonds issued by a government of a corporation.
+\begin{equation}
+  \label{eq:pricediscountbond}
+  p(m_t)=e^{s(m_t)m_t}
+\end{equation}
 
-It is important in various fields of application, e.g. risk management, financial engineering, portfolio management. It can be used to identify mispriced bonds, to price other fixed income securities or interest rate derivatives. Or to calculate the net present value of any type of cash flow. 
+Therefore, the \emph{zero-coupon yield curve} shows the spot rates for different maturities. The spot rate can also be seen as interest paid for investments that start today ($t=0)$. The \emph{forward rate} $f(t',T)$ is the interest contracted now to be paid for an future investment between time $t'$ and $T$. With continuous compounding we have the following relationship between spot rates and forward rates.
 
-Zero-coupon rates can easily obtained from the money market or zero coupon bonds. From coupon bonds it is more complicated. Simplest method is bootstrapping (by whom? \cite{Hagan2006}), only works when all cashflows have the same maturity intervals. Therefore, estimation procedures are needed.
+\begin{equation}
+  \label{eq:relspotforward}
+  e^{s(m_{t'})\cdot m_{t'}}\cdot e^{f(t',T)\cdot (m_T-m_{t'})} = e^{s(m_T)\cdot m_T}
+\end{equation}
+We can solve (\ref{eq:relspotforward}) for the forward rate.
 
-Market segment and bond selection.
+\begin{equation}
+  \label{eq:forwardrate}
+  f(t',T) = \frac{s(m_T)\cdot m_T - s(m_{t'})\cdot m_{t'}}{m_T-m_{t'}}
+\end{equation}
 
-Goodness of fit depending on pricing errors import for pricing purposes. Smoothness of the curve.
+The \emph{instantaneous forward rate} describes the return for an infinitesmal investment period after the date $t'$.
 
-Fluctuations in the zero-coupon curve are stronger reflected in the forward curve. Smoothness is crucial.
+\begin{equation}
+  \label{eq:instforw}
+  f(t') = \lim_{T\rightarrow t'}f(t',T)
+\end{equation}
+\cite{Svensson1994} interprets it as marginal increase in the total return from a marginal increase in the length of the investment period. Therefore, the spot rate can be seen as average of the instantaneous forward rates.
 
-In this section we provide the basic concepts of bond pricing which are required for the estimation of the term structure of interest rates. Section 2 explains the ideas behind the two used models. Details about the notation and the optimisation procedure are presented in section 3. Section 4 includes a complete step-by-step example.
+\begin{equation}
+  \label{eq:avgforwardrate}
+  s(m_t)=\frac{\int_0^{m_t}f(s)ds}{m_t}
+\end{equation}
 
-
-Compounding frequency is the period of time that an investment earns interest. Continous compounding assumes infinitesimally small time amounts.
-
-The zero-coupon rate is the interest paid on a discount bond. A discount bond consist of only one payment at time of maturity.
-
-Since Zero-coupon rates are rarely directly observable, they have to be estimated from market data for existing coupon bonds. For a coupon bond the following information is typically observable on the market: the maturity date $m$ , the clean price $p_c$ and the cashflows $c_t$ (coupons and redemption payment) which occur at $t=1,...n$. An investor who wants to buy the bond has to pay the dirty price $p_d$ which consists of the quoted market price (clean price) $p_c$ and the accrued interest $a$.
+In practice, we can only obtain zero-coupon rates for a limited amount of maturities directly from the market. We have to extract them from \emph{coupon bonds}. The following information is typically observable on the market: the maturity date $m$ , the clean price $p_c$ and the cashflows $c_t$ (coupons and redemption payment) which occur at $t=1,...n$. An investor who wants to buy the bond has to pay the dirty price $p_d$ which consists of the quoted market price (clean price) $p_c$ and the accrued interest $a$.
 
 The term structure of interest rates can usually be described in three ways: the discount function, the
 spot rate function and the forward rate function.
@@ -48,6 +60,29 @@ The yield-to-maturity is the solution for $y$ in the following equation.
 \end{equation}
 
 An equivalent formulation of the bond price equation makes use of the discount factors $d_t=\delta(m_t)=e^{-s_tm_t}$. The continuous discount function $\delta(\cdot)$ is formed by interpolation of the discount factors.
+
+
+see \cite{Lin2002, Zangari1997}
+
+Prices of discount bonds are not observed, construct such prices by estimating the so-called term structure of interest rates from a set of coupon bonds issued by a government of a corporation.
+
+It is important in various fields of application, e.g. risk management, financial engineering, portfolio management. It can be used to identify mispriced bonds, to price other fixed income securities or interest rate derivatives. Or to calculate the net present value of any type of cash flow. 
+
+Zero-coupon rates can easily obtained from the money market or zero coupon bonds. From coupon bonds it is more complicated. Simplest method is bootstrapping (by whom? \cite{Hagan2006}), only works when all cashflows have the same maturity intervals. Therefore, estimation procedures are needed.
+
+Market segment and bond selection.
+
+Goodness of fit depending on pricing errors import for pricing purposes. Smoothness of the curve.
+
+Fluctuations in the zero-coupon curve are stronger reflected in the forward curve. Smoothness is crucial.
+
+In this section we provide the basic concepts of bond pricing which are required for the estimation of the term structure of interest rates. Section 2 explains the ideas behind the two used models. Details about the notation and the optimisation procedure are presented in section 3. Section 4 includes a complete step-by-step example.
+
+
+Compounding frequency is the period of time that an investment earns interest. Continous compounding assumes infinitesimally small time amounts.
+
+The zero-coupon rate is the interest paid on a discount bond. A discount bond consist of only one payment at time of maturity.
+
 
 \begin{equation}
   \label{bondprceq2}

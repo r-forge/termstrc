@@ -51,32 +51,32 @@ plot(x)
 @
 \end{center}
 
-% \subsection{Cubic Splines}
+\subsection{Cubic Splines}
 
-% <<>>=
-% data(eurobonds)
+<<>>=
+data(eurobonds)
 
-% group <- c("GERMANY", "AUSTRIA", "ITALY")
-% bonddata <- eurobonds
-% matrange <- "all"  
-% @
+group <- c("GERMANY", "AUSTRIA", "ITALY")
+bonddata <- eurobonds
+matrange <- "all"  
+@
 
-% <<>>=
-% x <- splines_estim(group, bonddata, matrange)
-% print(x)
-% @
+<<>>=
+x <- splines_estim(group, bonddata, matrange)
+print(x)
+@
 
 
-% <<>>=
-% summary(x)
-% @
+<<>>=
+summary(x)
+@
 
-% \begin{center}
-% <<fig=TRUE>>=
-% par(mfrow=c(3,2),cex=0.55)
-% plot(x)
-% @
-% \end{center}
+\begin{center}
+<<fig=TRUE>>=
+par(mfrow=c(3,2),cex=0.55)
+plot(x)
+@
+\end{center}
 
 %%% Local Variables: 
 %%% mode: latex
