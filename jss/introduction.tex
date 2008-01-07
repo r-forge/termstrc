@@ -1,22 +1,32 @@
 \newpage
 \section{Introduction}
 
-\begin{itemize}
-\item importance of term structure estimation, \cite{BIS2005, Bolder1999, Bliss1997, Soenderlind1997 Ioannides2003, Diebold2006, Nawalkha2005}
-\item no-arbitrage and equilibrium models 
-\item bootstrapping
-\end{itemize}
+\textcolor{red}{\textbf{Definition of the problem}}
 
-\cite{BIS2005}
+see \cite{Lin2002, Zangari1997}
 
-For stylized facts about the yield curve see \cite[p. 7]{Diebold2006}. For different weightings of the Nelson Siegle see \cite{Soederlind1997, Bliss1997}.
+The term structure of interest rate is the relationship between zero-coupon bonds and their time to maturity.
 
-The \proglang{R} package \pkg{termstrc} consists of methods for estimating the term structure of interest rates from market data.
+Prices of discount bonds are not observed, construct such prices by estimating the so-called term structure of interest rates from a set of coupon bonds issued by a government of a corporation.
+
+It is important in various fields of application, e.g. risk management, financial engineering, portfolio management. It can be used to identify mispriced bonds, to price other fixed income securities or interest rate derivatives. Or to calculate the net present value of any type of cash flow. 
+
+Zero-coupon rates can easily obtained from the money market or zero coupon bonds. From coupon bonds it is more complicated. Simplest method is bootstrapping (by whom? \cite{Hagan2006}), only works when all cashflows have the same maturity intervals. Therefore, estimation procedures are needed.
+
+Market segment and bond selection.
+
+Goodness of fit depending on pricing errors import for pricing purposes. Smoothness of the curve.
+
+Fluctuations in the zero-coupon curve are stronger reflected in the forward curve. Smoothness is crucial.
 
 In this section we provide the basic concepts of bond pricing which are required for the estimation of the term structure of interest rates. Section 2 explains the ideas behind the two used models. Details about the notation and the optimisation procedure are presented in section 3. Section 4 includes a complete step-by-step example.
 
 
-Since zero-coupon rates are rarely directly observable, they have to be estimated from market data for existing coupon bonds. For a coupon bond the following information is typically observable on the market: the maturity date $m$ , the clean price $p_c$ and the cashflows $c_t$ (coupons and redemption payment) which occur at $t=1,...n$. An investor who wants to buy the bond has to pay the dirty price $p_d$ which consists of the quoted market price (clean price) $p_c$ and the accrued interest $a$.
+Compounding frequency is the period of time that an investment earns interest. Continous compounding assumes infinitesimally small time amounts.
+
+The zero-coupon rate is the interest paid on a discount bond. A discount bond consist of only one payment at time of maturity.
+
+Since Zero-coupon rates are rarely directly observable, they have to be estimated from market data for existing coupon bonds. For a coupon bond the following information is typically observable on the market: the maturity date $m$ , the clean price $p_c$ and the cashflows $c_t$ (coupons and redemption payment) which occur at $t=1,...n$. An investor who wants to buy the bond has to pay the dirty price $p_d$ which consists of the quoted market price (clean price) $p_c$ and the accrued interest $a$.
 
 The term structure of interest rates can usually be described in three ways: the discount function, the
 spot rate function and the forward rate function.
@@ -61,7 +71,39 @@ The instantaneous forward at the time $t$ equals
 The spot rate is the integral of the instantaneous forward rate.
 
 
+Each payment (coupons and principal) has the structure of a discount bond. This makes it possible to relate the coupon bond prices to the spot curve (or zero-coupon yield curve).
 
+\textcolor{red}{\textbf{Literature review}}
+
+\cite{BIS2005, Bolder1999, Bliss1997, Soederlind1997, Ioannides2003, Diebold2006, Nawalkha2005}
+
+\cite{BIS2005} gives an overview of zero-coupon yield curve estimation procedures used by various central banks. The majority uses Nelson-Siegel, Svensson or smoothing splines.
+
+For stylized facts about the yield curve see \cite[p. 7]{Diebold2006}. For different weightings of the Nelson SiegEL see \cite{Soederlind1997, Bliss1997}.
+
+\textcolor{red}{\textbf{Choice of method}}
+
+\cite{Nelson1987, Svensson1994, McCulloch1975}
+
+Price of a discount bond can be modeled as mathematical function, e.g. a cubic spline or an exponential polynomial.
+
+The reason for requiring differentiability of the interpolating function is that then the forward function is continuous \citep[see][p. 97]{Hagan2006}.
+
+The two most popular empirical methodologies for estimating the term structure of interest rates are.
+
+Two categories of methodologies for the term structure of interest rates.
+
+Goal is to fit the data and obtain a smooth curve.
+
+\textcolor{red}{\textbf{Principal results}}
+
+The \proglang{R} package \pkg{termstrc} consists of methods for estimating the term structure of interest rates from market data.
+
+\textcolor{red}{\textbf{Conclusions}}
+
+\cite{Filipovic1999, Bjoerk1999} show that there does not exist any nontrivial interest rate model that is consistent with the Nelson-Siegel family. \cite{Filipovic2000} says that the Nelson-Siegel and Svensson families may be well suited for daily estimations of the forward curve, but they are best not used for intertemporal interest rate modeling by diffusion processes. \cite{Krippner2006} derives and intertemporally consistent and arbitrage-free version of the Nelson-Siegel model. It can be used for forecasting the yieldcurve.
+
+For a practical implementation see \cite{Bolder2006}. 
 
 %%% Local Variables: 
 %%% mode: latex
