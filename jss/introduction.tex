@@ -2,20 +2,20 @@
 
 % Defintion of the problem
 
-The term structure of interest rates or the zero-coupon yield curve is the relationship between fixed income investments with only one payment at maturity, and the time to maturity of these cashflows. It is used in various areas of application, e.g. risk management, financial engineering, portfolio management. The zero-coupon yield curve is the basis to value other fixed income instruments. Basically, we can calculate the net present value (NPV) of any cash flow with it. For example, the fair price of a bond is just the sum of its discounted cash flows. By comparing it to the price on the market we can identify mispriced securities.
+The term structure of interest rates or the zero-coupon yield curve is the relationship between fixed income investments with only one payment at maturity, and the time to maturity of these cashflows. It is used in different areas of application, e.g. risk management, financial engineering, monetary policy issues. The zero-coupon yield curve is the basis to value other fixed income instruments. Basically, we can calculate the net present value (NPV) of any cash flow with it. For example, the fair price of a bond is just the sum of its discounted future coupon and redemption payments. By comparing it to the price on the market, we can identify mispriced securities. The numerous areas of application for the term structure of interest rates has lead to a fairly large amount of publications by researchers and practitioners.
 
-We give the definitions of a few basic terms used in the fixed income literature. A \emph{discount bond} or \emph{zero-coupon bond} is a fixed income investment with only one payment at maturity. The \emph{spot rate} or \emph{zero-coupon rate} is the interest paid on a discount bond. With continuous compounding the fair price of a discount bond paying \$1 at maturitydate  $m_t$ is given by
+Before we come to the problem of zero-coupon yield curve estimation, let us introduce the definitions of a few basic terms used in the fixed income literature. A \emph{discount bond} or \emph{zero-coupon bond} is a fixed income investment with only one payment at maturity. The \emph{spot rate} or \emph{zero-coupon rate} is the interest paid on a discount bond. With continuous compounding the fair price of a discount bond paying \$1 at maturitydate  $m_t$ is given by
 
 \begin{equation}
   \label{eq:pricediscountbond}
   p(m_t)=e^{s(m_t)m_t}
 \end{equation}
 
-Therefore, the \emph{zero-coupon yield curve} shows the spot rates for different maturities. The spot rate can also be seen as interest paid for investments that start today ($t=0)$. The \emph{forward rate} $f(t',T)$ is the interest contracted now to be paid for an future investment between time $t'$ and $T$. With continuous compounding we have the following relationship between spot rates and forward rates.
+Therefore, the \emph{spot curve} (or \emph{zero-coupon yield curve}) shows the spot rates for different maturities. The spot rate is the interest paid for investments that start today ($t=0)$. The \emph{forward rate} $f(t',T)$ is the interest contracted now to be paid for an future investment between the time $t'$ and $T$. The forward rate as a function of maturity is the \emph{forward curve}. With continuous compounding, we have the following relationship between spot rates and forward rates.
 
 \begin{equation}
   \label{eq:relspotforward}
-  e^{s(m_{t'})\cdot m_{t'}}\cdot e^{f(t',T)\cdot (m_T-m_{t'})} = e^{s(m_T)\cdot m_T}
+  e^{s(m_{t'}) m_{t'}}e^{f(t',T)(m_T-m_{t'})} = e^{s(m_T) m_T}
 \end{equation}
 We can solve (\ref{eq:relspotforward}) for the forward rate.
 
@@ -30,128 +30,48 @@ The \emph{instantaneous forward rate} describes the return for an infinitesmal i
   \label{eq:instforw}
   f(t') = \lim_{T\rightarrow t'}f(t',T)
 \end{equation}
-\cite{Svensson1994} interprets it as marginal increase in the total return from a marginal increase in the length of the investment period. Therefore, the spot rate can be seen as average of the instantaneous forward rates.
+
+Another interpretation is as the marginal increase in the total return from a marginal increase in the length of the investment period. Therefore, the spot rate can be seen as average of the instantaneous forward rates.
 
 \begin{equation}
   \label{eq:avgforwardrate}
-  s(m_t)=\frac{\int_0^{m_t}f(s)ds}{m_t}
+  s(m_t)=\frac{1}{m_t}\int_0^{m_t}f(s)ds
 \end{equation}
 
-In practice, we can only obtain zero-coupon rates for a limited amount of maturities directly from the market. We have to extract them from \emph{coupon bonds}. The following information is typically observable on the market: the clean price $p_c$, the cashflows $c_t$ (coupons and redemption payment) and their the maturity dates $m_t$. An investor who wants to buy the bond has to pay the dirty price $p_d$ which consists of the quoted market price (clean price) $p_c$ and the accrued interest $a$. This is the amount of interest that has accumulated since the last coupon payment.
-
-As in \eqref{eq:pricediscountbond} the bond pricing equation under continuous compounding is the present value of all cash flows.
+In practice, we can only obtain zero-coupon rates for a limited amount of maturities directly from the market. Therefore, we have to estimate them from observed prices of \emph{coupon bonds}. The following information is typically available on the market: the clean price $p_c$, the cashflows $c_t$ (coupons and redemption payment) and their maturity dates $m_t$. An investor who wants to buy the bond has to pay the dirty price $p_d$ which consists of the quoted market price (clean price) $p_c$ and the accrued interest $a$. This is the amount of interest that has accumulated since the last coupon payment. Similar to \eqref{eq:pricediscountbond}, the bond pricing equation under continuous compounding is the present value of all cash flows.
 
 \begin{equation}
   \label{bondpriceeq}
   p_c+a = \sum_{t=1}^T \ c_t e^{-s(m_t)m_t}
 \end{equation}
 
-% The spot rate $s_t$ is the yield-to maturity for a $t$-period zero-coupon bond. $m_t$ is the time to maturity of the $t$-th cash flow. A plot of the yields against times to maturity produces the zero-coupon yield curve.
-
-
-An equivalent formulation of the bond price equation makes use of the \emph{discount factors} $d_t=\delta(m_t)=e^{-s(m_t)m_t}$. The continuous discount function $\delta(\cdot)$ is formed by interpolation of the discount factors.
+An equivalent formulation makes use of the \emph{discount factors} $d_t=\delta(m_t)=e^{-s(m_t)m_t}$. The continuous \emph{discount curve} $\delta(\cdot)$ is formed by interpolation of the discount factors.
 
 
 \begin{equation}
   \label{bondprceq2}
   p_c+a=\sum_{t=1}^T \ c_t \delta(m_t) 
 \end{equation}
-Each payment (coupons and principal) has the structure of a discount bond. This makes it possible to relate the coupon bond prices to the spot curve (or zero-coupon yield curve).
-
-The \emph{yield-to-maturity} (YTM) is the solution for $y$ in the following equation.
+Each payment (coupons and redemption) has the structure of a discount bond. This makes it possible to relate the coupon bond prices to the spot and the forward curve. The usual way to compare coupon bonds with different maturities is to calculate the internal rate of return of the cash flows. The so-called \emph{yield-to-maturity} (YTM) is the solution for $y$ in the following equation.
 
 \begin{equation}
    \label{yield}
    p_c+a=\sum_{t=1}^T \ c_t e^{-ym_t}
  \end{equation}
 
-As can be seen from \eqref{eq:pricediscountbond}, the YTM for a discount bond is equal to the spot rate. This is not true for coupon bonds. Plotting just the yield-to-maturity for coupon bonds with different maturities does not result in a yield curve that can be used to discount cash flows or price any other fixed income security except the bond from which it was calculated. Therefore, estimating the term structure of interest rates from a set of coupon bonds can not be seen as a simple curve fitting of the YTMs.
+As can be seen from \eqref{eq:pricediscountbond}, the YTM for a discount bond is equal to the spot rate. This is not true for coupon bonds. Plotting just the yield-to-maturity for coupon bonds with different maturities does not result in a yield curve which can be used to discount cash flows or price any other fixed income security except the bond from which it was calculated. Therefore, estimating the term structure of interest rates from a set of coupon bonds can not be seen as a simple curve fitting of the YTMs.
 
-\textcolor{red}{\textbf{Literature review of available methods}
-    \begin{itemize}
-    \item Begin with bootstrapping
-    \item Stylized facts of yield curves. Importance of smoothness, ...
-    \item Recent works on dynamic aspects of polynomial yield curve models.
-    \end{itemize}
-}
+We have seen before that the spot curve, the forward curve and the discount curve are implied by each other. The following estimation procedures try to approximate one of them, from which it is possible to calculate the other ones. The simplest method to obtain spot rates from a sample of coupon bonds is bootstrapping. This is an iterative technique based on the pricing equation for a coupon bond. It works only when all cashflows have the same maturity intervals \citep[see, e.g.][]{Hagan2006}. Therefore, other estimation procedures are needed. Usually, the following features are required from an estimated yield curve. It should price the underlying bonds correctly and result in a continuous spot and forward curve. 
 
+\cite{BIS2005} contains a survey about zero-coupon yield curve estimation procedures among central banks. It turns out that the following two approaches are widely used. The first are parametric cubic splines for the discount function proposed by \cite{McCulloch1971, McCulloch1975}. The second method is based on a parsimonious specification of the forward curve with a family of exponential polynomials developed by \cite{Nelson1987} and extended by \cite{Svensson1994}. Both approaches minimize the price/yield errors, however, estimation procedures are different, e.g. they can involve weightings of the errors, the objective function can become nonlinear.
 
-The simplest method to obtain spot rates from a sample of coupon bonds is bootstrapping. This only works when all cashflows have the same maturity intervals \citep[see, e.g.][]{Hagan2006}. Therefore, other estimation procedures are needed.
+There are several extensions available for the two methods mentioned above. \cite{Vasicek1982} fit the discount function with exponential splines. \cite{Fisher1995} proposed a smoothing spline for which \cite{Waggoner1997} introduced a roughness penalty varying across maturities. Different weightings for the objective function of the exponential polynomial families can be found in \cite{Soederlind1997}. Several works compare the performance of different term structure estimation methods, \citep[see e.g.][]{Bliss1997, Bolder1999, Ioannides2003}.
 
-% Market segment and bond selection.
+In practice, new data for the yield curve is available everyday, and it is obvious to recalibrate the estimation in a dynamic way or even try to forecast the future parameters. \cite{Diebold2006} propose an approach that is based on the Nelson-Siegel model. Term structure estimation procedures do not have to be consistent with intertemporal interest modeling by diffusion processes \citep[see, e.g.][]{Bjoerk1999, Filipovic1999}. For a consistent and arbitrage-free version of the Nielsen-Siegel model, which can be used for pricing fixed income derivatives, see \cite{Krippner2006}.   
 
-% Goodness of fit depending on pricing errors import for pricing purposes. Smoothness of the curve.
-
-% Fluctuations in the zero-coupon curve are stronger reflected in the forward curve. Smoothness is crucial.
-
-% In this section we provide the basic concepts of bond pricing which are required for the estimation of the term structure of interest rates. Section 2 explains the ideas behind the two used models. Details about the notation and the optimization procedure are presented in section 3. Section 4 includes a complete step-by-step example.
+In this paper, we give a short overview about the topic of term structure estimation methods and introduce the package \pkg{termstrc} which is written in the \proglang{R} system for statistical computing \citep{R2008}. It is available from the Comprehensive \proglang{R} Archive Network at \url{http://CRAN.R-project.org/}. The package contains an implementation of the two most widely-used methods for zero-coupon yield curve estimation from market data of coupon bonds, i.e. the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension, and the \cite{McCulloch1975} cubic splines approach. The software provides detailed summaries about the estimation results as well as graphical outputs of spot, forward and credit spread curves.
 
 
-% Compounding frequency is the period of time that an investment earns interest. Continous compounding assumes infinitesimally small time amounts.
-
-% The zero-coupon rate is the interest paid on a discount bond. A discount bond consist of only one payment at time of maturity.
-
-
-
-
-% The implied $j$-period forward rate is calculated as
-
-% \begin{equation}
-%   \label{forwrate}
-%   f_{t|j}=\frac{js_j-ts_t}{j-t}=s_j+(s_j-s_t)\frac{t}{j-t}
-% \end{equation}
-
-% The instantaneous forward at the time $t$ equals
-
-% \begin{equation}
-%   \label{instfwdrate}
-%   f_t=\lim_{\Delta t \rightarrow 0}=\left[s_{t+\Delta t}+(s_{t+\Delta t}-s_t)\frac{t}{\Delta t}\right]=s_t+t\frac{\partial s}{\partial t}
-% \end{equation}
-
-% The spot rate is the integral of the instantaneous forward rate.
-
-
-
-% Literature review
-\cite{BIS2005, Bolder1999, Bliss1997, Soederlind1997, Ioannides2003, Diebold2006, Nawalkha2005}
-
-\cite{BIS2005} gives an overview of zero-coupon yield curve estimation procedures used by various central banks. The majority uses Nelson-Siegel, Svensson or smoothing splines.
-
-\cite{Diebold2006} considers the following stylized facts that a model of the zero-coupon yield curve should be able to replicate:
-
-\begin{enumerate}
-   \item The average yield curve is increasing and concave.
-   \item The yield curve assumes a variety of shapes through time, including upward sloping, downward sloping, humped, and inverted humped.
-   \item Yield dynamics are persistent, and spread dynamics are much less persistent.
-    \item The short end of the yield curve is more volatile than the long end.
-    \item Long rates are more persistent than short rates.
-\end{enumerate}
-
-For stylized facts about the yield curve see \cite[p. 7]{Diebold2006}. For different weightings of the Nelson SiegEL see \cite{Soederlind1997, Bliss1997}.
-
-\textcolor{red}{\textbf{Choice of method}}
-
-\cite{Nelson1987, Svensson1994, McCulloch1975}
-
-Price of a discount bond can be modeled as mathematical function, e.g. a cubic spline or an exponential polynomial.
-
-The reason for requiring differentiability of the interpolating function is that then the forward function is continuous \citep[see][p. 97]{Hagan2006}.
-
-The two most popular empirical methodologies for estimating the term structure of interest rates are.
-
-Two categories of methodologies for the term structure of interest rates.
-
-Goal is to fit the data and obtain a smooth curve.
-
-\textcolor{red}{\textbf{Principal results}}
-
-The \proglang{R} package \pkg{termstrc} consists of methods for estimating the term structure of interest rates from market data.
-
-\textcolor{red}{\textbf{Conclusions}}
-
-\cite{Filipovic1999, Bjoerk1999} show that there does not exist any nontrivial interest rate model that is consistent with the Nelson-Siegel family. \cite{Filipovic2000} says that the Nelson-Siegel and Svensson families may be well suited for daily estimations of the forward curve, but they are best not used for intertemporal interest rate modeling by diffusion processes. \cite{Krippner2006} derives and intertemporally consistent and arbitrage-free version of the Nelson-Siegel model. It can be used for forecasting the yieldcurve.
-
-For a practical implementation see \cite{Bolder2006}. 
 
 %%% Local Variables: 
 %%% mode: latex
