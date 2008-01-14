@@ -114,17 +114,39 @@ nelson_estim <-
  	if(n_group != 1) { 
    scurves <- zcy_curves[,3:(n_group+1)] - zcy_curves[,2] 	    
     } else scurves = "none" 
+    
+        
+  # calculate forward rate curves 
+  
+  fwr_curves <- switch(method,
+              "Nelson/Siegel" = mapply(function(k)
+		            fwr_ns(opt_result[[k]]$par,
+                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),
+                sgroup),
+
+              "Svensson" = mapply(function(k) fwr_sv(opt_result[[k]]$par,
+                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),sgroup))
+  
+  fwr_curves <- cbind(zcy_curves[,1],fwr_curves)
+  
+  # calculate discount factor curves 
+  
+  df_curves <- cbind(zcy_curves[,1],exp(-zcy_curves[,2:ncol(zcy_curves)]*zcy_curves[,1]))
  
  # return list of results 
  result <- list(group=group,           # e.g. countries, rating classes
                  matrange=matrange,    # maturity range of bonds
                  method=method,        # method (Nelson/Siegel or Svensson)
-       		 fit=fit,              # fitting method (prices or yields)
+       		     fit=fit,              # fitting method (prices or yields)
                  weights=weights,      # weighting type for estimation
                  n_group=n_group,      # number of groups,
                  zcy_curves=zcy_curves,      # zero coupon yield curves
                  scurves=scurves,      # spread curves
-       		 cf=cf,                # cashflow matrix
+                 fwr_curves=fwr_curves,# forward rate curves
+                 df_curves,			   # discount factor curves
+       		     cf=cf,                # cashflow matrix
                  m=m,                  # maturity matrix
                  duration=duration,    # duration, modified duration, weights
                  p=p,                  # dirty prices
@@ -160,7 +182,26 @@ svensson <-
   (beta[1] + beta[2] * ((1 - exp(-m/beta[4]))/(m/beta[4])) +
   beta[3] * (((1 - exp(-m/beta[4]))/(m/beta[4])) - exp(-m/beta[4])) +
   beta[5] * (((1 - exp(-m/beta[6]))/(m/beta[6])) - exp(-m/beta[6])))}
+  
+###################################################################
+#                     Forward rates Nelson/Siegel                 #
+###################################################################
 
+fwr_ns <-
+  function(beta, m) {
+    (beta[1] + beta[2]*exp(-m/beta[4])
+    + beta[3]*(m/beta[4]*exp(-m/beta[4])))}
+
+###################################################################
+#                     Forward rates Svensson                      #
+###################################################################
+
+fwr_sv <-
+  function(beta, m) {
+  (beta[1] + beta[2]*exp(-m/beta[4]) +
+  beta[3] *m/beta[4]*exp(-m/beta[4]) +
+  beta[5] *m/beta[6]*exp(-m/beta[6]))}
+  
 ###################################################################
 #                        loss function                            #
 ###################################################################

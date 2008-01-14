@@ -108,12 +108,31 @@ nelson_estim <-
                            ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),sgroup))
                 
   zcy_curves <-  cbind(c(seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
-                           ceiling(max(mapply(function(i) max(y[[i]][,1]),sgroup))),0.01)),zcy_curves)             	
-                
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]),sgroup))),0.01)),zcy_curves) 
+                                         
   # calculate spread curves              	    
  	if(n_group != 1) { 
    scurves <- zcy_curves[,3:(n_group+1)] - zcy_curves[,2] 	    
     } else scurves = "none" 
+    
+  # calculate forward rate curves 
+  
+  frw_curves <- switch(method,
+              "Nelson/Siegel" = mapply(function(k)
+		            fwr_ns(opt_result[[k]]$par,
+                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),
+                sgroup),
+
+              "Svensson" = mapply(function(k) fwr_sv(opt_result[[k]]$par,
+                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),sgroup))
+  
+  frw_curves <- cbind(zcy_curves,frw_curves)
+  
+  # calculate discount factor curves 
+  
+  df <- exp(-zcy_curves[,2:ncol(zcy_curves)]*zcy_curves[,1])
  
  # return list of results 
  result <- list(group=group,           # e.g. countries, rating classes
@@ -160,6 +179,26 @@ svensson <-
   (beta[1] + beta[2] * ((1 - exp(-m/beta[4]))/(m/beta[4])) +
   beta[3] * (((1 - exp(-m/beta[4]))/(m/beta[4])) - exp(-m/beta[4])) +
   beta[5] * (((1 - exp(-m/beta[6]))/(m/beta[6])) - exp(-m/beta[6])))}
+  
+###################################################################
+#                     Forward rates Nelson/Siegel                 #
+###################################################################
+
+fwr_ns <-
+  function(beta, m) {
+    (beta[1] + beta[2]*exp(-m/beta[4])
+    + beta[3]*(m/beta[4]*exp(-m/beta[4])))}
+
+###################################################################
+#                     Forward rates Svensson                      #
+###################################################################
+
+fwr_sv <-
+  function(beta, m) {
+  (beta[1] + beta[2]*exp(-m/beta[4]) +
+  beta[3] *m/beta[4]*exp(-m/beta[4]) +
+  beta[5] *m/beta[6]*exp(-m/beta[6]))}
+  
 
 ###################################################################
 #                        loss function                            #
