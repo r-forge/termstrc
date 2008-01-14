@@ -193,6 +193,17 @@ function (cf_p,m_p,y) {
  	"Nelson/Siegel" = nelson_siegel(beta,m),
  	"Svensson" = svensson(beta,m))
   }
+  
+###################################################################
+#                 Forwardrate calculation                         #
+###################################################################
+
+ forwardrates <- function(method,beta,m){ 
+  switch(method,
+ 	"Nelson/Siegel" = fwr_ns(beta,m),
+ 	"Svensson" = fwr_sv(beta,m))
+  }
+  
 	
 ###################################################################
 #                   Bond pricing function                         #

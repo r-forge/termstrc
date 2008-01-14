@@ -139,6 +139,7 @@ besser
 
 * increase performance of cubic splines estimation
 
+
 * adjust date in DESCRIPTION file 
 -> erledigt!
 
@@ -149,3 +150,11 @@ besser
 
 * adapt cubic splines zyc_curves plot method for plotting confidence intervalls  
 -> erledigt ! 
+
+* add forwardrate function
+
+* adopt plot method for forward rates and discount factor curve
+
+* check and complete help files 
+
+* return discount factors, forward rates
