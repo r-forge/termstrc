@@ -95,45 +95,58 @@ nelson_estim <-
   # calculate estimated yields 
   yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
   
+  # maturity interval
+  t <- seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
+                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)
+  
+  
   # calculate zero coupon yield curves  
   zcy_curves <- switch(method,
               "Nelson/Siegel" = mapply(function(k)
-		            nelson_siegel(opt_result[[k]]$par,
-                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
-                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),
-                sgroup),
+		            cbind(t,nelson_siegel(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
+              "Svensson" = mapply(function(k) 
+              		cbind(svensson(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE)
+              		   )
 
-              "Svensson" = mapply(function(k) svensson(opt_result[[k]]$par,
-                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
-                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),sgroup))
-                
-  zcy_curves <-  cbind(c(seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
-                           ceiling(max(mapply(function(i) max(y[[i]][,1]),sgroup))),0.01)),zcy_curves)             	
-                
-  # calculate spread curves              	    
- 	if(n_group != 1) { 
-   scurves <- zcy_curves[,3:(n_group+1)] - zcy_curves[,2] 	    
-    } else scurves = "none" 
+  for (k in sgroup) class(zcy_curves[[k]]) <- "d_curve"
+  class(zcy_curves) <- "spot_curves"
+                                      
+  # calculate spread curves              	 
+   if(n_group != 1) {  
+   s_curves <- mapply(function(k) 
+   					cbind(t,(zcy_curves[[k]][,2] - zcy_curves[[1]][,2])),sgroup,
+   					SIMPLIFY=FALSE)
+   
+    } else scurves = "none"
     
+   #browser()   
+   # calculate extrapolation points
+  
+   #for(k in c((seq(n_group))[-which.max(mapply(function(i) max(y[[i]][,1]),
+   #                                      seq(n_group)))]))
+                                         
+	expoints <- mapply(function(k) which(zcy_curves[[k]][,1] > 
+                 mapply(function(i) max(y[[i]][,1]), seq(n_group))[k])[1],sgroup, SIMPLIFY=FALSE )  
+    
+   # c((seq(n_group))[-which.max(mapply(function(i) max(y[[i]][,1]),
+    #                                     seq(n_group)))])
         
   # calculate forward rate curves 
-  
   fwr_curves <- switch(method,
               "Nelson/Siegel" = mapply(function(k)
-		            fwr_ns(opt_result[[k]]$par,
-                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
-                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),
-                sgroup),
+		            cbind(t,fwr_ns(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
+              "Svensson" = mapply(function(k) 
+              		cbind(t,fwr_sv(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE)
+                      )
+  for (k in sgroup) class(fwr_curves[[k]]) <- "d_curve"
+  class(fwr_curves) <- "fwr_curves"
 
-              "Svensson" = mapply(function(k) fwr_sv(opt_result[[k]]$par,
-                seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
-                           ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)),sgroup))
-  
-  fwr_curves <- cbind(zcy_curves[,1],fwr_curves)
   
   # calculate discount factor curves 
+  df_curves <- mapply(function(k) cbind(zcy_curves[[k]][,1],exp(-zcy_curves[[k]][,1]*zcy_curves[[k]][,2])),sgroup,SIMPLIFY=FALSE)
   
-  df_curves <- cbind(zcy_curves[,1],exp(-zcy_curves[,2:ncol(zcy_curves)]*zcy_curves[,1]))
+   for (k in sgroup) class(df_curves[[k]]) <- "d_curve"
+   class(df_curves) <- "df_curves"
  
  # return list of results 
  result <- list(group=group,           # e.g. countries, rating classes
@@ -143,9 +156,10 @@ nelson_estim <-
                  weights=weights,      # weighting type for estimation
                  n_group=n_group,      # number of groups,
                  zcy_curves=zcy_curves,      # zero coupon yield curves
-                 scurves=scurves,      # spread curves
+                 s_curves=s_curves,      # spread curves
                  fwr_curves=fwr_curves,# forward rate curves
-                 df_curves,			   # discount factor curves
+                 df_curves=df_curves,			   # discount factor curves
+                 expoints=expoints, 	   # extrapolation points
        		     cf=cf,                # cashflow matrix
                  m=m,                  # maturity matrix
                  duration=duration,    # duration, modified duration, weights
@@ -157,7 +171,7 @@ nelson_estim <-
                  )
                  
   # assign names to results list 
-  for ( i in 9:length(result)) names(result[[i]]) <- names(bonddata)
+  for ( i in 7:length(result)) names(result[[i]]) <- names(bonddata)
     
   class(result) <- "nelson"
   result

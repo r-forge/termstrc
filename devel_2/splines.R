@@ -94,7 +94,7 @@ splines_estim <-
   # estimated paramters  
   alpha <- lapply(regout, coef)
   
-  browser()
+  #browser()
   # calculate discount factor matrix 
   dt <- list()
    for (k in sgroup){
@@ -104,7 +104,7 @@ splines_estim <-
    }
   }  
 
-   test <- mapply(function(sidx) alpha[[k]][sidx]*mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]])), 1:s[[k]],SIMPLIFY=FALSE)
+  # test <- mapply(function(sidx) alpha[[k]][sidx]*mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]])), 1:s[[k]],SIMPLIFY=FALSE)
 
    
    
@@ -132,7 +132,7 @@ splines_estim <-
   # upper 95 % confidence interval	
   cu <- mapply(function(k) qnorm(rep(0.975,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower=rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE) 
   
-  # zero cupon yield curves for maturity interal t 
+  # zero cupon yield curves for maturity interval t 
  zcy_curves <-  mapply(function(k)  cbind(t[[k]],-log(mean_d[[k]])/t[[k]],-log(cl[[k]])/t[[k]], -log(cu[[k]])/t[[k]]),sgroup, SIMPLIFY=FALSE )  
   
   
