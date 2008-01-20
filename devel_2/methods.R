@@ -32,7 +32,7 @@ print.nelson <-
 plot.nelson <-
   function(x,matrange=c(min(mapply(function(i) min(x$y[[i]][,1]),seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))))
-                        ,pdf=FALSE, ...) {
+                        ,pdf=FALSE,...) {
    
     
      if(pdf) pdf( file="termstrc_results.pdf",... ) else par(ask=TRUE)  
@@ -59,7 +59,8 @@ plot.nelson <-
     if( matrange[1] < samplemat[1]) {matrange[1] <- samplemat[1]
        warning("The plot range for the maturity violates the estimation maturity range") 
      }
-                       				
+    
+               				
     # plot each yield curve seperately
     for (k in seq(x$n_group)  ) {
          
@@ -124,6 +125,7 @@ plot.nelson <-
    
    }                    
   
+   
    
    if(pdf) dev.off() else par(ask=FALSE) 
    
@@ -349,3 +351,45 @@ plot.cubicsplines <-
   
    if(pdf) dev.off() else par(ask=FALSE) 
 }  
+
+###################################################################
+#                    plot-method for d_curve                      #
+###################################################################
+plot.d_curve <- function(x,ylim=c(),xlim=c(),...) {
+	
+         
+      plot(x[,1] ,x[,2]*100,
+      type="l",
+      ylim=ylim,
+      xlim=xlim,
+      xlab="Maturity (years) ",
+      ylab="Percent",
+      lwd=2,
+      col="steelblue")
+      
+}
+
+###################################################################
+#                    plot-method for spot_curves                  #
+###################################################################
+
+plot.spot_curves <- function(x,multiple= FALSE, ylim=c(),xlim=c(),nelsonparam=FALSE,splineparam=FALSE, ...) {
+	
+	if(multiple)  {print("funkt noch nicht")
+		
+		#überprüfen ob nelson od cs object sonst warnung 
+		# dann entsprechender plot mit ns cs spezifischen params
+		
+		} else 
+	
+	for(k in seq(x)) {plot.d_curve(x[[k]],... ) 
+		
+		title(names(x)[k])
+      	legend("bottomright",legend=c("Zero-coupon yield curve","Yield to maturity"),
+        col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
+	}
+
+}
+
+	
+	

@@ -38,6 +38,6 @@ x <- nelson_estim(group, bonddata, matrange,
                   method, fit, weights, startparam=b,control)
 
 print(x)
-summary(x)
-plot(x)
+#summary(x)
+#plot(x)
 
