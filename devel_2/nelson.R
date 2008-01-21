@@ -108,7 +108,7 @@ nelson_estim <-
               		cbind(svensson(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE)
               		   )
 
-  for (k in sgroup) class(zcy_curves[[k]]) <- "d_curve"
+  for (k in sgroup) class(zcy_curves[[k]]) <- "ir_curve"
   class(zcy_curves) <- "spot_curves"
                                       
   # calculate spread curves              	 
@@ -119,17 +119,10 @@ nelson_estim <-
    
     } else scurves = "none"
     
-   #browser()   
    # calculate extrapolation points
-  
-   #for(k in c((seq(n_group))[-which.max(mapply(function(i) max(y[[i]][,1]),
-   #                                      seq(n_group)))]))
                                          
 	expoints <- mapply(function(k) which(zcy_curves[[k]][,1] > 
                  mapply(function(i) max(y[[i]][,1]), seq(n_group))[k])[1],sgroup, SIMPLIFY=FALSE )  
-    
-   # c((seq(n_group))[-which.max(mapply(function(i) max(y[[i]][,1]),
-    #                                     seq(n_group)))])
         
   # calculate forward rate curves 
   fwr_curves <- switch(method,
@@ -138,14 +131,14 @@ nelson_estim <-
               "Svensson" = mapply(function(k) 
               		cbind(t,fwr_sv(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE)
                       )
-  for (k in sgroup) class(fwr_curves[[k]]) <- "d_curve"
+  for (k in sgroup) class(fwr_curves[[k]]) <- "ir_curve"
   class(fwr_curves) <- "fwr_curves"
 
   
   # calculate discount factor curves 
   df_curves <- mapply(function(k) cbind(zcy_curves[[k]][,1],exp(-zcy_curves[[k]][,1]*zcy_curves[[k]][,2])),sgroup,SIMPLIFY=FALSE)
   
-   for (k in sgroup) class(df_curves[[k]]) <- "d_curve"
+   for (k in sgroup) class(df_curves[[k]]) <- "ir_curve"
    class(df_curves) <- "df_curves"
  
  # return list of results 

@@ -198,11 +198,11 @@ function (cf_p,m_p,y) {
 #                 Forwardrate calculation                         #
 ###################################################################
 
- forwardrates <- function(method,beta,m){ 
-  switch(method,
- 	"Nelson/Siegel" = fwr_ns(beta,m),
- 	"Svensson" = fwr_sv(beta,m))
-  }
+# forwardrates <- function(method,beta,m){ 
+#  switch(method,
+# 	"Nelson/Siegel" = fwr_ns(beta,m),
+# 	"Svensson" = fwr_sv(beta,m))
+#  }
   
 	
 ###################################################################
