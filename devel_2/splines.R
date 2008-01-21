@@ -134,6 +134,9 @@ splines_estim <-
   
   # zero cupon yield curves for maturity interval t 
  zcy_curves <-  mapply(function(k)  cbind(t[[k]],-log(mean_d[[k]])/t[[k]],-log(cl[[k]])/t[[k]], -log(cu[[k]])/t[[k]]),sgroup, SIMPLIFY=FALSE )  
+ 
+  for (k in sgroup) class(zcy_curves[[k]]) <- "ir_curve"
+  class(zcy_curves) <- "spot_curves"
   
   
   # calculate spread curves              	    

@@ -32,7 +32,9 @@ print.nelson <-
 plot.nelson <-
   function(x,matrange=c(min(mapply(function(i) min(x$y[[i]][,1]),seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))))
-                        ,pdf=FALSE,...) {
+                        ,pdf=FALSE,multiple=FALSE, expoints=unlist(x$expoints), ctype="spot",
+                        lwd=2,
+                        ...) {
    
     
      if(pdf) pdf( file="termstrc_results.pdf",... ) else par(ask=TRUE)  
@@ -61,69 +63,65 @@ plot.nelson <-
      }
     
                				
-    # plot each yield curve seperately
-    for (k in seq(x$n_group)  ) {
-         
-      plot(x$zcy_curves[,1] ,x$zcy_curves[,k+1]*100,
-      type="l",
-      ylim=c(0, max(x$y[[k]][,2]) + 0.01 )*100,
-      xlim=c(max(floor(min(x$y[[k]][,1])),matrange[1]),
-             min(ceiling(max(x$y[[k]][,1])),matrange[2])),
-      xlab="Maturity (years) ",
-      ylab="Percent",
-      lwd=2,
-      col="steelblue")
-      title(names(x$opt_result)[k])
-      legend("bottomright",legend=c("Zero-coupon yield curve","Yield to maturity"),
-              col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
-      points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red") 
-      
-    }
     
-    # plot all zero coupon yield curves together
-    if (is.numeric(x$scurves)) {
-     plot(x$zcy_curves[,1], x$zcy_curves[,
-      which.max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group))) +1 ]*100,
-      type="l",col=which.max(mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))),
-      lty=1,lwd=2,xlab="Maturity (years)",
-      ylab="Zero-Coupon yields (%)",
-      xlim=c(max(floor(samplemat[1]),matrange[1]), 
-             min(ceiling(samplemat[2]),matrange[2])),
-      ylim= c(0,max(x$zcy_curves[,2:(x$n_group+1)] ))*100)
-   
-	  for(k in c((seq(x$n_group))[-which.max(mapply(function(i) max(x$y[[i]][,1]),
-                                         seq(x$n_group)))]))
-	  {spoint <- which(x$zcy_curves[,1] > 
-                      mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group))[k])[1] 
-     lines(x$zcy_curves[1:spoint ,1],x$zcy_curves[1:spoint,k+1]*100,col=k,lwd=2)
-     lines(x$zcy_curves[((spoint+1) : nrow(x$zcy_curves) ) ,1],
-     x$zcy_curves[((spoint+1) : nrow(x$zcy_curves)),k+1]*100,col=k,lty=5,lwd=2)
- 	  } 
-    title("Zero-coupon yield curves")
-    legend("bottomright",legend=names(x$opt_result),col=seq(x$n_group),lty=1,lwd=2)
-   }
-                                        
-    # plot spread curves    
-   if (is.numeric(x$scurves)) {
-    plot(0,0, type="n",
-    col=(which.max(mapply(function(i) max(x$y[[i]][,1]),
-                                         seq(x$n_group))[-1]) + 1),lty=1,lwd=2,
-    xlab="Maturity (years)",
-    ylab="Spread (basis points)",
-    xlim= c(max(floor(samplemat[1]),matrange[1]),
-            min(ceiling(samplemat[2]),matrange[2])),
-    ylim=c(min(x$scurves[,seq(x$n_group)-1]),max(x$scurves[,seq(x$n_group)-1]))*10000)
     
-    for(k in c(2:x$n_group))
-    {spoint <- which(x$zcy_curves[,1] > mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))[k])[1] 
-     lines(x$zcy_curves[1:spoint ,1],x$scurves[1:spoint ,k-1]*10000,col=k,lwd=2)
-     lines(x$zcy_curves[((spoint+1) : nrow(x$zcy_curves) ) ,1],
-     x$scurves[((spoint+1) : nrow(x$zcy_curves) ) ,k-1]*10000,col=k,lty=5,lwd=2)
- 	  } 
-    title("Spread curves")
-    legend("topleft",legend=names(x$opt_result[-1]),col=2:x$n_group,lty=1,lwd=2)
+    cdata <- switch(ctype, "spot" = x$zcy_curves,
+    					   "forward" = x$fwr_curves,
+    					   "discount" = x$df_curves )
+    					   
+    cname <- switch(ctype, "spot" = "Zero-coupon yield curve",
+    					   "forward" = "Forward rate curve",
+    					   "discount" = "Discount factor curve" )
+    
+    
+    # plot all interst rate curves together
+    if (!is.character(x$scurves) && multiple) {
+    
+    plot(x=cdata,multiple=multiple, expoints=expoints,...) }
+ 
+    
+    else 
+    {
+    
+    # plot each interest rate curve seperately
+    for (k in seq(x$n_group)  ) 
+    	{
+    	
+    	plot.ir_curve(cdata[[k]], ylim=c(0, max(cdata[[k]][,2]) + 0.01 )*100,
+    	xlim=c(max(floor(min(x$y[[k]][,1])),matrange[1]),
+             min(ceiling(max(x$y[[k]][,1])),matrange[2]))
+    	)
+    	 
+    	title(names(x$opt_result)[k])
+    	 
+    	if(ctype=="spot") {points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red") 
+    		legend("bottom",legend=c("Zero-coupon yield curve","Yield to maturity"),  			col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))		} else 	legend("bottom",legend=cname	,col=c("steelblue"), lty = 1 , pch=(-1))
+
+    	
+    	}     
+ 	}
+     
+  # plot spread curves    
+  # if (!is.character(x$scurves) && ctype=="spot") {
+  # plot(0,0, type="n",
+  #  col=(which.max(mapply(function(i) max(x$y[[i]][,1]),
+  #                                       seq(x$n_group))[-1]) + 1),lty=1,lwd=lwd,
+  #  xlab="Maturity (years)",
+  #  ylab="Spread (basis points)",
+  #  xlim= c(max(floor(samplemat[1]),matrange[1]),
+  #          min(ceiling(samplemat[2]),matrange[2])),
+  #  ylim=c(min(x$scurves[,seq(x$n_group)-1]),max(x$scurves[,seq(x$n_group)-1]))*10000)
+    
+  #  for(k in c(2:x$n_group))
+   # { 
+   #  lines(x$zcy_curves[1:expoints[k] ,1],x$scurves[1:expoints[k] ,k-1]*10000,col=k,lwd=lwd)
+   #  lines(x$zcy_curves[((expoints[k]+1) : nrow(x$zcy_curves) ) ,1],
+   #  x$scurves[((expoints+1) : nrow(x$zcy_curves) ) ,k-1]*10000,col=k,lty=5,lwd=lwd)
+ #	  } 
+   # title("Spread curves")
+  # legend("topleft",legend=names(x$opt_result[-1]),col=2:x$n_group,lty=1,lwd=lwd)
    
-   }                    
+  # }                    
   
    
    
@@ -353,19 +351,21 @@ plot.cubicsplines <-
 }  
 
 ###################################################################
-#                    plot-method for d_curve                      #
+#                    plot-method for ir_curve                     #
 ###################################################################
-plot.d_curve <- function(x,ylim=c(),xlim=c(),...) {
+plot.ir_curve <- function(x,ylim=c(),xlim=c(),lwd=2, type="l",
+				xlab="Maturity (years)",ylab="Percent", 
+				col="steelblue", ...) {
 	
          
       plot(x[,1] ,x[,2]*100,
-      type="l",
+      type=type,
       ylim=ylim,
       xlim=xlim,
-      xlab="Maturity (years) ",
-      ylab="Percent",
-      lwd=2,
-      col="steelblue")
+      xlab=xlab,
+      ylab=ylab,
+      lwd=lwd,
+      col=col)
       
 }
 
@@ -373,23 +373,78 @@ plot.d_curve <- function(x,ylim=c(),xlim=c(),...) {
 #                    plot-method for spot_curves                  #
 ###################################################################
 
-plot.spot_curves <- function(x,multiple= FALSE, ylim=c(),xlim=c(),nelsonparam=FALSE,splineparam=FALSE, ...) {
+plot.spot_curves <- function(x,multiple= FALSE,
+					ylim= c(range(mapply(function(i) range(x[[i]][,2]),seq(x))))*100,xlim=c(),type="l", lty=1, lwd=2, expoints=NULL, ylab= "Zero-coupon yields (%)",
+					xlab= "Maturity (years)",main="Zero-coupon yield curves",	 
+					
+					
+					...) {
 	
-	if(multiple)  {print("funkt noch nicht")
+	par(ask=TRUE)
 		
-		#überprüfen ob nelson od cs object sonst warnung 
-		# dann entsprechender plot mit ns cs spezifischen params
+	if(multiple) 
+	{
 		
-		} else 
-	
-	for(k in seq(x)) {plot.d_curve(x[[k]],... ) 
-		
+     plot(x[[which.max(mapply(function(i) max(x[[i]][,1]), seq(x)))]][,1], x[[which.max(mapply(function(i) max(x[[i]][,1]), seq(x)))]][,2]*100, 
+      type=type,col=which.max(mapply(function(i) max(x[[i]][,1]), seq(x))),
+      lty=lty,lwd=lwd,xlab=xlab,
+      ylab=ylab,
+      ylim= ylim, ...
+      
+     )
+   
+	  for(k in c((seq(x))[-which.max(mapply(function(i) max(x[[i]][,1]), seq(x)))]))
+	  
+	 {
+     lines(x[[k]][(if(is.numeric(expoints)) seq(expoints[k]) else seq(nrow(x[[k]]))),1],x[[k]][(if(is.numeric(expoints)) seq(expoints[k]) else seq(nrow(x[[k]]))),2]*100,col=k,lwd=lwd, ... )
+      
+      if(is.numeric(expoints))
+      {
+      lines(x[[k]][((expoints[k]+1):nrow(x[[k]])) ,1],x[[k]][((expoints[k]+1):nrow(x[[k]])),2]*100,col=k,lwd=lwd,lty=5, ... )
+      }
+           
+ 	 }
+    title(main)
+    legend("bottom",legend=names(x),col=seq(x),lty=lty,lwd=lwd)
+   }
+
+	else
+	{
+		for(k in seq(x)) 
+		{ 
+		plot.ir_curve(x[[k]],...) 
 		title(names(x)[k])
-      	legend("bottomright",legend=c("Zero-coupon yield curve","Yield to maturity"),
-        col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))
+      	legend("bottom",legend=main,col=c("steelblue"), lty = 1 , pch=c(-1))
+        }		
 	}
+	par(ask=FALSE)
 
 }
 
+###################################################################
+#                    plot-method for fwr_curves                   #
+###################################################################
+
+plot.fwr_curves <- function(x,multiple= FALSE,
+					ylim= c(range(mapply(function(i) range(x[[i]][,2]),seq(x))))*100,xlim=c(),type="l", lty=1, lwd=2, expoints=NULL, ylab= "Forward rate (%)",
+					xlab= "Maturity (years)",main="Forward rate curves",...) 
+		{	
+			
+		plot.spot_curves(x,ylab=ylab, xlab=xlab, main=main,multiple=multiple,expoints=expoints,lty=lty,lwd=lwd, ... )
+
+		}
+
+###################################################################
+#                    plot-method for fwr_curves                   #
+###################################################################
+
+plot.df_curves <- function(x,multiple= FALSE,
+					ylim= c(range(mapply(function(i) range(x[[i]][,2]),seq(x))))*100,xlim=c(),type="l", lty=1, lwd=2, expoints=NULL, ylab= "Discount factor (%)",
+					xlab= "Maturity (years)",main="Discount factor curves",...) 
+		{	
+			
+		plot.spot_curves(x,ylab=ylab, xlab=xlab, main=main,multiple=multiple,expoints=expoints,lty=lty,lwd=lwd, ... )
+
+		}
 	
 	

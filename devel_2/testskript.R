@@ -10,7 +10,7 @@ source("nelson.R")
 #bonddata <- eurobonds
 #matrange <- "all"
 
-#x <- splines_estim(group, bonddata, matrange)
+
 
 #print(x)
 #summary(x)
@@ -40,4 +40,4 @@ x <- nelson_estim(group, bonddata, matrange,
 print(x)
 #summary(x)
 #plot(x)
-
+y <- splines_estim(group, bonddata, matrange)
