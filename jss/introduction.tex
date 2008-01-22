@@ -10,6 +10,8 @@
 
 The term structure of interest rates or the zero-coupon yield curve is the relationship between fixed income investments with only one payment at maturity, and the time to maturity of these cashflows. It is used in different areas of application, e.g. risk management, financial engineering, monetary policy issues. The zero-coupon yield curve is the basis to value other fixed income instruments. Basically, we can calculate the net present value (NPV) of any cash flow with it. For example, the fair price of a bond is just the sum of its discounted future coupon and redemption payments. By comparing it to the price on the market, we can identify mispriced securities. The numerous areas of application for the term structure of interest rates has lead to a fairly large amount of publications by researchers and practitioners.
 
+\subsection{Fixed income basics}
+
 Before we come to the problem of zero-coupon yield curve estimation, let us introduce the definitions of a few basic terms used in the fixed income literature. A \emph{discount bond} or \emph{zero-coupon bond} is a fixed income investment with only one payment at maturity. The \emph{spot rate} or \emph{zero-coupon rate} is the interest paid on a discount bond. With continuous compounding the fair price in the absence of arbitrage opportunities of a discount bond paying \$1 at maturitydate  $m_t$ is given by
 
 \begin{equation}
@@ -66,6 +68,8 @@ Each payment (coupons and redemption) has the structure of a discount bond. This
  \end{equation}
 
 As can be seen from \eqref{eq:pricediscountbond}, the YTM for a discount bond is equal to the spot rate. This is not true for coupon bonds. Plotting just the yield-to-maturity for coupon bonds with different maturities does not result in a yield curve which can be used to discount cash flows or price any other fixed income security except the bond from which it was calculated. Therefore, estimating the term structure of interest rates from a set of coupon bonds can not be seen as a simple curve fitting of the YTMs.
+
+\subsection{Zero-coupon yield curve estimation}
 
 We have seen before that the spot curve, the forward curve and the discount curve are implied by each other. The following estimation procedures try to approximate one of them, from which it is possible to calculate the other ones. The simplest method to obtain spot rates from a sample of coupon bonds is bootstrapping. This is an iterative technique based on the pricing equation for a coupon bond. It works only when all cashflows have the same maturity intervals \citep[see, e.g.][]{Hagan2006}. Therefore, other estimation procedures are needed. Usually, the following features are required from an estimated yield curve. It should price the underlying bonds correctly and result in a continuous spot and forward curve. 
 

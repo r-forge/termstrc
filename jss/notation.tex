@@ -1,4 +1,6 @@
-\section{Notation}
+\section{Zero-coupon yield curve estimation}
+
+\subsection{Notation}
 \label{sec:notation}
 
 Let us establish the necessary notation for a market data set of coupon bonds.
@@ -75,18 +77,23 @@ The elements are denoted by
 \end{equation}
 
 
-\subsubsection*{Weights vector}
+\subsubsection*{Weights matrix}
 
 In section \ref{sec:nels-svenss-meth} we will use a weighting for the estimation errors. It is constructed  as follows.
 
 \begin{equation}\label{weights}
-    \bm{w}_{\left[1\times m\right]}= \{w_j\}
+    \bm{\Omega}_{\left[m\times m\right]}= \begin{pmatrix}
+ \omega_1 & 0 &\cdots  &0  \\
+ 0 & \omega_2 &  & \vdots \\
+ \vdots &  & \ddots & 0 \\
+ 0 &\cdots  &0  & \omega_m
+\end{pmatrix}
 \end{equation}
 
 Whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$:
 
 \begin{displaymath}
-    w_j=\frac{\frac{1}{d_j}}{\sum_{i=1}^m\frac{1}{d_i}}
+    \omega_j=\frac{\frac{1}{d_j}}{\sum_{i=1}^m\frac{1}{d_i}}
 \end{displaymath}
 
 
@@ -100,7 +107,55 @@ d_j= \frac{\bm{C}_{\left[n \times j\right]} \left(\bm{D}_{\left[n\times j\right]
 
 
 
-For the rest of the paper $(\cdot)$ denotes a element by element multiplication and $( )^{\top}$ the transposed matrix (vector). $\bm{\iota}_{\left[1\times n\right]}$ denotes a row vector of lenght $n$ filled with ones.
+For the rest of the paper $(\cdot)$ denotes a element by element multiplication and $( )'$ the transposed matrix (vector). $\bm{\iota}$ denotes a column vector filled with ones.
+
+\subsection{Indirect estimation procedure}
+\label{sec:estimation}
+
+The theoretical prices are defined as sums of the discounted cash flows of each bond.
+
+\begin{equation}
+  \label{eq:theorprices}
+  \bm{\hat{p}} = \bm{\iota}'(\bm{C}\cdot\bm{D})
+\end{equation}
+
+
+
+The pricing errors
+\begin{equation}
+  \label{eq:pricingerrors}
+  \bm{\epsilon} = \bm{p-\hat{p}}
+\end{equation}
+
+are the deviation of the theoretical prices from the dirty prices observed on the market. They satisfy
+
+\begin{eqnarray}
+  \label{eq:residuals}
+  \E(\bm{\epsilon}) &=& \bm{0}\\
+  \VAR(\bm{\epsilon}) &=&\sigma^2\bm{\Omega}^2 \\
+  \COV(\epsilon_i, \epsilon_j) &=& 0 \quad \mbox{for}\,i\neq j\quad .
+\end{eqnarray}
+
+The goal is to minimize the weighted squared pricing errors.
+
+
+\begin{equation}
+  \label{eq:optimalparam}
+  \hat{\bm{b}}= \argmin_{\bm{b}}\bm{\iota}'(\bm{\Omega}\bm{\epsilon}^2)
+\end{equation}
+
+Goodness of fit can be measured with the root mean squared error
+
+\begin{equation}
+  \label{eq:rmse}
+  \mbox{RMSE}=\sqrt{\frac{1}{m}\bm{\iota}'(\bm{\Omega\epsilon}^2)}
+\end{equation}
+and the mean absolute error
+
+\begin{equation}
+  \label{eq:mae}
+  \mbox{MAE}=\frac{1}{m}\bm{\iota}'|\bm{\epsilon}|\quad.
+\end{equation}
 
 
 %%% Local Variables: 
