@@ -19,7 +19,7 @@ source("nelson.R")
 # nelsonsiegel example
 group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds
-matrange <- c(2,12)
+matrange <- c(0,12)
 method <- "Nelson/Siegel"
 fit <- "prices"
 weights <- "none"
