@@ -1,14 +1,3 @@
-\newpage
-\section{Practical application}
-\label{sec:pract-appl}
-
-The goverment debt market is the usual data source if we want to estimate a zero-coupon yield curve for a country. Government bonds are usually the most liquid, and can be considered default-free, provided the issuing country has a good rating. We demonstrate the usage of our package with a dataset of European government bonds. Of course, a zero-coupon yield curve can also be estimated for coporate bonds. In that case, it would is interesting to compare the curve to a risk-free one and calculate the spread.
-
-\subsection{Dataset}
-
-
-
-
 \subsection{Nelson/Siegel}
 
 <<>>=
@@ -80,7 +69,4 @@ plot(x)
 @
 \end{center}
 
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: "jss-termstrc"
-%%% End: 
+
