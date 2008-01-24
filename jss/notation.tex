@@ -22,6 +22,7 @@ We denote with $m_j$ the maturity of the last cashflow, i.e. the maturity of the
 \end{equation}
 
 \subsubsection*{Cashflow matrix}
+\includegraphics[]{jss-termstrc.pdf}
 
  \begin{equation}\label{cashflowm}
 \bm{C}_{\left[n\times m\right]}= \{c_{ij}\}
@@ -35,7 +36,7 @@ We denote with $m_j$ the maturity of the last cashflow, i.e. the maturity of the
 \bm{D}_{\left[n\times m\right]}= \{d_{ij}\}
 \end{equation}
 
-The discount factor matrix is also defined analogously to the maturity matrix. One element $d_{ij}$ of the matrix refers to the discount factor associated with  the $i$-th cashflow of the $j$-th bond. The discount function $d(m_{i,j})$ returns the discount factor for a given maturity. We will see in the following sections several methods how to estimate it. From an economic point of view only positve interest rates make sense. This implies that the discount factors are nonnegative where the entries in the maturity matrix are greater zero. Remember, zero entries in the maturity matrix mean that for these points in time now cash flows are associated.
+The discount factor matrix is also defined analogously to the maturity matrix. One element $d_{ij}$ of the matrix refers to the discount factor associated with  the $i$-th cashflow of the $j$-th bond. The discount function $\delta(m_{i,j})$ returns the discount factor for a given maturity. We will see in the following sections several methods how to estimate it. From an economic point of view only positve interest rates make sense. This implies that the discount factors are nonnegative where the entries in the maturity matrix are greater zero. Remember, zero entries in the maturity matrix mean that for these points in time now cash flows are associated.
 
 \subsubsection*{Clean price vector}
 
@@ -79,7 +80,7 @@ The elements are denoted by
 
 \subsubsection*{Weights matrix}
 
-In section \ref{sec:nels-svenss-meth} we will use a weighting for the estimation errors. It is constructed  as follows.
+In section \ref{sec:nels-svenss-meth} we will use a weighting matrix for the estimation errors. It is constructed  as follows.
 
 \begin{equation}\label{weights}
     \bm{\Omega}_{\left[m\times m\right]}= \begin{pmatrix}
@@ -88,6 +89,13 @@ In section \ref{sec:nels-svenss-meth} we will use a weighting for the estimation
  \vdots &  & \ddots & 0 \\
  0 &\cdots  &0  & \omega_m
 \end{pmatrix}
+\end{equation}
+
+The Macauly duration is the a weighted average maturity of a bond. We calculate it for the whole data set bonds as follows:
+
+\begin{equation}
+  \label{eq:macaulayduration}
+  \bm{d}__{\left[1\times m\right]}=frac{}{}
 \end{equation}
 
 Whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$:
@@ -109,10 +117,10 @@ d_j= \frac{\bm{C}_{\left[n \times j\right]} \left(\bm{D}_{\left[n\times j\right]
 
 For the rest of the paper $(\cdot)$ denotes a element by element multiplication and $( )'$ the transposed matrix (vector). $\bm{\iota}$ denotes a column vector filled with ones.
 
-\subsection{Indirect estimation procedure}
+\subsection{Estimation procedure}
 \label{sec:estimation}
 
-The theoretical prices are defined as sums of the discounted cash flows of each bond.
+Indirect estimation procedures postulate a specific form for the spot rate function $s(m_t, \bm{b})$ or the discount function $\delta(m_t, \bm{b})$, where $\bm{b}$ is a vector of parameters \citep[see, e.g.][]{Martellini2003}. This allows us to construct a discount matrix. The theoretical bond prices are then defined as sums of the discounted cash flows of each bond.
 
 \begin{equation}
   \label{eq:theorprices}
@@ -144,18 +152,20 @@ The goal is to minimize the weighted squared pricing errors.
   \hat{\bm{b}}= \argmin_{\bm{b}}\bm{\iota}'(\bm{\Omega}\bm{\epsilon}^2)
 \end{equation}
 
-Goodness of fit can be measured with the root mean squared error
+The goodness of fit can be measured for example with the \emph{root mean squared error}
 
 \begin{equation}
   \label{eq:rmse}
-  \mbox{RMSE}=\sqrt{\frac{1}{m}\bm{\iota}'(\bm{\Omega\epsilon}^2)}
+  \mbox{RMSE}=\sqrt{\frac{1}{m}\bm{\iota}'\epsilon^2}
 \end{equation}
-and the mean absolute error
+and the \emph{mean absolute error}
 
 \begin{equation}
   \label{eq:mae}
   \mbox{MAE}=\frac{1}{m}\bm{\iota}'|\bm{\epsilon}|\quad.
 \end{equation}
+
+The next two sections present two popular ways to specify a form for the spot rate or the discount function and solven the optimization problem in \eqref{eq:optimalparam}.
 
 
 %%% Local Variables: 
