@@ -1,6 +1,6 @@
-\def\fileversion{1.6}
+\def\fileversion{1.7}
 \def\filename{jss}
-\def\filedate{2007/01/28}
+\def\filedate{2007/10/15}
 %
 % \iffalse
 %
@@ -37,8 +37,11 @@
 % \changes{1.5}{2005/12/09}
 %   {now an official ASA journal}
 %
-% \changes{1.6}{2005/01/28}
+% \changes{1.6}{2007/01/28}
 %   {small enhancements}
+%
+% \changes{1.7}{2007/10/15}
+%   {changed link colors, modifed hyperref inclusion for texlive}
 %
 %
 %
@@ -122,10 +125,6 @@
 % \section[Calling C++ from R]{Calling \proglang{C++} from \proglang{R}}
 % \end{verbatim}
 %
-% \emph{Hint.} Sometimes \LaTeX{} places a page break immediately after
-% a (sub)section header. If this occurs in the \emph{final} document
-% please include a |\clearpage| before the header.
-%
 % \emph{Hint.} If compilation with pdf\TeX{} fails with an error at
 % |\begin{document}| the reason is almost surely that some of the
 % declarations in the header have not been made properly. For example,
@@ -174,7 +173,7 @@
 % should be separated by |\And| (instead of |\and|), e.g.,
 % \begin{verbatim}
 % \author{Achim Zeileis\\Wirtschaftsuniversit\"at Wien \And 
-%        Second Author\\Plus Affiliation}
+%         Second Author\\Plus Affiliation}
 % \end{verbatim}
 % If not all authors fit into a single line, |\AND| (instead of
 % |\And|) should be used in front of authors that should go into
@@ -189,17 +188,17 @@
 % 
 % \DescribeMacro{\title}
 % The title of the paper. It should be capitalized and may contain
-% further markup (line breaks, bold fonts, etc.), e.g.,
+% further markup (in particular markup such as |\pkg| and |\proglang|), e.g.,
 % \begin{verbatim}
-% \title{A Capitalized Title:\\ With a Package \pkg{foo} in the Subtitle}
+% \title{A Capitalized Title for a Package \pkg{foo}}
 % \end{verbatim}
 % 
 % \DescribeMacro{\Plaintitle}
-% The full title without any markup (line breaks, bold fonts etc.).
+% The full title without any markup.
 % The default is to use |\title|, therefore it needs to be specified
 % only if it is different from |\title|, e.g.,
 % \begin{verbatim}
-% \Plaintitle{A Capitalized Title: With a Package foo in the Subtitle}
+% \Plaintitle{A Capitalized Title for a Package foo}
 % \end{verbatim}
 % 
 % \DescribeMacro{\Shorttitle}
@@ -231,43 +230,43 @@
 % \DescribeMacro{\Volume}
 % The JSS volume number in which the article is published,
 % e.g., |\Volume{11}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper. If it was not accepted (yet), 
+% This information will be provided upon acceptance
+% or added by the technical editor. Prior to acceptance,
 % do not use this command.
 %
 % \DescribeMacro{\Issue}
 % The JSS issue number in which the article is published,
 % e.g., |\Issue{9}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper. If it was not accepted (yet), 
+% This information will be provided upon acceptance
+% or added by the technical editor. Prior to acceptance,
 % do not use this command.
 %
 % \DescribeMacro{\Month}
 % The month in which the article is published,
 % e.g., |\Month{September}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper. If it was not accepted (yet), 
+% This information will be provided upon acceptance
+% or added by the technical editor. Prior to acceptance,
 % do not use this command.
 %
 % \DescribeMacro{\Year}
 % The year in which the article is published,
 % e.g., |\Year{2004}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper. If it was not accepted (yet), 
+% This information will be provided upon acceptance
+% or added by the technical editor. Prior to acceptance,
 % do not use this command.
 %
 % \DescribeMacro{\Submitdate}
 % The date of submission for the article,
 % e.g., |\Submitdate{2004-09-29}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper. If it was not accepted (yet), 
+% This information will be provided upon acceptance
+% or added by the technical editor. Prior to acceptance,
 % do not use this command.
 %
 % \DescribeMacro{\Acceptdate}
 % The date of acceptance for the article,
 % e.g., |\Acceptdate{2004-09-29}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper. If it was not accepted (yet), 
+% This information will be provided upon acceptance
+% or added by the technical editor. Prior to acceptance,
 % do not use this command.
 %
 % \DescribeMacro{\Address}
@@ -327,7 +326,7 @@
 %
 % \DescribeMacro{\Booktitle}
 % The title of the book. It should be capitalized and may contain
-% further markup (line breaks, bold fonts, etc.), e.g.,
+% further markup (in particular markup such as |\pkg| and |\proglang|), e.g.,
 % \begin{verbatim}
 % \Booktitle{Visualizing Categorical Data}
 % \end{verbatim}
@@ -355,9 +354,9 @@
 %
 % \DescribeMacro{\Softwaretitle}
 % The title of the software. It should be capitalized and may contain
-% further markup (line breaks, bold fonts, etc.), e.g.,
+% further markup (in particular markup such as |\pkg| and |\proglang|), e.g.,
 % \begin{verbatim}
-% \Softwaretitle{Aabel 1.5.7}
+% \Softwaretitle{\pkg{Aabel} 1.5.7}
 % \end{verbatim}
 %
 % \emph{The remaining commands are again required for both book and software reviews.}
@@ -403,32 +402,32 @@
 % \DescribeMacro{\Volume}
 % The JSS volume number in which the review is published,
 % e.g., |\Volume{11}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper.
+% This information will be provided upon acceptance
+% or added by the technical editor.
 %
 % \DescribeMacro{\Issue}
 % The JSS issue number in which the review is published,
 % e.g., |\Issue{9}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper.
+% This information will be provided upon acceptance
+% or added by the technical editor.
 %
 % \DescribeMacro{\Month}
 % The month in which the review is published,
 % e.g., |\Month{September}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper.
+% This information will be provided upon acceptance
+% or added by the technical editor.
 %
 % \DescribeMacro{\Year}
 % The year in which the review is published,
 % e.g., |\Year{2004}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper.
+% This information will be provided upon acceptance
+% or added by the technical editor.
 %
 % \DescribeMacro{\Submitdate}
 % The date of publication for the review,
 % e.g., |\Submitdate{2004-09-29}|. Note:
-% you will be provided with this information upon acceptance
-% of your paper.
+% This information will be provided upon acceptance
+% or added by the technical editor.
 %
 % \DescribeMacro{\Address}
 % The address of (at least) one author should be given in
@@ -461,7 +460,7 @@
 %
 % \DescribeMacro{\proglang}
 % This should be used for typesetting the names of programming
-% languages, e.g., |\proglang{JAVA}|, |\proglang{C++}| or |\proglang{R}|.
+% languages, e.g., |\proglang{Java}|, |\proglang{C++}| or |\proglang{R}|.
 % This applies also to programmable environments which also have a GUI
 % like |\proglang{SAS}|, |\proglang{Stata}| or |\proglang{S-PLUS}|.
 %
@@ -472,7 +471,8 @@
 % \DescribeMacro{\code}
 % This should be used for typesetting code chunks within
 % the text, e.g., |\code{plot(1:10)}|. Currently, this simply uses a typewriter
-% font and might give problems with special characters.
+% font. Although it escapes most special characters, it might still lead to
+% problems with some special characters.
 % In such cases the code can also be set using |\verb|, e.g.,
 % |\verb/print("hello world")/|.
 %
@@ -697,7 +697,7 @@
 %
 %    \begin{macrocode}
 %<*driver>
-\documentclass{ltxdoc}
+\documentclass[a4paper]{ltxdoc}
 \providecommand{\file}[1]{\texttt{#1}}
 \providecommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
 \usepackage{color,hyperref,a4wide}
@@ -767,11 +767,12 @@
 %    \begin{macrocode}
 %<*class>
 %% required packages
-\RequirePackage{graphicx,a4wide,color,hyperref,ae,fancyvrb}
+\RequirePackage{graphicx,a4wide,color,ae,fancyvrb}
 \RequirePackage[T1]{fontenc}
 %</class>
 %    \end{macrocode}
 %
+% In addition, \texttt{hyperref} is included later on.
 % The bibliography is generated using \texttt{natbib} and
 % the \textsc{Bib}\TeX{} style \file{jss.bst}.
 %    \begin{macrocode}
@@ -978,6 +979,62 @@
 %</class>
 %    \end{macrocode}
 %
+% The header and footer of JSS publications displays the logo,
+% the publication information and some further links. Here,
+% we define the footer first (because it must be included
+% before \texttt{hyperref} in {\TeX}live). It contains the somewhat extended
+% publication information (from the header), preceeded by the address of the 
+% author/reviewer.
+%    \begin{macrocode}
+%<*class>
+%% footer
+\newlength{\footerskip}
+\setlength{\footerskip}{2.5\baselineskip plus 2ex minus 0.5ex}
+
+\newcommand{\makefooter}{%
+  \vspace{\footerskip}
+
+  \begin{samepage}
+  \textbf{\large \@Footername: \nopagebreak}\\[.3\baselineskip] \nopagebreak
+  \@Address \nopagebreak
+  \vfill
+  \hrule \nopagebreak
+  \vspace{.1\baselineskip}
+  {\fontfamily{pzc} \fontsize{13}{15} \selectfont Journal of Statistical Software}
+  \hfill
+  \url{http://www.jstatsoft.org/}\\ \nopagebreak
+  published by the American Statistical Association
+  \hfill
+  \url{http://www.amstat.org/}\\[.3\baselineskip] \nopagebreak
+  {Volume~\@Volume, \@Seriesname~\@Issue}
+  \hfill
+  \@Firstdate\\ \nopagebreak
+  {\@Month{} \@Year}
+  \hfill
+  \@Seconddate  \nopagebreak
+  \vspace{.3\baselineskip}
+  \hrule
+  \end{samepage}
+}
+%</class>
+%    \end{macrocode}
+%
+% We include the footer at the end of the document.
+%    \begin{macrocode}
+%<*class>
+\AtEndDocument{\makefooter}
+%</class>
+%    \end{macrocode}
+%
+% After defining this, we can require the \texttt{hyperref} package.
+%    \begin{macrocode}
+%<*class>
+%% required packages
+\RequirePackage{hyperref}
+%</class>
+%    \end{macrocode}
+% and proceed to define the header.
+%
 % The header for all JSS publications has the logo \file{jsslogo.jpg}
 % along with the publication information.
 %    \begin{macrocode}
@@ -1135,49 +1192,12 @@
 %</class>
 %    \end{macrocode}
 %
-% All JSS publications also have a footer with a somewhat extended
-% publication information preceeded by the address of the 
-% author/reviewer.
-%    \begin{macrocode}
-%<*class>
-%% footer
-\newlength{\footerskip}
-\setlength{\footerskip}{2.5\baselineskip plus 2ex minus 0.5ex}
-
-\newcommand{\makefooter}{%
-  \vspace{\footerskip}
-
-  \begin{samepage}
-  \textbf{\large \@Footername: \nopagebreak}\\[.3\baselineskip] \nopagebreak
-  \@Address \nopagebreak
-  \vfill
-  \hrule \nopagebreak
-  \vspace{.1\baselineskip}
-  {\fontfamily{pzc} \fontsize{13}{15} \selectfont Journal of Statistical Software}
-  \hfill
-  \url{http://www.jstatsoft.org/}\\ \nopagebreak
-  published by the American Statistical Association
-  \hfill
-  \url{http://www.amstat.org/}\\[.3\baselineskip] \nopagebreak
-  {Volume~\@Volume, \@Seriesname~\@Issue}
-  \hfill
-  \@Firstdate\\ \nopagebreak
-  {\@Month{} \@Year}
-  \hfill
-  \@Seconddate  \nopagebreak
-  \vspace{.3\baselineskip}
-  \hrule
-  \end{samepage}
-}
-%</class>
-%    \end{macrocode}
-%
 % The hypersetup uses some modified colors
 %    \begin{macrocode}
 %<*class>
 %% colors
-\definecolor{Red}{rgb}{0.7,0,0}
-\definecolor{Blue}{rgb}{0,0,0.8}
+\definecolor{Red}{rgb}{0.5,0,0}
+\definecolor{Blue}{rgb}{0,0,0.5}
 %</class>
 %    \end{macrocode}
 % and is then defined by
@@ -1231,11 +1251,10 @@
 %    \end{macrocode}
 %
 % We put the header at the beginning of the
-% document and the footer at the end of it.
+% document (for footer see above).
 %    \begin{macrocode}
 %<*class>
 \AtBeginDocument{\maketitle}
-\AtEndDocument{\makefooter}
 %</class>
 %    \end{macrocode}
 %
