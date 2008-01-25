@@ -117,10 +117,12 @@ nelson_estim <-
    					cbind(t,(zcy_curves[[k]][,2] - zcy_curves[[1]][,2])),sgroup,
    					SIMPLIFY=FALSE)
    
-    } else scurves = "none"
+    } else s_curves = "none"
+   
+   for (k in sgroup) class(s_curves[[k]]) <- "ir_curve" 
+   class(s_curves) <- "s_curves"
     
-   # calculate extrapolation points
-                                         
+   # calculate extrapolation point                        
 	expoints <- mapply(function(k) which(zcy_curves[[k]][,1] > 
                  mapply(function(i) max(y[[i]][,1]), seq(n_group))[k])[1],sgroup, SIMPLIFY=FALSE )  
         
@@ -148,10 +150,10 @@ nelson_estim <-
        		     fit=fit,              # fitting method (prices or yields)
                  weights=weights,      # weighting type for estimation
                  n_group=n_group,      # number of groups,
-                 zcy_curves=zcy_curves,      # zero coupon yield curves
-                 s_curves=s_curves,      # spread curves
-                 fwr_curves=fwr_curves,# forward rate curves
-                 df_curves=df_curves,			   # discount factor curves
+                 spot=zcy_curves,      # zero coupon yield curves
+                 spread=s_curves,      # spread curves
+                 forward=fwr_curves,# forward rate curves
+                 discount=df_curves,			   # discount factor curves
                  expoints=expoints, 	   # extrapolation points
        		     cf=cf,                # cashflow matrix
                  m=m,                  # maturity matrix
