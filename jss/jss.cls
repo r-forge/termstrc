@@ -20,9 +20,9 @@
 %% original source files, as listed above, are part of the
 %% same distribution. (The sources need not necessarily be
 %% in the same archive or directory.)
-\def\fileversion{1.6}
+\def\fileversion{1.7}
 \def\filename{jss}
-\def\filedate{2007/01/28}
+\def\filedate{2007/10/15}
 %%
 %% Package `jss' to use with LaTeX2e for JSS publications
 %%   http://www.jstatsoft.org/
@@ -59,7 +59,7 @@
 \ProcessOptions
 \LoadClass[11pt,a4paper,twoside]{article}
 %% required packages
-\RequirePackage{graphicx,a4wide,color,hyperref,ae,fancyvrb}
+\RequirePackage{graphicx,a4wide,color,ae,fancyvrb}
 \RequirePackage[T1]{fontenc}
 %% bibliography
 \if@shortnames
@@ -202,6 +202,38 @@
 \DefineVerbatimEnvironment{CodeOutput}{Verbatim}{}
 \newenvironment{CodeChunk}{}{}
 \setkeys{Gin}{width=0.8\textwidth}
+%% footer
+\newlength{\footerskip}
+\setlength{\footerskip}{2.5\baselineskip plus 2ex minus 0.5ex}
+
+\newcommand{\makefooter}{%
+  \vspace{\footerskip}
+
+  \begin{samepage}
+  \textbf{\large \@Footername: \nopagebreak}\\[.3\baselineskip] \nopagebreak
+  \@Address \nopagebreak
+  \vfill
+  \hrule \nopagebreak
+  \vspace{.1\baselineskip}
+  {\fontfamily{pzc} \fontsize{13}{15} \selectfont Journal of Statistical Software}
+  \hfill
+  \url{http://www.jstatsoft.org/}\\ \nopagebreak
+  published by the American Statistical Association
+  \hfill
+  \url{http://www.amstat.org/}\\[.3\baselineskip] \nopagebreak
+  {Volume~\@Volume, \@Seriesname~\@Issue}
+  \hfill
+  \@Firstdate\\ \nopagebreak
+  {\@Month{} \@Year}
+  \hfill
+  \@Seconddate  \nopagebreak
+  \vspace{.3\baselineskip}
+  \hrule
+  \end{samepage}
+}
+\AtEndDocument{\makefooter}
+%% required packages
+\RequirePackage{hyperref}
 %% new \maketitle
 \def\@myoddhead{
   {\color{white} JSS}\\[-1.42cm]
@@ -338,38 +370,9 @@
   \renewcommand{\subsection}{\secdef \jsssubsec \jsssubsecnn}
   \renewcommand{\subsubsection}{\secdef \jsssubsubsec \jsssubsubsecnn}
 \fi
-%% footer
-\newlength{\footerskip}
-\setlength{\footerskip}{2.5\baselineskip plus 2ex minus 0.5ex}
-
-\newcommand{\makefooter}{%
-  \vspace{\footerskip}
-
-  \begin{samepage}
-  \textbf{\large \@Footername: \nopagebreak}\\[.3\baselineskip] \nopagebreak
-  \@Address \nopagebreak
-  \vfill
-  \hrule \nopagebreak
-  \vspace{.1\baselineskip}
-  {\fontfamily{pzc} \fontsize{13}{15} \selectfont Journal of Statistical Software}
-  \hfill
-  \url{http://www.jstatsoft.org/}\\ \nopagebreak
-  published by the American Statistical Association
-  \hfill
-  \url{http://www.amstat.org/}\\[.3\baselineskip] \nopagebreak
-  {Volume~\@Volume, \@Seriesname~\@Issue}
-  \hfill
-  \@Firstdate\\ \nopagebreak
-  {\@Month{} \@Year}
-  \hfill
-  \@Seconddate  \nopagebreak
-  \vspace{.3\baselineskip}
-  \hrule
-  \end{samepage}
-}
 %% colors
-\definecolor{Red}{rgb}{0.7,0,0}
-\definecolor{Blue}{rgb}{0,0,0.8}
+\definecolor{Red}{rgb}{0.5,0,0}
+\definecolor{Blue}{rgb}{0,0,0.5}
 \if@review
   \hypersetup{%
     hyperindex = {true},
@@ -406,7 +409,6 @@
   }
 }
 \AtBeginDocument{\maketitle}
-\AtEndDocument{\makefooter}
 %% commands
 \makeatletter
 \newcommand\code{\bgroup\@makeother\_\@makeother\~\@makeother\$\@codex}

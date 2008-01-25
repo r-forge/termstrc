@@ -20,16 +20,16 @@
 %% original source files, as listed above, are part of the
 %% same distribution. (The sources need not necessarily be
 %% in the same archive or directory.)
-\def\fileversion{1.6}
+\def\fileversion{1.7}
 \def\filename{jss}
-\def\filedate{2007/01/28}
+\def\filedate{2007/10/15}
 %%
 %% Package `jss' to use with LaTeX2e for JSS publications
 %%   http://www.jstatsoft.org/
 %% Copyright (C) 2004 Achim Zeileis
 %% Please report errors to Achim.Zeileis@wu-wien.ac.at
 %%
-\documentclass{ltxdoc}
+\documentclass[a4paper]{ltxdoc}
 \providecommand{\file}[1]{\texttt{#1}}
 \providecommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
 \usepackage{color,hyperref,a4wide}
