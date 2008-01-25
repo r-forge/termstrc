@@ -175,9 +175,11 @@ bonddata_range
 duration <-
 function (cf_p,m_p,y) {
        y <- matrix(rep(y,nrow(m_p)),ncol=ncol(m_p),byrow=TRUE)
+       # mac cauly duration
        d <- apply(cf_p*m_p*exp(-y*m_p),2,sum)/-cf_p[1,]
+       # modified duration
        md <- d/(1+y[1,])
-       omega <- (1/md)*sum(1/md)
+       omega <- (1/d)/sum(1/d)
        dur <- cbind(d,md,omega)
        colnames(dur) <- c("Duration","Modified duration","Weights")
        dur
@@ -204,8 +206,16 @@ function (cf_p,m_p,y) {
  	"Svensson" = fwr_sv(beta,m))
   }
   
+###################################################################
+#              Implied forward rate calculation                   #
+###################################################################
 
+impl_fwr <- function(m,s) {
 	
+c(s[1],(s[-1]*m[-1] - s[-length(s)]*m[-length(m)])/(diff(m)))
+	
+	}
+  	
 	
 ###################################################################
 #                   Bond pricing function                         #

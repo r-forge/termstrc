@@ -152,9 +152,21 @@ besser
 -> erledigt ! 
 
 * add forwardrate function
+-> done
 
 * adopt plot method for forward rates and discount factor curve
+-> done
 
 * check and complete help files 
 
 * return discount factors, forward rates
+-> done
+
+* spread object 
+-> done
+* spot, forward, discount,spread
+-> done
+* error plots 
+* check duration weights 
+* bond removal function 
+* adapt implied forward rate function 
