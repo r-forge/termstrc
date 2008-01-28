@@ -38,16 +38,19 @@ splines_estim <-
     
   # calculate dirty prices
   p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
+  # assign ISIN
+  for(k in sgroup) names(p[[k]]) <- bonddata[[k]]$ISIN
   
   # index for ordering
   positions <- mapply(function(k) order(apply(m[[k]],2,max)),sgroup,SIMPLIFY=FALSE)
   
-  # order matrices 
+  # order matrices
   cf <- mapply(function(k) cf[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   cf_p <- mapply(function(k) cf_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   m <- mapply(function(k) m[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-   
+  p <- mapply(function(k) p[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
+  
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    sgroup,SIMPLIFY=FALSE)
@@ -70,14 +73,9 @@ splines_estim <-
   h <-  mapply(function(k) trunc(((i[[k]]-1)*K[[k]])/(s[[k]]-2)),sgroup,SIMPLIFY=FALSE)
              
   theta <- mapply(function(k)((i[[k]]-1)*K[[k]])/(s[[k]]-2)-h[[k]],sgroup,SIMPLIFY=FALSE)
-
-  # knot points
- # T <- mapply(function(k) if(s[[k]]>3) c(0,
- #      apply(as.matrix(m[[k]][,h[[k]]]),2,max)
- #      + theta[[k]]*(apply(as.matrix(m[[k]][,h[[k]]+1]),2,max)-apply(as.matrix(m[[k]][,h[[k]]]),#2,max)),
-     #  max(m[[k]][,ncol(m[[k]])])) else c(0,max(m[[k]][,ncol(m[[k]])])),sgroup,SIMPLIFY=FALSE)
- 
-   T <- mapply(function(k) if(s[[k]]>3) c(floor(min(y[[k]][,1])),
+  
+  # calculate knot points
+  T <- mapply(function(k) if(s[[k]]>3) c(floor(min(y[[k]][,1])),
        apply(as.matrix(m[[k]][,h[[k]]]),2,max)
        + theta[[k]]*(apply(as.matrix(m[[k]][,h[[k]]+1]),2,max)-apply(as.matrix(m[[k]][,h[[k]]]),2,max)),
        max(m[[k]][,ncol(m[[k]])])) else c(floor(min(y[[k]][,1])),max(m[[k]][,ncol(m[[k]])])),sgroup,SIMPLIFY=FALSE)
@@ -98,7 +96,6 @@ splines_estim <-
   # estimated paramters  
   alpha <- lapply(regout, coef)
   
-  #browser()
   # calculate discount factor matrix 
   dt <- list()
    for (k in sgroup){
@@ -114,11 +111,8 @@ splines_estim <-
   # calculate estimated yields 
   yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
   
- 
   # maturity interval
   t <- mapply(function(k) seq(min(T[[k]]), max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
-
-   #browser()
  
   # calculate mean and variance of the distribution of the discount function 
   mean_d <- mapply(function(k) apply(mapply(function(sidx) alpha[[k]][sidx]*

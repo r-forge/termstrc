@@ -48,6 +48,19 @@ nelson_estim <-
   
   # calculate dirty prices
   p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
+  # assign ISIN 
+  for(k in sgroup) names(p[[k]]) <- bonddata[[k]]$ISIN
+  
+  # index for ordering
+  positions <- mapply(function(k) order(apply(m[[k]],2,max)),sgroup,SIMPLIFY=FALSE)
+  
+  
+  # order matrices 
+  cf <- mapply(function(k) cf[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
+  cf_p <- mapply(function(k) cf_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
+  m <- mapply(function(k) m[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
+  m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
+  p <- mapply(function(k) p[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
   
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
@@ -56,6 +69,7 @@ nelson_estim <-
   # calculate duration   
   duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],y[[k]][,2]),
                    sgroup,SIMPLIFY=FALSE)
+                   
   
   # objective function 
   obj_fct_prices <- function(b) {    # price error minimization
@@ -87,7 +101,7 @@ nelson_estim <-
                   nlminb(startparam[k,],obj_fct, lower = lower_bounds,
                   upper = upper_bounds,control=control)
   }   
- 
+  
   # theoretical bond prices with estimated parameters
   phat <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
        m[[k]],cf[[k]])$bond_prices,sgroup,SIMPLIFY=FALSE)
