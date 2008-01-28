@@ -108,8 +108,16 @@ splines_estim <-
   # calculate estimated prices 
   phat <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),sgroup,SIMPLIFY=FALSE)
   
+  # price errors
+  perrors <- mapply(function(k) cbind(y[[k]][,1],phat[[k]] - p[[k]]),sgroup,SIMPLIFY=FALSE)     
+  for (k in sgroup) class(perrors[[k]]) <- "error"
+  
   # calculate estimated yields 
   yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
+  
+  # yield errors
+  yerrors <- mapply(function(k) cbind(y[[k]][,1], yhat[[k]][,2] - y[[k]][,2]),sgroup,SIMPLIFY=FALSE)
+  for (k in sgroup) class(yerrors[[k]]) <- "error"
   
   # maturity interval
   t <- mapply(function(k) seq(min(T[[k]]), max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
@@ -175,8 +183,10 @@ splines_estim <-
                   m=m,                  # maturity matrix
                   p=p,                  # dirty prices
                   phat=phat,            # estimated prices
+                  perrors=perrors,		# price errors
                   y=y,                  # maturities and yields
                   yhat=yhat,            # estimated yields
+                  yerrors=yerrors,	    # yield errors
                   alpha=alpha,          # cubic splines parameters                             
                   regout=regout         # OLS output
                  )

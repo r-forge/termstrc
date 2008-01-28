@@ -105,9 +105,18 @@ nelson_estim <-
   # theoretical bond prices with estimated parameters
   phat <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
        m[[k]],cf[[k]])$bond_prices,sgroup,SIMPLIFY=FALSE)
-
+       
+  # price errors
+  perrors <- mapply(function(k) cbind(y[[k]][,1],phat[[k]] - p[[k]]),sgroup,SIMPLIFY=FALSE)     
+  for (k in sgroup) class(perrors[[k]]) <- "error"
+  
   # calculate estimated yields 
   yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
+  
+  # yield errors
+  yerrors <- mapply(function(k) cbind(y[[k]][,1], yhat[[k]][,2] - y[[k]][,2]),sgroup,SIMPLIFY=FALSE)
+  for (k in sgroup) class(yerrors[[k]]) <- "error"
+
   
   # maturity interval
   t <- seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
@@ -156,6 +165,8 @@ nelson_estim <-
   
    for (k in sgroup) class(df_curves[[k]]) <- "ir_curve"
    class(df_curves) <- "df_curves"
+  
+   
  
  # return list of results 
  result <- list(group=group,           # e.g. countries, rating classes
@@ -168,14 +179,16 @@ nelson_estim <-
                  spread=s_curves,      # spread curves
                  forward=fwr_curves,# forward rate curves
                  discount=df_curves,			   # discount factor curves
-                 expoints=expoints, 	   # extrapolation points
+                 expoints=expoints,    # extrapolation points
        		     cf=cf,                # cashflow matrix
                  m=m,                  # maturity matrix
                  duration=duration,    # duration, modified duration, weights
                  p=p,                  # dirty prices
                  phat=phat,            # estimated prices
+                 perrors=perrors,	   # price errors
                  y=y,                  # maturities and yields
                  yhat=yhat,            # estimated yields
+                 yerrors=yerrors,	   # yield errors
                  opt_result=opt_result                             
                  )
                  
