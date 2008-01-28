@@ -114,7 +114,7 @@ plot.nelson <-
     	
     	for(k in seq(x$n_group)){
     		
-     		plot.error(edata[[k]],ask=TRUE,main=x$group[k],ylab=paste("Absolute Pricing Error ",paste(errors,"s)",sep=""),sep=" ("),...)
+     		plot.error(edata[[k]],ask=TRUE,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
     		legend("bottomright", legend=c(paste("  RMSE",
     		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4), "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4), "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
@@ -343,7 +343,7 @@ plot.cubicsplines <-
     	
     	for(k in seq(x$n_group)){
     		
-     		plot.error(edata[[k]],ask=TRUE,main=x$group[k],ylab=paste("Absolute Pricing Error ",paste(errors,"s)",sep=""),sep=" ("),...)
+     		plot.error(edata[[k]],ask=TRUE,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
     		legend("bottomright", legend=c(paste("  RMSE",
     		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4), "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4), "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
@@ -482,7 +482,7 @@ plot.s_curves <- function(x,xlim=c(range(mapply(function(i)
 ###################################################################    
 
 plot.error <- function(x,type="b",main="", mar= c(7,6,6,2) + 0.1, oma=c(4,2,2,2) +0.1,
-                       ylab="Absolute Pricing Error", ...) {
+                       ylab="Error", ...) {
 	old.par <- par(no.readonly = TRUE)
     par(mar=mar, oma=oma, ... )
     
