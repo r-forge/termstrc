@@ -1,3 +1,5 @@
+rm(list=ls())
+
 load("eurobonds.RData")
 
 source("methods.R")
@@ -37,7 +39,7 @@ colnames(b) <- c("beta0","beta1","beta2","tau1")
 x <- nelson_estim(group, bonddata, matrange, 
                   method, fit, weights, startparam=b,control)
 
-print(x)
+#print(x)
 #summary(x)
 #plot(x)
 y <- splines_estim(group, bonddata, matrange)
