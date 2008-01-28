@@ -78,6 +78,7 @@ plot.nelson <-
     plot(x=cdata,multiple=multiple, expoints=expoints,lwd=lwd,type=type,...) }
   
     if (!multiple && ctype %in% c("spot", "forward", "discount")){
+        old.par <- par(no.readonly = TRUE)
         par(ask=TRUE)
         
     # plot each interest rate curve seperately
@@ -96,7 +97,7 @@ plot.nelson <-
 
     	
     	}     
- 	    par(ask=FALSE)
+ 	    on.exit(par(old.par))
  	}
     
      # plot spread curves 
@@ -274,6 +275,7 @@ plot.cubicsplines <-
     plot(x=cdata,multiple=multiple, expoints=NULL,lwd=lwd,type=type,...) }
   
 	 if (!multiple && ctype %in% c("spot", "forward", "discount")){
+        old.par <- par(no.readonly = TRUE)
         par(ask=TRUE)
         
     	# plot each interest rate curve seperately
@@ -305,7 +307,7 @@ plot.cubicsplines <-
 
     	
     	}
-        par(ask=FALSE)
+        on.exit(par(old.par))
  	 }
     	
     # plot spread curves 
@@ -362,14 +364,15 @@ plot.spot_curves <- function(x,multiple= FALSE,
    }
   }
 	else
-	{   par(ask=TRUE)
+	{   old.par <- par(no.readonly = TRUE)
+		par(ask=TRUE)
 		for(k in seq(x)) 
 		{ 
 		plot.ir_curve(x[[k]],...)
 		title(names(x)[k])
       	legend("bottom",legend=main,col=c("steelblue"), lty = 1 , pch=c(-1))
         }	
-        par(ask=FALSE)	
+        on.exit(par(old.par))	
 	}
 	
 
@@ -434,5 +437,29 @@ plot.s_curves <- function(x,xlim=c(range(mapply(function(i)
    title(main)
    legend("topleft",legend=names(x)[-1],col=seq(x)[-1],lty=1,lwd=lwd)
    } else warning("No spread curves available")
-}                    
+} 
+
+	
+###################################################################
+#               error plot-method for nelson                      #
+###################################################################    
+
+error.nelson <- function(x,type="b",mar= c(7,6,4,2) + 0.1, oma=c(4,2,2,2) +0.1, ...) {
+	old.par <- par(no.readonly = TRUE)
+	par(ask=TRUE, mar=mar, oma=oma)
+	 for(k in seq(x$n_group)) {
+		plot(x$y[[k]][,1],x$p[[k]]- x$phat[[k]],axes=FALSE,pch=19,lwd=c(1,2),xlab="", ylab="Absolute Pricing Error",type=type, ...)
+		axis(1,x$y[[k]][,1], names(x$phat[[k]]),las=3,...)
+		axis(2,...)
+		axis(3,x$y[[k]][,1],round(x$y[[k]][,1],2),...)
+		lines(x$y[[k]][,1],rep(0,length(x$y[[k]][,1])),lty=2,lwd=1,... )
+		#lines(x$y[[k]][,1],rep(rmse(x$phat[[k]],x$p[[k]]),length(x$y[[k]][,1])),lwd=1,lty=3)
+		#lines(x$y[[k]][,1],rep(aabse(x$phat[[k]],x$p[[k]]),length(x$y[[k]][,1])),lwd=1,lty=4)
+		title(xlab="ISIN", 
+		outer=TRUE,
+		...)
+		legend("bottomleft", legend=c(paste("  RMSE",round(rmse(x$p[[k]],x$phat[[k]]),4),sep=": "),paste("AABSE",round(aabse(x$phat[[k]],x$p[[k]]),4),sep=": ")),bty="n") 
+	 }
+	  on.exit(par(old.par))
+	}               
 	
