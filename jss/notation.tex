@@ -91,11 +91,11 @@ In section \ref{sec:nels-svenss-meth} we will use a weighting matrix for the est
 \end{pmatrix}
 \end{equation}
 
-The Macauly duration is the a weighted average maturity of a bond. We calculate it for the whole data set bonds as follows:
+The time to maturity of a coupon bond should not be used as an indicator for the sensitivity of a bond's price against changes in the interest rate. One needs to account for the fact that coupons are paid during the life time of a bond. Therefore, we calculate the average maturity weighted by the present values of its cash flows. This concept is called \emph{duration} and was developed by Macaulay
 
 \begin{equation}
   \label{eq:macaulayduration}
-  \bm{d}_{\left[1\times m\right]} = \frac{1}{2}
+  \bm{d}_{\left[1\times m\right]} = \frac{\bm{C}\cdot\bm{M}\cdot\bm{D}}{\bm{C}}
 \end{equation}
 
 Whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$:
@@ -105,13 +105,6 @@ Whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$:
 \end{displaymath}
 
 
-The duration for a bond $j$ is a weighted average of the time to cashflows.
-
-\textcolor{red}{Notation unclear, we would need the $j$-th column from $\bm{C,D,M}$.}
-
-\begin{equation}\label{duration}
-d_j= \frac{\bm{C}_{\left[n \times j\right]} \left(\bm{D}_{\left[n\times j\right]} \cdot \bm{M}_{\left[n\times j\right]}\right)^{\top}} {\bm{C}_{\left[n \times j\right]}\left(\bm{D}_{\left[n\times j\right]}\right)^{\top}}
-\end{equation}
 
 
 
