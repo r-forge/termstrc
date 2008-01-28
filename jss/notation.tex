@@ -3,7 +3,7 @@
 \subsection{Notation}
 \label{sec:notation}
 
-Let us establish the necessary notation for a market data set of coupon bonds.
+Let us establish the necessary notation for a market data set of coupon bonds. We denote an element-wise multiplication with ``$\cdot$'' and $( )'$ is the transpose of a matrix. $\bm{\iota}$ defines a column vector filled with ones.
 
 \subsubsection*{Maturity matrix}
 
@@ -44,20 +44,18 @@ The discount factor matrix is also defined analogously to the maturity matrix. O
 \bm{p}^c_{\left[1\times m\right]}= \{p^c_j\}
 \end{equation}
 
-$p_{j}^c$ is the quoted price of the $j$-th bond.
-
-\textcolor{red}{Some blabla about price quotation on the market.}
+$p_{j}^c$ is the quoted market price of the $j$-th bond. It is given as percentage of the nominal value.
 
 \subsubsection*{Accrued interest vector}
+
+When an investor buys a bond, he will receive all its future cash flows. If the purchase occurs between two coupon dates, the seller must be compensated for the fraction of the next coupon, the so-called \emph{accrued interest}
 
   \begin{equation}\label{a}
 \bm{a}_{\left[1\times m\right]}= \{a_j\}
 \end{equation}
 
 
-\textcolor{red}{Motivate need to calculate accrued interest. Buyer gets coupon payment but has not held bond for the whole coupon period $\dots$}
-
-Different conventions for the calculation of accrued interest are used in the market. A basic form for the $j$-th bond is as follows.
+In practice, the calculation depends on the used day-count convention, e.g. 30/360, Actual/360. A basic form for the $j$-th bond is as follows.
 
 \begin{equation}
     a_j= \frac{\mbox{number of days since last coupon payment}}{\mbox{number of days in current coupon period}}\cdot \mbox{coupon}_j
@@ -78,6 +76,17 @@ The elements are denoted by
 \end{equation}
 
 
+\subsubsection*{Duration vector}
+
+The time to maturity of a coupon bond should not be used as an indicator for the sensitivity of a bond's price against changes in the interest rate. One needs to account for the fact that coupons are paid during the life time of a bond. Therefore, we calculate the average maturity weighted by the present values of its cash flows. This concept is called (Macaulay) \emph{duration}.
+
+\begin{equation}
+  \label{eq:macaulayduration}
+  \bm{d}_{\left[1\times m\right]} = \frac{\bm{\iota}'(\bm{C}\cdot\bm{M}\cdot\bm{D})}{\bm{\iota}'(\bm{C}\cdot\bm{D})}
+\end{equation}
+
+Here, the discount matrix $\bm{D}$ contains the disount factors calulated with the yield-to-maturity of each bond as in \eqref{eq:yield}.
+
 \subsubsection*{Weights matrix}
 
 In section \ref{sec:nels-svenss-meth} we will use a weighting matrix for the estimation errors. It is constructed  as follows.
@@ -91,12 +100,6 @@ In section \ref{sec:nels-svenss-meth} we will use a weighting matrix for the est
 \end{pmatrix}
 \end{equation}
 
-The time to maturity of a coupon bond should not be used as an indicator for the sensitivity of a bond's price against changes in the interest rate. One needs to account for the fact that coupons are paid during the life time of a bond. Therefore, we calculate the average maturity weighted by the present values of its cash flows. This concept is called \emph{duration} and was developed by Macaulay
-
-\begin{equation}
-  \label{eq:macaulayduration}
-  \bm{d}_{\left[1\times m\right]} = \frac{\bm{C}\cdot\bm{M}\cdot\bm{D}}{\bm{C}}
-\end{equation}
 
 Whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$:
 
@@ -105,10 +108,6 @@ Whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$:
 \end{displaymath}
 
 
-
-
-
-For the rest of the paper $(\cdot)$ denotes a element by element multiplication and $( )'$ the transposed matrix (vector). $\bm{\iota}$ denotes a column vector filled with ones.
 
 \subsection{Estimation procedure}
 \label{sec:estimation}
