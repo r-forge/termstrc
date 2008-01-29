@@ -162,12 +162,21 @@ besser
 
 * spread object 
 -> done
+
 * spot, forward, discount,spread
 -> done
+
 * error plots 
 
 * check duration weights 
+
 * bond removal function 
+
 * adapt implied forward rate function 
+
 * check and complete help files 
+
+* notation confidence intervals
+
+* wrong encoding in lm() outputs
 
