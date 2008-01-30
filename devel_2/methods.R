@@ -34,7 +34,7 @@ plot.nelson <-
                         max(mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))))
                         ,multiple=FALSE, expoints=unlist(x$expoints), ctype="spot",
                          errors="price",
-                        lwd=2,lty=1,type="l",inset=c(0.8,0.1),
+                        lwd=2,lty=1,type="l",inset=c(0.8,0.1),ask=TRUE,
                         ...) {
      
      # min and max maturity of all bonds in the sample 
@@ -80,7 +80,7 @@ plot.nelson <-
   
     if (!multiple && ctype %in% c("spot", "forward", "discount")){
         old.par <- par(no.readonly = TRUE)
-        par(ask=TRUE)
+        par(ask=ask)
         
     # plot each interest rate curve seperately
     for (k in seq(x$n_group)  ) 
@@ -112,9 +112,9 @@ plot.nelson <-
     	
     	edata <- switch(errors,"price" = x$perrors, "yield"= x$yerrors )
     	
-    	for(k in seq(x$n_group)){
+       	for(k in seq(x$n_group)){
     		
-     		plot.error(edata[[k]],ask=TRUE,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
+     		plot.error(edata[[k]],ask=ask,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
     		legend("bottomright", legend=c(paste("  RMSE",
     		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4), "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4), "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
@@ -255,7 +255,7 @@ plot.cubicsplines <-
   function(x,matrange =c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))),
                         multiple=FALSE, expoints=NULL, ctype="spot",
-                        lwd=2,lty=1,type="l",errors="price",inset=c(0.8,0.1), ...) {
+                        lwd=2,lty=1,type="l",errors="price",inset=c(0.8,0.1),ask=TRUE, ...) {
        
      # min and max maturity of all bonds in the sample 
      samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
@@ -293,7 +293,7 @@ plot.cubicsplines <-
   
 	 if (!multiple && ctype %in% c("spot", "forward", "discount")){
         old.par <- par(no.readonly = TRUE)
-        par(ask=TRUE)
+        par(ask=ask)
         
     	# plot each interest rate curve seperately
     	for (k in seq(x$n_group)  ) 
@@ -343,7 +343,7 @@ plot.cubicsplines <-
     	
     	for(k in seq(x$n_group)){
     		
-     		plot.error(edata[[k]],ask=TRUE,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
+     		plot.error(edata[[k]],ask=ask,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
     		legend("bottomright", legend=c(paste("  RMSE",
     		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4), "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4), "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
@@ -491,9 +491,8 @@ plot.error <- function(x,type="b",main="", mar= c(7,6,6,2) + 0.1, oma=c(4,2,2,2)
 		axis(2,...)
 		axis(3,x[,1],round(x[,1],2),...)
 		lines(x[,1],rep(0,nrow(x)),lty=2,lwd=1,... )
-		title(xlab="ISIN", outer=TRUE,main=main,...)
-		#legend("bottomleft", legend=c(paste("  RMSE",round(rmse(x$p[[k]],x$phat[[k]]),4),sep=": "),paste("AABSE",round(aabse(x$phat[[k]],x$p[[k]]),4),sep=": ")),bty="n") 
+		title(xlab="ISIN", outer=TRUE,main=main,...) 
 	 
-	  on.exit(par(old.par))
+	 on.exit(par(old.par))
 	}               
 	

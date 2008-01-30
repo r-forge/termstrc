@@ -167,16 +167,20 @@ besser
 -> done
 
 * error plots 
-
+-> done
 * check duration weights 
+-> done 
 
 * bond removal function 
+-> done 
 
 * adapt implied forward rate function 
+-> done 
 
 * check and complete help files 
+* annotation upper axis - error plots 
 
 * notation confidence intervals
 
 * wrong encoding in lm() outputs
-
+* par compatibility
