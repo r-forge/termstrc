@@ -1,70 +1,8 @@
-
+\begin{figure}
+  \caption{Model curves}
 \begin{center}
 <<fig=TRUE,echo=FALSE>>=
-m <- seq(0,10,0.01)     # time to maturity
-
-beta_1 <- 1             # parameters
-tau_1 <- 1
-beta_2 <- 1
-beta_0 <- 1
-
-par(lwd=2)
-
-# beta_1
-plot(m,beta_1*exp(-m/tau_1),type="l",col=1,
-     xlab="Time to maturity",
-     ylab="Model curves, forward rate",ylim=c(0,2.1),lty=4)
-
-# beta_2
-lines(m,beta_2*(m/tau_1)*exp(-m/tau_1),lty=2,col=2)
-
-# forward rate curve
-lines(m,beta_0+beta_1*exp(-m/tau_1)+beta_2*(m/tau_1)*exp(-m/tau_1),col=3)
-
-abline(h=1,lty=3,col=4)
-
-legend("topright",legend=c(expression(beta[1]*exp(-m/tau[1])),
-       expression(beta[2]*(m/tau[1])*exp(-m/tau[1])),
-       expression(beta[0]),
-       expression(f(m,b))),
-       lty=c(4,2,3,1), col=c(1,2,4,3))
-@
-\end{center}
-
-
-\begin{figure}[htb]
-  \begin{center}
-  \caption{Components of the spot rate curve}
-<<fig=TRUE,echo=FALSE>>=
-m <- seq(0,10,0.01)     # time to maturity
-
-beta_1 <- 1             # parameters
-tau_1 <- 1
-beta_2 <- 1
-beta_0 <- 1
-
-par(lwd=2)
-
-# beta_1
-plot(m, beta_1*((1-exp(-m/tau_1))/(m/tau_1)),type="l",col=1,
-     xlab="Time to maturity",
-     ylab="Model curves, spot rate",ylim=c(0,2.5),lty=4)
-
-# beta_2
-lines(m, beta_2*(((1-exp(-m/tau_1))/(m/tau_1))-exp(-m/tau_1)),lty=2,col=2)
-
-# forward rate curve
-#lines(m,beta_0+beta_1*exp(-m/tau_1)+beta_2*(m/tau_1)*exp(-m/tau_1),col=3)
-
-lines(m,beta_0+ beta_1*((1-exp(-m/tau_1))/(m/tau_1))+ beta_2*(((1-exp(-m/tau_1))/(m/tau_1))-exp(-m/tau_1)),col=3)
-
-abline(h=1,lty=3,col=4)
-
-legend("topright",legend=c(expression(beta[1]*((1-exp(-m/tau[1]))/(m/tau[1]))),
-       expression(beta[2]*(((1-exp(-m/tau[1]))/(m/tau[1]))-exp(-m/tau[1]))),
-       expression(beta[0]),
-       expression(s(m,b))),
-       lty=c(4,2,3,1), col=c(1,2,4,3))
+source("curveshape.R")
 @
 \end{center}
 \end{figure}
