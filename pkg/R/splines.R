@@ -38,16 +38,19 @@ splines_estim <-
     
   # calculate dirty prices
   p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
+  # assign ISIN
+  for(k in sgroup) names(p[[k]]) <- bonddata[[k]]$ISIN
   
   # index for ordering
   positions <- mapply(function(k) order(apply(m[[k]],2,max)),sgroup,SIMPLIFY=FALSE)
   
-  # order matrices 
+  # order matrices
   cf <- mapply(function(k) cf[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   cf_p <- mapply(function(k) cf_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   m <- mapply(function(k) m[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-   
+  p <- mapply(function(k) p[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
+  
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    sgroup,SIMPLIFY=FALSE)
@@ -70,13 +73,12 @@ splines_estim <-
   h <-  mapply(function(k) trunc(((i[[k]]-1)*K[[k]])/(s[[k]]-2)),sgroup,SIMPLIFY=FALSE)
              
   theta <- mapply(function(k)((i[[k]]-1)*K[[k]])/(s[[k]]-2)-h[[k]],sgroup,SIMPLIFY=FALSE)
-
-  # knot points
-  T <- mapply(function(k) if(s[[k]]>3) c(0,
+  
+  # calculate knot points
+  T <- mapply(function(k) if(s[[k]]>3) c(floor(min(y[[k]][,1])),
        apply(as.matrix(m[[k]][,h[[k]]]),2,max)
        + theta[[k]]*(apply(as.matrix(m[[k]][,h[[k]]+1]),2,max)-apply(as.matrix(m[[k]][,h[[k]]]),2,max)),
-       max(m[[k]][,ncol(m[[k]])])) else c(0,max(m[[k]][,ncol(m[[k]])])),sgroup,SIMPLIFY=FALSE)
- 
+       max(m[[k]][,ncol(m[[k]])])) else c(floor(min(y[[k]][,1])),max(m[[k]][,ncol(m[[k]])])),sgroup,SIMPLIFY=FALSE)
  
   # parameter estimation with OLS
   # dependent variable
@@ -94,7 +96,6 @@ splines_estim <-
   # estimated paramters  
   alpha <- lapply(regout, coef)
   
-  
   # calculate discount factor matrix 
   dt <- list()
    for (k in sgroup){
@@ -103,57 +104,90 @@ splines_estim <-
     dt[[k]] <- dt[[k]] + alpha[[k]][sidx]* mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]]))
    }
   }  
-   
+
   # calculate estimated prices 
   phat <- mapply(function(k) apply(cf[[k]]*dt[[k]],2,sum),sgroup,SIMPLIFY=FALSE)
+  
+  # price errors
+  perrors <- mapply(function(k) cbind(y[[k]][,1],phat[[k]] - p[[k]]),sgroup,SIMPLIFY=FALSE)     
+  for (k in sgroup) class(perrors[[k]]) <- "error"
   
   # calculate estimated yields 
   yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
   
- 
+  # yield errors
+  yerrors <- mapply(function(k) cbind(y[[k]][,1], yhat[[k]][,2] - y[[k]][,2]),sgroup,SIMPLIFY=FALSE)
+  for (k in sgroup) class(yerrors[[k]]) <- "error"
+  
   # maturity interval
-  t <- mapply(function(k) seq(0.01, max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
-
+  t <- mapply(function(k) seq(min(T[[k]]), max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
  
   # calculate mean and variance of the distribution of the discount function 
-  mean_d <- mapply(function(k) apply(mapply(function(sidx) alpha[[k]][sidx]*gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]]),1,sum) +1, sgroup, SIMPLIFY=FALSE)
+  mean_d <- mapply(function(k) apply(mapply(function(sidx) alpha[[k]][sidx]*
+  			gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]]),1,sum) +1, sgroup, SIMPLIFY=FALSE)
 
   # variance covariance matrix for estimated ols parameters 
   Sigma <- lapply(regout,vcov)
 
-  var_d <- mapply(function(k) apply(mapply(function(sidx) gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]]),1,function(x) t(x)%*%Sigma[[k]]%*%x), sgroup, SIMPLIFY=FALSE) 
+  var_d <- mapply(function(k) apply(mapply(function(sidx) gi(t[[k]],T[[k]],
+  			sidx,s[[k]]),1:s[[k]]),1,function(x) t(x)%*%Sigma[[k]]%*%x), sgroup, SIMPLIFY=FALSE) 
   
   # lower 95% confidence interval
-    cl <- mapply(function(k) qnorm(rep(0.025,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower= rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE)	
+  cl <- mapply(function(k) qnorm(rep(0.025,length(mean_d[[k]])),mean=mean_d[[k]],
+    		sd=sqrt(var_d[[k]]), lower= rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE)	
   # upper 95 % confidence interval	
-  cu <- mapply(function(k) qnorm(rep(0.975,length(mean_d[[k]])),mean=mean_d[[k]], sd= sqrt(var_d[[k]]), lower=rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE) 
+  cu <- mapply(function(k) qnorm(rep(0.975,length(mean_d[[k]])),mean=mean_d[[k]],
+  			sd=sqrt(var_d[[k]]), lower=rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE) 
   
-  # zero cupon yield curves for maturity interal t 
- zcy_curves <-  mapply(function(k)  cbind(t[[k]],-log(mean_d[[k]])/t[[k]],-log(cl[[k]])/t[[k]], -log(cu[[k]])/t[[k]]),sgroup, SIMPLIFY=FALSE )  
-  
+  # zero cupon yield curves for maturity interval t 
+  zcy_curves <-  mapply(function(k)  cbind(t[[k]],-log(mean_d[[k]])/t[[k]],-log(cl[[k]])/t[[k]],
+ 				 -log(cu[[k]])/t[[k]]),sgroup, SIMPLIFY=FALSE )  
+ 
+  for (k in sgroup) class(zcy_curves[[k]]) <- "ir_curve"
+  class(zcy_curves) <- "spot_curves"
   
   # calculate spread curves              	    
- 	if(n_group != 1) {  
-   scurves <- as.matrix( mapply(function(k) (zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), sgroup))]]),2] -
-   zcy_curves[[1]][1:nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])), sgroup))]]),2]), 2:n_group))
-   
-    } else scurves = "none" 
- 
+  if(n_group != 1) {  
+   s_curves <- mapply(function(k) cbind(t[[which.min(lapply(t,length))]],
+   	(zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) 
+   	min(length(zcy_curves[[k]][,1])), sgroup))]]),2] - zcy_curves[[1]][1:
+   	nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])),
+   	sgroup))]]),2])),sgroup, SIMPLIFY=FALSE)
+   } else s_curves = "none"  
+   for (k in sgroup) class(s_curves[[k]]) <- "ir_curve" 
+   class(s_curves) <- "s_curves"
+  
+  # create discount factor curves 
+  df_curves <- mapply(function(k) cbind(t[[k]],mean_d[[k]]),sgroup,SIMPLIFY=FALSE)
+  
+  for (k in sgroup) class(df_curves[[k]]) <- "ir_curve"
+  class(df_curves) <- "df_curves"	
+  
+  # calculate forward rate curves
+  
+  fwr_curves <- mapply(function(k) cbind(t[[k]],impl_fwr(zcy_curves[[k]][,1],zcy_curves[[k]][,2])),sgroup,SIMPLIFY=FALSE)
+  
+   for (k in sgroup) class(fwr_curves[[k]]) <- "ir_curve"
+  class(fwr_curves) <- "fwr_curves"	
 
  # return list of results
  result <- list(  group=group,          # e.g. countries, rating classes
                   matrange=matrange,    # maturity range of bonds
                   n_group=n_group,      # number of groups,
-                  T=T,                  #knot points 
-                  zcy_curves=zcy_curves, # zero coupon yield curves
-                  scurves=scurves,      # spread curves
+                  T=T,                  # knot points 
+                  spot=zcy_curves, 		# zero coupon yield curves
+                  spread=s_curves,      # spread curves
+                  discount=df_curves,	# forward rate curves
+                  forward=fwr_curves,	# discount factor curves
                   cf=cf,                # cashflow matrix
                   m=m,                  # maturity matrix
                   p=p,                  # dirty prices
                   phat=phat,            # estimated prices
+                  perrors=perrors,		# price errors
                   y=y,                  # maturities and yields
                   yhat=yhat,            # estimated yields
-                  alpha=alpha,           # cubic splines parameters                             
+                  yerrors=yerrors,	    # yield errors
+                  alpha=alpha,          # cubic splines parameters                             
                   regout=regout         # OLS output
                  )
                  
