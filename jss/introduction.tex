@@ -1,10 +1,12 @@
-\section{Introduction}
 
-\textcolor{red}{
-\begin{itemize}
-\item central banks are not so concerned with accuracy with regard to pricing securities
-\end{itemize}
-}
+\begin{quote}
+\emph{
+  Around the turn of the last century, a famous Austrian economist, Eugen von B\"{o}hm-Bawerk (1851-1914), declared that the cultural level of a nation is  mirrored by its rate of interest: the higher a people's intelligence and moral strength, the lower the rate of interest.}
+\\\flushright{\cite{Homer2005}}
+\end{quote}
+
+
+\section{Introduction}
 
 % Defintion of the problem
 
@@ -69,7 +71,7 @@ Each payment (coupons and redemption) has the structure of a discount bond. This
 
 As can be seen from \eqref{eq:pricediscountbond}, the YTM for a discount bond is equal to the spot rate. This is not true for coupon bonds. Plotting just the yield-to-maturity for coupon bonds with different maturities does not result in a yield curve which can be used to discount cash flows or price any other fixed income security except the bond from which it was calculated. Therefore, estimating the term structure of interest rates from a set of coupon bonds can not be seen as a simple curve fitting of the YTMs.
 
-\subsection{Zero-coupon yield curve estimation}
+\subsection{Literature review}
 
 We have seen before that the spot curve, the forward curve and the discount curve are implied by each other. The following estimation procedures try to approximate one of them, from which it is possible to calculate the other ones. The simplest method to obtain spot rates from a sample of coupon bonds is bootstrapping. This is an iterative technique based on the pricing equation for a coupon bond. It works only when all cashflows have the same maturity intervals \citep[see, e.g.][]{Hagan2006}. Therefore, other estimation procedures are needed. Usually, the following features are required from an estimated yield curve. It should price the underlying bonds correctly and result in a continuous spot and forward curve. 
 
@@ -80,8 +82,6 @@ There are several extensions available for the two methods mentioned above. \cit
 In practice, new data for the yield curve is available everyday, and it is obvious to recalibrate the estimation in a dynamic way or even try to forecast the future parameters. \cite{Diebold2006} propose an approach that is based on the Nelson-Siegel model. Term structure estimation procedures do not have to be consistent with intertemporal interest modeling by diffusion processes \citep[see, e.g.][]{Bjoerk1999, Filipovic1999}. For a consistent and arbitrage-free version of the Nielsen-Siegel model, which can be used for pricing fixed income derivatives, see \cite{Krippner2006}.   
 
 In this paper, we give a short overview about the topic of term structure estimation methods and introduce the package \pkg{termstrc} which is written in the \proglang{R} system for statistical computing \citep{R2008}. It is available from the Comprehensive \proglang{R} Archive Network at \url{http://CRAN.R-project.org/}. The package contains an implementation of the two most widely-used methods for zero-coupon yield curve estimation from market data of coupon bonds, i.e. the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension, and the \cite{McCulloch1975} cubic splines approach. The software provides detailed summaries about the estimation results as well as graphical outputs of spot, forward and credit spread curves.
-
-
 
 %%% Local Variables: 
 %%% mode: latex

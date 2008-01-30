@@ -48,7 +48,7 @@ $p_{j}^c$ is the quoted market price of the $j$-th bond. It is given as percenta
 
 \subsubsection*{Accrued interest vector}
 
-When an investor buys a bond, he will receive all its future cash flows. If the purchase occurs between two coupon dates, the seller must be compensated for the fraction of the next coupon, the so-called \emph{accrued interest}
+When an investor buys a bond, he will receive all its future cash flows. If the purchase occurs between two coupon dates, the seller must be compensated for the fraction of the next coupon, the so-called \emph{accrued interest}.
 
   \begin{equation}\label{a}
 \bm{a}_{\left[1\times m\right]}= \{a_j\}
@@ -64,7 +64,7 @@ In practice, the calculation depends on the used day-count convention, e.g. 30/3
 
 \subsubsection*{Dirty price vector}
 
-The dirty price vector is the sum of the clean price vector and the accrued interest vector and consists of the dirty prices of all bonds $j$.
+The dirty price vector is the sum of the clean price vector and the accrued interest vector.
 
 \begin{displaymath}
 \bm{p}=\bm{p}^c+\bm{a}
@@ -89,7 +89,7 @@ Here, the discount matrix $\bm{D}$ contains the disount factors calulated with t
 
 \subsubsection*{Weights matrix}
 
-In section \ref{sec:nels-svenss-meth} we will use a weighting matrix for the estimation errors. It is constructed  as follows.
+In section \ref{sec:nels-svenss-meth}, we will use a weighting matrix for the estimation errors. It is constructed  as follows.
 
 \begin{equation}\label{weights}
     \bm{\Omega}_{\left[m\times m\right]}= \begin{pmatrix}

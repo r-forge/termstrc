@@ -1,16 +1,6 @@
 \section{Nelson/Siegel and Svensson method}
 \label{sec:nels-svenss-meth}
 
-This is a paramtric method \citep[see][chapter 15]{James2000}. Practioners favor smooth curve. Tradeoff with accuracy. Linear approximation is not appropriate.
-
-\begin{itemize}
-\item \cite{Geyer1999}
-\item duration based weights \cite{Bliss1997}
-\item derivation via Laguerre function
-\item extensions \cite{Bjoerk 1999, Filipovic1999, Filipovic2000, Bjoerk2001, Bjoerk2002, Soederlind1997, Bliss1997}
-\end{itemize}
-
-
 \cite{Nelson1987} propose a parsimonious  model of  the instantaneous forward rate as a solution to a second-order differential equation for the case of equal roots.
 
 \begin{equation}
@@ -48,12 +38,12 @@ with a parameter vector ${\bm{b}} = \left(\beta_0,\beta_1,\beta_2,\tau_1,\beta_3
 The impact of the parameters can be described as follows \citep[see][p.7]{Bolder1999}:
 
 \begin{itemize}
-\item $\beta_0$ is the asymptotic value of the forward rate (spot rate) function.  The curve will tend towards the asymptote as the time to maturity approaches  infinity ($\beta_0 >0$).
-\item $\beta_1$ determines the starting (short-term) value of the curve in terms of deviation from the asymptote (the sum $\beta_0$ and $\beta_1$) is the vertical intercept. Moreover, it defines the basic speed with which the curve tends toward its long-term trend.
-\item $\tau_1$ specifies the position of the first hump or the U-shape on the curve ($\tau_1>0$).
+\item $\beta_0$ is the asymptotic value of the spot rate function $\lim_{m\to\infty}s(m,\bm{b})$, which can be seen as long-term interest rate.
+\item $\beta_1$ is the limit of the spread between the spot rate function and the long term interest rate $\lim_{m\to\infty}\left[s(m,\bm{b})-\beta_0\right]$ determines the starting (short-term) value of the curve in terms of deviation from the asymptote (the sum $\beta_0$ and $\beta_1$) is the vertical intercept. Moreover, it defines the basic speed with which the curve tends toward its long-term trend.
 \item $\beta_2$ determines the magnitude and direction of the hump. If $\beta_2 >0$  a hump will occur at  $\tau_1$, whereas $\beta_2<0$, a U-shaped value will occur at $\tau_1$.
-\item $\tau_2$ specifies the position of the second hump or the U-shape on the curve ($\tau_2>0$).
+\item $\tau_1$ is a scale parameter and specifies the position of the first hump or the U-shape on the curve ($\tau_1>0$).
 \item $\beta_3$ analogously  to  $\beta_2$ determines the magnitude and direction of the second hump.
+\item $\tau_2$ specifies the position of the second hump or the U-shape on the curve ($\tau_2>0$).
 \end{itemize}
 
 
@@ -63,13 +53,22 @@ The discount factor for any maturity can be calculated as follows.
 d(m_{ij})=e^{-m_{ij}s(m_{ij},b)},
 \end{displaymath}
 
-where $s(m_{ij},b)$ is the Nelson/Siegel or Svensson spot rate function defined in \eqref{eq:intspotrate} and \eqref{eq:nelson-spot}.
+where $s(m_{ij},b)$ is the Nelson/Siegel or Svensson spot rate function defined in \eqref{eq:nelson-spot} and \eqref{eq:svensson-spot}.
 
-
+We optimize the objective function in \eqref{eq:optimalparam}. The above specification of the discount function leads to nonlinear optimization. Good starting values for the parameter vector are important to find a global minimum.
 
 
 
 \cite{Soederlind1997} page 418 mentions that the equation for the yield has only one real root and is easy to solve numerically. They also have confidence intervals by the delta method.
+
+This is a paramtric method \citep[see][chapter 15]{James2000}. Practioners favor smooth curve. Tradeoff with accuracy. Linear approximation is not appropriate.
+
+\begin{itemize}
+\item \cite{Geyer1999}
+\item duration based weights \cite{Bliss1997}
+\item derivation via Laguerre function
+\item extensions \cite{Bjoerk 1999, Filipovic1999, Filipovic2000, Bjoerk2001, Bjoerk2002, Soederlind1997, Bliss1997}
+\end{itemize}
 
 %%% Local Variables: 
 %%% mode: latex
