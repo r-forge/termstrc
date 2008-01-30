@@ -1,34 +1,43 @@
 \name{plot.nelson}
 \alias{plot.nelson}
-
-\title{S3 Plot Method }
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{ ~~function to do ... ~~ }
 \description{
- S3 plot method for an object of the class \code{nelson}
+  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{plot}{nelson}(x,matrange,pdf=FALSE,...)
+plot.nelson(x, matrange = c(min(mapply(function(i) min(x$y[[i]][, 1]), seq(x$n_group))), max(mapply(function(i) max(x$y[[i]][, 1]), seq(x$n_group)))), multiple = FALSE, expoints = unlist(x$expoints), ctype = "spot", errors = "price", lwd = 2, lty = 1, type = "l", inset = c(0.8, 0.1), ask = TRUE, ...)
 }
+%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{ object of the class \code{nelson}}
-  \item{matrange}{maturity range for the plot, e.g. c(2,10)}
-  \item{pdf}{ If \code{TRUE} the graphics are plotted in a pdf file,
-    which is saved in the current working directory}
-  \item{\dots}{other arguments}
+  \item{x}{ ~~Describe \code{x} here~~ }
+  \item{matrange}{ ~~Describe \code{matrange} here~~ }
+  \item{multiple}{ ~~Describe \code{multiple} here~~ }
+  \item{expoints}{ ~~Describe \code{expoints} here~~ }
+  \item{ctype}{ ~~Describe \code{ctype} here~~ }
+  \item{errors}{ ~~Describe \code{errors} here~~ }
+  \item{lwd}{ ~~Describe \code{lwd} here~~ }
+  \item{lty}{ ~~Describe \code{lty} here~~ }
+  \item{type}{ ~~Describe \code{type} here~~ }
+  \item{inset}{ ~~Describe \code{inset} here~~ }
+  \item{ask}{ ~~Describe \code{ask} here~~ }
+  \item{\dots}{ ~~Describe \code{\dots} here~~ }
 }
-
 \details{
-A plot of the estimated zero-coupon yield curve including the calculated yields for each specified group of bonds is offered. 
-In addition all zero-coupon yield curves are plotted in one graphic and afterwards the spread curves are plotted. 
-The occurrence of a partially dashed line in a graphic indicates that the the curve has been extrapolated. 
+  ~~ If necessary, more details than the description above ~~
 }
- 
-%\value{ }
-%\references{ }
-\author{Robert Ferstl, Josef Hayden}
-
+\value{
+  ~Describe the value returned
+  If it is a LIST, use
+  \item{comp1 }{Description of 'comp1'}
+  \item{comp2 }{Description of 'comp2'}
+  ...
+}
+%\references{  }
+\author{ Robert Ferstl, Josef Hayden }
 %\note{ }
-
-\seealso{ \code{\link{print.nelson}}, \code{\link{summary.nelson}}}
+\seealso{}
 %\examples{}
+
 \keyword{  }
 

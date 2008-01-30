@@ -7,7 +7,7 @@ source("splines.R")
 source("tools.R")
 source("nelson.R")
 
-# cubic splines example
+#cubic splines example
 #group <- c("GERMANY", "AUSTRIA", "ITALY")
 #bonddata <- eurobonds
 #matrange <- "all"
@@ -42,7 +42,7 @@ x <- nelson_estim(group, bonddata, matrange,
 #print(x)
 #summary(x)
 #plot(x)
-#y <- splines_estim(group, bonddata, matrange)
+y <- splines_estim(group, bonddata, matrange)
 
 # appliction of bond removal function 
 #ISIN <- c("IT0003844534",  "IT0003242747") 
