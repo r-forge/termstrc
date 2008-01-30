@@ -212,7 +212,9 @@ function (cf_p,m_p,y) {
 
 impl_fwr <- function(m,s) {
 	
-c(s[1],(s[-1]*m[-1] - s[-length(s)]*m[-length(m)])/(diff(m)))
+impl_fwr <- c(s[1],(s[-1]*m[-1] - s[-length(s)]*m[-length(m)])/(diff(m)))
+impl_fwr[1] <- impl_fwr[2]
+impl_fwr	
 	
 	}
   	
@@ -308,6 +310,26 @@ function(t,T,i,s){
   g
 }
 
+###################################################################
+#                    Bond removal function                        #
+###################################################################
 
+rm_bond <- function(bdata,ISIN,gr){
+    cf_isin_index <- which(bdata[[gr]]$CASHFLOWS$ISIN %in% ISIN)
+ 	isin_index <- which(bdata[[gr]]$ISIN %in% ISIN)	
+
+    	bdata[[gr]]$ISIN <-  bdata[[gr]]$ISIN[-isin_index]
+    	bdata[[gr]]$MATURITYDATE <- bdata[[gr]]$MATURITYDATE[-isin_index]
+    	bdata[[gr]]$STARTDATE <- bdata[[gr]]$STARTDATE[-isin_index]
+    	bdata[[gr]]$COUPONRATE <- bdata[[gr]]$COUPONRATE[-isin_index]
+    	bdata[[gr]]$PRICE <- bdata[[gr]]$PRICE[-isin_index]
+    	bdata[[gr]]$ACCRUED <- bdata[[gr]]$ACCRUED[-isin_index]
+
+		bdata[[gr]]$CASHFLOWS$ISIN <- bdata[[gr]]$CASHFLOWS$ISIN[-cf_isin_index]
+		bdata[[gr]]$CASHFLOWS$CF <- bdata[[gr]]$CASHFLOWS$CF[-cf_isin_index]
+		bdata[[gr]]$CASHFLOWS$DATE <- bdata[[gr]]$CASHFLOWS$DATE[-cf_isin_index]
+	
+	bdata
+}
 
 

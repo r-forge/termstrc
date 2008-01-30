@@ -191,7 +191,7 @@ nelson_estim <-
                  yerrors=yerrors,	   # yield errors
                  opt_result=opt_result                             
                  )
-                 
+              
   # assign names to results list 
   for ( i in 7:length(result)) names(result[[i]]) <- names(bonddata)
     
