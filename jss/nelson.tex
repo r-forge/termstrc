@@ -54,7 +54,9 @@ d(m_{ij})=e^{-m_{ij}s(m_{ij},b)},
 
 where $s(m_{ij},b)$ is the Nelson/Siegel or Svensson spot rate function defined in \eqref{eq:nelson-spot} and \eqref{eq:svensson-spot}.
 
-We optimize the objective function in \eqref{eq:optimalparam}. The above specification of the discount function leads to nonlinear optimization. Good starting values for the parameter vector are important to find a global minimum. Instead of the pricing errors, it is also common to minimize the yield errors. Calculating the yield-to-maturities of the theoretical bond prices is easy to solve numerically, because \eqref{eq:yield} has only one real root. The difference to the minimization of the pricing errors is $\dots$.
+We optimize the objective function in \eqref{eq:optimalparam}. The above specification of the discount function leads to nonlinear optimization. Good starting values for the parameter vector are important to find a global minimum. Instead of the pricing errors, it is common to minimize the yield errors. Calculating the yield-to-maturities of the theoretical bond prices is easy to solve numerically, because \eqref{eq:yield} has only one real root. The difference to the minimization of the pricing errors is $\dots$.
+
+When minimizing the unweighted price errors, bonds with a longer maturity get a higher weighting, because they are more sensitive to changes in prices, which leads to a less accurate fit at the short end. Solutions to this heteroskedasticity problem are to use weights for the price errors, or to minimize the yield errors. A possible specification for the weights is based on the inverse of the duration as in \eqref{eq:durationweight}.
 
 %%% Local Variables: 
 %%% mode: latex
