@@ -1,42 +1,41 @@
 \name{plot.nelson}
 \alias{plot.nelson}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{S3 Plot Method }
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+ S3 plot method for an object of the class \code{nelson}
 }
 \usage{
-plot.nelson(x, matrange = c(min(mapply(function(i) min(x$y[[i]][, 1]), seq(x$n_group))), max(mapply(function(i) max(x$y[[i]][, 1]), seq(x$n_group)))), multiple = FALSE, expoints = unlist(x$expoints), ctype = "spot", errors = "price", lwd = 2, lty = 1, type = "l", inset = c(0.8, 0.1), ask = TRUE, ...)
+\method{plot}{nelson}(x, matrange = c(min(mapply(function(i) min(x$y[[i]][, 1]), seq(x$n_group))), max(mapply(function(i) max(x$y[[i]][, 1]), seq(x$n_group)))), multiple = FALSE, expoints = unlist(x$expoints), ctype = "spot", errors = "price", lwd = 2, lty = 1, type = "l", inset = c(0.8, 0.1), ask = TRUE, ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{x}{ ~~Describe \code{x} here~~ }
-  \item{matrange}{ ~~Describe \code{matrange} here~~ }
-  \item{multiple}{ ~~Describe \code{multiple} here~~ }
-  \item{expoints}{ ~~Describe \code{expoints} here~~ }
-  \item{ctype}{ ~~Describe \code{ctype} here~~ }
-  \item{errors}{ ~~Describe \code{errors} here~~ }
-  \item{lwd}{ ~~Describe \code{lwd} here~~ }
-  \item{lty}{ ~~Describe \code{lty} here~~ }
-  \item{type}{ ~~Describe \code{type} here~~ }
-  \item{inset}{ ~~Describe \code{inset} here~~ }
-  \item{ask}{ ~~Describe \code{ask} here~~ }
-  \item{\dots}{ ~~Describe \code{\dots} here~~ }
+  \item{x}{object of the class \code{nelson} }
+  \item{matrange}{ maturity range for the plot, e.g. c(2,10) }
+  \item{multiple}{ If\code{TRUE} all curves are plotted into one graphic. The default setting is \code{FALSE}.}
+  \item{expoints}{ Extrapolation points. Default: \code{NULL}  }
+  \item{ctype}{ Set the desired curve type, \code{spot} (\code{forward}, \code{discount}, \code{spread}) for the spot rate (forward rate, discount factor, spread) curves. Use \code{none} if no curve plot is desired.  }
+ \item{errors} {Specify the type of the error plot. If \code{priece} (\code{yield} the price (yield) errors will be plot. Use \code{none} if no error plot is desired. }
+\item{lwd}{the line width, for details see \code{\link{par} }}
+\item{lty}{the line type, for details see \code{\link{par}}  }
+  \item{type}{1-character string giving the type of plot desired, for details see \code{\link{plot.default}}  }
+  \item{inset}{ inset distance(s) from the margins as a fraction of the plot region, for details see \code{\link{legend}}.}
+  \item{ask}{If TRUE (and the R session is interactive) the user is asked for input, before a new figure is drawn, see \code{\link{par}} for details. }
+  \item{\dots}{other graphical parameters, see \code{\link{par}}. }
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
-}
-\value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
-}
+  Depending on the choice of the curve type (\code{spot}, \code{forward}, \code{discount}, \code{spread}) the corresponding
+curves will be plot. Either separately or together (\code{mulitple = TRUE}). If the curves are plotted together a dashes lines indicates that
+the corresponding curve has been extrapolated. In addition, with a seperate zero-coupon yield curve plot the yield to maturity will be plotted. To ease the analysis of the goodness of the estimation, serveral error plots are offered. }
+
+  
+%\value{}
 %\references{  }
 \author{ Robert Ferstl, Josef Hayden }
 %\note{ }
-\seealso{}
+\seealso{ \code{\link{plot.df_curves}}, \code{\link{plot.error}}, \code{\link{plot.fwr_curves}}, \code{\link{plot.ir_curve}}, \code{\link{plot.s_curves}},
+
+\code{\link{plot.spot_curves}}, \code{\link{plot.nelson}} }
 %\examples{}
 
 \keyword{  }

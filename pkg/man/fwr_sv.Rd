@@ -1,32 +1,26 @@
 \name{fwr_sv}
 \alias{fwr_sv}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Forward rate calculation according to Svensson}
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Calculate forward rates according to the Svensson approach. 
 }
 \usage{
 fwr_sv(beta, m)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{beta}{ ~~Describe \code{beta} here~~ }
-  \item{m}{ ~~Describe \code{m} here~~ }
+  \item{beta}{Parameter vector }
+  \item{m}{Maturity vector }
 }
-\details{
-  ~~ If necessary, more details than the description above ~~
-}
-\value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
-}
+%\details{}
+%\value{}
+
+
 %\references{  }
 \author{ Robert Ferstl, Josef Hayden }
 %\note{ }
-\seealso{}
+\seealso{\code{\link{fwr_ns}}, \code{\link{forwardrates}}}
 %\examples{}
 
 \keyword{  }

@@ -1,40 +1,34 @@
 \name{plot.s_curves}
 \alias{plot.s_curves}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{S3 Plot Method}
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+ S3 plot method for an object of the class \code{s_curves}. 
 }
 \usage{
-plot.s_curves(x, xlim = c(range(mapply(function(i) range(x[[i]][, 1]), seq(x)))), ylim = c(range(mapply(function(i) range(x[[i]][, 2]), seq(x)))) * 10000, expoints = NULL, xlab = "Maturity (years)", ylab = "Spread (basis points)", lwd = 2, lty = 1, main = "Spread curves", ...)
+\method{plot}{s_curves}(x, xlim = c(range(mapply(function(i) range(x[[i]][, 1]), seq(x)))), ylim = c(range(mapply(function(i) range(x[[i]][, 2]), seq(x)))) * 10000, expoints = NULL, xlab = "Maturity (years)", ylab = "Spread (basis points)", lwd = 2, lty = 1, main = "Spread curves", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{ ~~Describe \code{x} here~~ }
-  \item{xlim}{ ~~Describe \code{xlim} here~~ }
-  \item{ylim}{ ~~Describe \code{ylim} here~~ }
-  \item{expoints}{ ~~Describe \code{expoints} here~~ }
-  \item{xlab}{ ~~Describe \code{xlab} here~~ }
-  \item{ylab}{ ~~Describe \code{ylab} here~~ }
-  \item{lwd}{ ~~Describe \code{lwd} here~~ }
-  \item{lty}{ ~~Describe \code{lty} here~~ }
-  \item{main}{ ~~Describe \code{main} here~~ }
-  \item{\dots}{ ~~Describe \code{\dots} here~~ }
+  \item{x}{object of the class \code{s_curves} }
+  \item{ylim}{the y limits of the plot, for details see \code{\link{plot.default}} }
+  \item{xlim}{the x limits of the plot, for details see \code{\link{plot.default}}  }
+  \item{lty}{the line type, for details see \code{\link{par}}  }
+  \item{lwd}{the line width, for details see \code{\link{par} }}
+  \item{expoints}{Extrapolation points. Default: \code{NULL}  }
+  \item{ylab}{a label for the y axis, for details see \code{\link{plot.default}  }}
+  \item{xlab}{a label for the x axis, for details see \code{\link{plot.default}  }}
+  \item{main}{a main title for the plot, for details see code{\link{title} }}
+  \item{\dots}{ other graphical parameters, see \code{\link{par}}}
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+The spread curves of a term structure estimation are plotted, assuming at least two groups of bonds. 
 }
-\value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
-}
+%\value{}
 %\references{  }
 \author{ Robert Ferstl, Josef Hayden }
 %\note{ }
-\seealso{}
+\seealso{\code{\link{plot.df_curves}},\code{\link{plot.fwr_curves}},\code{\link{plot.spot_curves}}}
 %\examples{}
 
 \keyword{  }

@@ -1,27 +1,24 @@
 \name{fwr_ns}
 \alias{fwr_ns}
 
-\title{ Forward rate calculation according to Nelson/Siegel }
-\description{ 
-}
+\title{Forward rate calculation according to Nelson/Siegel }
+\description{Calculate forward rates according to the Nelson/Siegel approach.}
 \usage{
 fwr_ns(beta, m)
 }
 
 \arguments{
-  \item{beta}{ ~~Describe \code{beta} here~~ }
-  \item{m}{ ~~Describe \code{m} here~~ }
+  \item{beta}{Parameter vector }
+  \item{m}{Maturity vector }
 }
-\details{
+%\details{}
+\value{The function returns the calculated forward rate vector.}
 
-}
-\value{
 
-}
 %\references{  }
 \author{ Robert Ferstl, Josef Hayden }
 %\note{ }
-\seealso{}
+\seealso{\code{\link{fwr_sv}}, \code{\link{forwardrates}}}
 %\examples{}
 
 \keyword{  }

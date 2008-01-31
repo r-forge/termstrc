@@ -1,11 +1,8 @@
 \name{impl_fwr}
 \alias{impl_fwr}
 
-\title{ 
- }
-\description{
-
-
+\title{Implied forward rate calculation}
+\description{Calculate the implied forward rates from given spot rates
 }
 \usage{
 impl_fwr(m, s)
@@ -13,17 +10,12 @@ impl_fwr(m, s)
 
 
 \arguments{
-  \item{m}{ ~~Describe \code{m} here~~ }
-  \item{s}{ ~~Describe \code{s} here~~ }
+  \item{m}{Maturity vector}
+  \item{s}{Spot rate vector}
 }
-\details{
-
-
-}
+%\details{}
 \value{
-
-
-  ...
+The function returns the calculated forward rate vector.
 }
 %\references{  }
 \author{ Robert Ferstl, Josef Hayden }
