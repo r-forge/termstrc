@@ -481,16 +481,17 @@ plot.s_curves <- function(x,xlim=c(range(mapply(function(i)
 #               error plot-method for nelson                      #
 ###################################################################    
 
-plot.error <- function(x,type="b",main="", mar= c(7,6,6,2) + 0.1, oma=c(4,2,2,2) +0.1,
-                       ylab="Error", ...) {
+plot.error <- function(x,y=NULL, type="b",main="", mar= c(7,6,6,2) + 0.1, oma=c(4,2,2,2) +0.1,
+                       ylab="Error",ylim=c(),xlim=c(), ...) {
 	old.par <- par(no.readonly = TRUE)
     par(mar=mar, oma=oma, ... )
     
-		plot(x[,1],x[,2],axes=FALSE,pch=19,lwd=c(1,2),xlab="", ylab=ylab,type=type, ...)
+		plot(x[,1],x[,2],axes=FALSE,pch=19,lwd=c(1,2),xlab="", ylab=ylab,type=type, if(inherits(y,"error")) {ylim =c(range(x[,2],y[,2]))},xlim=c(), ...)
 		axis(1,x[,1],rownames(x),las=3,...)
-		axis(2,...)
+		axis(2, ...)
 		axis(3,x[,1],round(x[,1],2),...)
 		lines(x[,1],rep(0,nrow(x)),lty=2,lwd=1,... )
+		if(inherits(y,"error")) lines(y[,1],y[,2], pch=19,lwd=c(1,2),type=type,col=c("blue","blue"))
 		title(xlab="ISIN", outer=TRUE,main=main,...) 
 	 
 	 on.exit(par(old.par))

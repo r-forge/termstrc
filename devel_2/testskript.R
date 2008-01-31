@@ -21,7 +21,7 @@ source("nelson.R")
 # nelsonsiegel example
 group <- c("GERMANY", "AUSTRIA", "ITALY")
 bonddata <- eurobonds
-matrange <- c(0,12)
+matrange <- "all"
 method <- "Nelson/Siegel"
 fit <- "prices"
 weights <- "none"
@@ -38,11 +38,17 @@ colnames(b) <- c("beta0","beta1","beta2","tau1")
 
 x <- nelson_estim(group, bonddata, matrange, 
                   method, fit, weights, startparam=b,control)
+                  by <- rbind(x$opt_result$GERMANY$par,x$opt_result$AUSTRIA$par, x$opt_result$ITALY$par)
+y <- nelson_estim(group, bonddata, matrange, method, fit="yields", weights, startparam=by, control)   
+z <- nelson_estim(group, bonddata, matrange, method, fit="prices", weights="duration", startparam=b, control)   
+
+w <- nelson_estim(group=c("GERMANY"), bonddata <- rm_bond(bonddata,c("DE0001135226",
+"DE0001135275"), gr="GERMANY"), matrange, method, fit="prices", weights="duration", startparam=b, control) 
 
 #print(x)
 #summary(x)
 #plot(x)
-y <- splines_estim(group, bonddata, matrange)
+#y <- splines_estim(group, bonddata, matrange)
 
 # appliction of bond removal function 
 #ISIN <- c("IT0003844534",  "IT0003242747") 
