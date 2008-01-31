@@ -1,42 +1,34 @@
 \name{plot.df_curves}
 \alias{plot.df_curves}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{S3 Plot Method}
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+  S3 plot method for an object of the class \code{df_curves}
 }
 \usage{
-plot.df_curves(x, multiple = FALSE, ylim = c(range(mapply(function(i) range(x[[i]][, 2]), seq(x)))) * 100, xlim = c(), type = "l", lty = 1, lwd = 2, expoints = NULL, ylab = "Discount factor (%)", xlab = "Maturity (years)", main = "Discount factor curves", ...)
+\method{plot}{df_curves}(x, multiple = FALSE, ylim = c(range(mapply(function(i) range(x[[i]][, 2]), seq(x)))) * 100, xlim = c(), type = "l", lty = 1, lwd = 2, expoints = NULL, ylab = "Discount factor (percent)", xlab = "Maturity (years)", main = "Discount factor curves", ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{x}{ ~~Describe \code{x} here~~ }
-  \item{multiple}{ ~~Describe \code{multiple} here~~ }
-  \item{ylim}{ ~~Describe \code{ylim} here~~ }
-  \item{xlim}{ ~~Describe \code{xlim} here~~ }
-  \item{type}{ ~~Describe \code{type} here~~ }
-  \item{lty}{ ~~Describe \code{lty} here~~ }
-  \item{lwd}{ ~~Describe \code{lwd} here~~ }
-  \item{expoints}{ ~~Describe \code{expoints} here~~ }
-  \item{ylab}{ ~~Describe \code{ylab} here~~ }
-  \item{xlab}{ ~~Describe \code{xlab} here~~ }
-  \item{main}{ ~~Describe \code{main} here~~ }
-  \item{\dots}{ ~~Describe \code{\dots} here~~ }
+  \item{x}{object of the class \code{df_curves} }
+  \item{multiple}{ If\code{TRUE} all discount factor curves are plotted into one graphic. The default setting is \code{FALSE} }
+  \item{ylim}{the y limits of the plot, for details see \code{\link{plot.default}} }
+  \item{xlim}{the x limits of the plot, for details see \code{\link{plot.default}} }
+  \item{type}{1-character string giving the type of plot desired, for details see \code{\link{plot.default}}  }
+  \item{lty}{the line type, for details see \code{\link{par}}  }
+  \item{lwd}{the line width, for details see \code{\link{par} }}
+  \item{expoints}{Extrapolation points. Default: \code{NULL}  }
+  \item{ylab}{a label for the y axis, for details see \code{\link{plot.default}}}
+  \item{xlab}{a label for the x axis, for details see \code{\link{plot.default}}}
+  \item{main}{a main title for the plot, for details see code{\link{title}}}
+  \item{\dots}{ other graphical parameters, see \code{\link{par}}}
 }
-\details{
-  ~~ If necessary, more details than the description above ~~
-}
-\value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
-}
+%\details{}
+%\value{}
 %\references{  }
 \author{ Robert Ferstl, Josef Hayden }
 %\note{ }
-\seealso{}
+\seealso{\code{\link{plot.fwr_curves}}, \code{\link{plot.s_curves}}, \code{\link{plot.spot_curves}} }
 %\examples{}
 
 \keyword{  }

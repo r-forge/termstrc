@@ -10,7 +10,7 @@ nelson_estim(group,
              matrange = "all",
              method = "Nelson/Siegel",
              fit = "prices",
-             weights = "none",
+             weights = "duration",
              startparam, control = list(eval.max = 1000))
 }
 \arguments{

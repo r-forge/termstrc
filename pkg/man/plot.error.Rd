@@ -1,37 +1,36 @@
 \name{plot.error}
 \alias{plot.error}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{S3 Plot Method }
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+S3 plot method for an object of the class \code{error}}
 \usage{
-plot.error(x, type = "b", main = "", mar = c(7, 6, 6, 2) + 0.1, oma = c(4, 2, 2, 2) + 0.1, ylab = "Error", ...)
+\method{plot}{error}(x, type = "b", main = "", mar = c(7, 6, 6, 2) + 0.1, oma = c(4, 2, 2, 2) + 0.1, ylab = "Error", ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{x}{ ~~Describe \code{x} here~~ }
-  \item{type}{ ~~Describe \code{type} here~~ }
-  \item{main}{ ~~Describe \code{main} here~~ }
-  \item{mar}{ ~~Describe \code{mar} here~~ }
-  \item{oma}{ ~~Describe \code{oma} here~~ }
-  \item{ylab}{ ~~Describe \code{ylab} here~~ }
-  \item{\dots}{ ~~Describe \code{\dots} here~~ }
+  \item{x}{oject of the class \code{error} }
+  \item{type}{1-character string giving the type of plot desired, for details see \code{\link{plot.default}}  }
+  \item{main}{a main title for the plot, for details see code{\link{title} }}
+  \item{mar}{ A numerical vector of the form 'c(bottom, left, top, right)'
+          which gives the number of lines of margin to be specified on
+          the four sides of the plot, for details see \code{\link{par}  }}
+  \item{oma}{A vector of the form 'c(bottom, left, top, right)' giving
+          the size of the outer margins in lines of text. }
+  \item{ylab}{a label for the y axis, for details see \code{\link{plot.default}  }}
+  \item{\dots}{ other graphical parameters, see \code{\link{par}} }
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+Absolute yield and price errors as a resuslt of the term structure estimation can be plotted.
+The scaling of the x axis depends on the maturity of the bonds, each bond is labeled with its
+ISIN number. The error plots seems especially useful in identifying misspriced bonds. For removing misspriced bonds
+the function \code{\link{rm_bond}} may be applied.  
 }
-\value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
-}
+%\value{}
 %\references{  }
 \author{ Robert Ferstl, Josef Hayden }
 %\note{ }
-\seealso{}
+\seealso{\code{\link{rm_bond}}}
 %\examples{}
 
 \keyword{  }

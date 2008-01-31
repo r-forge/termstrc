@@ -1,37 +1,33 @@
 \name{plot.ir_curve}
 \alias{plot.ir_curve}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{ S3 Plot Method }
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+S3 plot method for an object of the class \code{ir_curve}
 }
 \usage{
-plot.ir_curve(x, ylim = c(), xlim = c(), lwd = 2, type = "l", xlab = "Maturity (years)", ylab = "Percent", col = "steelblue", lty = 1, ...)
+\method{plot}{ir_curve}(x, ylim = c(), xlim = c(), lwd = 2, type = "l", xlab = "Maturity (years)", ylab = "Percent", col = "steelblue", lty = 1, ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{x}{ ~~Describe \code{x} here~~ }
-  \item{ylim}{ ~~Describe \code{ylim} here~~ }
-  \item{xlim}{ ~~Describe \code{xlim} here~~ }
-  \item{lwd}{ ~~Describe \code{lwd} here~~ }
-  \item{type}{ ~~Describe \code{type} here~~ }
-  \item{xlab}{ ~~Describe \code{xlab} here~~ }
-  \item{ylab}{ ~~Describe \code{ylab} here~~ }
-  \item{col}{ ~~Describe \code{col} here~~ }
-  \item{lty}{ ~~Describe \code{lty} here~~ }
-  \item{\dots}{ ~~Describe \code{\dots} here~~ }
+  \item{x}{object of the class \code{ir_curve} }
+  \item{ylim}{the y limits of the plot, for details see \code{\link{plot.default}} }
+  \item{xlim}{the x limits of the plot, for details see \code{\link{plot.default}}  }
+  \item{lwd}{the line width, for details see \code{\link{par} }}
+  \item{type}{1-character string giving the type of plot desired, for details see \code{\link{plot.default}}  }
+  \item{xlab}{a label for the x axis, for details see \code{\link{plot.default}  }}
+  \item{ylab}{a label for the y axis, for details see \code{\link{plot.default}  }}
+  \item{col}{ the colors for lines and points}
+  \item{lty}{the line type, for details see \code{\link{par}}  }
+  \item{\dots}{ other graphical parameters, see \code{\link{par}}}
 }
-\details{
-
-}
-\value{
-
-}
+%\details{}
+%\value{}
 
 %\references{  }
 \author{ Robert Ferstl, Josef Hayden }
 %\note{ }
-\seealso{}
+%\seealso{}
 %\examples{}
 
 \keyword{  }
