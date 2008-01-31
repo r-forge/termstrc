@@ -1,4 +1,5 @@
-\begin{figure}
+\begin{figure}[htb]
+  \label{fig:curveshape}
   \caption{Model curves}
 \begin{center}
 <<fig=TRUE,echo=FALSE>>=
