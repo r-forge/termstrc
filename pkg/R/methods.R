@@ -376,7 +376,7 @@ plot.spot_curves <- function(x,multiple= FALSE,
 				ylim= c(range(mapply(function(i) 
 				range(x[[i]][,2]),seq(x))))*100,xlim=c(),
 				type="l", lty=1, lwd=2, expoints=NULL, 
-				ylab= "Zero-coupon yields (%)",
+				ylab= "Zero-coupon yields (percent)",
 				xlab= "Maturity (years)",main="Zero-coupon yield curves",
 				...) {
 
@@ -422,7 +422,7 @@ plot.spot_curves <- function(x,multiple= FALSE,
 plot.fwr_curves <- function(x,multiple= FALSE,
 					ylim= c(range(mapply(function(i) range(x[[i]][,2]),
 					seq(x))))*100,xlim=c(),type="l", lty=1, 
-					lwd=2, expoints=NULL, ylab= "Forward rate (%)",
+					lwd=2, expoints=NULL, ylab= "Forward rate (percent)",
 					xlab= "Maturity (years)",main="Forward rate curves",...) 
 					
 { plot.spot_curves(x,ylab=ylab, xlab=xlab, main=main,
@@ -431,13 +431,13 @@ plot.fwr_curves <- function(x,multiple= FALSE,
 }
 
 ###################################################################
-#                    plot-method for fwr_curves                   #
+#                    plot-method for df_curves                   #
 ###################################################################
 
 plot.df_curves <- function(x,multiple= FALSE,
 					ylim= c(range(mapply(function(i) range(x[[i]][,2]),
 					seq(x))))*100,xlim=c(),type="l", lty=1,
-					lwd=2, expoints=NULL, ylab= paste("Discount factor",expression((%)),sep=" "),
+					lwd=2, expoints=NULL, ylab="Discount factor (percent)",
 					xlab= "Maturity (years)",main="Discount factor curves",...) 
 { plot.spot_curves(x,ylab=ylab, xlab=xlab, main=main,
 	multiple=multiple,expoints=expoints,lty=lty,lwd=lwd,type=type, ... )
