@@ -7,9 +7,9 @@ Let us establish the necessary notation for a market data set of coupon bonds. W
 
 \subsubsection*{Maturity matrix}
 
-\begin{equation}\label{maturitym}
+\begin{equation*}\label{maturitym}
 \bm{M}_{\left[n\times m\right]}= \{m_{ij}\}
-\end{equation}
+\end{equation*}
 
 The number of rows $n$ is determined through the number of cashflows of the bond $j$ with the longest maturity. For each bond $j$ exists a column with the corresponding cashflow dates. Dates after the maturity of the bond $j$ are filled up with zeros till the maturity date of the bond with the longest maturity. One element $m_{ij}$ of the matrix  refers, therefore, to the maturity date of  the $i$-th cashflow of the $j$-th bond. 
 
@@ -17,32 +17,32 @@ The number of rows $n$ is determined through the number of cashflows of the bond
 
 We denote with $m_j$ the maturity of the last cashflow, i.e. the maturity of the $j$-th bond.
 
-\begin{equation}\label{weights}
+\begin{equation*}\label{weights}
     \bm{m}_{\left[1\times m\right]}= \{m_j\}
-\end{equation}
+\end{equation*}
 
 \subsubsection*{Cashflow matrix}
 
 
- \begin{equation}\label{cashflowm}
+ \begin{equation*}\label{cashflowm}
 \bm{C}_{\left[n\times m\right]}= \{c_{ij}\}
-\end{equation}
+\end{equation*}
 
  The cashflow matrix is defined analogously to the maturity matrix.  One element $c_{ij}$  of the matrix refers to the $i$-th cashflow of the $j$-th bond. Note, that the last cashflow of a each bond includes the redemption payment.
 
 \subsubsection*{Discount factor matrix}
 
- \begin{equation}\label{discountm}
+ \begin{equation*}\label{discountm}
 \bm{D}_{\left[n\times m\right]}= \{d_{ij}\}
-\end{equation}
+\end{equation*}
 
 The discount factor matrix is also defined analogously to the maturity matrix. One element $d_{ij}$ of the matrix refers to the discount factor associated with  the $i$-th cashflow of the $j$-th bond. The discount function $\delta(m_{i,j})$ returns the discount factor for a given maturity. We will see in the following sections several methods how to estimate it. From an economic point of view only positve interest rates make sense. This implies that the discount factors are nonnegative where the entries in the maturity matrix are greater zero. Remember, zero entries in the maturity matrix mean that for these points in time now cash flows are associated.
 
 \subsubsection*{Clean price vector}
 
- \begin{equation}\label{pc}
+ \begin{equation*}\label{pc}
 \bm{p}^c_{\left[1\times m\right]}= \{p^c_j\}
-\end{equation}
+\end{equation*}
 
 $p_{j}^c$ is the quoted market price of the $j$-th bond. It is given as percentage of the nominal value.
 
@@ -50,16 +50,16 @@ $p_{j}^c$ is the quoted market price of the $j$-th bond. It is given as percenta
 
 When an investor buys a bond, he will receive all its future cash flows. If the purchase occurs between two coupon dates, the seller must be compensated for the fraction of the next coupon, the so-called \emph{accrued interest}.
 
-  \begin{equation}\label{a}
+  \begin{equation*}\label{a}
 \bm{a}_{\left[1\times m\right]}= \{a_j\}
-\end{equation}
+\end{equation*}
 
 
 In practice, the calculation depends on the used day-count convention, e.g. 30/360, Actual/360. A basic form for the $j$-th bond is as follows.
 
-\begin{equation}
+\begin{equation*}
     a_j= \frac{\mbox{number of days since last coupon payment}}{\mbox{number of days in current coupon period}}\cdot \mbox{coupon}_j
-\end{equation}
+\end{equation*}
  	
 
 \subsubsection*{Dirty price vector}
@@ -71,19 +71,29 @@ The dirty price vector is the sum of the clean price vector and the accrued inte
 \end{displaymath}
 
 The elements are denoted by 
-\begin{equation}\label{pd}
+\begin{equation*}\label{pd}
     \bm{p}_{\left[1\times m\right]}= \{p_j\}\,.
-\end{equation}
+\end{equation*}
+
+
+\subsubsection*{Yield-to-maturity vector}
+
+This vector contains the yield-to-maturity described in \eqref{eq:yield}.
+
+\begin{equation*}\label{pd}
+    \bm{y}_{\left[1\times m\right]}= \{y_j\}\,.
+\end{equation*}
+
 
 
 \subsubsection*{Duration vector}
 
 The time to maturity of a coupon bond should not be used as an indicator for the sensitivity of a bond's price against changes in the interest rate. One needs to account for the fact that coupons are paid during the life time of a bond. Therefore, we calculate the average maturity weighted by the present values of its cash flows. This concept is called (Macaulay) \emph{duration}.
 
-\begin{equation}
+\begin{equation*}
   \label{eq:macaulayduration}
   \bm{d}_{\left[1\times m\right]} = \frac{\bm{\iota}'(\bm{C}\cdot\bm{M}\cdot\bm{D})}{\bm{\iota}'(\bm{C}\cdot\bm{D})}
-\end{equation}
+\end{equation*}
 
 Here, the discount matrix $\bm{D}$ contains the disount factors calulated with the yield-to-maturity of each bond as in \eqref{eq:yield}.
 
@@ -91,14 +101,14 @@ Here, the discount matrix $\bm{D}$ contains the disount factors calulated with t
 
 In section \ref{sec:nels-svenss-meth}, we will use a weighting matrix for the estimation errors. It is constructed  as follows.
 
-\begin{equation}\label{weights}
+\begin{equation*}\label{weights}
     \bm{\Omega}_{\left[m\times m\right]}= \begin{pmatrix}
  \omega_1 & 0 &\cdots  &0  \\
  0 & \omega_2 &  & \vdots \\
  \vdots &  & \ddots & 0 \\
  0 &\cdots  &0  & \omega_m
 \end{pmatrix}
-\end{equation}
+\end{equation*}
 
 
 Whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$:
@@ -121,22 +131,31 @@ Indirect estimation procedures postulate a specific form for the spot rate funct
 
 
 
-The pricing errors
+The \emph{pricing errors}
 \begin{equation}
   \label{eq:pricingerrors}
   \bm{\epsilon} = \bm{p-\hat{p}}
 \end{equation}
 
-are the deviation of the theoretical prices from the dirty prices observed on the market. They satisfy
+are the deviation of the theoretical prices from the dirty prices observed on the market. Analogously, the we could define the \emph{yield errors}.
 
-\begin{eqnarray}
+
+\begin{equation}
+  \label{eq:yielderrors}
+  \bm{\epsilon} = \bm{y-\hat{y}}
+\end{equation}
+
+
+The errors satisfy
+
+\begin{eqnarray*}
   \label{eq:residuals}
   \E(\bm{\epsilon}) &=& \bm{0}\\
   \VAR(\bm{\epsilon}) &=&\sigma^2\bm{\Omega}^2 \\
   \COV(\epsilon_i, \epsilon_j) &=& 0 \quad \mbox{for}\,i\neq j\quad .
-\end{eqnarray}
+\end{eqnarray*}
 
-The goal is to minimize the weighted squared pricing errors.
+The goal is to minimize the weighted squared errors.
 
 
 \begin{equation}
