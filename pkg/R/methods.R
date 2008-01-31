@@ -437,7 +437,7 @@ plot.fwr_curves <- function(x,multiple= FALSE,
 plot.df_curves <- function(x,multiple= FALSE,
 					ylim= c(range(mapply(function(i) range(x[[i]][,2]),
 					seq(x))))*100,xlim=c(),type="l", lty=1,
-					lwd=2, expoints=NULL, ylab= "Discount factor (%)",
+					lwd=2, expoints=NULL, ylab= paste("Discount factor",expression((%)),sep=" "),
 					xlab= "Maturity (years)",main="Discount factor curves",...) 
 { plot.spot_curves(x,ylab=ylab, xlab=xlab, main=main,
 	multiple=multiple,expoints=expoints,lty=lty,lwd=lwd,type=type, ... )
