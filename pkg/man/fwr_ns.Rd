@@ -1,7 +1,7 @@
 \name{fwr_ns}
 \alias{fwr_ns}
 
-\title{Forward rate calculation according to Nelson/Siegel }
+\title{Forward Rate Calculation according to Nelson/Siegel }
 \description{Calculate forward rates according to the Nelson/Siegel approach.}
 \usage{
 fwr_ns(beta, m)

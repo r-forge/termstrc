@@ -313,7 +313,7 @@ plot.cubicsplines <-
           # upper ci 
           lines(cdata[[k]][,1],cdata[[k]][,4]*100, type="l", lty=3, col="steelblue")
     	  # knot points 
-    	  abline(v=c(x$T[[k]]),lty=2, col="darkgrey")
+    	  abline(v=c(x$knotpoints[[k]]),lty=2, col="darkgrey")
     	  legend("bottom",legend=c("Zero-coupon yield curve",
     	  "95 % Confidence intervall" ,"Yield to maturity", "Knot points"),
     	  col=c("steelblue","steelblue","red", "darkgrey"),

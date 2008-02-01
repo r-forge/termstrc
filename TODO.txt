@@ -184,5 +184,5 @@ besser
 
 * wrong encoding in lm() outputs
 * par compatibility
-
+* change T in list output of splines objects into knot points
 
