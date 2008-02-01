@@ -45,21 +45,6 @@ z <- nelson_estim(group, bonddata, matrange, method, fit="prices", weights="dura
 w <- nelson_estim(group=c("GERMANY"), bonddata <- rm_bond(bonddata,c("DE0001135226",
 "DE0001135275"), gr="GERMANY"), matrange, method, fit="prices", weights="duration", startparam=b, control) 
 
-#print(x)
-#summary(x)
-#plot(x)
-#y <- splines_estim(group, bonddata, matrange)
 
-# appliction of bond removal function 
-#ISIN <- c("IT0003844534",  "IT0003242747") 
-#gr <- rep("ITALY",2)
+s <- splines_estim(group, bonddata, matrange)
 
-#testdata <- rm_bond(bonddata,ISIN,gr)
-#z <- nelson_estim(group= c("ITALY"), bonddata=testdata, matrange, 
-#                  method, fit, weights, startparam=b,control)
-#summary(z)
-#plot(z,ctype="none", error="price")
-
-#testdata <- rm_bond(bonddata,ISIN=c("DE0001134468"), gr=c("GERMANY"))
-
-#dneu <- nelson_estim(group= c("GERMANY"), bonddata=testdata, matrange,  method, fit, weights, startparam=b,control)

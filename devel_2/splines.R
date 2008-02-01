@@ -174,7 +174,7 @@ splines_estim <-
  result <- list(  group=group,          # e.g. countries, rating classes
                   matrange=matrange,    # maturity range of bonds
                   n_group=n_group,      # number of groups,
-                  T=T,                  # knot points 
+                  knotpoints=T,                  # knot points 
                   spot=zcy_curves, 		# zero coupon yield curves
                   spread=s_curves,      # spread curves
                   discount=df_curves,	# forward rate curves
