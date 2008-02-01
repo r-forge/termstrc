@@ -120,7 +120,7 @@ splines_estim <-
   for (k in sgroup) class(yerrors[[k]]) <- "error"
   
   # maturity interval
-  t <- mapply(function(k) seq(min(T[[k]]), max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
+  t <- mapply(function(k) seq(max(min(T[[k]]),0), max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
  
   # calculate mean and variance of the distribution of the discount function 
   mean_d <- mapply(function(k) apply(mapply(function(sidx) alpha[[k]][sidx]*
