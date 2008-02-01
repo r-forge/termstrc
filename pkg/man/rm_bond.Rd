@@ -1,22 +1,22 @@
 \name{rm_bond}
 \alias{rm_bond}
-\title{ Bonds removal from a list of bonds }
+\title{Remove Bonds from a Dataset }
 \description{
- Specified bonds and their associated data are removed from the bond list
+ Specified bonds and their associated data are removed from the bond dataset.
 }
 \usage{
 rm_bond(bdata, ISIN, gr)
 }
 
 \arguments{
-  \item{bdata}{the list with bond data }
-  \item{ISIN}{the ISIN numbers of the bonds to remove }
-  \item{gr}{the group of bonds where the bonds to be removed belong to}
+  \item{bdata}{bond data set. }
+  \item{ISIN}{the ISIN numbers of the bonds to remove. }
+  \item{gr}{the group  where the bonds to be removed belong to.}
 }
 %\details{}
-\value{bond list}
+\value{The function returns the new bond dataset.}
 %\references{  }
-\author{ Robert Ferstl, Josef Hayden }
+%\author{ Robert Ferstl, Josef Hayden }
 %\note{ }
 %\seealso{}
 %\examples{}
