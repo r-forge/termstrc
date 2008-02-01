@@ -8,15 +8,22 @@ fwr_ns(beta, m)
 }
 
 \arguments{
-  \item{beta}{Parameter vector }
-  \item{m}{Maturity vector }
+  \item{beta}{parameter vector. }
+  \item{m}{maturity or maturity vector.}
 }
-%\details{}
+\details{The forward rates are calculated using the following relationsship:
+
+\deqn{f(m,\bm{b}) = \beta_0+\beta_1\exp\left(-\frac{m}{\tau_1}\right)+\beta_2\left[\left(\frac{m}{\tau_1}\right)\exp\left(-\frac{m}{\tau_1}\right)\right]}.
+}
 \value{The function returns the calculated forward rate vector.}
 
 
-%\references{  }
-\author{ Robert Ferstl, Josef Hayden }
+\references{  
+Charles R. Nelson and Andrew F. Siegel (1987): 
+Parsimonious Modeling of Yield Curves.
+\emph{The Journal of Business}, \bold{60(4)}:473--489.}
+
+%\author{ Robert Ferstl, Josef Hayden }
 %\note{ }
 \seealso{\code{\link{fwr_sv}}, \code{\link{forwardrates}}}
 %\examples{}

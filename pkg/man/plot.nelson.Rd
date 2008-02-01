@@ -23,7 +23,7 @@
 \item{lty}{the line type, for details see \code{\link{par}}.}
   \item{type}{1-character string giving the type of plot desired, for details see \code{\link{plot.default}}.}
   \item{inset}{ inset distance(s) from the margins as a fraction of the plot region, for details see \code{\link{legend}}.}
-  \item{ask}{if \code{TRUE} (and the R session is interactive) the user is asked for input, before a new figure is drawn, see \code{\link{par}} for details.}
+  \item{ask}{if \code{TRUE} (and the \R session is interactive) the user is asked for input, before a new figure is drawn, see \code{\link{par}} for details.}
   \item{\dots}{other graphical parameters, see \code{\link{par}}. }
 }
 \details{

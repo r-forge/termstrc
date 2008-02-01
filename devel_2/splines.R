@@ -192,7 +192,7 @@ splines_estim <-
                  )
                  
   # assign names to results list 
-  for ( i in 5:length(result)) names(result[[i]]) <- names(bonddata)
+  for ( i in 4:length(result)) names(result[[i]]) <- names(bonddata)
     
   class(result) <- "cubicsplines"
   result
