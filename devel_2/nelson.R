@@ -119,7 +119,7 @@ nelson_estim <-
 
   
   # maturity interval
-  t <- seq(floor(min(mapply(function(i) min(y[[i]][,1]), sgroup))),
+  t <- seq(round(min(mapply(function(i) min(y[[i]][,1]), sgroup)),2),
                            ceiling(max(mapply(function(i) max(y[[i]][,1]), sgroup))),0.01)
   
   
