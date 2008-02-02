@@ -15,7 +15,6 @@ rmse(actual, estimated)
   Calculation of the RMSE according to the formula:
 \deqn{ \mbox{RMSE}=\sqrt{\frac{1}{m}\bm{\iota}'\epsilon^2} }.
 Whereas \eqn{\epsilon} is the vector of the yield or price errors of the bonds. 
-s
 }
 
 \seealso{\code{\link{aabse}}}
