@@ -61,11 +61,11 @@ nelson_estim <-
   m <- mapply(function(k) m[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   p <- mapply(function(k) p[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  
+  browser()
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    sgroup,SIMPLIFY=FALSE)
- 
+  
   # calculate duration   
   duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],y[[k]][,2]),
                    sgroup,SIMPLIFY=FALSE)

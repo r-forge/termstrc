@@ -1,6 +1,6 @@
 
 importdatastream <- function(datafile){
-#datafile = "austria.csv"
+#datafile = "belgium.csv"
 rawdata <- read.csv(datafile, dec=".",sep=",",colClasses = "character")
   data <- list()
   data$ISIN <- rawdata[,"ISIN"]
@@ -38,21 +38,34 @@ rawdata <- read.csv(datafile, dec=".",sep=",",colClasses = "character")
 data
 }  
 
-eurobonds30012008 <- list()
-eurobonds30012008$GERMANY <- importdatastream("germany.csv")
-eurobonds30012008$AUSTRIA <- importdatastream("austria.csv")
+cf_p <- create_cashflows_matrix(data,include_price=T)
+m_p <- create_maturities_matrix(data,include_price=T)
 
-group <- c("GERMANY","AUSTRIA")
-bonddata <- eurobonds30012008
-matrange <- c(0,20)
+
+govbonds <- list()
+govbonds$GERMANY <- importdatastream("germany.csv")
+govbonds$AUSTRIA <- importdatastream("austria.csv")
+govbonds$BELGIUM <- importdatastream("belgium.csv")
+govbonds$FINLAND <- importdatastream("finland.csv")
+govbonds$FRANCE <- importdatastream("france.csv")
+govbonds$SPAIN <- importdatastream("spain.csv")
+
+group <- c("GERMANY","AUSTRIA","BELGIUM","FINLAND","FRANCE","SPAIN")
+
+bonddata <- govbonds
+matrange <- c(1,20)
 method <- "Nelson/Siegel"
 fit <- "prices"
 weights <- "duration"
 control <- list(eval.max=100000, iter.max=500)
 
-b <- matrix(c(0,0,0, 1,
-			0,0,0, 1),
-			nrow=2,ncol=4,byrow=TRUE)
+b <- matrix(c(0.1,0.1,0.1, 1,
+	      0.1,0.1,0.1, 1,
+              0.1,0.1,0.1, 1,
+              0.1,0.1,0.1, 1,
+              0.1,0.1,0.1, 1,
+	      0.1,0.1,0.1, 1),
+	      nrow=6,ncol=4,byrow=TRUE)
 			
 rownames(b) <- group
 
@@ -61,6 +74,7 @@ colnames(b) <- c("beta0","beta1","beta2","tau1")
 x <- nelson_estim(group, bonddata, matrange, 
                   method, fit, weights, startparam=b,control)
 
+group <- c("GERMANY","AUSTRIA","SPAIN")
 y <- splines_estim(group, bonddata, matrange)
 
 #print(x)

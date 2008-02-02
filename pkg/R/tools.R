@@ -57,7 +57,7 @@ create_maturities_matrix <-
 #              bond yields for a given group                      #
 ###################################################################
 
-bond_yields <- function(cashflows, m, tol=1e-10) {
+bond_yields <- function(cashflows, m, searchint=c(-1,1), tol=1e-10) {
 
   # convert input data to matrices if necessary
   if (!is.matrix(cashflows))
@@ -81,7 +81,7 @@ bond_yields <- function(cashflows, m, tol=1e-10) {
 
     # calculate bond yields
     
-    bondyields[i,2] <- uniroot(pvcashflows, c(0, 1), tol = tol,maxiter=3000)$root 
+    bondyields[i,2] <- uniroot(pvcashflows, searchint, tol = tol,maxiter=3000)$root 
   }
 
   # return calculated bond yields matrix
