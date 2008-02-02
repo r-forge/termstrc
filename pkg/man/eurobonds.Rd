@@ -2,12 +2,12 @@
 \alias{eurobonds}
 \docType{data}
 \title{European Government Bonds}
-\description{European government bonds}
+\description{European government bonds.}
 
 \usage{data(eurobonds)}
 
 \details{
-The data set eurobonds consists of German, Austrian, Italian and Hungarian government bonds.
+The data set \code{eurobonds} consists of German, Austrian, Italian and Hungarian government bonds.
 }
 
 \note{
