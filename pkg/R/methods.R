@@ -305,7 +305,7 @@ plot.cubicsplines <-
     	
     	
     	 
-    	title(names(x$opt_result)[k])
+    	title(x$group[k])
     	 
     	if(ctype=="spot") {points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red") 
     	  # lower ci         

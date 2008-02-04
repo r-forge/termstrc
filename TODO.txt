@@ -187,5 +187,7 @@ besser
 * change T in list output of splines objects into knot points
 -> done
 * BUG! splines: maturity interval calculation (s_curves calc, short end)
+* BUG! plot.cubicsplines: title is missing 
+-> done !
 
 
