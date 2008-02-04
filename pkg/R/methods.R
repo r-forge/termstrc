@@ -478,7 +478,7 @@ plot.s_curves <- function(x,xlim=c(range(mapply(function(i)
 
 	
 ###################################################################
-#               error plot-method for nelson                      #
+#              		 plot-method for error                        #
 ###################################################################    
 
 plot.error <- function(x,type="b",main="", mar= c(7,6,6,2) + 0.1, oma=c(4,2,2,2) +0.1,
@@ -490,6 +490,7 @@ plot.error <- function(x,type="b",main="", mar= c(7,6,6,2) + 0.1, oma=c(4,2,2,2)
 		axis(1,x[,1],rownames(x),las=3,...)
 		axis(2,...)
 		axis(3,x[,1],round(x[,1],2),...)
+		mtext("Maturity (years)",3,line=2.5)
 		lines(x[,1],rep(0,nrow(x)),lty=2,lwd=1,... )
 		title(xlab="ISIN", outer=TRUE,main=main,...) 
 	 
