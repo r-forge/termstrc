@@ -2,29 +2,14 @@
 \section{Cubic splines}
 \label{sec:cubic-splines}
 
-\textcolor{red}{
-  \begin{itemize}
-  \item greater accuracy of splines?
-  \end{itemize}
-}
-
-The piecewise function is twice-differentable at each knot point, which results in a smooth curve.
-
-
-\begin{itemize}
-\item parametric cubic splines \cite{McCulloch1971, McCulloch1975}
-\item non-parametric splines \cite{Adams1994,Fisher1995, Waggoner1997, Tanggaard1997, Shea1985}
-\item \cite{Shea1985} mentions unstable fluctuating forward rates in \cite{McCulloch1975} cubic splines
-
-\end{itemize}
-
-Discount function
+\cite{McCulloch1971, McCulloch1975} use the following definition of the discount function.
 
 \begin{equation}
   \label{eq:df_spline}
   d(m_{i,j},\bm{\beta})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
 \end{equation}
 
+It is a function of time to maturity and the parameter vector must be estimated.
 
 \subsection{Knot point selection}
 
@@ -243,7 +228,21 @@ From an economic point of view only positive interest rates make sense. Therefor
 \cite{McCulloch1975} plots error bands above and below one standard error of the best estimate. A confidence interval that would have been constructed the usual way, could get to the negative. Negative discount factors can not be transformed to spot rates with \eqref{eq:transformdf}. Therefore a we suggest to use the truncated normal distribution for the construction of the confidence interval of the discount function $d(m_{i,j})$.
 
 
+\textcolor{red}{
+  \begin{itemize}
+  \item greater accuracy of splines?
+  \end{itemize}
+}
 
+The piecewise function is twice-differentable at each knot point, which results in a smooth curve.
+
+
+\begin{itemize}
+\item parametric cubic splines \cite{McCulloch1971, McCulloch1975}
+\item non-parametric splines \cite{Adams1994,Fisher1995, Waggoner1997, Tanggaard1997, Shea1985}
+\item \cite{Shea1985} mentions unstable fluctuating forward rates in \cite{McCulloch1975} cubic splines
+
+\end{itemize}
 
 
 
