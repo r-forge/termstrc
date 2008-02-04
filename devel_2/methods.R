@@ -1,4 +1,4 @@
- 
+# DEVEL VERSION 
 ###################################################################
 #                print-method for nelson                          #
 ###################################################################
@@ -30,7 +30,7 @@ print.nelson <-
 ###################################################################
 
 plot.nelson <-
-  function(x,matrange=c(min(mapply(function(i) min(x$y[[i]][,1]),seq(x$n_group))),
+  function(x,y=NULL,matrange=c(min(mapply(function(i) min(x$y[[i]][,1]),seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))))
                         ,multiple=FALSE, expoints=unlist(x$expoints), ctype="spot",
                          errors="price",
@@ -114,7 +114,7 @@ plot.nelson <-
     	
        	for(k in seq(x$n_group)){
     		
-     		plot.error(edata[[k]],ask=ask,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
+     		plot.error(edata[[k]],y=NULL,ask=ask,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
     		legend("bottomright", legend=c(paste("  RMSE",
     		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4), "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4), "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
@@ -252,7 +252,7 @@ print.summary.cubicsplines <-
 ###################################################################
 
 plot.cubicsplines <-
-  function(x,matrange =c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
+  function(x,y=NULL,matrange =c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))),
                         multiple=FALSE, expoints=NULL, ctype="spot",
                         lwd=2,lty=1,type="l",errors="price",inset=c(0.8,0.1),ask=TRUE, ...) {
@@ -343,7 +343,7 @@ plot.cubicsplines <-
     	
     	for(k in seq(x$n_group)){
     		
-     		plot.error(edata[[k]],ask=ask,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
+     		plot.error(edata[[k]],y=NULL,ask=ask,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
     		legend("bottomright", legend=c(paste("  RMSE",
     		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4), "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4), "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
@@ -490,6 +490,7 @@ plot.error <- function(x,y=NULL, type="b",main="", mar= c(7,6,6,2) + 0.1, oma=c(
 		axis(1,x[,1],rownames(x),las=3,...)
 		axis(2, ...)
 		axis(3,x[,1],round(x[,1],2),...)
+		mtext("Maturity (years)",3,line=2.5)
 		lines(x[,1],rep(0,nrow(x)),lty=2,lwd=1,... )
 		if(inherits(y,"error")) lines(y[,1],y[,2], pch=19,lwd=c(1,2),type=type,col=c("blue","blue"))
 		title(xlab="ISIN", outer=TRUE,main=main,...) 

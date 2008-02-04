@@ -1,3 +1,4 @@
+# DEVEL VERSION
 ###################################################################
 #                        Cubic splines estimation                 #
 ###################################################################
@@ -120,7 +121,7 @@ splines_estim <-
   for (k in sgroup) class(yerrors[[k]]) <- "error"
   
   # maturity interval
-  t <- mapply(function(k) seq(max(min(T[[k]]),0), max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
+  t <- mapply(function(k) seq(max(round(min(T[[k]]),2),0.01),max(T[[k]]),0.01), sgroup,SIMPLIFY=FALSE) 
  
   # calculate mean and variance of the distribution of the discount function 
   mean_d <- mapply(function(k) apply(mapply(function(sidx) alpha[[k]][sidx]*
@@ -145,14 +146,14 @@ splines_estim <-
  
   for (k in sgroup) class(zcy_curves[[k]]) <- "ir_curve"
   class(zcy_curves) <- "spot_curves"
-  
-  # calculate spread curves              	    
-  if(n_group != 1) {  
-   s_curves <- mapply(function(k) cbind(t[[which.min(lapply(t,length))]],
-   	(zcy_curves[[k]][1:nrow(zcy_curves[[which.min(mapply(function(k) 
-   	min(length(zcy_curves[[k]][,1])), sgroup))]]),2] - zcy_curves[[1]][1:
-   	nrow(zcy_curves[[which.min(mapply(function(k) min(length(zcy_curves[[k]][,1])),
-   	sgroup))]]),2])),sgroup, SIMPLIFY=FALSE)
+
+  # calculate spread curves 
+               	    
+  if(n_group != 1) {     
+   srange <- seq(max(unlist(lapply(t,min))),min(unlist(lapply(t,max))),0.01)
+   s_curves <- mapply(function(k) cbind(srange,zcy_curves[[k]][c(which(zcy_curves[[k]][,1]== srange[1]): which(zcy_curves[[k]][,1] == srange[length(srange)])),2] 
+    - zcy_curves[[1]][c(which(zcy_curves[[1]][,1]== srange[1]): which(zcy_curves[[1]][,1]== srange[length(srange)])),2]),sgroup, SIMPLIFY=FALSE) 
+   
    } else s_curves = "none"  
    for (k in sgroup) class(s_curves[[k]]) <- "ir_curve" 
    class(s_curves) <- "s_curves"
