@@ -37,8 +37,8 @@ rownames(b) <- group
 
 colnames(b) <- c("beta0","beta1","beta2","tau1")
 
-#x <- nelson_estim(group, bonddata, matrange, 
-#                  method, fit, weights, startparam=b,control)
+x <- nelson_estim(group, bonddata, matrange, 
+                 method, fit, weights, startparam=b,control)
                  # by <- rbind(x$opt_result$GERMANY$par,x$opt_result$AUSTRIA$par, x$opt_result$ITALY$par)
 #y <- nelson_estim(group, bonddata, matrange, method, fit="yields", weights, startparam=by, control)   
 #z <- nelson_estim(group, bonddata, matrange, method, fit="prices", weights="duration", startparam=b, control)   
