@@ -153,7 +153,7 @@ splines_estim <-
    s_curves <- mapply(function(k) cbind(srange,zcy_curves[[k]][c(which(zcy_curves[[k]][,1]== srange[1]): which(zcy_curves[[k]][,1] == srange[length(srange)])),2] 
     - zcy_curves[[1]][c(which(zcy_curves[[1]][,1]== srange[1]): which(zcy_curves[[1]][,1]== srange[length(srange)])),2]),sgroup, SIMPLIFY=FALSE) 
    
-   } else s_curves = "none"  
+   } else s_curves = "none"
    for (k in sgroup) class(s_curves[[k]]) <- "ir_curve" 
    class(s_curves) <- "s_curves"
   
@@ -173,9 +173,9 @@ splines_estim <-
  # return list of results
  result <- list(  group=group,          # e.g. countries, rating classes
                   matrange=matrange,    # maturity range of bonds
-                  n_group=n_group,      # number of groups,
-                  T=T,                  # knot points 
-                  spot=zcy_curves, 		# zero coupon yield curves
+                  n_group=n_group,      # number of groups
+                  T=T,                  # knot points
+                  spot=zcy_curves, 	# zero coupon yield curves
                   spread=s_curves,      # spread curves
                   discount=df_curves,	# forward rate curves
                   forward=fwr_curves,	# discount factor curves
@@ -183,10 +183,10 @@ splines_estim <-
                   m=m,                  # maturity matrix
                   p=p,                  # dirty prices
                   phat=phat,            # estimated prices
-                  perrors=perrors,		# price errors
+                  perrors=perrors,     	# price errors
                   y=y,                  # maturities and yields
                   yhat=yhat,            # estimated yields
-                  yerrors=yerrors,	    # yield errors
+                  yerrors=yerrors,	# yield errors
                   alpha=alpha,          # cubic splines parameters                             
                   regout=regout         # OLS output
                  )
