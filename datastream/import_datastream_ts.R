@@ -96,6 +96,9 @@ for (i in 2:length(govbondsts)){
   opt_result <- rbind(opt_result, x[[i]]$opt_result$FRANCE$par)
 }
 
+
+
+pdf("paramdevel.pdf",width=12, height=10)
 par(mfrow = c(2,2))
 plot(opt_result[,1],type="l",ylab="beta_0", col=1, lwd=2)
 grid()
@@ -105,7 +108,7 @@ plot(opt_result[,3],type="l",ylab="beta_2", col=3, lwd=2)
 grid()
 plot(opt_result[,4],type="l",ylab="tau_1", col=4, lwd=2)
 grid()
-
+dev.off()
 
 plot(seq(0,20,0.01), spotrates(method="Nelson/Siegel",opt_result[1,],seq(0,20,0.01)),type="l",ylim=c(0.03,0.07))
 
@@ -113,15 +116,14 @@ for (i in 2:nrow(opt_result)){
 lines(seq(0,20,0.01), spotrates(method="Nelson/Siegel",opt_result[i,],seq(0,20,0.01)))
   }
 
-library("rgl")
-
 X <- seq(1.5,30,0.1)
 Y <- seq(nrow(opt_result))
 Z <- matrix(spotrates(method="Nelson/Siegel",opt_result[1,],X),nrow=1)
 for (i in 2:nrow(opt_result)) {
   Z <- rbind(Z, spotrates(method="Nelson/Siegel",opt_result[i,],X))}
 
+pdf("3dplot.pdf",width=12, height=10)
 persp(X,Y,t(Z),theta = -35, phi = 30, expand = 0.6, col = "lightgreen",
-           ltheta = 120, shade = 0.55, ticktype = "detailed",xlab="Maturity",zlab="Zero-coupon yield",ylab="Time",box=TRUE,border=NA)
-
+           ltheta = 120, shade = 0.55, ticktype = "detailed",xlab="Maturity",zlab="Zero-coupon yields",ylab="Time",box=TRUE,border=NA)
+dev.off()
 
