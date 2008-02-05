@@ -81,8 +81,8 @@ fit <- "prices"
 weights <- "duration"
 control <- list(eval.max=100000, iter.max=500)
 
-b <- matrix(c(0.1,0.1,0.1, 1),
-	      nrow=1,ncol=4,byrow=TRUE)
+if(i>1) b <- matrix(x[[i-1]]$opt_result$FRANCE$par,nrow=1,ncol=4,byrow=TRUE) else b <- matrix(c(0.1,0.1,0.1, 1),nrow=1,ncol=4,byrow=TRUE)
+
 			
 rownames(b) <- group
 colnames(b) <- c("beta0","beta1","beta2","tau1")
