@@ -13,7 +13,7 @@ aabse(actual, estimated)
   \item{estimated}{vector, consisting of the estimated values.}
 }
 
-}
+
 \details{
   Calculation of the AABSE according to the formula:
 \deqn{AABSE=frac{1}{m}\bm{\iota}'|\bm{\epsilon}|.}
