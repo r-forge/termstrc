@@ -128,7 +128,7 @@ nelson_estim <-
               "Nelson/Siegel" = mapply(function(k)
 		            cbind(t,nelson_siegel(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
               "Svensson" = mapply(function(k) 
-              		cbind(svensson(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE)
+              		cbind(t,svensson(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE)
               		   )
 
   for (k in sgroup) class(zcy_curves[[k]]) <- "ir_curve"
@@ -158,7 +158,7 @@ nelson_estim <-
                       )
   for (k in sgroup) class(fwr_curves[[k]]) <- "ir_curve"
   class(fwr_curves) <- "fwr_curves"
-
+ 
   
   # calculate discount factor curves 
   df_curves <- mapply(function(k) cbind(zcy_curves[[k]][,1],exp(-zcy_curves[[k]][,1]*zcy_curves[[k]][,2])),sgroup,SIMPLIFY=FALSE)
