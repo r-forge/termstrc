@@ -4,7 +4,7 @@ Title: Term Structure and Credit Spread Estimation
 Version: 1.1
 Date: 2008-01-21
 Author: Robert Ferstl, Josef Hayden
-Maintainer: Josef Hayden <josef.hayen@wiwi.uni-regensburg.de>
+Maintainer: Josef Hayden <josef.hayden@wiwi.uni-regensburg.de>
 Description: The package offers several widely-used term structure estimation procedures,  i.e. the parametric Nelson and Siegel approach, Svensson approach and cubic splines.
 Depends: R (>= 2.5.0)
 License: GPL
