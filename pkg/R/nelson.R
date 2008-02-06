@@ -128,7 +128,7 @@ nelson_estim <-
               "Nelson/Siegel" = mapply(function(k)
 		            cbind(t,nelson_siegel(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
               "Svensson" = mapply(function(k) 
-              		cbind(svensson(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE)
+              		cbind(t,svensson(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE)
               		   )
 
   for (k in sgroup) class(zcy_curves[[k]]) <- "ir_curve"

@@ -194,5 +194,6 @@ besser
 * BUG! plot.cubicsplines: title is missing 
 -> done !
 * remove ^M
+-> done 
 
 
