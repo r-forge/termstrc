@@ -80,7 +80,8 @@ plot.nelson <-
   
     if (!multiple && ctype %in% c("spot", "forward", "discount")){
         old.par <- par(no.readonly = TRUE)
-        par(ask=ask)
+
+        if(x$n_group != 1) par(ask=ask)
         
     # plot each interest rate curve seperately
     for (k in seq(x$n_group)  ) 
@@ -293,7 +294,7 @@ plot.cubicsplines <-
   
 	 if (!multiple && ctype %in% c("spot", "forward", "discount")){
         old.par <- par(no.readonly = TRUE)
-        par(ask=ask)
+        if(x$n_group !=1) par(ask=ask)
         
     	# plot each interest rate curve seperately
     	for (k in seq(x$n_group)  ) 
