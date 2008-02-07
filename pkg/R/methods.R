@@ -105,7 +105,7 @@ plot.nelson <-
     if(ctype == "spread") {plot(x$spread,expoints=expoints,
     	xlim= c(max(floor(samplemat[1]),matrange[1]),
   						    min(ceiling(samplemat[2]),matrange[2])),lwd=lwd,
-  						    type=type,...) 
+  						    ...)
     						}
     # plot errors 
     if(errors %in% c("price", "yield")){
