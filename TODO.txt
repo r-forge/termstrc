@@ -177,15 +177,8 @@ besser
 * adapt implied forward rate function 
 -> done 
 
-* check and complete help files 
-
 * annotation upper axis - error plots 
 -> done
-
-* notation confidence intervals
-
-* wrong encoding in lm() outputs
-* par compatibility
 
 * change T in list output of splines objects into knot points
 -> done
@@ -196,4 +189,9 @@ besser
 * remove ^M
 -> done 
 
+* check and complete help files 
+* notation confidence intervals
+
+* wrong encoding in lm() outputs
+* par compatibility
 

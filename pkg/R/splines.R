@@ -88,7 +88,7 @@ splines_estim <-
   # k ... group index
   # sidx ... index for spline function  
   # independetn variable	
-  X <- mapply(function(k) mapply(function(sidx)  apply(cf[[k]]*mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]])),2,sum), 1:s[[k]] ),sgroup)
+  X <- mapply(function(k) mapply(function(sidx)  apply(cf[[k]]*mapply(function(j) gi(m[[k]][,j],T[[k]],sidx,s[[k]]),1:ncol(m[[k]])),2,sum), 1:s[[k]] ),sgroup,SIMPLIFY=FALSE)
 
   # perfom OLS regression 
   regout <- mapply(function(k) lm(-Y[[k]]~X[[k]]-1),sgroup,SIMPLIFY=FALSE) # parameter vector
