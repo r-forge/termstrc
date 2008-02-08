@@ -1,14 +1,58 @@
 \subsection{Nelson/Siegel}
 
+We load the package with the following command.
+
+
 \begin{Schunk}
 \begin{Sinput}
-> library(termstrc)
+> library("termstrc")
 \end{Sinput}
 \end{Schunk}
+
+In the next steps we load the dataset \proglang{govbonds} and explore its structure.
 
 \begin{Schunk}
 \begin{Sinput}
 > data(govbonds)
+> summary(govbonds)
+\end{Sinput}
+\begin{Soutput}
+        Length Class  Mode
+GERMANY 8      -none- list
+AUSTRIA 8      -none- list
+BELGIUM 8      -none- list
+FINLAND 8      -none- list
+FRANCE  8      -none- list
+SPAIN   8      -none- list
+\end{Soutput}
+\end{Schunk}
+
+It includes data for government bonds of eight European countries obtained from Thomson Financial Datastream. For each country the bonds are classified by their \emph{International Securities Identifying Number (ISIN)}, and all the necessary information on the future cash flows is given.
+
+\begin{Schunk}
+\begin{Sinput}
+> str(govbonds$GERMANY)
+\end{Sinput}
+\begin{Soutput}
+List of 8
+ $ ISIN        : chr [1:52] "DE0001141414" "DE0001137131" "DE0001141422" "DE0001137149" ...
+ $ MATURITYDATE:Class 'Date'  num [1:52] 13924 13952 13980 14043 14064 ...
+ $ ISSUEDATE   :Class 'Date'  num [1:52] 11913 13215 12153 13298 10411 ...
+ $ COUPONRATE  : num [1:52] 0.0425 0.0300 0.0300 0.0325 0.0413 ...
+ $ PRICE       : num [1:52] 100.0  99.9  99.8  99.8 100.1 ...
+ $ ACCRUED     : num [1:52] 4.09 2.66 2.43 2.07 2.39 ...
+ $ CASHFLOWS   :List of 3
+  ..$ ISIN: chr [1:384] "DE0001141414" "DE0001137131" "DE0001141422" "DE0001137149" ...
+  ..$ CF  : num [1:384] 104 103 103 103 104 ...
+  ..$ DATE:Class 'Date'  num [1:384] 13924 13952 13980 14043 14064 ...
+ $ TODAY       :Class 'Date'  num 13908
+\end{Soutput}
+\end{Schunk}
+
+Suppose, we want perform a zero-coupon yield curve estimation for several countries with the \cite{Nelson1987} method including duration weights and minimizing the price errors. The sample of bonds should be restricted to a maximum maturity of 30 years. 
+
+\begin{Schunk}
+\begin{Sinput}
 > group <- c("GERMANY", "FRANCE", "BELGIUM", "SPAIN")
 > bonddata <- govbonds
 > matrange <- c(0, 30)
@@ -19,14 +63,16 @@
 > b <- matrix(rep(c(0, 0, 0, 1), 4), nrow = 4, ncol = 4, byrow = TRUE)
 > rownames(b) <- group
 > colnames(b) <- c("beta0", "beta1", "beta2", "tau1")
+> x <- nelson_estim(group, bonddata, matrange, method, fit, weights, 
++     startparam = b, control)
 \end{Sinput}
 \end{Schunk}
 
+Now, let us have a look on the results.
+
 \begin{Schunk}
 \begin{Sinput}
-> x <- nelson_estim(group, bonddata, matrange, method, fit, weights, 
-+     startparam = b, control)
-> print(x)
+> x
 \end{Sinput}
 \begin{Soutput}
 ---------------------------------------------------
@@ -43,23 +89,10 @@ beta_0  0.05130485  0.05118613  0.052087336  0.052729208
 beta_1 -0.01268934 -0.01242461 -0.008902787  0.002793829
 beta_2 -0.03215030 -0.03036739 -0.036863081 -0.047882040
 tau_1   2.68940960  2.54290444  2.185687966  1.863315461
-
----------------------------------------------------
-Parameters for Nelson/Siegel, Svensson estimation:
-
-Method: Nelson/Siegel 
-Fitted: prices 
-Weights: duration 
-
----------------------------------------------------
-
-           GERMANY      FRANCE      BELGIUM        SPAIN
-beta_0  0.05130485  0.05118613  0.052087336  0.052729208
-beta_1 -0.01268934 -0.01242461 -0.008902787  0.002793829
-beta_2 -0.03215030 -0.03036739 -0.036863081 -0.047882040
-tau_1   2.68940960  2.54290444  2.185687966  1.863315461
 \end{Soutput}
 \end{Schunk}
+
+The summary methods gives more detailed information on the optimization results. A very important aspect is to check the convergence information.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -95,29 +128,30 @@ SPAIN   "relative convergence (4)"
 \end{Soutput}
 \end{Schunk}
 
-\begin{center}
-\begin{Schunk}
-\begin{Sinput}
-> plot(x, multiple = TRUE, errors = "none")
-\end{Sinput}
-\end{Schunk}
-\includegraphics{example-005}
-\end{center}
+
+%<<echo=FALSE>>=
+% pdf("fig_eurospotcurves.pdf", width=10, height=8)
+%plot(x,multiple=TRUE,errors="none")
+%dev.off()
+%@
+
+Our package offers several options to plot the results, e.g. spot rates, forwards rates, discount factors, spreads. Figure \ref{fig:spotcurves} shows the zero-coupon yield curves. The dashed lines show that the curve was extrapolated, which is possible with the \cite{Nelson1987} and \cite{Svensson1994} approach.
+
+\begin{figure}[htb]
+\centering
+\caption{Zero-coupon yield curves estimated with Nelson/Siegel}
+\label{fig:spotcurves}
+\includegraphics[width=0.8\textwidth]{fig_eurospotcurves}
+\end{figure}
+
 
 \subsection{Cubic Splines}
 
+In this section we want to demonstrate how to estimate the \cite{McCulloch1975} cubic splines for French governement bonds.
 \begin{Schunk}
 \begin{Sinput}
-> data(govbonds)
-> bonddata <- govbonds
-> matrange <- c(0, 30)
-\end{Sinput}
-\end{Schunk}
-
-\begin{Schunk}
-\begin{Sinput}
-> f <- splines_estim(group = c("FRANCE"), bonddata, matrange)
-> print(f)
+> y <- splines_estim(c("FRANCE"), govbonds, c(0, 30))
+> print(y)
 \end{Sinput}
 \begin{Soutput}
 ---------------------------------------------------
@@ -130,9 +164,12 @@ Parameters for Cubic splines estimation:
  0.0014693772 -0.0408879155 
 \end{Soutput}
 \end{Schunk}
+
+The summary method shows details from the OLS estimation of the parameters and the goodness of fit.
+
 \begin{Schunk}
 \begin{Sinput}
-> summary(f)
+> summary(y)
 \end{Sinput}
 \begin{Soutput}
 ---------------------------------------------------
@@ -176,36 +213,56 @@ F-statistic: 3.211e+05 on 7 and 36 DF,  p-value: < 2.2e-16
 \end{Soutput}
 \end{Schunk}
 
-\begin{center}
+% <<echo=FALSE>>=
+% pdf("fig_frenchspotcurve.pdf", width=8, height=6)
+% plot(y,errors="none")
+% dev.off()
+% @
+
+Fig. \ref{fig:frenchspotcurve} shows the yield-to-maturities and the estimated cubic spline together with the automatically selected knot points.
+
+\begin{figure}[htb]
+\centering
+\caption{Zero-coupon yield curve for French government bonds estimated with cubic splines}
+\label{fig:frenchspotcurve}
+\includegraphics[width=0.8\textwidth]{fig_frenchspotcurve}
+\end{figure}
+
+% \begin{figure}[htb]
+% \caption{Pricing errors for French government bonds}  
+% \begin{center}
+% <<fig=TRUE, echo=FALSE>>=
+% plot(y,ctype="none", inset=c(0.2, 0.4))
+% @
+% \end{center}
+% \end{figure}
+
+%<<echo=FALSE, fig=FALSE>>=
+%pdf("fig_pricingerrors.pdf", width=12, height=8)
+%plot(y,ctype="none")
+%dev.off()
+%@
+
+We can see the pricing errors of our estimation in Fig. \ref{fig:pricingerrors}. There seems to be a misspricing of two bonds, which we will remove and redo the estimation.
+
+\begin{figure}[htb]
+\centering  
+\caption{Pricing errors for French government bonds} 
+\label{fig:pricingerrors}
+\includegraphics[width=0.8\textwidth]{fig_pricingerrors}
+\end{figure}
+
+The result is as expected a better goodness of fit.
+
 \begin{Schunk}
 \begin{Sinput}
-> plot(f, errors = "none")
+> z <- splines_estim(c("FRANCE"), rm_bond(bonddata, c("FR0000571044", 
++     "FR0000571085"), "FRANCE"), c(0, 30))
 \end{Sinput}
 \end{Schunk}
-\includegraphics{example-009}
-\end{center}
-
-
-
-\begin{center}
 \begin{Schunk}
 \begin{Sinput}
-> plot(f, ctype = "none", inset = c(0.2, 0.4))
-\end{Sinput}
-\end{Schunk}
-\includegraphics{example-010}
-\end{center}
-
-
-\begin{Schunk}
-\begin{Sinput}
-> e <- splines_estim(group = c("FRANCE"), bonddata = rm_bond(bonddata, 
-+     c("FR0000571044", "FR0000571085"), "FRANCE"), matrange)
-\end{Sinput}
-\end{Schunk}
-\begin{Schunk}
-\begin{Sinput}
-> summary(e)
+> summary(z)
 \end{Sinput}
 \begin{Soutput}
 ---------------------------------------------------
@@ -247,3 +304,30 @@ Multiple R-Squared:     1,	Adjusted R-squared:     1
 F-statistic: 2.856e+06 on 6 and 35 DF,  p-value: < 2.2e-16 
 \end{Soutput}
 \end{Schunk}
+
+\clearpage
+\subsection{Dynamic estimation}
+
+In the following, we provide results for a dynamic estimation of the term strucuture for the time between November 30, 2007 and February 1, 2008. We used the \cite{Svensson1994} method, together with duration weights and minimization of the price errors.
+
+\begin{figure}[htb]
+  \begin{center}
+  \caption{Zero-coupon yield curve in France}
+  \label{fig:3dplot}
+\includegraphics[width=0.8\textwidth]{3dplot}
+\end{center}
+\end{figure}
+
+Fig. \ref{fig:paramdevel} shows how the parameters evolve over time.
+
+\begin{figure}[htb]
+  \begin{center}
+  \caption{Estimated parameters}
+\includegraphics[width=0.8\textwidth]{paramdevel}
+\label{fig:paramdevel}
+\end{center}
+\end{figure}
+
+
+
+
