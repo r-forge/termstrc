@@ -45,7 +45,7 @@ Now, let us have a look on the results.
 x
 @
 
-The summary methods gives more detailed information on the optimization results. A very important aspect is to check the convergence information.
+The summary method gives goodness of fit measures for the price and the yield errors. Moreover, it shows the convergence information from the solver, to check wether a solution to the nonlinear optimization problem has been found.
 
 <<>>=
 summary(x)
@@ -76,7 +76,7 @@ y <- splines_estim(c("FRANCE"), govbonds, c(0,30))
 print(y)
 @
 
-The summary method shows details from the OLS estimation of the parameters and the goodness of fit.
+The summary method shows details from the OLS estimation of the parameters and the goodness of fit measures.
 
 <<>>=
 summary(y)
@@ -130,28 +130,6 @@ z <- splines_estim(c("FRANCE"), rm_bond(bonddata,c("FR0000571044","FR0000571085"
 summary(z)
 @
 
-\clearpage
-\subsection{Dynamic estimation}
-
-In the following, we provide results for a dynamic estimation of the term strucuture for the time between November 30, 2007 and February 1, 2008. We used the \cite{Svensson1994} method, together with duration weights and minimization of the price errors.
-
-\begin{figure}[htb]
-  \begin{center}
-  \caption{Zero-coupon yield curve in France}
-  \label{fig:3dplot}
-\includegraphics[width=0.8\textwidth]{3dplot}
-\end{center}
-\end{figure}
-
-Fig. \ref{fig:paramdevel} shows how the parameters evolve over time.
-
-\begin{figure}[htb]
-  \begin{center}
-  \caption{Estimated parameters}
-\includegraphics[width=0.8\textwidth]{paramdevel}
-\label{fig:paramdevel}
-\end{center}
-\end{figure}
 
 
 

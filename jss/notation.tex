@@ -123,7 +123,7 @@ Whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$:
 \subsection{Estimation procedure}
 \label{sec:estimation}
 
-Indirect estimation procedures postulate a specific form for the spot rate function $s(m_t, \bm{b})$ or the discount function $\delta(m_t, \bm{b})$, where $\bm{b}$ is a vector of parameters \citep[see, e.g.][]{Martellini2003}. This allows us to construct a discount matrix. The theoretical bond prices are then defined as sums of the discounted cash flows of each bond.
+The simplest smoothing technique is linear interpolation. In many cases it is not appropriate for zero-coupon yield curve estimation, because it can lead to spikes in the forward rate curve, which is a problem from an economic point of view. Therefore, we use indirect estimation procedures that postulate a specific form for the spot rate function $s(m_t, \bm{b})$ or the discount function $\delta(m_t, \bm{b})$, where $\bm{b}$ is a vector of parameters \citep[see, e.g.][]{Martellini2003}. This allows us to construct a discount matrix. The theoretical bond prices are then defined as sums of the discounted cash flows of each bond.
 
 \begin{equation}
   \label{eq:theorprices}
@@ -133,18 +133,18 @@ Indirect estimation procedures postulate a specific form for the spot rate funct
 
 
 The \emph{pricing errors}
-\begin{equation}
+\begin{equation*}
   \label{eq:pricingerrors}
-  \bm{\epsilon} = \bm{p-\hat{p}}
-\end{equation}
+  \bm{\epsilon}_p = \bm{p-\hat{p}}
+\end{equation*}
 
 are the deviation of the theoretical prices from the dirty prices observed on the market. Analogously, the we could define the \emph{yield errors}.
 
 
-\begin{equation}
+\begin{equation*}
   \label{eq:yielderrors}
-  \bm{\epsilon} = \bm{y-\hat{y}}
-\end{equation}
+  \bm{\epsilon}_y = \bm{y-\hat{y}}
+\end{equation*}
 
 
 The errors satisfy
@@ -166,20 +166,21 @@ The goal is to minimize the weighted squared errors.
 
 The goodness of fit can be measured for example with the \emph{root mean squared error}
 
-\begin{equation}
+\begin{equation*}
   \label{eq:rmse}
   \mbox{RMSE}=\sqrt{\frac{1}{m}\bm{\iota}'\epsilon^2}
-\end{equation}
-and the \emph{mean absolute error}
+\end{equation*}
 
-\begin{equation}
+or the \emph{mean absolute error}
+
+\begin{equation*}
   \label{eq:mae}
   \mbox{MAE}=\frac{1}{m}\bm{\iota}'|\bm{\epsilon}|\quad.
-\end{equation}
+\end{equation*}
 
-The simplest smoothing technique is linear interpolation. In many cases it is not appropriate for zero-coupon yield curve estimation, because it can lead to spikes in the forward rate curve, which is a problem from an economic point of view.
 
-The next two sections present two popular ways to specify a form for the spot rate or the discount function and solve the optimization problem in \eqref{eq:optimalparam}.
+
+The next two sections present popular ways to specify a form for the spot rate or the discount function and solve the optimization problem in \eqref{eq:optimalparam}.
 
 
 %%% Local Variables: 

@@ -1,13 +1,34 @@
-\newpage
 \section{Practical application}
 \label{sec:pract-appl}
+
+\includegraphics[width=0.3in]{baustelle} better introduction
 
 The goverment debt market is the usual data source if we want to estimate a zero-coupon yield curve for a country. Government bonds are usually the most liquid, and can be considered default-free, provided the issuing country has a good rating. We demonstrate the usage of our package with a dataset of European government bonds. Of course, a zero-coupon yield curve can also be estimated for coporate bonds. In that case, it would is interesting to compare the curve to a risk-free one and calculate the spread.
 
 
 \input{example.tex}
 
+\subsection{Dynamic estimation}
 
+In the following, we provide results for a dynamic estimation of the zero-coupon yield curve for the time between November 30, 2007 and February 1, 2008. We used the \cite{Svensson1994} method, together with duration weights and minimization of the price errors. Fig. \ref{fig:3dplot} shows how the estimated French yield curves.
+
+\begin{figure}[htb]
+  \begin{center}
+  \caption{Zero-coupon yield curves in France}
+  \label{fig:3dplot}
+\includegraphics[width=0.7\textwidth]{3dplot}
+\end{center}
+\end{figure}
+
+Fig. \ref{fig:paramdevel} shows how the parameters evolve over time. To speed up the estimation and ensure the algorithm stays in a global minimum, the estimated parameters from the previous period were used as start parameters for the next one.
+
+\begin{figure}[htb]
+  \begin{center}
+  \caption{Estimated parameters}
+\includegraphics[width=0.8\textwidth]{paramdevel}
+\label{fig:paramdevel}
+\end{center}
+\end{figure}
 
 
 
