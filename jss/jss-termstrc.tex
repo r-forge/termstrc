@@ -34,7 +34,7 @@
 
 %% an abstract and keywords
 \Abstract{
-Zero-coupon yield curves and credit spread curves are important inputs for various financial models, e.g. pricing of securities, risk management, monetary policy issues. Since zero-coupon rates are rarely directly observable, they have to be estimated from market data, e.g. of existing coupon bonds. The literature broadly distinguishes between parametric and spline-based estimation methods for the zero-coupon yield curve. Our package consists of several widely-used approaches, i.e. the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension, and the \cite{McCulloch1975} cubic splines approach. Moreover, we implement the traditional way of credit spread calculation, where individually estimated zero-coupon yield curves are substracted from a risk-free reference curve. Goodness-of-fit tests are provided to compare the results of the different estimation methods. We illustrate the usage of our functions by practical examples with market data from European government bonds.
+Zero-coupon yield curves and credit spread curves are important inputs for various financial models, e.g. pricing of securities, risk management, monetary policy issues. Since zero-coupon rates are rarely directly observable, they have to be estimated from market data, e.g. of existing coupon bonds. The literature broadly distinguishes between parametric and spline-based estimation methods for the zero-coupon yield curve. Our package consists of several widely-used approaches, i.e. the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension, and the \cite{McCulloch1975} cubic splines approach. Extensive summaries and plots are provided to compare the results of the different estimation methods. We illustrate the usage of our functions by practical examples with market data from European government bonds.
 }
 \Keywords{fixed income, term structure estimation, credit spreads, \proglang{R}}
 \Plainkeywords{fixed income, term structure estimation, credit spreads, R} %% without formatting
@@ -88,7 +88,7 @@ Zero-coupon yield curves and credit spread curves are important inputs for vario
 \input{nelson.tex}
 \input{splines.tex}
 \input{application.tex}
-\input{discussion.tex}
+%\input{discussion.tex}
 \input{conclusion.tex}
 
 %\nocite{*}
@@ -98,7 +98,6 @@ Zero-coupon yield curves and credit spread curves are important inputs for vario
 \bibliography{termstrc}
 
 \end{document}
-
 
 
 %%% Local Variables: 

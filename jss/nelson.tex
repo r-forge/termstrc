@@ -1,6 +1,8 @@
 \section{Nelson/Siegel and Svensson method}
 \label{sec:nels-svenss-meth}
 
+\includegraphics[width=0.3in]{baustelle} longer introduction
+
 \cite{Nelson1987} propose a parsimonious  model of  the instantaneous forward rate as a solution to a second-order differential equation for the case of equal roots.
 
 \begin{equation}
@@ -22,6 +24,7 @@ The spot rate is the average of the instantaneous forward rates.
    s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right)
 \end{equation}
 
+\includegraphics[width=0.3in]{baustelle} better figure
 \input{curveshape.tex}
  
 \cite{Svensson1994} extension
@@ -57,6 +60,8 @@ where $s(m_{ij},b)$ is the Nelson/Siegel or Svensson spot rate function defined 
 We optimize the objective function in \eqref{eq:optimalparam}. The above specification of the discount function leads to nonlinear optimization. Good starting values for the parameter vector are important to find a global minimum. Instead of the pricing errors, it is common to minimize the yield errors. Calculating the yield-to-maturities of the theoretical bond prices is easy to solve numerically, because \eqref{eq:yield} has only one real root. The difference to the minimization of the pricing errors is $\dots$.
 
 When minimizing the unweighted price errors, bonds with a longer maturity get a higher weighting, because they are more sensitive to changes in prices, which leads to a less accurate fit at the short end. Solutions to this heteroskedasticity problem are to use weights for the price errors, or to minimize the yield errors. A possible specification for the weights is based on the inverse of the duration as in \eqref{eq:durationweight}.
+
+\includegraphics[width=0.3in]{baustelle} describe heteroskedasticity problem of estimation with unweighted price errors
 
 %%% Local Variables: 
 %%% mode: latex

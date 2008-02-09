@@ -92,7 +92,7 @@ tau_1   2.68940960  2.54290444  2.185687966  1.863315461
 \end{Soutput}
 \end{Schunk}
 
-The summary methods gives more detailed information on the optimization results. A very important aspect is to check the convergence information.
+The summary method gives goodness of fit measures for the price and the yield errors. Moreover, it shows the convergence information from the solver, to check wether a solution to the nonlinear optimization problem has been found.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -165,7 +165,7 @@ Parameters for Cubic splines estimation:
 \end{Soutput}
 \end{Schunk}
 
-The summary method shows details from the OLS estimation of the parameters and the goodness of fit.
+The summary method shows details from the OLS estimation of the parameters and the goodness of fit measures.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -305,28 +305,6 @@ F-statistic: 2.856e+06 on 6 and 35 DF,  p-value: < 2.2e-16
 \end{Soutput}
 \end{Schunk}
 
-\clearpage
-\subsection{Dynamic estimation}
-
-In the following, we provide results for a dynamic estimation of the term strucuture for the time between November 30, 2007 and February 1, 2008. We used the \cite{Svensson1994} method, together with duration weights and minimization of the price errors.
-
-\begin{figure}[htb]
-  \begin{center}
-  \caption{Zero-coupon yield curve in France}
-  \label{fig:3dplot}
-\includegraphics[width=0.8\textwidth]{3dplot}
-\end{center}
-\end{figure}
-
-Fig. \ref{fig:paramdevel} shows how the parameters evolve over time.
-
-\begin{figure}[htb]
-  \begin{center}
-  \caption{Estimated parameters}
-\includegraphics[width=0.8\textwidth]{paramdevel}
-\label{fig:paramdevel}
-\end{center}
-\end{figure}
 
 
 

@@ -2,6 +2,8 @@
 \section{Cubic splines}
 \label{sec:cubic-splines}
 
+\includegraphics[width=0.3in]{baustelle} longer introduction
+
 \cite{McCulloch1971, McCulloch1975} use the following definition of the discount function.
 
 \begin{equation}
@@ -109,48 +111,45 @@ where $g_{i,j}^l=g^l(m_{i,j})$.
 
 \subsection{Regression fitting of the discount function}
 
-The dirty prices are expressend as sum of the discounted cashflows plus an idiosyncratic error.
+The dirty prices are again expressend as sum of the discounted cashflows plus an idiosyncratic error.
 
 \begin{equation}
   \label{eq:fairpricespline}
-  \bm{p}_{\left[1\times m\right]}= \bm{\iota}_{\left[1\times n\right]}\left(\bm{C}_{\left[n\times m\right]}\cdot\bm{D}_{\left[n\times m\right]}\right)+ \bm{\epsilon}_{\left[1\times m\right]}
+  \bm{p}= \bm{\iota}'\left(\bm{C}\cdot\bm{D}\right)+ \bm{\epsilon}
 \end{equation}
 
-The discount factor matrix is expressed as weighted sum of the $l=1\dots k$ basis functions.
+The discount factor matrix is defined as weighted sum of the $l=1\dots k$ basis functions.
 
 \begin{equation}
   \label{eq:dfmatrixspline}
-   \bm{D}_{\left[n\times m\right]}=1+\beta_1\bm{G}^1+\cdots + \beta_k\bm{G}^k
+   \bm{D}=1+\beta_1\bm{G}^1+\cdots + \beta_k\bm{G}^k
 \end{equation}
 
 We substitute \eqref{eq:dfmatrixspline} in \eqref{eq:fairpricespline} and get an expression which is linear in the parameter vector $\bm{\beta}=(\beta^1,\dots,\beta^k)$.
 
 \begin{eqnarray}
   \label{eq:splineparam}
-  \bm{p} &=& \bm{\iota}\left(\bm{C}\cdot\left(1+\beta^1\bm{G}^1+\cdots+\beta^k\bm{G}^k\right)\right)+\bm{\epsilon}\\
-  \bm{p} &=& \bm{\iota}\left(\bm{C}+\bm{C}\cdot\left(\beta^1\bm{G}^1+\cdots+\beta^k\bm{G}^k\right)\right)+\bm{\epsilon}\\
-  \bm{p} &=& \bm{\iota}\bm{C}+\bm{\iota}\bm{C}\cdot\left(\beta^1\bm{G}^1+\cdots+\beta^k\bm{G}^k\right)+\bm{\epsilon}\\
-  \bm{p}- \bm{\iota}\bm{C} &=& \beta^1\bm{\iota}\bm{C}\cdot\bm{G}^1+\cdots+\beta^k\bm{\iota}\bm{C}\cdot\bm{G}^k+\bm{\epsilon}
+  \bm{p} &=& \bm{\iota}'\left(\bm{C}\cdot\left(1+\beta^1\bm{G}^1+\cdots+\beta^k\bm{G}^k\right)\right)+\bm{\epsilon}\\
+  \bm{p} &=& \bm{\iota}'\left(\bm{C}+\bm{C}\cdot\left(\beta^1\bm{G}^1+\cdots+\beta^k\bm{G}^k\right)\right)+\bm{\epsilon}\\
+  \bm{p} &=& \bm{\iota}'\bm{C}+\bm{\iota}'\bm{C}\cdot\left(\beta^1\bm{G}^1+\cdots+\beta^k\bm{G}^k\right)+\bm{\epsilon}\\
+  \bm{p}- \bm{\iota}\bm{C} &=& \beta^1\bm{\iota}'\bm{C}\cdot\bm{G}^1+\cdots+\beta^k\bm{\iota}'\bm{C}\cdot\bm{G}^k+\bm{\epsilon}
 \end{eqnarray}
 
 
 
-	$$\bm{X}_{\left[m \times k\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \bm{\iota}\bm{C}\cdot\bm{G}^l\right)^\top$$
+	$$\bm{X}_{\left[m \times k\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \bm{\iota}\bm{C}\cdot\bm{G}^l\right)'$$
 
 
-	$$\bm{y}_{\left[m \times 1\right]}= \left(\bm{p}-\bm{\iota}\bm{C}\right)^\top   $$
+	$$\bm{z}_{\left[m \times 1\right]}= \left(\bm{p}-\bm{\iota}'\bm{C}\right)'   $$
         \begin{equation}
           \label{eq:splinereg}
-            \bm{y}=\bm{X}\bm{\beta}+\bm{\epsilon}
+            \bm{z}=\bm{X}\bm{\beta}+\bm{\epsilon}
         \end{equation}
         
        
 
-% 	$$\bm{X}_{\left[m \times k\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \bm{\iota}_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]} \cdot \bm{G}^l_{\left[n\times m\right]}\right)^\top$$
 
-% 	$$\bm{y}_{\left[m \times 1\right]}= \left(\bm{p}_{\left[1\times m\right]}  - \bm{\iota}_{\left[1\times n\right]} \bm{C}_{\left[n\times m\right]}\right)^\top   $$
-
-Whereas $(\cdot)$ denotes again a element by element multiplication and $( )^{\top}$ the transposed matrix (vector).
+Whereas $(\cdot)$ denotes again a element by element multiplication and $( )'$ the transposed matrix (vector).
 
 
 
@@ -158,12 +157,11 @@ Parameter estimation with OLS.
 	
 \begin{equation}
 \label{eq:paramspline}
-\bm{\hat \beta}_{\left[k \times 1\right]}= \left( \bm{X}^\top   \bm{X}\right )^{-1}\bm{X}^\top \bm{y}
+\bm{\hat \beta}_{\left[k \times 1\right]}= \left( \bm{X}' \bm{X}\right )^{-1}\bm{X}' \bm{z}
 \end{equation}
 
-\textcolor{red}{Can OLS estimators be infeasible due to large amount of zeros in $\bm{X}$?}
 
-The estimated parameters can be used to calculate the discount function in \eqref{eq:df_spline} for any given maturity $m$ between the first and the last knot point, which can then be converted to zero-coupon yields.
+The estimated parameters can be used to calculate the discount function in \eqref{eq:df_spline} for any given maturity $m$ between the first and the last knot point, which can then be converted to the spot rate function.
 
 
 
@@ -173,17 +171,21 @@ The estimated parameters can be used to calculate the discount function in \eqre
 \end{equation}
 
 
-\subsection{Confidence Intervals}
+\subsection{Confidence Intervals}\includegraphics[width=0.3in]{baustelle} derive prediction interval
+
+
+
+\cite{McCulloch1975} plots error bands above and below one standard error of the best estimate. We want to give a confidence intervall for the predicted discount function.
 
 \begin{equation}
   \label{eq:yhat}
-  \bm{\hat{y}}=\bm{X}\bm{\hat{\beta}}
+  \bm{\hat{z}}=\bm{X}\bm{\hat{\beta}}
 \end{equation}
 
 
 \begin{equation}
   \label{eq:predint}
- \mbox{P}\left[\bm{\hat{y}}\pm t_{\alpha/2}\cdot \se(\bm{\hat{y}-y})\right]=0.95
+ \mbox{P}\left[\bm{\hat{z}}\pm t_{\alpha/2}\cdot \se(\bm{\hat{z}-z})\right]=0.95
 \end{equation}
 
 
@@ -211,7 +213,7 @@ If the elements of $\bm{\epsilon}$ are independently identically distributed wit
  \bm{b}\sim N\left[\bm{\hat \beta},\frac{\sigma^2}{n}\bm{Q}^{-1}\right]
 \end{equation}
 
-Whereas $\frac{1}{n}\bm{Q}^{-1}$ is estimated with $\left(\bm{X}^\top\bm{X}\right)^{-1}$ and $\sigma^2$ with $\bm{\frac{e^\top e}{(n-K)}}$.
+Whereas $\frac{1}{n}\bm{Q}^{-1}$ is estimated with $\left(\bm{X}^\top\bm{X}\right)^{-1}$ and $\sigma^2$ with $\bm{\frac{e^\top e}{(n-K)}}$, \citep[see][p. 69]{Greene2002}.
 
 Assuming a multivariate normal distribution for $\bm{b}$ the discount fuction is also normally distributed
 
@@ -220,12 +222,11 @@ Assuming a multivariate normal distribution for $\bm{b}$ the discount fuction is
   \label{eq:ddistr}
   d(m_{i,j}) \sim N\left[1+\bm{g}^\top\bm{\hat\beta},\bm{g}^\top\left[\sigma^2(\bm{X^\top X})^{-1} \right]\bm{g} \right]
 \end{equation} 
-\textcolor{red}{Always write $d(m_{i,j},\bm{\beta})$ ?}
 
 From an economic point of view only positive interest rates make sense. Therefore, all discount factors for which a cashflow occurs are nonnegative, $d(m_{i,j})>0 \qquad  \forall m_{i,j}> 0$. \textcolor{red}{Explain this more in detail in section \ref{sec:notation}.}
 
 
-\cite{McCulloch1975} plots error bands above and below one standard error of the best estimate. A confidence interval that would have been constructed the usual way, could get to the negative. Negative discount factors can not be transformed to spot rates with \eqref{eq:transformdf}. Therefore a we suggest to use the truncated normal distribution for the construction of the confidence interval of the discount function $d(m_{i,j})$.
+A confidence interval that would have been constructed the usual way, could get to the negative. Negative discount factors can not be transformed to spot rates with \eqref{eq:transformdf}.
 
 
 \textcolor{red}{
@@ -237,12 +238,6 @@ From an economic point of view only positive interest rates make sense. Therefor
 The piecewise function is twice-differentable at each knot point, which results in a smooth curve.
 
 
-\begin{itemize}
-\item parametric cubic splines \cite{McCulloch1971, McCulloch1975}
-\item non-parametric splines \cite{Adams1994,Fisher1995, Waggoner1997, Tanggaard1997, Shea1985}
-\item \cite{Shea1985} mentions unstable fluctuating forward rates in \cite{McCulloch1975} cubic splines
-
-\end{itemize}
 
 
 

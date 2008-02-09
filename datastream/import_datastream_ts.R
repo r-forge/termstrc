@@ -69,23 +69,25 @@ datafiles = c("france S.csv", "france AC.csv", "france CP.csv")
 govbondsts <- importdatastream(datafiles)
 
 x <- list()
-for (i in 1:length(govbondsts)){
+N <- length(govbondsts)
+
+for (i in 1:N){
 govbonds <- list()
 govbonds$FRANCE <- govbondsts[[i]]
 
 group <- c("FRANCE")
-bonddata <- govbonds
-matrange <- c(1,20)
-method <- "Nelson/Siegel"
+bonddata <- rm_bond(govbonds,c("FR0000571044","FR0000571085","FR0000570780","FR0107369672","FR0106589437","FR0108354806","FR0109970386"), group)
+matrange <- c(0,20)
+method <- "Svensson"
 fit <- "prices"
 weights <- "duration"
-control <- list(eval.max=100000, iter.max=500)
+control <- list(eval.max=100000, iter.max=2000)
 
-if(i>1) b <- matrix(x[[i-1]]$opt_result$FRANCE$par,nrow=1,ncol=4,byrow=TRUE) else b <- matrix(c(0.1,0.1,0.1, 1),nrow=1,ncol=4,byrow=TRUE)
+if(i>1) b <- matrix(x[[i-1]]$opt_result$FRANCE$par,nrow=1,ncol=6,byrow=TRUE) else b <- matrix(c(0.04835332, -0.008060085, 0.3879382, 2.322683, -0.4039001, 2.353533),nrow=1,ncol=6,byrow=TRUE)
 
 			
 rownames(b) <- group
-colnames(b) <- c("beta0","beta1","beta2","tau1")
+colnames(b) <- c("beta0","beta1","beta2","tau1","beta3","tau2")
 
 x[[i]] <- nelson_estim(group, bonddata, matrange, 
                   method, fit, weights, startparam=b,control)
@@ -98,32 +100,40 @@ for (i in 2:length(govbondsts)){
 
 
 
-pdf("paramdevel.pdf",width=12, height=10)
-par(mfrow = c(2,2))
-plot(opt_result[,1],type="l",ylab="beta_0", col=1, lwd=2)
+pdf("paramdevel.pdf",width=8, height=6)
+par(mfrow = c(2,3))
+plot(opt_result[,1],type="l",xlab="Time", ylab=expression(beta[0]), col=1, lwd=2)
 grid()
-plot(opt_result[,2],type="l",ylab="beta_1", col=2, lwd=2)
+plot(opt_result[,2],type="l",xlab="Time",ylab=expression(beta[1]), col=2, lwd=2)
 grid()
-plot(opt_result[,3],type="l",ylab="beta_2", col=3, lwd=2)
+plot(opt_result[,3],type="l",xlab="Time",ylab=expression(beta[2]), col=3, lwd=2)
 grid()
-plot(opt_result[,4],type="l",ylab="tau_1", col=4, lwd=2)
+plot(opt_result[,4],type="l",xlab="Time",ylab=expression(tau[1]), col=4, lwd=2)
+grid()
+plot(opt_result[,5],type="l",xlab="Time",ylab=expression(beta[3]), col=5, lwd=2)
+grid()
+plot(opt_result[,6],type="l",xlab="Time",ylab=expression(tau[2]), col=6, lwd=2)
 grid()
 dev.off()
 
-plot(seq(0,20,0.01), spotrates(method="Nelson/Siegel",opt_result[1,],seq(0,20,0.01)),type="l",ylim=c(0.03,0.07))
+## plot(seq(0,20,0.01), spotrates(method="Nelson/Siegel",opt_result[1,],seq(0,20,0.01)),type="l",ylim=c(0.03,0.07))
 
-for (i in 2:nrow(opt_result)){
-lines(seq(0,20,0.01), spotrates(method="Nelson/Siegel",opt_result[i,],seq(0,20,0.01)))
-  }
+## for (i in 2:nrow(opt_result)){
+## lines(seq(0,20,0.01), spotrates(method="Nelson/Siegel",opt_result[i,],seq(0,20,0.01)))
+##   }
 
-X <- seq(1.5,30,0.1)
+X <- seq(0,20,0.1)
 Y <- seq(nrow(opt_result))
-Z <- matrix(spotrates(method="Nelson/Siegel",opt_result[1,],X),nrow=1)
+Z <- matrix(spotrates(method="Svensson",opt_result[1,],X),nrow=1)
 for (i in 2:nrow(opt_result)) {
-  Z <- rbind(Z, spotrates(method="Nelson/Siegel",opt_result[i,],X))}
+  Z <- rbind(Z, spotrates(method="Svensson",opt_result[i,],X))}
 
 pdf("3dplot.pdf",width=12, height=10)
 persp(X,Y,t(Z),theta = -35, phi = 30, expand = 0.6, col = "lightgreen",
            ltheta = 120, shade = 0.55, ticktype = "detailed",xlab="Maturity",zlab="Zero-coupon yields",ylab="Time",box=TRUE,border=NA)
 dev.off()
 
+solvermessage <- x[[1]]$opt_result$FRANCE$message
+for (i in 2:length(govbondsts)){
+solvermessage <- rbind(solvermessage,x[[1]]$opt_result$FRANCE$message)
+}
