@@ -2,110 +2,109 @@
 \section{Cubic splines}
 \label{sec:cubic-splines}
 
-\includegraphics[width=0.3in]{baustelle} longer introduction
-
 \cite{McCulloch1971, McCulloch1975} use the following definition of the discount function.
 
 \begin{equation}
   \label{eq:df_spline}
-  d(m_{i,j},\bm{\beta})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
+  \delta(m_{ij},\bm{\beta})=1+\sum_{l=1}^k\beta^lg^l(m_{ij})
 \end{equation}
 
-It is a function of time to maturity and the parameter vector must be estimated.
+It is a linear combination of functions satisfying $g^l(0)=0$, and the unknown parameter vector $\bm{\beta}$ will be estimated with ordinary least squares.
 
 \subsection{Knot point selection}
 
 \cite{McCulloch1975} defines a $k$-parameter spline with $k-1$ knot points $q_l$. We sort the cashflow matrix $\bm{C}$ and the maturity matrix $\bm{M}$ such that the $m$ bonds are arranged in ascending order by their maturity dates. The following specification places an approximately equal number of bonds between adjacent knots. It sets $q_1=0$ and $q_{k-1}=m_m$. $m_j$ is the maturity date of the $j$-th bond. For $1<l<k-1$ we find the further knot points.
 
-\begin{equation}
+\begin{equation*}
   \label{eq:A.1a}
   q_l = m_h+\theta(m_{h+1}-m_h)
-\end{equation}
+\end{equation*}
 
 where
 
-\begin{equation}
+\begin{equation*}
  \label{eq:A.1b}
   h = \mbox{greates integer in }\frac{(l-1)m}{k-2}
-\end{equation}
+\end{equation*}
 
 and
 
-\begin{equation}
+\begin{equation*}
   \label{eq:A.1c}
   \theta = \frac{(l-1)m}{k-2}-h.
-\end{equation}
+\end{equation*}
 
 \cite{McCulloch1971} sets the  number of basis functions $k$ to the integer nearest to the square root of the number of observed bonds. This allows a smooth fit of the discount function.
 
-\begin{equation}
+\begin{equation*}
   \label{eq:nofknots}
   k = \mbox{INT}\left[\sqrt{m}\right]
-\end{equation}
+\end{equation*}
 
 
-allgemeiner Satz über Funktionen ....
+\subsection{Basis functions for cubic splines}
+
 In order to generate the family of cubic splines relative to these knots, we define for $m_{ij}<q_{l-1}$
 
-\begin{equation}
+\begin{equation*}
   \label{eq:A.2}
-  g^l(m_{i,j})=0.
-\end{equation}
+  g^l(m_{ij})=0.
+\end{equation*}
 
 
 For $q_{l-1}\leq m_{ij} <q_l$, we define
 
-\begin{equation}
+\begin{equation*}
   \label{eq:A.3}
-  g^l(m_{i,j})=\frac{(m_{ij}-q_{l-1})^3}{6(q_l-q_{l-1})}
-\end{equation}
+  g^l(m_{ij})=\frac{(m_{ij}-q_{l-1})^3}{6(q_l-q_{l-1})}
+\end{equation*}
 
 When $q_l\leq m_{ij}< q_{l+1}$, we define
 
-\begin{equation}
+\begin{equation*}
   \label{eq:A.4a}
-  g^l(m_{i,j}) = \frac{c^2}{6}+\frac{ce}{2}+\frac{e^2}{2}-\frac{e^3}{6(q_{l+1}-q_l)}
-\end{equation}
+  g^l(m_{ij}) = \frac{c^2}{6}+\frac{ce}{2}+\frac{e^2}{2}-\frac{e^3}{6(q_{l+1}-q_l)}
+\end{equation*}
 
 where
 
-\begin{equation}
+\begin{equation*}
   \label{eq:A.4b}
   c = q_l-q_{l-1}
-\end{equation}
+\end{equation*}
 
 and $e$ is the 
 
-\begin{equation}
+\begin{equation*}
   \label{eq:A.4c}
   e = m_{ij}-q_l
-\end{equation}
+\end{equation*}
 
 For $q_{l+1}\leq m_{ij}$, define
 
-\begin{equation}
+\begin{equation*}
   \label{eq:A.5}
-  g^l(m_{i,j}) = (q_{l+1}-q_{l-1})\left[\frac{2q_{l+1}-q_l-q_{l-1}}{6}+\frac{m_{ij}-q_{l+1}}{2}\right]
-\end{equation}
+  g^l(m_{ij}) = (q_{l+1}-q_{l-1})\left[\frac{2q_{l+1}-q_l-q_{l-1}}{6}+\frac{m_{ij}-q_{l+1}}{2}\right]
+\end{equation*}
 
 (Set $q_{l-1}=q_l=0$ when $l=1$.)
 
 The above formulas apply when $l<k$. When $l=k$, we define
 
-\begin{equation}
+\begin{equation*}
   \label{eq:A.6}
- g^l(m_{i,j})= m_{ij},
-\end{equation}
+ g^l(m_{ij})= m_{ij},
+\end{equation*}
 
 regardless of $m_{ij}$.
 
-The basis functions in equations \eqref{eq:A.2}-\eqref{eq:A.6} are calulated for the maturities of each cashflow $m_{i,j}$ and summarized in the matrix
+The above defined basis functions are calulated for the maturities of each cashflow $m_{i,j}$ and summarized in the matrix
 
 \begin{equation}
 \label{eq:basisfctmatrix}	
 \bm{G}_{\left [n \times m\right]}^l= \{g_{ij}^l\}.
 \end{equation}
-where $g_{i,j}^l=g^l(m_{i,j})$.
+where $g_{ij}^l=g^l(m_{ij})$.
 
 
 
@@ -127,16 +126,16 @@ The discount factor matrix is defined as weighted sum of the $l=1\dots k$ basis 
 
 We substitute \eqref{eq:dfmatrixspline} in \eqref{eq:fairpricespline} and get an expression which is linear in the parameter vector $\bm{\beta}=(\beta^1,\dots,\beta^k)$.
 
-\begin{eqnarray}
+\begin{eqnarray*}
   \label{eq:splineparam}
   \bm{p} &=& \bm{\iota}'\left(\bm{C}\cdot\left(1+\beta^1\bm{G}^1+\cdots+\beta^k\bm{G}^k\right)\right)+\bm{\epsilon}\\
   \bm{p} &=& \bm{\iota}'\left(\bm{C}+\bm{C}\cdot\left(\beta^1\bm{G}^1+\cdots+\beta^k\bm{G}^k\right)\right)+\bm{\epsilon}\\
   \bm{p} &=& \bm{\iota}'\bm{C}+\bm{\iota}'\bm{C}\cdot\left(\beta^1\bm{G}^1+\cdots+\beta^k\bm{G}^k\right)+\bm{\epsilon}\\
   \bm{p}- \bm{\iota}\bm{C} &=& \beta^1\bm{\iota}'\bm{C}\cdot\bm{G}^1+\cdots+\beta^k\bm{\iota}'\bm{C}\cdot\bm{G}^k+\bm{\epsilon}
-\end{eqnarray}
+\end{eqnarray*}
 
 
-
+We summarize the terms on both sides as follows.
 	$$\bm{X}_{\left[m \times k\right]}=\{ \bm{x}_{\left[m \times 1\right]} \} \qquad  \bm{x}_{\left[m \times 1\right]} = \left( \bm{\iota}\bm{C}\cdot\bm{G}^l\right)'$$
 
 
@@ -147,13 +146,7 @@ We substitute \eqref{eq:dfmatrixspline} in \eqref{eq:fairpricespline} and get an
         \end{equation}
         
        
-
-
-Whereas $(\cdot)$ denotes again a element by element multiplication and $( )'$ the transposed matrix (vector).
-
-
-
-Parameter estimation with OLS.
+The unknown parameters can now be estimated with OLS.
 	
 \begin{equation}
 \label{eq:paramspline}
@@ -161,13 +154,13 @@ Parameter estimation with OLS.
 \end{equation}
 
 
-The estimated parameters can be used to calculate the discount function in \eqref{eq:df_spline} for any given maturity $m$ between the first and the last knot point, which can then be converted to the spot rate function.
+We can use the resulting parameters to calculate the discount function in \eqref{eq:df_spline} for any given maturity $m$ between the first and the last knot point, which can then be converted to the spot rate function.
 
 
 
 \begin{equation}
   \label{eq:transformdf}
-  s(m,\bm{\beta}) = \frac{-\ln d(m,\bm{\beta})}{m}
+  s(m_{ij},\bm{\beta}) = \frac{-\ln \delta(m_{ij},\bm{\beta})}{m}
 \end{equation}
 
 
