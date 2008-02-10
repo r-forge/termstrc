@@ -1,22 +1,24 @@
-m <- seq(0,30,0.01)     # time to maturity
+m <- seq(0,70,0.01)     # time to maturity
 
 beta_1 <- 1      # parameters
-tau_1 <- 0.2
-beta_2 <- 0.8
-beta_0 <- 0.3
-beta_3 <- 0.9
-tau_2 <- 3
+tau_1 <- 5
+beta_2 <- 4
+beta_0 <- 1
+beta_3 <- 1
+tau_2 <- 10
 
-par(lwd=2)
 
+
+pdf("curveshape.pdf",width=9,height=9)
+par(lwd=3)
 # spot rates
 plot(m,beta_0+ beta_1*((1-exp(-m/tau_1))/(m/tau_1))+ beta_2*(((1-exp(-m/tau_1))/(m/tau_1))-exp(-m/tau_1))+beta_3*(((1-exp(-m/tau_2))/(m/tau_2))-exp(-m/tau_2)),
-     col=1,type="l",lty=1,ylim=c(0,1.5),
+     col=1,type="l",lty=1, ylim=c(0,3),
      xlab="Time to maturity",
      ylab="Model curves, spot rate")
 
 # beta_0
-abline(h=beta_0,lty=2,col=2)
+lines(m,rep(beta_0,length(m)),col=2,lty=2)
 
 # beta_1
 lines(m, beta_1*((1-exp(-m/tau_1))/(m/tau_1)),type="l",col=3,lty=3)
@@ -36,3 +38,4 @@ legend("topright",legend=c(expression(s(m,b)),
        ),
        lty=c(1,2,3,4,5), col=c(1,2,3,4,5),bty="n"
        )
+dev.off()
