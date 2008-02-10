@@ -1,7 +1,6 @@
+\newpage
 \section{Nelson/Siegel and Svensson method}
 \label{sec:nels-svenss-meth}
-
-\includegraphics[width=0.3in]{baustelle} longer introduction
 
 \cite{Nelson1987} propose a parsimonious  model of  the instantaneous forward rate as a solution to a second-order differential equation for the case of equal roots.
 
@@ -10,34 +9,22 @@
   f(m,\bm{b}) = \beta_0+\beta_1\exp\left(-\frac{m}{\tau_1}\right)+\beta_2\left[\left(\frac{m}{\tau_1}\right)\exp\left(-\frac{m}{\tau_1}\right)\right]
 \end{equation}
 
+with a parameter vector ${\bm{b}} = \left(\beta_0,\beta_1,\beta_2,\tau_1\right)$. As in \eqref{eq:avgforwardrate}, the spot rate is the average of the instantaneous forward rates,
 
-The spot rate is the average of the instantaneous forward rates. 
-
-\begin{equation}
+\begin{equation*}
   \label{eq:intspotrate}
   s(m,\bm{b})=\frac{1}{m}\int_0^mf(m,\bm{b})\,dm
-\end{equation}
+\end{equation*}
 
+resulting in
 
 \begin{equation}
   \label{eq:nelson-spot}
-   s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right)
+   s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right).
 \end{equation}
 
-
-
-\begin{figure}[htb]
-  \label{fig:curveshape}
-  \caption{Model curves}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{curveshape}
-\end{center}
-\end{figure}
-
-
-%\input{curveshape.tex}
  
-\cite{Svensson1994} extension
+This specifiation can produce a wide range of possible curve shapes, including monotonic, humped, $U$-shapes or $S$-shapes. \cite{Svensson1994} added another term with two new parameters to increase the flexibility. It allows for a second hump in the curve. The spot rate function is defined as
 
 
 \begin{multline}\label{eq:svensson-spot}
@@ -48,7 +35,16 @@ The spot rate is the average of the instantaneous forward rates.
 
 with a parameter vector ${\bm{b}} = \left(\beta_0,\beta_1,\beta_2,\tau_1,\beta_3,\tau_2\right)$.
 
-Figure \ref{fig:curveshape} shows the impact of the different terms in the spot rate function. The parameters have the following interpretations: \ref{fig:curveshape}
+Figure \ref{fig:modelcurves} shows the \cite{Svensson1994} spot rate function and the impact of the different components. The parameters have the following interpretations:
+
+%\input{curveshape.tex}
+
+\begin{figure}[htb]
+\centering
+  \caption{Model curves}
+ \label{fig:modelcurves}
+\includegraphics[width=0.7\textwidth]{curveshape}
+\end{figure}
 
 \begin{itemize}
 \item $\beta_0$ is the asymptotic value of the spot rate function $\lim_{m\to\infty}s(m,\bm{b})$, which can be seen as long-term interest rate.
@@ -62,16 +58,15 @@ Figure \ref{fig:curveshape} shows the impact of the different terms in the spot 
 The discount factor for any maturity can be calculated as follows. 
 
 \begin{displaymath}
-d(m_{ij})=e^{-m_{ij}s(m_{ij},b)},
+\delta(m_{ij}, \bm{b})=e^{-m_{ij}s(m_{ij},\bm{b})},
 \end{displaymath}
 
-where $s(m_{ij},b)$ is the Nelson/Siegel or Svensson spot rate function defined in \eqref{eq:nelson-spot} and \eqref{eq:svensson-spot}.
+where $s(m_{ij},\bm{b})$ is the Nelson/Siegel or Svensson spot rate function defined in \eqref{eq:nelson-spot} and \eqref{eq:svensson-spot}.
 
-We optimize the objective function in \eqref{eq:optimalparam}. The above specification of the discount function leads to nonlinear optimization. Good starting values for the parameter vector are important to find a global minimum. Instead of the pricing errors, it is common to minimize the yield errors. Calculating the yield-to-maturities of the theoretical bond prices is easy to solve numerically, because \eqref{eq:yield} has only one real root. The difference to the minimization of the pricing errors is $\dots$.
+We optimize the objective function in \eqref{eq:optimalparam}. The above specification of the discount function leads to a nonlinear optimization. Good starting values for the parameter vector are important to find a global minimum. Instead of the pricing errors, it is common to minimize the yield errors. Calculating the yield-to-maturities of the theoretical bond prices is easy to solve numerically, because \eqref{eq:yield} has only one real root. 
 
 When minimizing the unweighted price errors, bonds with a longer maturity get a higher weighting, because they are more sensitive to changes in prices, which leads to a less accurate fit at the short end. Solutions to this heteroskedasticity problem are to use weights for the price errors, or to minimize the yield errors. A possible specification for the weights is based on the inverse of the duration as in \eqref{eq:durationweight}.
 
-\includegraphics[width=0.3in]{baustelle} describe heteroskedasticity problem of estimation with unweighted price errors
 
 %%% Local Variables: 
 %%% mode: latex

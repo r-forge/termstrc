@@ -44,10 +44,10 @@ The \emph{instantaneous forward rate} describes the return for an infinitesmal i
 
 Another interpretation is as the marginal increase in the total return from a marginal increase in the length of the investment period. Therefore, the spot rate can be seen as average of the instantaneous forward rates.
 
-\begin{equation*}
+\begin{equation}
   \label{eq:avgforwardrate}
   s(m_t)=\frac{1}{m_t}\int_0^{m_t}f(s)ds
-\end{equation*}
+\end{equation}
 
 In practice, we can only obtain zero-coupon rates for a limited amount of maturities directly from the market. Therefore, we have to estimate them from observed prices of \emph{coupon bonds}. The following information is typically available on the market: the clean price $p_c$, the cashflows $c_t$ (coupons and redemption payment) and their maturity dates $m_t$. An investor who wants to buy the bond has to pay the dirty price $p_d$ which consists of the quoted market price (clean price) $p_c$ and the accrued interest $a$. This is the amount of interest that has accumulated since the last coupon payment. Similar to \eqref{eq:pricediscountbond}, the bond pricing equation under continuous compounding is the present value of all cash flows.
 
