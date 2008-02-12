@@ -170,63 +170,82 @@ We can use the resulting parameters to calculate the discount function in \eqref
 
 \cite{McCulloch1975} plots error bands above and below one standard error of the best estimate. We want to give a confidence intervall for the predicted discount function.
 
-\begin{equation}
-  \label{eq:yhat}
-  \bm{\hat{z}}=\bm{X}\bm{\hat{\beta}}
-\end{equation}
+Under the assumption of normally distributed disturbances, the least squares coefficient estimator is normally distributed with mean $\bm{\beta}$ and covariance matrix $\sigma^2\bm{X^\top}\bm{X}^{-1}$. 
+
+Following \cite{Greene2002} the confidence interval for a linear combination of coefficients can be obtained by
+applying the decomposition of \cite{Oaxaca1973}. 
+Therefore the discount function $\delta(m_{i,j})$ in \eqref{eq:df_spline} is normally distributed with mean $\mu_{\delta}= 1+\bm{g}(m_{i,j})'\bm{\beta}$ and
+variance $\sigma_{\delta} = \bm{g}(m_{i,j})'\left(\sigma^2(\bm{X' X})^{-1} \right)\bm{g}(m_{i,j})$, whereas $\bm{g}(m_{i,j})= \left(g^1(m_{i,j}), \dots, g^l(m_{i,j}) \right)$.
 
 
-\begin{equation}
-  \label{eq:predint}
- \mbox{P}\left[\bm{\hat{z}}\pm t_{\alpha/2}\cdot \se(\bm{\hat{z}-z})\right]=0.95
-\end{equation}
+%\begin{equation}
+  %\label{eq:ddistr}
+ % d(m_{i,j}) \sim N\left[1+\bm{g}(m_{i,j})'\bm{\beta};\bm{g}(m_{i,j})'\left(\sigma^2(\bm{X' X})^{-1} \right)\bm{g}(m_{i,j}) \right],
+%\end{equation} 
 
 
-\begin{equation}
-  \label{eq:printvdf}
-  d(m_{i,j})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
-\end{equation}
-
-
-
-\cite{Greene2002}
-Under the assumption of a normal distributed disturbence term $\bm{\epsilon}$ the conditional distribution of $\bm{b}$ given $\bm{X}$ can be expressed as
-
+ The $1- \alpha$ confidence interval for $\mu_{\delta}$ of the discount function can now be constructed the usual way
 
 \begin{equation}
-  \label{eq:bddistrb}
-  \bm{b}|\bm{X} \sim N\left[\bm{\hat \beta}, \sigma^2\bm{X^\top}\bm{X}^{-1}\right]
-\end{equation}
-
-If the elements of $\bm{\epsilon}$ are independently identically distributed with mean zero and finite variance $\sigma^2$ and $x_{iK}$ is such that the Grenander conditions are met, then the asymptotic distribution fo $\bm{b}$ is
-
-
-\begin{equation}
-  \label{eq:badistrb}
- \bm{b}\sim N\left[\bm{\hat \beta},\frac{\sigma^2}{n}\bm{Q}^{-1}\right]
-\end{equation}
-
-Whereas $\frac{1}{n}\bm{Q}^{-1}$ is estimated with $\left(\bm{X}^\top\bm{X}\right)^{-1}$ and $\sigma^2$ with $\bm{\frac{e^\top e}{(n-K)}}$, \citep[see][p. 69]{Greene2002}.
-
-Assuming a multivariate normal distribution for $\bm{b}$ the discount fuction is also normally distributed
-
-
-\begin{equation}
-  \label{eq:ddistr}
-  d(m_{i,j}) \sim N\left[1+\bm{g}^\top\bm{\hat\beta},\bm{g}^\top\left[\sigma^2(\bm{X^\top X})^{-1} \right]\bm{g} \right]
+\label{eq:cint}
+\mbox{P}\left[ \delta(m_{i,j}) - t_{\alpha / 2} s_{\delta}   \leq \mu_{\delta}  \leq \delta(m_{i,j})  + t_{\alpha / 2} s_{\delta}\right]= 1 - \alpha,
 \end{equation} 
-
-From an economic point of view only positive interest rates make sense. Therefore, all discount factors for which a cashflow occurs are nonnegative, $d(m_{i,j})>0 \qquad  \forall m_{i,j}> 0$. \textcolor{red}{Explain this more in detail in section \ref{sec:notation}.}
-
-
-A confidence interval that would have been constructed the usual way, could get to the negative. Negative discount factors can not be transformed to spot rates with \eqref{eq:transformdf}.
+where $s_{\delta}$ is the estimate for $\sigma_{\delta}$, $t_{\alpha / 2}$ the appropriate critical from the \textit{t} distribution and $1-\alpha$ the desired level of confidence. 
 
 
-\textcolor{red}{
-  \begin{itemize}
-  \item greater accuracy of splines?
-  \end{itemize}
-}
+%\begin{equation}
+%  \label{eq:yhat}
+ % \bm{\hat{z}}=\bm{X}\bm{\hat{\beta}}
+%\end{equation}
+
+
+%\begin{equation}
+ % \label{eq:predint}
+ %\mbox{P}\left[\bm{\hat{z}}\pm t_{\alpha/2}\cdot \se(\bm{\hat{z}-z})\right]=0.95
+%\end{equation}
+
+
+%\begin{equation}
+  %\label{eq:printvdf}
+  %d(m_{i,j})=1+\sum_{l=1}^k\beta^lg^l(m_{i,j})
+%\end{equation}
+
+
+
+
+%Under the assumption of a normal distributed disturbence term $\bm{\epsilon}$ the conditional distribution of $\bm{b}$ given $\bm{X}$ can be expressed as
+
+
+%\begin{equation}
+ % \label{eq:bddistrb}
+ % \bm{b}|\bm{X} \sim N\left[\bm{\hat \beta}, \sigma^2\bm{X^\top}\bm{X}^{-1}\right]
+%\end{equation}
+
+%If the elements of $\bm{\epsilon}$ are independently identically distributed with mean zero and finite variance $\sigma^2$ and $x_{iK}$ is such that the Grenander conditions are met, then the asymptotic distribution fo $\bm{b}$ is
+
+
+%\begin{equation}
+  %\label{eq:badistrb}
+% \bm{b}\sim N\left[\bm{\hat \beta},\frac{\sigma^2}{n}\bm{Q}^{-1}\right]
+%\end{equation}
+
+%Whereas $\frac{1}{n}\bm{Q}^{-1}$ is estimated with $\left(\bm{X}^\top\bm{X}\right)^{-1}$ and $\sigma^2$ with $\bm{\frac{e^\top e}{(n-K)}}$, \citep[see][p. 69]{Greene2002}.
+
+%Assuming a multivariate normal distribution for $\bm{b}$ the discount fuction is also normally distributed
+
+
+
+%From an economic point of view only positive interest rates make sense. Therefore, all discount factors for which a cashflow occurs are nonnegative, $d(m_{i,j})>0 \qquad  \forall m_{i,j}> 0$. \textcolor{red}{Explain this more in detail in section \ref{sec:notation}.}
+
+
+%A confidence interval that would have been constructed the usual way, could get to the negative. Negative discount factors can not be transformed to spot rates with \eqref{eq:transformdf}.
+
+
+%\textcolor{red}{
+ % \begin{itemize}
+ % \item greater accuracy of splines?
+  %\end{itemize}
+%}
 
 The piecewise function is twice-differentable at each knot point, which results in a smooth curve.
 
