@@ -123,7 +123,7 @@ Whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$:
 \subsection{Estimation procedure}
 \label{sec:estimation}
 
-The simplest smoothing technique is linear interpolation. In many cases it is not appropriate for zero-coupon yield curve estimation, because it can lead to spikes in the forward rate curve, which is a problem from an economic point of view. Therefore, we use indirect estimation procedures that postulate a specific form for the spot rate function $s(m_t, \bm{b})$ or the discount function $\delta(m_t, \bm{b})$, where $\bm{b}$ is a vector of parameters \citep[see, e.g.][]{Martellini2003}. This allows us to construct a discount matrix. The theoretical bond prices are then defined as sums of the discounted cash flows of each bond.
+The simplest smoothing technique is linear interpolation. In many cases it is not appropriate for zero-coupon yield curve estimation, because it can lead to spikes in the forward rate curve, which is a problem from an economic point of view. Therefore, we use indirect estimation procedures that postulate a specific form for the spot rate function $s(m_t, \bm{\beta})$ or the discount function $\delta(m_t, \bm{\beta})$, where $\bm{\beta}$ is a vector of parameters \citep[see, e.g.][]{Martellini2003}. This allows us to construct a discount matrix. The theoretical bond prices are then defined as sums of the discounted cash flows of each bond.
 
 \begin{equation}
   \label{eq:theorprices}
@@ -156,12 +156,12 @@ The errors satisfy
   \COV(\epsilon_i, \epsilon_j) &=& 0 \quad \mbox{for}\,i\neq j\quad .
 \end{eqnarray*}
 
-The goal is to minimize the weighted squared errors.
+The goal is to find the parameters that minimize the weighted squared errors.
 
 
 \begin{equation}
   \label{eq:optimalparam}
-  \hat{\bm{b}}= \argmin_{\bm{b}}\bm{\iota}'(\bm{\Omega}\bm{\epsilon}^2)
+  \hat{\bm{\beta}}= \argmin_{\hat{\bm{\beta}}}\bm{\iota}'(\bm{\Omega}\bm{\epsilon}^2)
 \end{equation}
 
 The goodness of fit can be measured for example with the \emph{root mean squared error}
