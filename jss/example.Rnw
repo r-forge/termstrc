@@ -1,9 +1,10 @@
-\subsection{Nelson/Siegel}
+\subsection{Parametric methods}
 
 We load the package with the following command.
 
 <<echo=FALSE>>=
 rm(list=ls())
+options(prompt="R> ", continue="...")
 @
 
 <<>>=
@@ -17,13 +18,13 @@ data(govbonds)
 summary(govbonds)
 @
 
-It includes data for government bonds of eight European countries obtained from Thomson Financial Datastream. For each country the bonds are classified by their \emph{International Securities Identifying Number (ISIN)}, and all the necessary information on the future cash flows is given.
+It includes data for government bonds of eight European countries. The bonds are classified by their \emph{International Securities Identifying Number (ISIN)}, and all the necessary information on the future cash flows is given.
 
 <<>>=
 str(govbonds$GERMANY)
 @
 
-Suppose, we want perform a zero-coupon yield curve estimation for several countries with the \cite{Nelson1987} method including duration weights and minimizing the price errors. The sample of bonds should be restricted to a maximum maturity of 30 years. 
+Suppose, we want to perform a zero-coupon yield curve estimation for several countries with the \cite{Nelson1987} method minimizing the duration weighted price errors. The sample of bonds should be restricted to a maximum maturity of 30 years. 
 
 <<>>=
 group <- c("GERMANY","FRANCE", "BELGIUM", "SPAIN")
@@ -32,20 +33,19 @@ matrange <- c(0,30)
 method <- "Nelson/Siegel"
 fit <- "prices"
 weights <- "duration"
-control <- list(eval.max=100000, iter.max=500)
-b <- matrix(rep(c(0,0,0, 1),4),nrow=4,ncol=4,byrow=TRUE)
+b <- matrix(rep(c(0,0,0, 1),4),nrow=4,byrow=TRUE)
 rownames(b) <- group
 colnames(b) <- c("beta0","beta1","beta2","tau1")
-x <- nelson_estim(group, bonddata, matrange, method, fit, weights, startparam=b,control)
+x <- nelson_estim(group, bonddata, matrange, method, fit, weights, b)
 @
 
-Now, let us have a look on the results.
+Now, let us have a look at the results.
 
 <<>>=
 x
 @
 
-The summary method gives goodness of fit measures for the price and the yield errors. Moreover, it shows the convergence information from the solver, to check wether a solution to the nonlinear optimization problem has been found.
+The summary method gives goodness of fit measures for the price and the yield errors. Moreover, it shows the convergence information from the solver, to check whether a solution to the nonlinear optimization problem has been found.
 
 <<>>=
 summary(x)
@@ -53,27 +53,28 @@ summary(x)
 
 
 %<<echo=FALSE>>=
-% pdf("fig_eurospotcurves.pdf", width=10, height=8)
+%pdf("fig_eurospotcurves.pdf", width=8, height=6)
 %plot(x,multiple=TRUE,errors="none")
 %dev.off()
 %@
 
-Our package offers several options to plot the results, e.g. spot rates, forwards rates, discount factors, spreads. Figure \ref{fig:spotcurves} shows the zero-coupon yield curves. The dashed lines show that the curve was extrapolated, which is possible with the \cite{Nelson1987} and \cite{Svensson1994} approach.
+Our package offers several options to plot the results, e.g. spot rate, forward rate, discount and spread curves. Figure \ref{fig:spotcurves} shows the estimated zero-coupon yield curves. The dashed lines indicate that the curve was extrapolated, which is possible with the \cite{Nelson1987} and \cite{Svensson1994} approach.
 
 \begin{figure}[htb]
 \centering
 \caption{Zero-coupon yield curves estimated with Nelson/Siegel}
 \label{fig:spotcurves}
-\includegraphics[width=0.8\textwidth]{fig_eurospotcurves}
+\includegraphics[width=0.7\textwidth]{fig_eurospotcurves}
 \end{figure}
 
 
-\subsection{Cubic Splines}
+\subsection{Spline-based methods}
 
-In this section we want to demonstrate how to estimate the \cite{McCulloch1975} cubic splines for French governement bonds.
+In this section, we to demonstrate how to estimate the term structure of interest rates with the \cite{McCulloch1975} cubic splines approach applied to French governement bonds.
+
 <<>>=
 y <- splines_estim(c("FRANCE"), govbonds, c(0,30))
-print(y)
+y
 @
 
 The summary method shows details from the OLS estimation of the parameters and the goodness of fit measures.
@@ -88,7 +89,7 @@ summary(y)
 % dev.off()
 % @
 
-Fig. \ref{fig:frenchspotcurve} shows the yield-to-maturities and the estimated cubic spline together with the automatically selected knot points.
+Figure \ref{fig:frenchspotcurve} shows the yield-to-maturities and the estimated zero-coupon yield curve together with the automatically selected knot points.
 
 \begin{figure}[htb]
 \centering
@@ -108,11 +109,11 @@ Fig. \ref{fig:frenchspotcurve} shows the yield-to-maturities and the estimated c
 
 %<<echo=FALSE, fig=FALSE>>=
 %pdf("fig_pricingerrors.pdf", width=12, height=8)
-%plot(y,ctype="none")
+%plot(y,ctype="none", inset=c(0.2, 0.4))
 %dev.off()
 %@
 
-We can see the pricing errors of our estimation in Fig. \ref{fig:pricingerrors}. There seems to be a misspricing of two bonds, which we will remove and redo the estimation.
+As we can see in Figure \ref{fig:pricingerrors}, there seems to be a misspricing of two bonds. They will be removed and the estimation redone.
 
 \begin{figure}[htb]
 \centering  
@@ -121,7 +122,7 @@ We can see the pricing errors of our estimation in Fig. \ref{fig:pricingerrors}.
 \includegraphics[width=0.8\textwidth]{fig_pricingerrors}
 \end{figure}
 
-The result is as expected a better goodness of fit.
+The result is, as expected, a better goodness of fit.
 
 <<>>=
 z <- splines_estim(c("FRANCE"), rm_bond(bonddata,c("FR0000571044","FR0000571085"),"FRANCE"), c(0,30))

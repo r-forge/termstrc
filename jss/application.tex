@@ -1,16 +1,15 @@
 \section{Practical application}
 \label{sec:pract-appl}
 
-\includegraphics[width=0.3in]{baustelle} better introduction
-
-The goverment debt market is the usual data source if we want to estimate a zero-coupon yield curve for a country. Government bonds are usually the most liquid, and can be considered default-free, provided the issuing country has a good rating. We demonstrate the usage of our package with a dataset of European government bonds. Of course, a zero-coupon yield curve can also be estimated for coporate bonds. In that case, it would is interesting to compare the curve to a risk-free one and calculate the spread.
+The goverment debt market is the common data source for estimating a zero-coupon yield curve of a country. Government bonds are usually the most liquid securities, and can be considered default-free, provided the issuing country has a good rating. We demonstrate the application of our package with a data set of European government bonds obtained from Thomson Financial Datastream. The following examples of the two mentioned procedures, as well as a dynamic estimation of the zero-coupon yield curve.
 
 
 \input{example.tex}
 
+%\clearpage
 \subsection{Dynamic estimation}
 
-In the following, we provide results for a dynamic estimation of the zero-coupon yield curve for the time between November 30, 2007 and February 1, 2008. We used the \cite{Svensson1994} method, together with duration weights and minimization of the price errors. Fig. \ref{fig:3dplot} shows how the estimated French yield curves.
+In the following, we provide results of a dynamic estimation of the zero-coupon yield curve for the time between November 30, 2007 and February 1, 2008. We used the \cite{Svensson1994} method, together with duration weights and minimization of the price errors. Figure \ref{fig:3dplot} shows how the estimated French yield curves develop within that time period.
 
 \begin{figure}[htb]
   \begin{center}
@@ -20,7 +19,7 @@ In the following, we provide results for a dynamic estimation of the zero-coupon
 \end{center}
 \end{figure}
 
-Fig. \ref{fig:paramdevel} shows how the parameters evolve over time. To speed up the estimation and ensure the algorithm stays in a global minimum, the estimated parameters from the previous period were used as start parameters for the next one.
+The evolution of the parameters can be seen in Figure \ref{fig:paramdevel}. To speed up the estimation and ensure that the algorithm stays in a global minimum, the estimated parameters from the previous period were used as start parameters for the next one.
 
 \begin{figure}[htb]
   \begin{center}
