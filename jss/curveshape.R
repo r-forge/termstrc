@@ -1,4 +1,4 @@
-m <- seq(0,70,0.01)     # time to maturity
+1m <- seq(0,70,0.01)     # time to maturity
 
 beta_1 <- 1      # parameters
 tau_1 <- 5
