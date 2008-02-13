@@ -2,8 +2,8 @@
 %âãÏÓ\r
 1 0 obj
 <<
-/CreationDate (D:20080208192848)
-/ModDate (D:20080208192848)
+/CreationDate (D:20080213191454)
+/ModDate (D:20080213191454)
 /Title (R Graphics Output)
 /Producer (R 2.6.1)
 /Creator (R)
@@ -421,8 +421,8 @@ Q q 89.28 132.48 714.24 354.24 re W n
 Q q 59.04 73.44 774.72 443.52 re W n
 BT
 0.000 0.000 0.000 rg
-/F2 1 Tf 12.00 0.00 -0.00 12.00 125.20 142.28 Tm (  RMSE: 0.182) Tj
-/F2 1 Tf 12.00 0.00 -0.00 12.00 125.20 127.88 Tm (AABSE: 0.0821) Tj
+/F2 1 Tf 12.00 0.00 -0.00 12.00 590.03 275.34 Tm (  RMSE: 0.182) Tj
+/F2 1 Tf 12.00 0.00 -0.00 12.00 590.03 260.94 Tm (AABSE: 0.0821) Tj
 ET
 Q
 endstream
