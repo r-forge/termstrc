@@ -11,7 +11,7 @@ nelson_estim(group,
              method = "Nelson/Siegel",
              fit = "prices",
              weights = "duration",
-             startparam, control = list(eval.max = 1000))
+             startparam, control = list(eval.max = 1000, iter.max= 500))
 }
 \arguments{
   \item{group}{vector defining the group of bonds used for the estimation,\newline

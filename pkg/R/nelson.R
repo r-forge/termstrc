@@ -10,7 +10,7 @@ nelson_estim <-
            fit = "prices",
            weights="duration",
            startparam,
-           control=list(eval.max=1000)
+           control=list(eval.max=1000,iter.max= 500)
            
            ) {
 
