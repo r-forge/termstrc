@@ -208,3 +208,4 @@ besser
 
 * check and complete help files 
 
+* add vignette to the package
