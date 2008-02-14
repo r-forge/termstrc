@@ -113,7 +113,7 @@ colnames(b) <- c("beta0","beta1","beta2","tau1")
 
 # perform estimation
 x <- nelson_estim(group, bonddata, matrange, 
-                  method, fit, weights, startparam=b,control)
+                  method, fit, weights, startparam=b)
 
 # prints the obtained parameters of the estimation
 print(x)
