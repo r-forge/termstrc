@@ -3,7 +3,8 @@
 
 \title{Average Absolute Mean Error}
 
-\description{Calculation of the average absolute mean error (AABSE).}
+\description{Calculation of the average absolute mean error (AABSE). The AABSE may
+also be called mean absolute error (MAE).}
 \usage{
 aabse(actual, estimated)
 }
@@ -16,8 +17,11 @@ aabse(actual, estimated)
 
 \details{
   Calculation of the AABSE according to the formula:
-\deqn{AABSE=frac{1}{m}\bm{\iota}'|\bm{\epsilon}|.}
-Whereas \eqn{\epsilon} is the vector of the yield or price errors of the bonds. 
+\deqn{\mbox{AABSE}=\frac{1}{m}|\bm{\epsilon}|\bm{\iota},}
+
+
+
+whereas \eqn{\bm{\epsilon}} is the vector of the yield or price errors of the bonds and \eqn{\bm{\iota}} is a column vector filled with ones. \eqn{m} is the number of bonds, for which \eqn{\bm{\epsilon}} has been calculated. 
 
 }
 %\value{}

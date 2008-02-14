@@ -12,7 +12,7 @@ forwardrates(method, beta, m)
   \item{beta}{parameters corresponding to the chosen method.}
   \item{m}{one maturity or a vector of maturities.}
 }
-\details{}
+%\details{}
 \value{The function returns a vector with the calculated forward rates.}
   
 %\references{  }

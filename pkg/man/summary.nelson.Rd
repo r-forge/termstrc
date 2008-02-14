@@ -3,18 +3,18 @@
 
 \title{ S3 Summary Method }
 \description{
-  S3 summary method for objects of the class \code{'nelson'}.
+  S3 summary method for objects of the class \code{"nelson"}.
 }
 \usage{
 \method{summary}{nelson}(object,...)
 }
 
 \arguments{
-  \item{object}{object of the class \code{'nelson'}.}
+  \item{object}{object of the class \code{"nelson"}.}
   \item{\dots}{other arguments.}
 }
 \details{
-  The summary method for an object of the class \code{'nelson'} prints the solution of
+  The summary method for an object of the class \code{"nelson2} prints the solution of
  the goodness of fit statistics (RMSE,AABSE) of the optimisation. Moreover a convergence information of the used
  optimiser (\code{nlminb}) is printed. 
 }

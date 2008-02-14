@@ -12,8 +12,8 @@
   \item{t}{maturity. }
   \item{T}{knot points.}
   \item{i}{index.}
-  \item{s}{number of basis functions}.}
-}
+  \item{s}{number of basis functions.}}
+
 %\details{...}
 %\value{
 % \item{g}{..g...}

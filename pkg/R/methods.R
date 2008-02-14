@@ -316,7 +316,7 @@ plot.cubicsplines <-
     	  # knot points 
     	  abline(v=c(x$T[[k]]),lty=2, col="darkgrey")
     	  legend("bottom",legend=c("Zero-coupon yield curve",
-    	  "95 % Confidence intervall" ,"Yield to maturity", "Knot points"),
+    	  "95 % Confidence interval" ,"Yield to maturity", "Knot points"),
     	  col=c("steelblue","steelblue","red", "darkgrey"),
     	  lty = c(1,3,-1,2), pch=c(-1,-1,21,-1))
 	
