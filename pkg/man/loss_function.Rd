@@ -4,7 +4,7 @@
 \title{Loss Function used for the Term Structure Estimation }
 \description{
   The loss function defines the objective function used for the optimisation. In case of term structure estimation
- the objective function is either the minimsation of the (weighted) sqared price or the yield errors.
+ the objective function is either the minimsation of the (weighted) squared price or the yield errors.
 }
 \usage{
 loss_function(p, phat, omega, weights)

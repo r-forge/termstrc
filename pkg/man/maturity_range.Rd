@@ -4,7 +4,7 @@
 \title{Restricting a Bond Dataset }
 
 \description{
-   The function restricts a bond dataset to a specified maturity range.
+   The function restricts a bond data set to a specified maturity range.
 }
 \usage{
 maturity_range(bonddata, lower, upper)

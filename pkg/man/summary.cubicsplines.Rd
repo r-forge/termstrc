@@ -3,18 +3,18 @@
 
 \title{S3 Summary Method for Cubicsplines }
 \description{
-  S3 summary method for objects of the class \code{'cubicsplines'}.
+  S3 summary method for objects of the class \code{"cubicsplines"}.
 }
 \usage{
 \method{summary}{cubicsplines}(object,...)
 }
 
 \arguments{
-  \item{object}{object of the class \code{'cubicsplines'}.}
+  \item{object}{object of the class \code{"cubicsplines"}.}
   \item{\dots}{other arguments.}
 }
 \details{
- The summary method for an object of the class \code{'cubicsplines'} prints goodness of fit statistics (RMSE, AABSE) of the optimisation. Additionally summary statistics of the regression analysis of the estitmation of the parameters are plotted. 
+ The summary method for an object of the class \code{"cubicsplines"} prints goodness of fit statistics (RMSE, AABSE) of the optimisation. Additionally summary statistics of the regression analysis of the estitmation of the parameters are plotted. 
 }
 %\value{}
 %\references{ }

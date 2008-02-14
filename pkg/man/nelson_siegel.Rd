@@ -11,13 +11,13 @@ nelson_siegel(beta, m)
 }
 
 \arguments{
-  \item{beta}{ a vector of parameters \eqn{(\beta_0, \beta_1, \beta_2, \tau_1)}.}
+  \item{beta}{ a vector of parameters  \eqn{{\bm{\beta}} = \left(\beta_0,\beta_1,\beta_2,\tau_1\right)}.}
   \item{m}{ one maturity (or a vector of maturities).}
   }
-}
-\details{The spot rates according to Nelson/Siegel are defined as:
+
+\details{The spot rate according to Nelson/Siegel for a maturity \eqn{m} is defined as:
 \deqn{
-  s(m,\bm{b}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right).}}
+  s(m,\bm{\beta}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right).}}
  
 \value{Returns a vector consisting of the calculated spot rates.}
 

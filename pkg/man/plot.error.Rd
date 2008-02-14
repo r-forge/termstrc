@@ -6,11 +6,11 @@
 S3 plot method for an object of the class \code{'error'}.}
 \usage{
 \method{plot}{error}(x, type = "b", main = "", mar = c(7, 6, 6, 2) + 0.1, 
-			       	oma = c(4, 2, 2, 2) + 0.1, ylab = "Error", ...)
+oma = c(4, 2, 2, 2) + 0.1, ylab = "Error", ...)
 }
 
 \arguments{
-  \item{x}{object of the class \code{'error'}. }
+  \item{x}{object of the class \code{"error"}. }
   \item{type}{1-character string giving the type of plot desired, for details see \code{\link{plot.default}}.}
   \item{main}{a main title for the plot, for details see \code{\link{title}}.}
   \item{mar}{ A numerical vector of the form 'c(bottom, left, top, right)'
@@ -29,7 +29,7 @@ the function \code{\link{rm_bond}} may be applied.
 }
 %\value{}
 %\references{  }
-%\author{ Robert Ferstl, Josef Hayden }
+%\author{ Robert Ferstl, Josef Hayden}
 %\note{ }
 \seealso{\code{\link{rm_bond}}}
 %\examples{}

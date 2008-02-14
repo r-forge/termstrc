@@ -7,12 +7,12 @@ S3 plot method for an object of the class \code{'ir_curve'.}
 }
 \usage{
 \method{plot}{ir_curve}(x, ylim = c(), xlim = c(), lwd = 2, type = "l",
-			   	     xlab = "Maturity (years)", ylab = "Percent",
-				      col = "steelblue", lty = 1, ...)
+xlab = "Maturity (years)", ylab = "Percent",
+col = "steelblue", lty = 1, ...)
 }
 
 \arguments{
-  \item{x}{object of the class \code{'ir_curve'}.}
+  \item{x}{object of the class \code{"ir_curve"}.}
   \item{ylim}{the y limits of the plot, for details see \code{\link{plot.default}}.}
   \item{xlim}{the x limits of the plot, for details see \code{\link{plot.default}}.}
   \item{lwd}{the line width, for details see \code{\link{par}}.}

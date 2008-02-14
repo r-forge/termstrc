@@ -189,7 +189,6 @@ besser
 * remove ^M
 -> done 
 
-
 * notation confidence intervals
 -> done 
 * wrong encoding in lm() outputs
@@ -200,10 +199,12 @@ besser
 * BUG! print method
 -> done
 
-* check and complete help files 
 * use qt instead of qnorm for calculation the cis
+-> done 
 * update default of control iter.max= 500
 -> done 
 * update demo files
 -> done 
+
+* check and complete help files 
 

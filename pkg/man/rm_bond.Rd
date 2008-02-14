@@ -2,7 +2,7 @@
 \alias{rm_bond}
 \title{Remove Bonds from a Dataset }
 \description{
- Specified bonds and their associated data are removed from the bond dataset.
+ Specified bonds and their associated data are removed from the bond data set.
 }
 \usage{
 rm_bond(bdata, ISIN, gr)
@@ -14,7 +14,7 @@ rm_bond(bdata, ISIN, gr)
   \item{gr}{the group  where the bonds to be removed belong to.}
 }
 %\details{}
-\value{The function returns the new bond dataset.}
+\value{The function returns the new bond data set.}
 %\references{  }
 %\author{ Robert Ferstl, Josef Hayden }
 %\note{ }

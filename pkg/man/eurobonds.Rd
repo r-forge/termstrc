@@ -11,7 +11,7 @@ The data set \code{eurobonds} consists of German, Austrian, Italian and Hungaria
 }
 
 \note{
-If you use your own dataset, make sure that the structure is identical to the provided data sets.
+If you use your own data set, make sure that the structure is identical to the provided data sets.
 Use the function \code{str()} to explore the data set.}
 
 

@@ -12,7 +12,7 @@ create_maturities_matrix(group, include_price = FALSE)
 }
 
 \arguments{
-  \item{group}{name of the group of bonds (default: \code{FALSE}.}
+  \item{group}{name of the group of bonds (default: \code{FALSE}).}
   \item{include_price}{if \code{TRUE} the dirty price is included.}
 }
 
@@ -23,7 +23,7 @@ create_maturities_matrix(group, include_price = FALSE)
 %\references{  }
 %\author{Robert Ferstl, Josef Hayden}
 
-%\note{ ~~further notes~~ 
+%\note{ }
 
 \seealso{\code{\link{create_cashflows_matrix}}}
 
