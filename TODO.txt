@@ -36,7 +36,7 @@
        op <- par(ask = TRUE)
        on.exit(par(op))
 
--> erledigt ! (allerdings anders gelöst) 
+-> erledigt !
 
 * Statt summary(as.factor(group$CASHFLOWS$ISIN)) besser
     length(unique(group$CASHFLOWS$ISIN))
@@ -189,9 +189,21 @@ besser
 * remove ^M
 -> done 
 
-* check and complete help files 
-* notation confidence intervals
 
+* notation confidence intervals
+-> done 
 * wrong encoding in lm() outputs
+-> done 
 * par compatibility
+-> done 
+
+* BUG! print method
+-> done
+
+* check and complete help files 
+* use qt instead of qnorm for calculation the cis
+* update default of control iter.max= 500
+-> done 
+* update demo files
+-> done 
 

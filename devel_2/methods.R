@@ -22,7 +22,7 @@ print.nelson <-
           "6"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2")) 
   print.default(parameters)
   cat("\n")
-  x
+  #x
   }
 
 ###################################################################
