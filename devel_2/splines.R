@@ -132,13 +132,22 @@ splines_estim <-
 
   var_d <- mapply(function(k) apply(mapply(function(sidx) gi(t[[k]],T[[k]],
   			sidx,s[[k]]),1:s[[k]]),1,function(x) t(x)%*%Sigma[[k]]%*%x), sgroup, SIMPLIFY=FALSE) 
-  
+  #browser()
   # lower 95% confidence interval
-  cl <- mapply(function(k) qnorm(rep(0.025,length(mean_d[[k]])),mean=mean_d[[k]],
-    		sd=sqrt(var_d[[k]]), lower= rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE)	
+  #cl <- mapply(function(k) qnorm(rep(0.025,length(mean_d[[k]])),mean=mean_d[[k]],
+  #  		sd=sqrt(var_d[[k]]), lower= rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE)
+  # based on a normal distribution
+  #cl <- mapply(function(k) qnorm(rep(0.025,length(mean_d[[k]])),mean=mean_d[[k]],
+  #  		sd=sqrt(var_d[[k]])), sgroup, SIMPLIFY=FALSE)
+  cl <- mapply(function(k) mean_d[[k]] + rep(qt(0.025,nrow(X[[k]])- ncol(X[[k]])),length(mean_d[[k]]))*sqrt(var_d[[k]]),
+               sgroup,SIMPLIFY=FALSE)
+              
   # upper 95 % confidence interval	
-  cu <- mapply(function(k) qnorm(rep(0.975,length(mean_d[[k]])),mean=mean_d[[k]],
-  			sd=sqrt(var_d[[k]]), lower=rep(0,length(mean_d[[k]]))), sgroup, SIMPLIFY=FALSE) 
+  #cu <- mapply(function(k) qnorm(rep(0.975,length(mean_d[[k]])),mean=mean_d[[k]],
+  #			sd=sqrt(var_d[[k]]), sgroup, SIMPLIFY=FALSE)
+   cu <- mapply(function(k) mean_d[[k]] + rep(qt(0.975,nrow(X[[k]])- ncol(X[[k]])),length(mean_d[[k]]))*sqrt(var_d[[k]]),
+               sgroup,SIMPLIFY=FALSE)
+  
   
   # zero cupon yield curves for maturity interval t 
   zcy_curves <-  mapply(function(k)  cbind(t[[k]],-log(mean_d[[k]])/t[[k]],-log(cl[[k]])/t[[k]],
@@ -146,15 +155,15 @@ splines_estim <-
  
   for (k in sgroup) class(zcy_curves[[k]]) <- "ir_curve"
   class(zcy_curves) <- "spot_curves"
-
+              
   # calculate spread curves 
-               	    
+               	   
   if(n_group != 1) {     
    srange <- seq(max(unlist(lapply(t,min))),min(unlist(lapply(t,max))),0.01)
    s_curves <- mapply(function(k) cbind(srange,zcy_curves[[k]][c(which(zcy_curves[[k]][,1]== srange[1]): which(zcy_curves[[k]][,1] == srange[length(srange)])),2] 
     - zcy_curves[[1]][c(which(zcy_curves[[1]][,1]== srange[1]): which(zcy_curves[[1]][,1]== srange[length(srange)])),2]),sgroup, SIMPLIFY=FALSE) 
    
-   } else s_curves = "none"  
+   } else s_curves = "none" 
    for (k in sgroup) class(s_curves[[k]]) <- "ir_curve" 
    class(s_curves) <- "s_curves"
   
