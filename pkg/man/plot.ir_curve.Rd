@@ -3,7 +3,7 @@
 
 \title{ S3 Plot Method }
 \description{
-S3 plot method for an object of the class \code{'ir_curve'.}
+S3 plot method for an object of the class \code{"ir_curve".}
 }
 \usage{
 \method{plot}{ir_curve}(x, ylim = c(), xlim = c(), lwd = 2, type = "l",

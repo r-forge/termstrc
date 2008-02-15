@@ -11,7 +11,7 @@ maturity_range(bonddata, lower, upper)
 }
 
 \arguments{
-  \item{bonddata}{bond dataset.}
+  \item{bonddata}{bond data set.}
   \item{lower}{lower bound of maturity spectrum.}
   \item{upper}{upper bound of maturity spectrum.}
 }

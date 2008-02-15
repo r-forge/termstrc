@@ -12,15 +12,15 @@ duration(cf_p, m_p, y)
   \item{m_p}{maturity matrix.}
   \item{y}{yield of the bond.}
 }
-\details{The duration is calculated using the following formula:
+\details{The duration vector is calculated using the following formula:
 
-\deqn{\bm{d}= \frac{\bm{\iota}'(\bm{C}\cdot\bm{M}\cdot\bm{D})}{\bm{\iota}'(\bm{C}\cdot\bm{D})}},
+\deqn{\bm{d}= \frac{\bm{\iota}'(\bm{C}\cdot\bm{M}\cdot\bm{D})}{\bm{\iota}'(\bm{C}\cdot\bm{D})},}
  whereas \eqn{\bm{C}} is the cashflow matrix and \eqn{\bm{M}} is the maturity matrix. \eqn{\bm{\iota}} is a column vector filled with ones.
-\eqn{(\cdot)} denotes a elementwise matrix mulitplication and \eqn{" ' "}  the transposed of a vecotor (matrix). 
+\eqn{(\cdot)} denotes a elementwise matrix mulitplication and \eqn{" ' "}  the transposed of a vector (matrix). 
 
-The weights\eqn{\omega_j} for one bond \eqn{j} are defined as
-\deqn{  \omega_j=\frac{\frac{1}{d_j}}{\sum_{i=1}^m\frac{1}{d_i}}},
-where \eqn{d_j} is the duration for the j-th bond. 
+The weight \eqn{\omega_j} for one bond \eqn{j} is defined as
+\deqn{  \omega_j=\frac{\frac{1}{d_j}}{\sum_{i=1}^m\frac{1}{d_i}},}
+where \eqn{d_j} is the duration of the j-th bond. 
 }
 
 \value{

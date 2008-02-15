@@ -27,7 +27,7 @@ nelson_estim(group,
 }
 \details{
  \item{\code{group}}{	The first element of the vector will be used as the
-  			    	  	reference country for the credit spread estimation.
+  			    	  	reference country for the spread curve calculation.
 					 \code{group} can be either a vector of bond groups or a scalar.}
 \item{\code{bonddata}}{	The package is tailored to a certain structure. Therefore the structure
 			    	        and the naming convention of other used data sets has to be identical to the provided one.  
@@ -54,15 +54,15 @@ contains the following items (mainly lists):
   \item{spread}{one list for each group with  an object of the class \code{"s_curves"}.}
   \item{forward}{one list for each group with an object of the class \code{"fwr_curves"}.} 
  \item{discount}{one list for each group with  an object of the class \code{"df_curves"}.} 
- \item{expoints}{one list for each group with the extrapolation point.}
+ \item{expoints}{one list for each group with the extrapolation points.}
  \item{cf}{one list for each group with the cashflows matrix.}
   \item{m}{one list for each group with the maturity matrix.}
   \item{p}{one list for each group with the dirty prices.}
   \item{phat}{one list for each group with the estimated bond prices.}
-  \item{perrors}{one list for each group with an object of the class \code{"error"} containing the price errors of the bonds and the associated maturity.}
+  \item{perrors}{one list for each group with an object of the class \code{"error"} containing the price errors of the bonds and the associated maturities.}
   \item{y}{one list for each group with the bond yields and the associated maturities.}
   \item{yhat}{one list for each group with the theoretical bond yields calculated with the estimated bond prices \code{phat}.}
-  \item{yerrors}{ one list for each group with an object of the class \code{"error"} containing the yield errors of the bonds and the associated maturity.}
+  \item{yerrors}{ one list for each group with an object of the class \code{"error"} containing the yield errors of the bonds and the associated maturities.}
   \item{opt_result}{one liste for each group with the optimal parameter vecotor obtained from the optimisation and further information concerning the optimisation.}
    
 }
@@ -78,7 +78,7 @@ Estimating and Interpreting Forward Interest Rates: Sweden 1992 -1994.
 %\author{Robert Ferstl, Josef Hayden}
 
 
-\note{A error message concerning the function \code{uniroot} is in general due to wrongly specified start parameters.
+\note{An error message concerning the function \code{uniroot} is in general due to wrongly specified start parameters.
  
 For objects of the class \code{"spot_curves"}, \code{"s_curves"}, \code{"df_curves"}, \code{"fwr_curves"}, \code{"error"} appropriate plot methods are offered.  For objects of the class \code{"nelson"} print, summary and plot methods are available. Another term structure estimation method is provided by the function \code{\link{splines_estim}}.} 
 
@@ -124,7 +124,7 @@ summary(x)
 # plots the zero-coupon yield curves for each country 
 plot(x,errors="none")
 
-# plots the zero-coupon yield curves togther
+# plots all zero-coupon yield curves togther
 plot(x,multiple=TRUE, errors="none")
 
 # spread curve splot
