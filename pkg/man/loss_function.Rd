@@ -13,7 +13,7 @@ loss_function(p, phat, omega, weights)
 \arguments{
   \item{p}{vector of observed prices (yields).}
   \item{phat}{vector of estimated prices (yields).}
-  \item{omega}{weights vetor. }
+  \item{omega}{weights vector. }
   \item{weights}{if \code{"none"} the squared deviation of \code{p} and
     \code{phat} is not weighted, use \code{"duration"} for a duration weighted optimisation.}
 }

@@ -20,7 +20,7 @@ is not implemented and has therefore be provided by the user. For the provided d
 \code{$ACCRUED} includes the accrued interest. 
 }
 
-\seealso{ \code{\link{eurobonds}}}
+\seealso{ \code{\link{eurobonds}}, \code{\link{govbonds}}}
 
 \examples{
 data(corpbonds)

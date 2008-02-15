@@ -19,8 +19,7 @@ splines_estim(group,
     maturity range used for the estimation with \code{c(lower,upper)}. }
 }
 \details{
-  \item{\code{group}}{	The first element of the vector will be used as the reference country for the credit
-  			    	  	spread estimation. The group can be either a vector of groups or a scalar.}
+  \item{\code{group}}{	The first element of the vector will be used as the reference country for the spread curve calculation. The group can be either a vector of groups or a scalar.}
 
 \item{\code{bonddata}}{	The package is tailored to a certain structure. Therefore the structure and 
 			    	       	the naming convention of other used data sets has to be identical to the provided ones.  
@@ -34,7 +33,7 @@ contains the following items (mainly lists):
   \item{group}{vector consisting of the bond groups used for the estimation.}
   \item{matrange}{either \code{"none"} or a vector with the maturity range.}
   \item{n_group}{the number of groups used for the optimisation.}
-  \item{knot points}{one list for each group with the used knot points for the cubic splines estimation.}
+  \item{knotpoints}{one list for each group with the used knot points for the cubic splines estimation.}
   \item{spot}{one list for each group with an object of the class \code{"spot_curves"}.}
   \item{spread}{one list for each group with  an object of the class \code{"s_curves"}.}
  \item{discount}{one list for each group with  an object of the class \code{"df_curves"}.} 
@@ -43,10 +42,10 @@ contains the following items (mainly lists):
   \item{m}{one list for each group with the maturity matrix.}
   \item{p}{one list for each group with the dirty prices.}
   \item{phat}{one list for each group with the estimated bond prices.}
-  \item{perrors}{one list for each group with an object of the class \code{"error"} containing the price errors of the bonds and the associated maturity.}
-  \item{y}{one list for each group with the bond yields and teh associated maturities.}
+  \item{perrors}{one list for each group with an object of the class \code{"error"} containing the price errors of the bonds and the associated maturities.}
+  \item{y}{one list for each group with the bond yields and the associated maturities.}
   \item{yhat}{one list for each group with the theoretical bond yields calculated with the estimated bond prices \code{phat}.}
-  \item{yerrors}{ one list for each group with an object of the class \code{"error"} containing the yield errors of the bonds and the associated maturity.}
+  \item{yerrors}{ one list for each group with an object of the class \code{"error"} containing the yield errors of the bonds and the associated maturities.}
   \item{alpha}{OLS coefficients of cubic splines estimation.}
   \item{regout}{one list for each group with an object of the class \code{"lm"}.}
 }
@@ -84,7 +83,7 @@ matrange <- c(0, 19)
 # perform estimation
 x <- splines_estim(group, bonddata, matrange)
 
-# print the optained parameters of the estimation
+# print the obtained parameters of the estimation
 print(x)
 
 # goodness of fit measures
@@ -93,7 +92,7 @@ summary(x)
 # plot the zero-coupon yield curve for each country
 plot(x,errors="none")
 
-# plot the zero-coupon yield curves together
+# plot all zero-coupon yield curves together
 plot(x,multiple=TRUE,errors="none")
 
 # spread curve splot

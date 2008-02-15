@@ -5,8 +5,9 @@
 S3 plot method for an object of the class \code{"spot_curves"}.
 }
 \usage{
-\method{plot}{spot_curves}(x, multiple = FALSE, ylim = c(range(mapply(function(i) range(x[[i]][, 2]), 
-seq(x)))) * 100, xlim = c(), type = "l", lty = 1, lwd = 2, expoints = NULL, 
+\method{plot}{spot_curves}(x, multiple = FALSE,
+ylim = c(range(mapply(function(i) range(x[[i]][, 2]), seq(x)))) * 100,
+xlim = c(), type = "l", lty = 1, lwd = 2, expoints = NULL, 
 ylab = "Zero-coupon yields (percent)", xlab = "Maturity (years)", 
 main = "Zero-coupon yield curves", ...)
 }

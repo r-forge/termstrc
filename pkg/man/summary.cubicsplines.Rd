@@ -14,14 +14,14 @@
   \item{\dots}{other arguments.}
 }
 \details{
- The summary method for an object of the class \code{"cubicsplines"} prints goodness of fit statistics (RMSE, AABSE) of the optimisation. Additionally summary statistics of the regression analysis of the estitmation of the parameters are plotted. 
+ The summary method for an object of the class \code{"cubicsplines"} prints goodness of fit statistics (RMSE, AABSE) of the optimisation. Additionally summary statistics of the regression analysis of the parameters are printed. 
 }
 %\value{}
 %\references{ }
-\author{Robert Ferstl, Josef Hayden }
+%\author{Robert Ferstl, Josef Hayden }
 %\note{}
 \seealso{\code{\link{plot.cubicsplines}}, \code{\link{print.cubicsplines}}, \code{\link{rmse}}, \code{\link{aabse}}, \code{\link{summary.lm}}}
-\examples{}
+%\examples{}
 
 \keyword{ }
 

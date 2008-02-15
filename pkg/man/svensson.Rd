@@ -3,7 +3,7 @@
 
 \title{Spot Rate Function according to Svensson }
 \description{This function calculates the spot rates for certain maturity dates and a parameter vector
-  according to Svensson.}
+  according to Svensson (1994).}
 \usage{
 svensson(beta, m)
 }
@@ -12,10 +12,10 @@ svensson(beta, m)
   \item{beta}{ a vector of parameters \eqn{\bm{\beta} = (\beta_0, \beta_1,\beta_2,\tau_1, \beta_3, \tau_2)}. }
   \item{m}{ one maturity (or a vector of maturities). }
 }
-\details{ The spot rate according to Svensson is calculated using the following function:
+\details{ The spot rate according to Svensson for a maturity \eqn{m} is calculated using the following function:
 
 
-\deqn{s(m,\bm{\beta}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right) \\+ \beta_3\left(\frac{1-\exp(-\frac{m}{\tau_2})}{\frac{m}{\tau_2}} - \exp(-\frac{m}{\tau_2})\right)}}
+\deqn{s(m,\bm{\beta}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m}{\tau_1})}{\frac{m}{\tau_1}} - \exp(-\frac{m}{\tau_1})\right) + \beta_3\left(\frac{1-\exp(-\frac{m}{\tau_2})}{\frac{m}{\tau_2}} - \exp(-\frac{m}{\tau_2})\right)}}
 \value{
 Returns a vector consisting of the calculated spot rates. 
 }

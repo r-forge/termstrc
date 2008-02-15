@@ -15,7 +15,7 @@ If you use your own data set, make sure that the structure is identical to the p
 Use the function \code{str()} to explore the data set.}
 
 
-\seealso{\code{\link{eurobonds}}}
+\seealso{\code{\link{eurobonds}}, \code{\link{corpbonds}}}
 
 \examples{
 data(govbonds)
