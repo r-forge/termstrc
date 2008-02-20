@@ -19,7 +19,7 @@ resulting in
 
 \begin{equation}
   \label{eq:nelson-spot}
-   s(m_{ij},\bm{\beta}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m_{ij}}{\tau_1})}{\frac{m_{ij}}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m_{ij}}{\tau_1})}{\frac{m_{ij}}{\tau_1}} - \exp(-\frac{m_{ij}}{\tau_1})\right).
+   s(m_{ij},\bm{\beta}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m_{ij}}{\tau_1})}{\frac{m_{ij}}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m_{ij}}{\tau_1})}{\frac{m_{ij}}{\tau_1}} - \exp\left(-\frac{m_{ij}}{\tau_1}\right)\right).
 \end{equation}
 
  
@@ -27,7 +27,7 @@ This specifiation can produce a wide range of possible curve shapes, including m
 
 
 \begin{multline}\label{eq:svensson-spot}
-    s(m_{ij},\bm{\beta}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m_{ij}}{\tau_1})}{\frac{m_{ij}}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m_{ij}}{\tau_1})}{\frac{m_{ij}}{\tau_1}} - \exp(-\frac{m_{ij}}{\tau_1})\right) \\+ \beta_3\left(\frac{1-\exp(-\frac{m_{ij}}{\tau_2})}{\frac{m_{ij}}{\tau_2}} - \exp(-\frac{m_{ij}}{\tau_2})\right)\,,
+    s(m_{ij},\bm{\beta}) = \beta_0 + \beta_1\frac{1-\exp(-\frac{m_{ij}}{\tau_1})}{\frac{m_{ij}}{\tau_1}} + \beta_2\left(\frac{1-\exp(-\frac{m_{ij}}{\tau_1})}{\frac{m_{ij}}{\tau_1}} - \exp\left(-\frac{m_{ij}}{\tau_1}\right)\right) \\+ \beta_3\left(\frac{1-\exp(-\frac{m_{ij}}{\tau_2})}{\frac{m_{ij}}{\tau_2}} - \exp\left(-\frac{m_{ij}}{\tau_2}\right)\right)\,,
 \end{multline}
 
 
@@ -47,7 +47,7 @@ with a parameter vector ${\bm{\beta}} = \left(\beta_0,\beta_1,\beta_2,\tau_1,\be
 \item $\beta_0>0$ is the asymptotic value of the spot rate function $\lim_{m_{ij}\to\infty}s(m_{ij},\bm{\beta})$, which can be seen as the long-term interest rate.
 \item $\beta_1$ determines the rate of convergence with which the spot rate function approaches its long-term trend, and $\beta_0+\beta_1$ is the starting value of the curve at the short end. The slope will be negative if $\beta_1>0$ and vice versa.
 \item $\beta_2$ determines the size and the form of the hump. $\beta_2 >0$  results in a hump at  $\tau_1$, whereas $\beta_2<0$ produces a $U$-shape.
-\item $\tau_1>0$ specifies the location of the first hump or the U-shape on the curve.
+\item $\tau_1>0$ specifies the location of the first hump or the $U$-shape on the curve.
 \item $\beta_3$, analogously to $\beta_2$, determines the size and form of the second hump.
 \item $\tau_2>0$ specifies the position of the second hump.
 \end{itemize}
@@ -60,7 +60,7 @@ The discount factor for any maturity $m_{ij}$ can be calculated as follows:
 
 where $s(m_{ij},\bm{\beta})$ is the Nelson/Siegel or Svensson spot rate function defined in \eqref{eq:nelson-spot} and \eqref{eq:svensson-spot}. We optimize the objective function in \eqref{eq:optimalparam}. The above specification of the discount function leads to a nonlinear optimization problem. Good starting values for the parameter vector are important to find a global minimum. Instead of minimizing pricing errors, it is common to minimize the yield errors. The yield-to-maturities of the theoretical bond prices can easily be calculated numerically, because \eqref{eq:yield} has only one real root. 
 
-When minimizing the unweighted price errors, bonds with a longer maturity get a higher weighting, because they are more sensitive to changes in prices, which leads to a less accurate fit at the short end. Solutions to this heteroskedasticity problem are to use weights for the price errors, or to minimize the yield errors. A possible specification for the weights is based on the inverse of the duration as in \eqref{eq:durationweight} \citep[see][]{Bliss1997}.
+When minimizing the unweighted price errors, bonds with a longer maturity get a higher weighting, because they are more sensitive to changes in prices, which leads to a less accurate fit at the short end. Solutions to this heteroskedasticity problem are to use weights for the pricing errors, or to minimize the yield errors. A possible specification for the weights is based on the inverse of the duration as in \eqref{eq:durationweight} \citep[see][]{Bliss1997}.
 
 
 %%% Local Variables: 
