@@ -24,7 +24,7 @@ It includes data for government bonds of eight European countries. The bonds are
 str(govbonds$GERMANY)
 @
 
-Suppose, we want to perform a zero-coupon yield curve estimation for several countries with the \cite{Nelson1987} method minimizing the duration weighted price errors. The sample of bonds should be restricted to a maximum maturity of 30 years. 
+Suppose, we want to perform a zero-coupon yield curve estimation for several countries with the \cite{Nelson1987} method minimizing the duration weighted price errors. The sample of bonds is restricted to a maximum maturity of 30 years. 
 
 <<>>=
 group <- c("GERMANY","FRANCE", "BELGIUM", "SPAIN")
@@ -45,7 +45,7 @@ Now, let us have a look at the results.
 x
 @
 
-The summary method gives goodness of fit measures for the price and the yield errors. Moreover, it shows the convergence information from the solver, to check whether a solution to the nonlinear optimization problem has been found.
+The summary method gives goodness of fit measures for the price and the yield errors. Moreover, it shows the convergence information from the solver to check whether a solution to the nonlinear optimization problem has been found.
 
 <<>>=
 summary(x)
@@ -113,7 +113,7 @@ Figure \ref{fig:frenchspotcurve} shows the yield-to-maturities and the estimated
 %dev.off()
 %@
 
-As we can see in Figure \ref{fig:pricingerrors}, there seems to be a misspricing of two bonds. They will be removed and the estimation redone.
+As we can see in Figure \ref{fig:pricingerrors}, there seems to be a misspricing of two bonds. They can be removed and the estimation is redone.
 
 \begin{figure}[htb]
 \centering  
@@ -122,7 +122,7 @@ As we can see in Figure \ref{fig:pricingerrors}, there seems to be a misspricing
 \includegraphics[width=0.8\textwidth]{fig_pricingerrors}
 \end{figure}
 
-The result is, as expected, a better goodness of fit.
+As expected, the goodness of fit is improved.
 
 <<>>=
 z <- splines_estim(c("FRANCE"), rm_bond(bonddata,c("FR0000571044","FR0000571085"),"FRANCE"), c(0,30))
