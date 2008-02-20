@@ -3,10 +3,10 @@
 
 \title{S3 Plot Method }
 \description{
-S3 plot method for an object of the class \code{'error'}.}
+S3 plot method for an object of the class \code{"error"}.}
 \usage{
 \method{plot}{error}(x, type = "b", main = "", mar = c(7, 6, 6, 2) + 0.1, 
-oma = c(4, 2, 2, 2) + 0.1, ylab = "Error", ...)
+	oma = c(4, 2, 2, 2) + 0.1, ylab = "Error", ...)
 }
 
 \arguments{

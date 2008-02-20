@@ -7,10 +7,10 @@
 }
 \usage{
 \method{plot}{df_curves}(x, multiple = FALSE,
-ylim = c(range(mapply(function(i) range(x[[i]][, 2]),
-seq(x)))) * 100, xlim = c(), type = "l", lty = 1, lwd = 2,
-expoints = NULL, ylab = "Discount factor (percent)",
-xlab = "Maturity (years)", main = "Discount factor curves", ...)
+	ylim = c(range(mapply(function(i) range(x[[i]][, 2]),
+	seq(x)))) * 100, xlim = c(), type = "l", lty = 1, lwd = 2,
+	expoints = NULL, ylab = "Discount factor (percent)",
+	xlab = "Maturity (years)", main = "Discount factor curves", ...)
 }
 
 \arguments{

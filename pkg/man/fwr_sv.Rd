@@ -3,7 +3,7 @@
 
 \title{Forward Rate Calculation according to Svensson (1994).}
 \description{
-Calculate forward rates according to the Svensson. 
+Calculate forward rates according to Svensson (1994). 
 }
 \usage{
 fwr_sv(beta, m)

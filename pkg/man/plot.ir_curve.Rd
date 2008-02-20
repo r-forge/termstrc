@@ -7,8 +7,8 @@ S3 plot method for an object of the class \code{"ir_curve".}
 }
 \usage{
 \method{plot}{ir_curve}(x, ylim = c(), xlim = c(), lwd = 2, type = "l",
-xlab = "Maturity (years)", ylab = "Percent",
-col = "steelblue", lty = 1, ...)
+	xlab = "Maturity (years)", ylab = "Percent",
+	col = "steelblue", lty = 1, ...)
 }
 
 \arguments{
