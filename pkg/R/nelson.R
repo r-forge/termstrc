@@ -136,17 +136,15 @@ nelson_estim <-
                                       
   # calculate spread curves              	 
    if(n_group != 1) {  
-   s_curves <- mapply(function(k) 
-   					cbind(t,(zcy_curves[[k]][,2] - zcy_curves[[1]][,2])),sgroup,
+   s_curves <- mapply(function(k) cbind(t,(zcy_curves[[k]][,2] - zcy_curves[[1]][,2])),sgroup,
    					SIMPLIFY=FALSE)
-   
     } else s_curves = "none"
    
    for (k in sgroup) class(s_curves[[k]]) <- "ir_curve" 
    class(s_curves) <- "s_curves"
     
-   # calculate extrapolation point                        
-	expoints <- mapply(function(k) which(zcy_curves[[k]][,1] > 
+  # calculate extrapolation point                        
+  expoints <- mapply(function(k) which(zcy_curves[[k]][,1] > 
                  mapply(function(i) max(y[[i]][,1]), seq(n_group))[k])[1],sgroup, SIMPLIFY=FALSE )  
         
   # calculate forward rate curves 
@@ -161,7 +159,8 @@ nelson_estim <-
 
   
   # calculate discount factor curves 
-  df_curves <- mapply(function(k) cbind(zcy_curves[[k]][,1],exp(-zcy_curves[[k]][,1]*zcy_curves[[k]][,2])),sgroup,SIMPLIFY=FALSE)
+  df_curves <- mapply(function(k) cbind(zcy_curves[[k]][,1],exp(-zcy_curves[[k]][,1]*
+                                        zcy_curves[[k]][,2])),sgroup,SIMPLIFY=FALSE)
   
    for (k in sgroup) class(df_curves[[k]]) <- "ir_curve"
    class(df_curves) <- "df_curves"
@@ -172,23 +171,23 @@ nelson_estim <-
  result <- list(group=group,           # e.g. countries, rating classes
                  matrange=matrange,    # maturity range of bonds
                  method=method,        # method (Nelson/Siegel or Svensson)
-       		     fit=fit,              # fitting method (prices or yields)
+                 fit=fit,              # fitting method (prices or yields)
                  weights=weights,      # weighting type for estimation
                  n_group=n_group,      # number of groups,
                  spot=zcy_curves,      # zero coupon yield curves
                  spread=s_curves,      # spread curves
-                 forward=fwr_curves,# forward rate curves
-                 discount=df_curves,			   # discount factor curves
+                 forward=fwr_curves,   # forward rate curves
+                 discount=df_curves,   # discount factor curves
                  expoints=expoints,    # extrapolation points
-       		     cf=cf,                # cashflow matrix
+       		 cf=cf,                # cashflow matrix
                  m=m,                  # maturity matrix
                  duration=duration,    # duration, modified duration, weights
                  p=p,                  # dirty prices
                  phat=phat,            # estimated prices
-                 perrors=perrors,	   # price errors
+                 perrors=perrors,      # price errors
                  y=y,                  # maturities and yields
                  yhat=yhat,            # estimated yields
-                 yerrors=yerrors,	   # yield errors
+                 yerrors=yerrors,      # yield errors
                  opt_result=opt_result                             
                  )
               

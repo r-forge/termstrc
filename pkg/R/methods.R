@@ -95,19 +95,21 @@ plot.nelson <-
     	title(names(x$opt_result)[k])
     	 
     	if(ctype=="spot") {points(x$y[[k]][,1],x$y[[k]][,2]*100,col="red") 
-    		legend("bottom",legend=c("Zero-coupon yield curve","Yield to maturity"),  			col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))		} else 	legend("bottom",legend=cname	,col=c("steelblue"), lty = lty , pch=(-1))
+    		legend("bottom",legend=c("Zero-coupon yield curve","Yield to maturity"),
+                col=c("steelblue","red"), lty = c(1, -1), pch=c(-1,21))}
+        else 	legend("bottom",legend=cname	,col=c("steelblue"), lty = lty , pch=(-1))
 
     	
     	}     
  	    on.exit(par(old.par))
- 	}
+     }
     
      # plot spread curves 
     if(ctype == "spread") {plot(x$spread,expoints=expoints,
     	xlim= c(max(floor(samplemat[1]),matrange[1]),
-  						    min(ceiling(samplemat[2]),matrange[2])),lwd=lwd,
+  	min(ceiling(samplemat[2]),matrange[2])),lwd=lwd,
   						    ...)
-    						}
+  	}
     # plot errors 
     if(errors %in% c("price", "yield")){
     	
@@ -115,14 +117,18 @@ plot.nelson <-
     	if(x$n_group == 1) ask= FALSE
        	for(k in seq(x$n_group)){
     		
-     		plot.error(edata[[k]],ask=ask,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
+     		plot.error(edata[[k]],ask=ask,main=x$group[k],
+                           ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
     		legend("bottomright", legend=c(paste("  RMSE",
-    		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4), "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4), "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
+    		        switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4),
+                       "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),
+                        paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4),
+                        "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
     		
-    		}
-    	
     	}
+    	
+      }
     				
    
    
@@ -320,42 +326,42 @@ plot.cubicsplines <-
     	  col=c("steelblue","steelblue","red", "darkgrey"),
     	  lty = c(1,3,-1,2), pch=c(-1,-1,21,-1))
 	
-    		
-    		} else 	legend("bottom",legend=cname,col=c("steelblue"), lty = lty , pch=(-1))
+    	     } else  legend("bottom",legend=cname,col=c("steelblue"), lty = lty , pch=(-1))
 
     	
-    	}
+    	 }
         on.exit(par(old.par))
- 	 }
+ 	}
     	
     # plot spread curves 
     if(ctype == "spread") {plot(x$spread,expoints=NULL,
     	xlim= c(max(floor(samplemat[1]),matrange[1]),
-  						    min(ceiling(samplemat[2]),matrange[2],max(mapply(function(i) 
-					max(x$spread[[i]][,1]),seq(x$spread))))),lwd=lwd
-  						   ,...) 
-    						}
+  	     min(ceiling(samplemat[2]),matrange[2],max(mapply(function(i) 
+	     max(x$spread[[i]][,1]),seq(x$spread))))),lwd=lwd ,...) 
+       }
     						
     						
      # plot errors 
     if(errors %in% c("price", "yield")){
     	
     	edata <- switch(errors,"price" = x$perrors, "yield"= x$yerrors )
-    	if(x$n_group == 1) ask= FALSE
-    	for(k in seq(x$n_group)){
-    		
+
+        if(x$n_group == 1) ask= FALSE
+
+        for(k in seq(x$n_group)){
      		plot.error(edata[[k]],ask=ask
-                           ,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
+                ,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
     		legend("bottomright", legend=c(paste("  RMSE",
-    		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4), "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4), "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
+    		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4),
+                       "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),
+                        paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4),
+                        "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
     		
-    		}
+    	  }
     	
-    	}						
-    						
-    						
-    							
+     }						
+    					     					        							
 }  
 
 ###################################################################
@@ -497,5 +503,5 @@ plot.error <- function(x,type="b",main="", mar= c(7,6,6,2) + 0.1, oma=c(4,2,2,2)
 		title(xlab="ISIN", outer=TRUE,main=main,...) 
 	 
 	 on.exit(par(old.par))
-	}               
+}               
 	
