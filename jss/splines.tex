@@ -2,11 +2,11 @@
 \section{Cubic splines}
 \label{sec:cubic-splines}
 
-\cite{McCulloch1971, McCulloch1975} use the following definition of the discount function.
+\cite{McCulloch1971, McCulloch1975} use the following definition of the discount function:
 
 \begin{equation}
   \label{eq:df_spline}
-  \delta(m_{ij},\bm{\beta})=1+\sum_{l=1}^k\beta^lg^l(m_{ij})
+  \delta(m_{ij},\bm{\beta})=1+\sum_{l=1}^k\beta^lg^l(m_{ij}).
 \end{equation}
 
 It is a linear combination of functions satisfying $g^l(0)=0$, and the unknown parameter vector $\bm{\beta}$ will be estimated with ordinary least squares (OLS). This piecewise function is twice-differentable at each knot point, which results in a smooth curve.
@@ -17,7 +17,7 @@ It is a linear combination of functions satisfying $g^l(0)=0$, and the unknown p
 
 \begin{equation*}
   \label{eq:A.1a}
-  q_l = m_h+\theta(m_{h+1}-m_h)
+  q_l = m_h+\theta(m_{h+1}-m_h),
 \end{equation*}
 
 where
@@ -34,13 +34,14 @@ and
   \theta = \frac{(l-1)m}{k-2}-h\,.
 \end{equation*}
 
-\cite{McCulloch1971} sets the  number of basis functions $k$ to the integer nearest to the square root of the number of observed bonds. This allows a smooth fit of the discount function.
+\cite{McCulloch1971} sets the  number of basis functions $k$ to the integer nearest to the square root of the number of observed bonds. 
 
 \begin{equation*}
   \label{eq:nofknots}
   k = \left\lfloor\sqrt{m}+0.5\right\rfloor
 \end{equation*}
 
+This allows a smooth fit of the discount function.
 
 \subsection{Basis functions for cubic splines}
 
@@ -56,7 +57,7 @@ For $q_{l-1}\leq m_{ij} <q_l$, we define
 
 \begin{equation*}
   \label{eq:A.3}
-  g^l(m_{ij})=\frac{(m_{ij}-q_{l-1})^3}{6(q_l-q_{l-1})}
+  g^l(m_{ij})=\frac{(m_{ij}-q_{l-1})^3}{6(q_l-q_{l-1})}.
 \end{equation*}
 
 When $q_l\leq m_{ij}< q_{l+1}$, we define
@@ -98,7 +99,7 @@ The above formulas apply when $l<k$. When $l=k$, we define
 
 regardless of $m_{ij}$.
 
-The basis functions are calulated for the maturities of each cashflow $m_{i,j}$ and summarized in the matrix
+The basis functions are calulated for the maturities of each cashflow $m_{ij}$ and summarized in the matrix
 
 \begin{equation*}
 \label{eq:basisfctmatrix}	
@@ -110,18 +111,18 @@ where $g_{ij}^l=g^l(m_{ij})$.
 
 \subsection{Regression fitting of the discount function}
 
-The dirty prices are again expressed as the sum of the discounted cashflows plus an idiosyncratic error.
+The dirty prices are again expressed as the sum of the discounted cashflows plus an idiosyncratic error
 
 \begin{equation}
   \label{eq:fairpricespline}
-  \bm{p}= \bm{\iota}'\left(\bm{C}\cdot\bm{D}\right)+ \bm{\epsilon}
+  \bm{p}= \bm{\iota}'\left(\bm{C}\cdot\bm{D}\right)+ \bm{\epsilon}.
 \end{equation}
 
-The discount factor matrix is defined as the weighted sum of the $l=1\dots k$ basis functions.
+The discount factor matrix is defined as the weighted sum of the $l=1\dots k$ basis functions
 
 \begin{equation}
   \label{eq:dfmatrixspline}
-   \bm{D}=1+\beta^1\bm{G}^1+\cdots + \beta^k\bm{G}^k
+   \bm{D}=1+\beta^1\bm{G}^1+\cdots + \beta^k\bm{G}^k.
 \end{equation}
 
 We substitute \eqref{eq:dfmatrixspline} in \eqref{eq:fairpricespline} and get an expression which is linear in the parameter vector $\bm{\beta}=(\beta^1,\dots,\beta^k)$.
@@ -160,11 +161,11 @@ The unknown parameters can now be estimated with OLS.
 \bm{\hat \beta}_{\left[k\times 1\right]}= \left( \bm{X}' \bm{X}\right )^{-1}\bm{X}' \bm{z}
 \end{equation*}
 
-We can use the resulting parameters to calculate the discount function in \eqref{eq:df_spline} for any given maturity $m_{ij}$ between the first and the last knot point, which can then be converted to the spot rate function.
+We can use the resulting parameters to calculate the discount function in \eqref{eq:df_spline} for any given maturity $m_{ij}$ between the first and the last knot point, which can then be converted to the spot rate function
 
 \begin{equation*}
   \label{eq:transformdf}
-  s(m_{ij},\bm{\beta}) = \frac{-\ln \delta(m_{ij},\bm{\beta})}{m}
+  s(m_{ij},\bm{\beta}) = \frac{-\ln \delta(m_{ij},\bm{\beta})}{m}.
 \end{equation*}
 
 
@@ -181,10 +182,10 @@ distributed with mean
 and variance
 
 \begin{equation*}
-\sigma^2 = \bm{g}(m_{ij})'\left(\sigma^2(\bm{X' X})^{-1} \right)\bm{g}(m_{ij})\,
+\sigma^2 = \bm{g}(m_{ij})'\left(\sigma^2(\bm{X' X})^{-1} \right)\bm{g}(m_{ij}),
 \end{equation*}
 
-whereas $\bm{g}(m_{ij})= \left(g^1(m_{ij}), \dots, g^l(m_{ij}) \right)$.
+where $\bm{g}(m_{ij})= \left(g^1(m_{ij}), \dots, g^l(m_{ij}) \right)$.
 
 The $1- \alpha$ confidence interval for $\mu$ of the discount function can now be constructed in the usual way
 
