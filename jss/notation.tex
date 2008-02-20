@@ -81,7 +81,7 @@ The elements are denoted by
 This vector contains the yield-to-maturity described in \eqref{eq:yield}.
 
 \begin{equation*}\label{pd}
-    \bm{y}_{\left[1\times m\right]}= \{y_j\}\,.
+    \bm{y}_{\left[1\times m\right]}= \{y_j\}
 \end{equation*}
 
 
@@ -126,11 +126,11 @@ whereas $\omega_j$ is the weight for bond $j$ with duration $d_j$.
 \subsection{Estimation procedure}
 \label{sec:estimation}
 
-The simplest smoothing technique is linear interpolation. In many cases it is not appropriate for zero-coupon yield curve estimation, because it can lead to spikes in the forward rate curve, which is economically implausible. Therefore, we use indirect estimation procedures that postulate a specific form for the spot rate function $s(m_{ij}, \bm{\beta})$ or the discount function $\delta(m_{ij}, \bm{\beta})$, where $\bm{\beta}$ is a vector of parameters \citep[see, e.g.][]{Martellini2003}. This allows us to construct a discount matrix. The \emph{theoretical bond prices} are then defined as sums of the discounted cash flows of each bond.
+The simplest smoothing technique is linear interpolation. In many cases it is not appropriate for zero-coupon yield curve estimation, because it can lead to spikes in the forward rate curve, which is economically implausible. Therefore, we use indirect estimation procedures that postulate a specific form for the spot rate function $s(m_{ij}, \bm{\beta})$ or the discount function $\delta(m_{ij}, \bm{\beta})$, where $\bm{\beta}$ is a vector of parameters \citep[see, e.g.][]{Martellini2003}. This allows us to construct a discount matrix. The \emph{theoretical bond prices} are then defined as sums of the discounted cash flows of each bond
 
 \begin{equation}
   \label{eq:theorprices}
-  \bm{\hat{p}} = \bm{\iota}'(\bm{C}\cdot\bm{D})
+  \bm{\hat{p}} = \bm{\iota}'(\bm{C}\cdot\bm{D}).
 \end{equation}
 
 
