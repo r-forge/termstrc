@@ -1,4 +1,4 @@
-1m <- seq(0,70,0.01)     # time to maturity
+m <- seq(0,70,0.01)     # time to maturity
 
 beta_1 <- 1      # parameters
 tau_1 <- 5
@@ -6,7 +6,6 @@ beta_2 <- 4
 beta_0 <- 1
 beta_3 <- 1
 tau_2 <- 10
-
 
 
 pdf("curveshape.pdf",width=9,height=9)
@@ -30,7 +29,7 @@ lines(m, beta_2*(((1-exp(-m/tau_1))/(m/tau_1))-exp(-m/tau_1)),lty=4,col=4)
 lines(m, beta_3*(((1-exp(-m/tau_2))/(m/tau_2))-exp(-m/tau_2)),lty=5,col=5)
 
 
-legend("topright",legend=c(expression(s(m,b)),
+legend("topright",legend=c(expression(s(m,beta)),
        expression(beta[0]),
        expression(beta[1]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1])))),
        expression(beta[2]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1]))-exp(-frac(m,tau[1])))),
