@@ -63,7 +63,7 @@ contains the following items (mainly lists):
   \item{y}{one list for each group with the bond yields and the associated maturities.}
   \item{yhat}{one list for each group with the theoretical bond yields calculated with the estimated bond prices \code{phat}.}
   \item{yerrors}{ one list for each group with an object of the class \code{"error"} containing the yield errors of the bonds and the associated maturities.}
-  \item{opt_result}{one liste for each group with the optimal parameter vecotor obtained from the optimisation and further information concerning the optimisation.}
+  \item{opt_result}{one liste for each group with the optimal parameter vector obtained from the optimisation and further information concerning the optimisation.}
    
 }
 \references{ 

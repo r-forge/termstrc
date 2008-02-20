@@ -7,9 +7,10 @@
 }
 \usage{
 \method{plot}{s_curves}(x, xlim = c(range(mapply(function(i) range(x[[i]][, 1]), seq(x)))),
-ylim = c(range(mapply(function(i) range(x[[i]][, 2]), seq(x)))) * 10000, 
-expoints = NULL, xlab = "Maturity (years)", 
-ylab = "Spread (basis points)", lwd = 2, lty = 1, main = "Spread curves", ...)
+	ylim = c(range(mapply(function(i) range(x[[i]][, 2]), 
+	seq(x)))) * 10000, expoints = NULL, 
+	xlab = "Maturity (years)", ylab = "Spread (basis points)",
+	lwd = 2, lty = 1, main = "Spread curves", ...)
 }
 
 \arguments{

@@ -21,7 +21,7 @@ nelson_siegel(beta, m)
  
 \value{Returns a vector consisting of the calculated spot rates.}
 
-\references{ Charles R. Nelson and Andrew F. Siegel (1987): Parsimonious modeling of yield curves. \emph{The Journal 
+\references{ Charles R. Nelson and Andrew F. Siegel (1987): Parsimonious Modeling of Yield Curves. \emph{The Journal 
 of Business}, \bold{60(4)}:473--489.}
 
 %\author{ Robert Ferstl, Josef Hayden }

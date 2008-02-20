@@ -7,10 +7,10 @@
 }
 \usage{
 \method{plot}{fwr_curves}(x, multiple = FALSE, 
-ylim = c(range(mapply(function(i) range(x[[i]][, 2]), seq(x)))) * 100, 
-xlim = c(), type = "l", lty = 1, lwd = 2, expoints = NULL,
-ylab = "Forward rate (percent)", xlab = "Maturity (years)",
-main = "Forward rate curves", ...)
+	ylim = c(range(mapply(function(i) range(x[[i]][, 2]),
+	seq(x)))) * 100, xlim = c(), type = "l", lty = 1,
+	lwd = 2, expoints = NULL, ylab = "Forward rate (percent)", 
+	xlab = "Maturity (years)", main = "Forward rate curves", ...)
 }
 
 \arguments{

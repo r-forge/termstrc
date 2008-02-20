@@ -9,8 +9,8 @@ duration(cf_p, m_p, y)
 
 \arguments{
   \item{cf_p}{cashflows matrix including the prices of the bonds.}
-  \item{m_p}{maturity matrix including a first row with zeros.}
-  \item{y}{yield of the bond.}
+  \item{m_p}{maturity matrix, the first row is filled with zeros.}
+  \item{y}{yields of the bonds.}
 }
 \details{The duration vector is calculated using the following formula:
 

@@ -8,9 +8,10 @@
 
 \usage{
 \method{plot}{cubicsplines}(x, matrange = c(min(mapply(function(i) min(x$y[[i]][, 1]), 
-seq(x$n_group))), max(mapply(function(i) max(x$y[[i]][, 1]), seq(x$n_group)))),
-multiple = FALSE, expoints= NULL, ctype = "spot", lwd=2,
- lty=1, type = "l", errors = "price", inset = c(0.8, 0.1), ask=TRUE, ...)
+	seq(x$n_group))), max(mapply(function(i) max(x$y[[i]][, 1]), 
+	seq(x$n_group)))), multiple = FALSE, expoints= NULL,
+	ctype = "spot", lwd=2, lty=1, type = "l", 
+	errors = "price", inset = c(0.8, 0.1), ask=TRUE, ...)
 }
 
 \arguments{
