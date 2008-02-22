@@ -7,20 +7,20 @@ The data sets in our package have the following structure. They are list objects
 
 \begin{table}[htb]
   \centering
-  \begin{tabular}[htb]{ll}
+  \begin{tabular}[htb]{|l|l|}
 \hline
     \textbf{Object} & \textbf{Description} \\
 \hline
-ISIN & International Securities Identifying Number (ISIN)\\
-MATURITYDATE & maturity dates\\
-ISSUEDATE & issue dates\\
-COUPONRATE & coupon rate as percentage of nominal value\\
-PRICE & observed market price (clean price)\\
-ACCRUED & accrued interest\\
-CASHFLOWS\$ISIN & International Securities Identifying Number (ISIN)\\
-CASHFLOWS\$CF & all cashflows for a given ISIN\\
-CASHFLOWS\$DATE & maturity dates of all cashflows\\
-TODAY & date when market prices were observed\\
+\code{ISIN} & International Securities Identifying Number (ISIN)\\
+\code{MATURITYDATE} & maturity dates\\
+\code{ISSUEDATE} & issue dates\\
+\code{COUPONRATE} & coupon rate as percentage of nominal value\\
+\code{PRICE} & observed market price (clean price)\\
+\code{ACCRUED} & accrued interest\\
+\code{CASHFLOWS\$ISIN} & International Securities Identifying Number (ISIN)\\
+\code{CASHFLOWS\$CF} & all cashflows for a given ISIN\\
+\code{CASHFLOWS\$DATE} & maturity dates of all cashflows\\
+\code{TODAY} & date when market prices were observed\\
 \hline  
 \end{tabular}
   \caption{Contents of data set}
@@ -34,25 +34,27 @@ It is very easy to convert data downloaded via \emph{Thomson Datastream}\texttra
 
 The package \pkg{termstrc} consists of two core functions and several helper functions which perform other stuff. \code{nelson_estim()} and \code{splines_estim()}.
 
-% \begin{table}[htb]
-%   \centering
-% \begin{tabular}[htb]{llll}
-%   \hline
-%   \textbf{Argument}    & \textbf{Description}     & \code{nelson_estim()}       & \code{splines_estim()} \\
-%   \hline
-% \code{group} & vector defining the group of bonds used for the estimation & & \\
-%  & & & 
-% \code{bonddata} & a data set of bonds in a list format & & \\
-% \code{matrange} & restrict maturity range & & \\
-% \code{method} & \code{"Nelson/Siegel" or \code{}} & & \\
-% \code{fit} & & & \\
-% \code{weights} & & & \\
-% \code{startparam} & & & \\
-% \end{tabular}
-% \caption{Input arguments for the core functions}
-% \label{tab:corefct}
-% \end{table}
-
+\begin{table}[htb]
+  \centering
+  \begin{tabular}[htb]{|l|l|c|c|}
+  \hline
+  \textbf{Argument}    & \textbf{Description}     & \code{nelson_estim()}       & \code{splines_estim()} \\
+  \hline
+\multirow{2}{1in}{\code{group}} & vector defining the group & \multirow{2}{1in}{\centering \checkmark}& \multirow{2}{1in}{\centering \checkmark}\\
+                                &  of bonds used for the estimation & & \\\hline
+\code{bonddata} & data set of bonds in a list format & \checkmark & \checkmark \\\hline
+\code{matrange} & restrict maturity range & \checkmark & \checkmark\\\hline
+\multirow{2}{1in}{\code{method}} & \code{"Nelson/Siegel"} &\multirow{2}{1in}{\centering \checkmark} & \\
+                                 & or \code{"Svensson"} & &\\\hline
+\multirow{2}{1in}{\code{fit}} & \code{"prices"} or \code{"yields"} for&\multirow{2}{1in}{\centering \checkmark} & \\
+                              & minimized squared error & &\\\hline
+\multirow{2}{1in}{\code{weights}} & \code{"none"} or&\multirow{2}{1in}{\centering \checkmark} & \\
+                                  & \code{"duration"} & & \\\hline
+\code{startparam} & matrix of start parameters & \checkmark & \\\hline
+\end{tabular}
+\caption{Input arguments for the core functions}
+\label{tab:corefct}
+\end{table}
 
 \subsection{Exploring the estimation results}
 \label{sec:expl-estim-results}
