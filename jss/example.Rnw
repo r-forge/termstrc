@@ -62,9 +62,9 @@ Our package offers several options to plot the results, e.g. spot rate, forward 
 
 \begin{figure}[htb]
 \centering
+\includegraphics[width=0.7\textwidth]{fig_eurospotcurves}
 \caption{Zero-coupon yield curves estimated with Nelson/Siegel}
 \label{fig:spotcurves}
-\includegraphics[width=0.7\textwidth]{fig_eurospotcurves}
 \end{figure}
 
 
@@ -93,9 +93,9 @@ Figure \ref{fig:frenchspotcurve} shows the yield-to-maturities and the estimated
 
 \begin{figure}[htb]
 \centering
+\includegraphics[width=0.8\textwidth]{fig_frenchspotcurve}
 \caption{Zero-coupon yield curve for French government bonds estimated with cubic splines}
 \label{fig:frenchspotcurve}
-\includegraphics[width=0.8\textwidth]{fig_frenchspotcurve}
 \end{figure}
 
 % \begin{figure}[htb]
@@ -117,9 +117,9 @@ As we can see in Figure \ref{fig:pricingerrors}, there seems to be a misspricing
 
 \begin{figure}[htb]
 \centering  
+\includegraphics[width=0.8\textwidth]{fig_pricingerrors}
 \caption{Pricing errors for French government bonds} 
 \label{fig:pricingerrors}
-\includegraphics[width=0.8\textwidth]{fig_pricingerrors}
 \end{figure}
 
 As expected, the goodness of fit is improved.
