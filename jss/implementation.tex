@@ -1,9 +1,9 @@
 \section[Software implementation in R]{Software implementation in \proglang{R}}
 \label{sec:soft-impl}
 
-\subsection{Data sets}
+\subsection{Structure of data sets}
 
-The data sets in our package have the following structure. They are list objects, which contain sublists for the countries available in the data set. Each of them contains market data in the format described in Table~\ref{tab:dataset}.
+The data sets in our package have the following structure. They are list objects, which contain sublists for the countries available in the data set. Each of them contains market data in the format described in Table~\ref{tab:dataset}. 
 
 \begin{table}[htb]
   \centering
@@ -17,22 +17,24 @@ The data sets in our package have the following structure. They are list objects
 \code{COUPONRATE} & coupon rate as percentage of nominal value\\
 \code{PRICE} & observed market price (clean price)\\
 \code{ACCRUED} & accrued interest\\
+\code{TODAY} & date when market prices were observed\\\hline
 \code{CASHFLOWS\$ISIN} & International Securities Identifying Number (ISIN)\\
 \code{CASHFLOWS\$CF} & all cashflows for a given ISIN\\
 \code{CASHFLOWS\$DATE} & maturity dates of all cashflows\\
-\code{TODAY} & date when market prices were observed\\
 \hline  
 \end{tabular}
-  \caption{Contents of data set}
+  \caption{Structure of a data set}
 \label{tab:dataset}
 \end{table}
 
-It is very easy to convert data downloaded via \emph{Thomson Datastream}\texttrademark\, to our format.\footnote{Thomson Datastream is the world's largest most respected financial statistical database. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform a zero-coupon yield curve estimation with the two procedures mentioned in Section~\ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
+The first part consists of the general specifications of the bonds and its market price and accrued interest. The sublist \code{CASHFLOWS} contains all cashflows for the available bonds sorted by their ISIN and the their maturity dates. This data structure is very convenient when building the cash flow matrix and the maturity matrix defined in \ref{sec:notation}.
+
+It is easy to convert data downloaded via \emph{Thomson Datastream}\texttrademark\, to our format.\footnote{Thomson Datastream is the world's largest most respected financial statistical database. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform a zero-coupon yield curve estimation with the two procedures mentioned in Section~\ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
 
 \subsection{Core functions}
 \label{sec:main-functions}
 
-The package \pkg{termstrc} consists of two core functions and several helper functions which perform other stuff. \code{nelson_estim()} and \code{splines_estim()}.
+The package \pkg{termstrc} consists of two core functions and several helper functions which perform other stuff. \code{nelson_estim()} and \code{splines_estim()} allow the user to perform the parametric Nelson/Siegel or Svensson estimation and the cubic splines. Table~\ref{tab:corefct} gives an overview about the similar input arguments of these functions.
 
 \begin{table}[htb]
   \centering
@@ -56,18 +58,28 @@ The package \pkg{termstrc} consists of two core functions and several helper fun
 \label{tab:corefct}
 \end{table}
 
+\subsection{Helper functions}
+\label{sec:helper-functions}
+
+\Bart Describe most important helper functions!
+
 \subsection{Exploring the estimation results}
 \label{sec:expl-estim-results}
 
+\Homer Describe S3 classes!
+
+The core functions return an object of the class \code{nelson} or \code{cubicsplines}.
 
 
 \subsection{Visualization of the results}
 \label{sec:visu-results}
 
-Our software offers the following possibilities to plot the estimation results.
+The S3 plot methods \code{plot.nelson} and \code{plot.cubicsplines} offer the following possibilities:
 
 \begin{itemize}
-\item zero-coupon yield curves
+\item plot zero-coupon, forward, discount or spread curves
+\item return single/multiple plots for the estimated group of bonds
+\item show error plots for pricing/yield errors to identify outliers
 \end{itemize}
 
 \subsection{Perfomance issues}
