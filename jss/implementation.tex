@@ -1,9 +1,9 @@
-\section{Software implementation}
+\section[Software implementation in R]{Software implementation in \proglang{R}}
 \label{sec:soft-impl}
 
 \subsection{Data sets}
 
-The data sets in our package have the following structure. They are list objects, which contain sublists for the countries available in the data set. Each of them contains market data in the format described in Table \ref{tab:dataset}.
+The data sets in our package have the following structure. They are list objects, which contain sublists for the countries available in the data set. Each of them contains market data in the format described in Table~\ref{tab:dataset}.
 
 \begin{table}[htb]
   \centering
@@ -27,7 +27,49 @@ TODAY & date when market prices were observed\\
 \label{tab:dataset}
 \end{table}
 
-It is very easy to convert data downloaded via \emph{Thomson Datastream}\texttrademark\,to our format.\footnote{Thomson Datastream is the world's largest most respected financial statistical database. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform a zero-coupon yield curve estimation with the two procedures mentioned in Section \ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
+It is very easy to convert data downloaded via \emph{Thomson Datastream}\texttrademark\, to our format.\footnote{Thomson Datastream is the world's largest most respected financial statistical database. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform a zero-coupon yield curve estimation with the two procedures mentioned in Section~\ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
+
+\subsection{Core functions}
+\label{sec:main-functions}
+
+The package \pkg{termstrc} consists of two core functions and several helper functions which perform other stuff. \code{nelson_estim()} and \code{splines_estim()}.
+
+\begin{table}[htb]
+  \centering
+\begin{tabular}[htb]{llll}
+  \hline
+  \textbf{Argument}    & \textbf{Description}     & \code{nelson_estim()}       & \code{splines_estim()} \\
+  \hline
+\code{group} & vector defining the group of bonds used for the estimation & & \\
+\code{bonddata} & a data set of bonds in a list format & & \\
+\code{matrange} & & & \\
+\code{method} & & & \\
+\code{fit} & & & \\
+\code{weights} & & & \\
+\code{startparam} & & & \\
+\end{tabular}
+\caption{Input arguments for the core functions}
+\label{tab:corefct}
+\end{table}
+
+\subsection{Exploring the estimation results}
+\label{sec:expl-estim-results}
+
+
+
+\subsection{Visualization of the results}
+\label{sec:visu-results}
+
+Our software offers the following possibilities to plot the estimation results.
+
+\begin{itemize}
+\item zero-coupon yield curves
+\end{itemize}
+
+\subsection{Perfomance issues}
+\label{sec:perfomance-issues}
+
+The implementation of the \pkg{termstrc} package is based on an efficent operation on the data sets in list format. We avoid programming loops by using apply-functions. The most time-consuming tasks are solving the nonlinear optimization problem for \cite{Nelson1987} and \cite{Svensson1994} method and the ordinary least squares estimation of the \cite{McCulloch1975} cubic splines. In Section~\ref{sec:rolling-estim}, we will see results for a rolling estimation procedure performed on a large data set.
 
 %%% Local Variables: 
 %%% mode: latex
