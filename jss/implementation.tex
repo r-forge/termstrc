@@ -1,33 +1,36 @@
 \section{Software implementation}
+\label{sec:soft-impl}
 
 \subsection{Data sets}
 
-We use the following list structure for a data set of coupon bonds. It contains all the necessary information to perform an estimation of the zero-coupon yield curve.
+The data sets in our package have the following structure. They are list objects, which contain sublists for the countries available in the data set. Each of them contains market data in the format described in Table \ref{tab:dataset}.
 
 \begin{table}[htb]
   \centering
   \begin{tabular}[htb]{ll}
+\hline
     \textbf{Object} & \textbf{Description} \\
-ble & bla
-  \end{tabular}
+\hline
+ISIN & International Securities Identifying Number (ISIN)\\
+MATURITYDATE & maturity dates\\
+ISSUEDATE & issue dates\\
+COUPONRATE & coupon rate as percentage of nominal value\\
+PRICE & observed market price (clean price)\\
+ACCRUED & accrued interest\\
+CASHFLOWS\$ISIN & International Securities Identifying Number (ISIN)\\
+CASHFLOWS\$CF & all cashflows for a given ISIN\\
+CASHFLOWS\$DATE & maturity dates of all cashflows\\
+TODAY & date when market prices were observed\\
+\hline  
+\end{tabular}
   \caption{Contents of data set}
+\label{tab:dataset}
 \end{table}
 
- $ GERMANY:List of 8
-  ..$ ISIN        : chr [1:52] "DE0001141414" "DE0001137131" "DE0001141422" "DE0001137149" ...
-  ..$ MATURITYDATE:Class 'Date'  num [1:52] 13924 13952 13980 14043 14064 ...
-  ..$ ISSUEDATE   :Class 'Date'  num [1:52] 11913 13215 12153 13298 10411 ...
-  ..$ COUPONRATE  : num [1:52] 0.0425 0.0300 0.0300 0.0325 0.0413 ...
-  ..$ PRICE       : num [1:52] 100.0  99.9  99.8  99.8 100.1 ...
-  ..$ ACCRUED     : num [1:52] 4.09 2.66 2.43 2.07 2.39 ...
-  ..$ CASHFLOWS   :List of 3
-  .. ..$ ISIN: chr [1:384] "DE0001141414" "DE0001137131" "DE0001141422" "DE0001137149" ...
-  .. ..$ CF  : num [1:384] 104 103 103 103 104 ...
-  .. ..$ DATE:Class 'Date'  num [1:384] 13924 13952 13980 14043 14064 ...
-  ..$ TODAY       :Class 'Date'  num 13908
-
+It is very easy to convert data downloaded via \emph{Thomson Datastream}\texttrademark\,to our format.\footnote{Thomson Datastream is the world's largest most respected financial statistical database. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform a zero-coupon yield curve estimation with the two procedures mentioned in Section \ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
 
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "jss-termstrc"
 %%% End: 
+
