@@ -73,10 +73,14 @@ The package \pkg{termstrc} consists of two core functions and several helper fun
 
 %\Homer Describe S3 classes!
 
-The core functions return an object of the class \code{nelson} or \code{cubicsplines}.
+The core functions return an object of the class \code{"nelson"} or \code{"cubicsplines"}. The packages offers the common
+\code{S3} plot, print and summary methods for these classes. The objects itself is a list and contains vectors and sublists as described in Table~\ref{tab:resultsobjct}. The sublists are structured according to the chosen countries, e.g. \code{<object>$m$<COUNTRY>} gives the maturity matrix of \code{<COUNTRY>}. 
 
 \input{estimresults.tex}
 
+The summary methods \code{summary.nelson} and \code{summary.cubicsplines} gives goodnes of fit measures, i.e. the RMSE and MAE for the pricing and yield errors. \code{summary.nelson} additionally shows convergence information from the solver \code{nlminb}.
+Because the estimation of the parameters for the cubic splines is based on OLS estimation \code{summary.cubicsplines} also provides the summary statistics of this estimation applying \code{summary.lm(<object>$regout)}. The print methods \code{print.nelson} and \code{print.cubicsplines} return the estimated parameters in a clearly arranged way.
+As Table~\ref{tab:resultsobjct} shows the returned object itself contains object of certain classes. For objects of the class \code{"spot_curves", "fwr_curves", "df_curves"} and \code{"error"} plot methods are available. They will be covered in the following section. For sublists of \code{regout} which are objects of the class \code{"lm"} the standard \code{"lm"} methods apply.  
 
 \subsection{Visualization of the results}
 \label{sec:visu-results}
@@ -88,6 +92,11 @@ The S3 plot methods \code{plot.nelson} and \code{plot.cubicsplines} offer the fo
 \item return single/multiple plots for the estimated group of bonds
 \item show error plots for pricing/yield errors to identify outliers
 \end{itemize}
+
+Both plot methods depend on plot methods of the classes \code{"spot_curves", "fwr_curves"} and \code{"df_curves"}. These plot methods are itself based on the plot method for the class \code{"ir_curve}. It is the most granular class. Objects of this class are curves of all named types of one country. The advantage for the user is, that when he
+is exploring the \code{nelson} or \code{cubicsplines} object, he can at every hierarchical level plot the different curves. 
+The command \code{plot(<object>$spot$<COUNTRY>)} for instance plots the spot curve of \code{<COUNTRY>}, \code{plot(<object>$spot)} will plot the spot curves of all countries. 
+
 
 \subsection{Perfomance issues}
 \label{sec:perfomance-issues}
