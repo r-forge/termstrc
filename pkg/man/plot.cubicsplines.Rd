@@ -9,7 +9,7 @@
 \usage{
 \method{plot}{cubicsplines}(x, matrange = c(min(mapply(function(i) min(x$y[[i]][, 1]), 
 	seq(x$n_group))), max(mapply(function(i) max(x$y[[i]][, 1]), 
-	seq(x$n_group)))), multiple = FALSE, expoints= NULL,
+	seq(x$n_group)))), multiple = FALSE, 
 	ctype = "spot", lwd=2, lty=1, type = "l", 
 	errors = "price", inset = c(0.8, 0.1), ask=TRUE, ...)
 }
@@ -18,7 +18,6 @@
  \item{x}{object of the class \code{"cubicsplines"}.}
   \item{matrange}{ maturity range for the plot, e.g. c(2,10).}
   \item{multiple}{if \code{TRUE} all curves are plotted together (default: \code{FALSE}).}
-  \item{expoints}{extrapolation points (default: \code{NULL}).}
   \item{ctype}{ parameter setting for the desired curve type, \code{"spot"} (\code{"forward"}, \code{"discount"}, \code{"spread"}) for the spot rate (forward rate, discount factor, spread) curves. Use \code{"none"} if no curve plot is desired.  }
  \item{errors}{Specify the type of the error plot. If \code{"price"} (\code{"yield"}) the price (yield) errors will be plot. Use \code{"none"} if no error plot is desired. }
 \item{lwd}{the line width, for details see \code{\link{par}}.}
