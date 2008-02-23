@@ -78,7 +78,7 @@ The core functions return an object of the class \code{"nelson"} or \code{"cubic
 
 \input{estimresults.tex}
 
-The summary methods \code{summary.nelson} and \code{summary.cubicsplines} gives goodnes of fit measures, i.e. the RMSE and MAE for the pricing and yield errors. \code{summary.nelson} additionally shows convergence information from the solver \code{nlminb}.
+The summary methods \code{summary.nelson} and \code{summary.cubicsplines} gives goodnes of fit measures, i.e. the RMSE and MAE for the pricing and yield errors. \code{summary.nelson} additionally shows convergence information from the solver \code{nlminb()}.
 Because the estimation of the parameters for the cubic splines is based on OLS estimation \code{summary.cubicsplines} also provides the summary statistics of this estimation applying \code{summary.lm(<object>$regout)}. The print methods \code{print.nelson} and \code{print.cubicsplines} return the estimated parameters in a clearly arranged way.
 As Table~\ref{tab:resultsobjct} shows the returned object itself contains object of certain classes. For objects of the class \code{"spot_curves", "fwr_curves", "df_curves"} and \code{"error"} plot methods are available. They will be covered in the following section. For sublists of \code{regout} which are objects of the class \code{"lm"} the standard \code{"lm"} methods apply.  
 
