@@ -1,3 +1,39 @@
-blableble
-schubidu
+\begin{longtable}{|l|p{4in}|c|c|}
+\hline
+\textbf{Object}   & \textbf{Description} & \textbf{N/S} & \textbf{CS}\\
+\hline\hline
+\code{group}	   & vector consisting of the bond groups used for the estimation & \checkmark & \checkmark\\\hline
+\code{matrange}    & either "none" or a vector with the maturity range& \checkmark & \checkmark\\\hline
+\code{method}      & the chosen estimation method (\code{"Nelson/Siegel"} or \code{"Svensson"})& \checkmark & \\\hline
+\code{fit}         & the chosen objective function (\code{"prices"}, or \code{"yields"})& \checkmark & \\\hline
+\code{weights}	   & type of weighting used in the optimisation (\code{"none"} or \code{"duration"})& \checkmark & \\\hline
+\code{n_group}	   & the number of groups used for the optimisation& \checkmark & \checkmark\\\hline
+\code{knotpoints}   & one list for each group with the used knot points for the cubic splines estimation & & \checkmark\\\hline
+\code{spot}	   & one list for each group with an object of the class \code{"spot_curves"}& \checkmark & \checkmark\\\hline
+\code{spread}	   & one list for each group with an object of the class \code{"s_curves"}& \checkmark & \checkmark\\\hline
+\code{forward}	   & one list for each group with an object of the class \code{"fwr_curves"}& \checkmark & \checkmark\\\hline
+\code{discount}    & one list for each group with an object of the class \code{"df_curves"}& \checkmark & \checkmark\\\hline
+\code{expoints}    & one list for each group with the extrapolation points& \checkmark & \\\hline
+\code{cf}	   & one list for each group with the cashflows matrix& \checkmark & \checkmark\\\hline
+\code{m}	   & one list for each group with the maturity matrix& \checkmark & \checkmark\\\hline
+\code{p}	   & one list for each group with the dirty prices& \checkmark & \checkmark\\\hline
+\code{phat}	   & one list for each group with the estimated bond prices& \checkmark & \checkmark\\\hline
+\code{perrors}	   & one list for each group with an object of the class \code{"error"} containing the price errors of the bonds and the associated maturities& \checkmark & \checkmark\\\hline
+\code{y}	   & one list for each group with the bond yields and the associated maturities& \checkmark & \checkmark\\\hline
+\code{yhat}	   & one list for each group with the theoretical bond yields calculated with the estimated bond prices \code{phat}& \checkmark & \checkmark\\\hline
+\code{yerrors}     & one list for each group with an object of the class \code{"error"} containing the yield errors of the bonds and the associated maturities& \checkmark & \checkmark\\\hline
+\code{opt_result}  & one list for each group with the optimal parameter vector obtained from the optimization and further information concerning the optimization& \checkmark & \checkmark\\\hline
+\code{alpha}	   & OLS coefficients of cubic splines estimation&  & \checkmark\\\hline
+\code{regout}	   & one list for each group with an object of the class \code{"lm"}&  & \checkmark\\\hline
+\caption{Contents of \code{nelson} and \code{cubicsplines} object}
 
+\end{longtable}
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "jss-termstrc"
+%%% End: 
