@@ -37,8 +37,9 @@ It is easy to convert data downloaded via \emph{Thomson Datastream}\texttrademar
 The package \pkg{termstrc} consists of two core functions and several helper functions which perform other stuff. \code{nelson_estim()} and \code{splines_estim()} allow the user to perform the parametric Nelson/Siegel or Svensson estimation and the cubic splines. Table~\ref{tab:corefct} gives an overview about the similar input arguments of these functions.
 
 \begin{table}[htb]
-  \centering
-  \begin{tabular}[htb]{|l|l|c|c|}
+ \centering
+ \begin{tabular}[htb]{|l|l|c|c|}
+%\begin{longtable}[htb]{|l|l|c|c|}
   \hline
   \textbf{Argument}    & \textbf{Description}     & \code{nelson_estim()}       & \code{splines_estim()} \\
   \hline
@@ -53,10 +54,14 @@ The package \pkg{termstrc} consists of two core functions and several helper fun
 \multirow{2}{1in}{\code{weights}} & \code{"none"} or&\multirow{2}{1in}{\centering \checkmark} & \\
                                   & \code{"duration"} & & \\\hline
 \code{startparam} & matrix of start parameters & \checkmark & \\\hline
+% \vspace{1cm}\\
+% \caption{Input arguments for the core functions}
+% \label{tab:corefct}
+% \end{longtable}
 \end{tabular}
 \caption{Input arguments for the core functions}
 \label{tab:corefct}
-\end{table}
+ \end{table}
 
 \subsection{Helper functions}
 \label{sec:helper-functions}
@@ -69,6 +74,8 @@ The package \pkg{termstrc} consists of two core functions and several helper fun
 %\Homer Describe S3 classes!
 
 The core functions return an object of the class \code{nelson} or \code{cubicsplines}.
+
+\input{estimresults.tex}
 
 
 \subsection{Visualization of the results}
