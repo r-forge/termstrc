@@ -11,7 +11,7 @@ options(prompt="R> ", continue="...")
 library("termstrc")
 @
 
-In the next steps we load the data set \proglang{govbonds} and explore its structure.
+In the next steps we load the data set \code{govbonds} and explore its structure.
 
 <<>>=
 data(govbonds)
