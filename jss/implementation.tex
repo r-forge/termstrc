@@ -5,7 +5,7 @@ In this section, we describe the implementation of the package \pkg{termstrc} in
 
 \subsection{Structure of data sets}
 
-The data sets in our package have the following structure. They are \code{"list"} objects, which contain sublists for the countries available in the data set. Each of them contains market data in the format described in Table~\ref{tab:dataset}. 
+The data sets in our package have the following structure. They are \code{"list"} objects, which contain sublists for the countries available in the data set. Each of them includes market data in the format described in Table~\ref{tab:dataset}. 
 
 \begin{table}[htb]
   \centering
@@ -31,13 +31,13 @@ The data sets in our package have the following structure. They are \code{"list"
 
 The first part consists of the general specifications of the bonds and its market price and accrued interest. The sublist \code{CASHFLOWS} contains all cashflows for the available bonds sorted by their ISIN and their maturity dates. This data structure is very convenient when building the cash flow matrices and the maturity matrices defined in \ref{sec:notation}.
 
-It is easy to convert data downloaded via common data provide, e.g. \emph{Thomson Datastream}\texttrademark\, to our format.\footnote{Thomson Datastream is one of the world's largest and most respected financial statistical databases. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform zero-coupon yield curve estimations with the two procedures mentioned in section~\ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
+It is easy to convert data downloaded via common data provider, e.g. \emph{Thomson Datastream}\texttrademark\, to our format.\footnote{Thomson Datastream is one of the world's largest and most respected financial statistical databases. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform zero-coupon yield curve estimations with the two procedures mentioned in section~\ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
 
 \newpage
 \subsection{Core functions}
 \label{sec:main-functions}
 
-For that purpose, the package \pkg{termstrc} consists of two core functions and several helper functions. \code{nelson_estim()} performs the estimation according to the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension described in section \ref{sec:nels-svenss-meth}.  \code{splines_estim()} allows the user to estimate the term structure according the \cite{McCulloch1975} cubic splines approach described in section \ref{sec:cubic-splines}. Both of the core functions require a minimum amount of input. Table~\ref{tab:corefct} gives an overview about the similar types of arguments.
+For that purpose, the package \pkg{termstrc} provides two core functions and several helper functions. \code{nelson_estim()} performs the estimation according to the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension described in section \ref{sec:nels-svenss-meth}.  \code{splines_estim()} allows the user to estimate the term structure according the \cite{McCulloch1975} cubic splines approach described in section \ref{sec:cubic-splines}. Both of the core functions require a minimum amount of input. Table~\ref{tab:corefct} gives an overview about the similar types of arguments.
 
 \begin{table}[htb]
  \centering
@@ -69,7 +69,7 @@ For that purpose, the package \pkg{termstrc} consists of two core functions and 
 \subsection{Helper functions}
 \label{sec:helper-functions}
 
-Our package contains many functions to perform typical fixed income mathematics operations. Table~\ref{tab:helpfct} shows the most important ones. The package includes serveral more functions. For a description of them we may refer to the technical documentation. 
+Our package contains many functions to perform typical fixed income mathematics operations. Table~\ref{tab:helpfct} shows the most important ones. Most of the calculations done by the the core functions are based on the helper functions. However, the helper functions can also be applied independently. The package includes serveral more functions. For a description of them we may refer to the technical documentation. 
 
 \begin{table}[htb]
  \centering
