@@ -1,7 +1,7 @@
 \section[Software implementation in R]{Software implementation in \proglang{R}}
 \label{sec:soft-impl}
 
-In this section, we describe the implementation of the package \pkg{termstrc} in the \proglang{R} system for statistical computing. The matrix-oriented notation used in sections \ref{sec:zcy-estim}-\ref{sec:cubic-splines} can efficiently be realized with base \proglang{R} functions. In the following, we give an overview about the structure of our data sets, explain the ideas behind our core functions and describe the available \code{S3} methods for the classes provided by the package.
+In this section, we describe the implementation of the package \pkg{termstrc} in the \proglang{R} system for statistical computing. The matrix-oriented notation used in sections \ref{sec:zcy-estim}-\ref{sec:cubic-splines} can efficiently be realized with base \proglang{R} functions. In the following, we give an overview about the structure of our data sets, explain the ideas behind our core functions and describe the available \proglang{S3} classes and methods provided by the package.
 
 \subsection{Structure of data sets}
 
@@ -31,13 +31,13 @@ The data sets in our package have the following structure. They are \code{"list"
 
 The first part consists of the general specifications of the bonds and its market price and accrued interest. The sublist \code{CASHFLOWS} contains all cashflows for the available bonds sorted by their ISIN and their maturity dates. This data structure is very convenient when building the cash flow matrices and the maturity matrices defined in \ref{sec:notation}.
 
-It is easy to convert data downloaded via common data provider, e.g. \emph{Thomson Datastream}\texttrademark\, to our format.\footnote{Thomson Datastream is one of the world's largest and most respected financial statistical databases. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform zero-coupon yield curve estimations with the two procedures mentioned in section~\ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
+It is easy to convert data downloaded via common data provider, e.g. \emph{Thomson Datastream}\texttrademark\, to our format.\footnote{Thomson Datastream is one of the world's largest and most respected financial statistical databases. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform zero-coupon yield curve estimations with the two procedures mentioned in Section~\ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
 
 \newpage
 \subsection{Core functions}
 \label{sec:main-functions}
 
-For that purpose, the package \pkg{termstrc} provides two core functions and several helper functions. \code{nelson_estim()} performs the estimation according to the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension described in section \ref{sec:nels-svenss-meth}.  \code{splines_estim()} allows the user to estimate the term structure according the \cite{McCulloch1975} cubic splines approach described in section \ref{sec:cubic-splines}. Both of the core functions require a minimum amount of input. Table~\ref{tab:corefct} gives an overview about the similar types of arguments.
+For that purpose, the package \pkg{termstrc} provides two core functions and several helper functions. \code{nelson_estim()} performs the estimation according to the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension described in Section~\ref{sec:nels-svenss-meth}.  \code{splines_estim()} allows the user to estimate the term structure according the \cite{McCulloch1975} cubic splines approach described in Section~\ref{sec:cubic-splines}. Both of the core functions require a minimum amount of input. Table~\ref{tab:corefct} gives an overview about the similar types of arguments.
 
 \begin{table}[htb]
  \centering
@@ -92,7 +92,7 @@ Our package contains many functions to perform typical fixed income mathematics 
 \label{sec:expl-estim-results}
 
 The core functions return an object of the class \code{"nelson"} or \code{"cubicsplines"}. The package offers the common
-\code{S3} plot, print and summary methods for these classes. The objects itself is a list and contains vectors and sublists as described in Table~\ref{tab:resultsobjct}. The sublists are structured according to the chosen countries in the \code{group} argument, e.g. \code{<object>$m$<COUNTRY>} returns the maturity matrix of \code{<COUNTRY>}. 
+\proglang{S3} plot, print and summary methods for these classes. The objects itself is a list and contains vectors and sublists as described in Table~\ref{tab:resultsobjct}. The sublists are structured according to the chosen countries in the \code{group} argument, e.g. \code{<object>$m$<COUNTRY>} returns the maturity matrix of \code{<COUNTRY>}. 
 
 \begin{longtable}{|l|p{4in}|c|c|}
 \hline
@@ -136,7 +136,7 @@ As Table~\ref{tab:resultsobjct} shows, the returned object from our estimation i
 \subsection{Visualization of the results}
 \label{sec:visu-results}
 
-The S3 plot methods \code{plot.nelson()} and \code{plot.cubicsplines()} offer the following possibilities:
+The \proglang{S3} plot methods \code{plot.nelson()} and \code{plot.cubicsplines()} offer the following possibilities:
 
 \begin{itemize}
 \item plot zero-coupon, forward, discount or spread curves
@@ -156,7 +156,7 @@ is exploring a \code{"nelson"} or \code{"cubicsplines"} object, he can plot the 
 \subsection{Perfomance issues}
 \label{sec:perfomance-issues}
 
-The implementation of the \pkg{termstrc} package is based on an efficent operation on the data sets in list format. We avoid programming loops by using apply-functions. The most time-consuming tasks are solving the nonlinear optimization problem for the \cite{Nelson1987} and \cite{Svensson1994} method and the ordinary least squares estimation of the \cite{McCulloch1975} cubic splines. In section~\ref{sec:rolling-estim}, we will see results for a rolling estimation procedure performed on a large data set.
+The implementation of the \pkg{termstrc} package is based on an efficent operation on the data sets in list format. We avoid programming loops by using apply-functions. The most time-consuming tasks are solving the nonlinear optimization problem for the \cite{Nelson1987} and \cite{Svensson1994} method and the ordinary least squares estimation of the \cite{McCulloch1975} cubic splines. In Section~\ref{sec:rolling-estim}, we will see results for a rolling estimation procedure performed on a large data set.
 
 %%% Local Variables: 
 %%% mode: latex
