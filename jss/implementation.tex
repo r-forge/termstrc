@@ -1,7 +1,7 @@
 \section[Software implementation in R]{Software implementation in \proglang{R}}
 \label{sec:soft-impl}
 
-In this section, we describe the implementation of the package \pkg{termstrc} in the \proglang{R} system for statistical computing. The matrix-oriented notation used in sections \ref{sec:zcy-estim}-\ref{sec:cubic-splines} can efficiently be realized with base \proglang{R} functions. In the following, we give an overview about the structure of our data sets, explain the ideas behind our core functions and describe the available \proglang{S3} classes and methods provided by the package.
+In this section, we describe the implementation of the package \pkg{termstrc} in the \proglang{R} system for statistical computing. The matrix-oriented notation used in Sections~\ref{sec:zcy-estim}-\ref{sec:cubic-splines} can efficiently be realized with base \proglang{R} functions. In the following, we give an overview about the structure of our data sets, explain the ideas behind our core functions and describe the available \proglang{S3} classes and methods provided by the package.
 
 \subsection{Structure of data sets}
 
@@ -12,7 +12,7 @@ The data sets in our package have the following structure. They are \code{"list"
   \begin{tabular}[htb]{|l|l|}
 \hline
     \textbf{Object} & \textbf{Description} \\
-\hline
+\hline\hline
 \code{ISIN} & International Securities Identifying Number (ISIN)\\
 \code{MATURITYDATE} & maturity dates\\
 \code{ISSUEDATE} & issue dates\\
@@ -29,15 +29,15 @@ The data sets in our package have the following structure. They are \code{"list"
 \label{tab:dataset}
 \end{table}
 
-The first part consists of the general specifications of the bonds and its market price and accrued interest. The sublist \code{CASHFLOWS} contains all cashflows for the available bonds sorted by their ISIN and their maturity dates. This data structure is very convenient when building the cash flow matrices and the maturity matrices defined in \ref{sec:notation}.
+The first part consists of the general specifications of the bonds and its market prices and accrued interest. The sublist \code{CASHFLOWS} contains all cashflows for the available bonds sorted by their ISIN and their maturity date. This data structure is very convenient when building the cash flow matrices and the maturity matrices defined in Section \ref{sec:notation}.
 
-It is easy to convert data downloaded via common data provider, e.g. \emph{Thomson Datastream}\texttrademark\, to our format.\footnote{Thomson Datastream is one of the world's largest and most respected financial statistical databases. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform zero-coupon yield curve estimations with the two procedures mentioned in Section~\ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
+It is easy to convert data downloaded via a common data provider to our format, e.g. \emph{Thomson Datastream}\texttrademark\,.\footnote{Thomson Datastream is one of the world's largest and most respected financial statistical databases. For more information see \url{http://www.datastream.com/}.} The goal is now to perform perform zero-coupon yield curve estimations with the two procedures mentioned in Sections~\ref{sec:nels-svenss-meth} and \ref{sec:cubic-splines}.
 
 %\newpage
 \subsection{Core functions}
 \label{sec:main-functions}
 
-For that purpose, the package \pkg{termstrc} provides two core functions and several helper functions. \code{nelson\_estim()} performs the estimation according to the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension described in Section~\ref{sec:nels-svenss-meth}.  \code{splines\_estim()} allows the user to estimate the term structure according the \cite{McCulloch1975} cubic splines approach described in Section~\ref{sec:cubic-splines}. Both of the core functions require a minimum amount of input. Table~\ref{tab:corefct} gives an overview about the similar types of arguments.
+For that purpose, the package \pkg{termstrc} provides two core functions and several helper functions. \code{nelson\_estim()} performs the estimation according to the parametric \cite{Nelson1987} method with the \cite{Svensson1994} extension described in Section~\ref{sec:nels-svenss-meth}.  \code{splines\_estim()} allows the user to estimate the term structure according to the \cite{McCulloch1975} cubic splines approach described in Section~\ref{sec:cubic-splines}. Both of the core functions require a minimum amount of input. Table~\ref{tab:corefct} gives an overview about the similar types of arguments.
 
 \begin{table}[htb]
  \centering
@@ -45,7 +45,7 @@ For that purpose, the package \pkg{termstrc} provides two core functions and sev
 %\begin{longtable}[htb]{|l|l|c|c|}
   \hline
   \textbf{Argument}    & \textbf{Description}     & \code{nelson\_estim()}       & \code{splines\_estim()} \\
-  \hline
+  \hline\hline
 \multirow{2}{1in}{\code{group}} & vector defining the group & \multirow{2}{1in}{\centering \checkmark}& \multirow{2}{1in}{\centering \checkmark}\\
                                 &  of bonds used for the estimation & & \\\hline
 \code{bonddata} & data set of bonds in list format & \checkmark & \checkmark \\\hline
@@ -69,13 +69,13 @@ For that purpose, the package \pkg{termstrc} provides two core functions and sev
 \subsection{Helper functions}
 \label{sec:helper-functions}
 
-Our package contains many functions to perform typical fixed income mathematics operations. Table~\ref{tab:helpfct} shows the most important ones. Most of the calculations done by the the core functions are based on the helper functions. However, the helper functions can also be applied independently. The package includes serveral more functions. For a description of them we may refer to the technical documentation. 
+Our package contains many functions to perform typical fixed income mathematics operations. Table~\ref{tab:helpfct} shows the most important ones. Most of the calculations done by the the core functions are based on the helper functions. However, the helper functions can also be applied independently. The package includes serveral more functions. For a description of them, we may refer to the technical documentation. 
 
 \begin{table}[htb]
  \centering
  \begin{tabular}[htb]{|l|l|}
 \hline
-\textbf{Function name} & \textbf{Description}\\\hline
+\textbf{Function name} & \textbf{Description}\\\hline\hline
 \code{create\_cashflows\_matrix()} & creates a cashflow matrix for a group of bonds\\\hline
 \code{create\_maturities\_matrix()} & creates a maturities matrix for a group of bonds\\\hline
 \multirow{2}{1in}{\code{duration()}} & calculates Macauly duration, modified duration\\
@@ -92,7 +92,7 @@ Our package contains many functions to perform typical fixed income mathematics 
 \label{sec:expl-estim-results}
 
 The core functions return an object of the class \code{"nelson"} or \code{"cubicsplines"}. The package offers the common
-\proglang{S3} plot, print and summary methods for these classes. The objects itself is a list and contains vectors and sublists as described in Table~\ref{tab:resultsobjct}. The sublists are structured according to the chosen countries in the \code{group} argument, e.g. \code{<object>$m$<COUNTRY>} returns the maturity matrix of \code{<COUNTRY>}. 
+\proglang{S3} plot, print and summary methods for these classes. The objects itself is a list and contains vectors and sublists as described in Table~\ref{tab:resultsobjct}. The sublists are structured according to the chosen countries in the \code{group} argument, e.g. \code{<object>\$m\$<COUNTRY>} returns the maturity matrix of \code{<COUNTRY>}. 
 
 \begin{longtable}{|l|p{4in}|c|c|}
 \hline
@@ -118,7 +118,7 @@ The core functions return an object of the class \code{"nelson"} or \code{"cubic
 \code{y}	   & bond yields& \checkmark & \checkmark\\\hline
 \code{yhat}	   & estimated bond yields calculated with \code{phat}& \checkmark & \checkmark\\\hline
 \code{yerrors}     & yield errors and maturities as object of the class \code{"error"}& \checkmark & \checkmark\\\hline
-\code{opt\_result}  & optimization results from \code{nlminb}, e.g. optimal parameters, convergence info& \checkmark & \\\hline
+\code{opt\_result}  & optimization results from \code{nlminb()}, e.g. optimal parameters, convergence info& \checkmark & \\\hline
 \code{alpha}	   & OLS coefficients of cubic splines estimation&  & \checkmark\\\hline
 \code{regout}	   & OLS estimation results as object of the class \code{"lm"}&  & \checkmark\\\hline
 \caption{Contents of \code{nelson} and \code{cubicsplines} object}
@@ -127,10 +127,10 @@ The core functions return an object of the class \code{"nelson"} or \code{"cubic
 
 The summary methods \code{summary.nelson()} and \code{summary.cubicsplines()} give goodness of fit measures, i.e. the RMSE and MAE for the pricing and yield errors. \code{summary.nelson()} additionally shows convergence information from the solver \code{nlminb()}.
 
-The parameters for the cubic splines approach are estimated with OLS by using the \code{lm()} function. Therefore, \code{summary.cubicsplines()} also provides summary statistics for the OLS estimation by applying \code{summary.lm(<object>\$regout)}. 
+The parameters of the cubic splines approach are estimated with OLS by using the \code{lm()} function. Therefore, \code{summary.cubicsplines()} also provides summary statistics for the OLS estimation by applying \code{summary.lm(<object>\$regout)}. 
 
-The print methods \code{print.nelson()} and \code{print.cubicsplines()} return the estimated parameters in a clearly arranged way.
-As Table~\ref{tab:resultsobjct} shows, the returned object from our estimation itself contains objects of certain classes. For objects of the class \code{"spot\_curves", "fwr\_curves", "df\_curves"} and \code{"error"} plot methods are available. They will be covered in the following section. For the sublists in \code{regout}, which are objects of the class \code{"lm"}, the standard methods for the \code{"lm"} class apply.  
+The print methods \code{print.nelson()} and \code{print.cubicsplines()} show the estimated parameters in a clearly arranged way.
+As Table~\ref{tab:resultsobjct} shows, the returned object from our estimation itself contains objects of certain classes. For objects of the class \code{"spot\_curves", "fwr\_curves", "df\_curves"} and \code{"error"}, plot methods are available. They will be covered in the following section. For the sublists in \code{regout}, which are objects of the class \code{"lm"}, the standard \proglang{S3} methods for the \code{"lm"} class apply.  
 
 %\newpage
 \subsection{Visualization of the results}
@@ -145,12 +145,13 @@ The \proglang{S3} plot methods \code{plot.nelson()} and \code{plot.cubicsplines(
 \end{itemize}
 
 Plots of the zero-coupon yield curve for a single country include additional information. In detail, 
-also the yield-to-maturities are plotted and for objects of the class \code{"cubicsplines"} the knot points used for the estimationand the 95\% confidence intervall of the zero-coupon yield curve is plotted. 
+also the yield-to-maturities are plotted and for objects of the class \code{"cubicsplines"}, the knot points used for the estimation and the 95\% confidence interval of the zero-coupon yield curve are added to the figure. 
 
-Both plot methods depend on plot methods for the classes \code{"spot\_curves", "fwr\_curves"} and \code{"df\_curves"}. These plot methods are itself based on the plot method for the class \code{"ir\_curve"}, which is the most granular class.
-A object of the class \code{"spot\_curves", "fwr\_curves"} or \code{"df\_curves"} can therefore consist of serveral 
+Both plot methods depend on plot methods for the classes \code{"spot\_curves", "fwr\_curves"} and \code{"df\_curves"}. These plot methods are itself based on the plot method for the class \code{"ir\_curve"}, which is the most granular class. An object of the class \code{"spot\_curves", "fwr\_curves"} or \code{"df\_curves"} can therefore consist of serveral 
 objects of the class \code{"ir\_curve"}. The advantage for the user is, that when he
-is exploring a \code{"nelson"} or \code{"cubicsplines"} object, he can plot the different curves at every hierarchical level of the object. For example, the command \code{plot(<object>$spot$<COUNTRY>)} creates a plot of the spot curve of \code{<COUNTRY>}, while \code{plot(<object>\$spot)} plots the spot curves of all countries. 
+is exploring a \code{"nelson"} or \code{"cubicsplines"} object, he can plot the different curves at every hierarchical level of the object.
+
+For example, the command \code{plot(<object>\$spot\$<COUNTRY>)} creates a plot of the spot curve of \code{<COUNTRY>}, while \code{plot(<object>\$spot)} plots the spot curves of all countries. 
 
 
 \subsection{Perfomance issues}
