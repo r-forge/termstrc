@@ -2,8 +2,8 @@
 %âãÏÓ\r
 1 0 obj
 <<
-/CreationDate (D:20080220131442)
-/ModDate (D:20080220131442)
+/CreationDate (D:20080224155028)
+/ModDate (D:20080224155028)
 /Title (R Graphics Output)
 /Producer (R 2.6.2)
 /Creator (R)
@@ -8358,7 +8358,7 @@ BT
 0.000 0.000 0.000 rg
 /F2 1 Tf 12.00 0.00 -0.00 12.00 250.79 126.73 Tm (Zero-coupon yield curve) Tj
 /F2 1 Tf 12.00 0.00 -0.00 12.00 250.79 112.33 Tm (95 % Confidence interval) Tj
-/F2 1 Tf 12.00 0.00 -0.00 12.00 250.79 97.93 Tm (Yield to maturity) Tj
+/F2 1 Tf 12.00 0.00 -0.00 12.00 250.79 97.93 Tm (Yield-to-maturity) Tj
 /F2 1 Tf 12.00 0.00 -0.00 12.00 250.79 83.53 Tm (Knot points) Tj
 ET
 Q q 59.04 73.44 486.72 299.52 re W n

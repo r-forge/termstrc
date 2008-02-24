@@ -83,11 +83,11 @@ The summary method shows details from the OLS estimation of the parameters and t
 summary(y)
 @
 
-% <<echo=FALSE>>=
-% pdf("fig_frenchspotcurve.pdf", width=8, height=6)
-% plot(y,errors="none")
-% dev.off()
-% @
+%<<echo=FALSE>>=
+%pdf("fig_frenchspotcurve.pdf", width=8, height=6)
+%plot(y,errors="none")
+%dev.off()
+%@
 
 Figure~\ref{fig:frenchspotcurve} shows the yield-to-maturities and the estimated zero-coupon yield curve together with the automatically selected knot points.
 
