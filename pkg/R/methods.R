@@ -374,8 +374,8 @@ plot.cubicsplines <-
 #                    plot-method for ir_curve                     #
 ###################################################################
 plot.ir_curve <- function(x,ylim=c(),xlim=c(),lwd=2, type="l",
-				xlab="Maturity (years)",ylab="Percent", 
-				col="steelblue",lty=1, ...) 
+        xlab="Maturity (years)",ylab="Percent", 
+  			col="steelblue",lty=1, ...) 
 				{
 	plot(x[,1] ,x[,2]*100, type=type, ylim=ylim, xlim=xlim, xlab=xlab,
      ylab=ylab,lwd=lwd,lty=lty,col=col, ... )
@@ -434,10 +434,10 @@ plot.spot_curves <- function(x,multiple= FALSE,
 ###################################################################
 
 plot.fwr_curves <- function(x,multiple= FALSE,
-					ylim= c(range(mapply(function(i) range(x[[i]][,2]),
-					seq(x))))*100,xlim=c(),type="l", lty=1, 
-					lwd=2, expoints=NULL, ylab= "Forward rate (percent)",
-					xlab= "Maturity (years)",main="Forward rate curves",...) 
+   ylim= c(range(mapply(function(i) range(x[[i]][,2]),
+   seq(x))))*100,xlim=c(),type="l", lty=1, 
+   lwd=2, expoints=NULL, ylab= "Forward rate (percent)",
+   xlab= "Maturity (years)",main="Forward rate curves",...) 
 					
 { plot.spot_curves(x,ylab=ylab, xlab=xlab, main=main,
 	multiple=multiple,expoints=expoints,lty=lty,lwd=lwd,type=type, ... )
