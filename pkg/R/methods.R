@@ -375,7 +375,7 @@ plot.cubicsplines <-
 ###################################################################
 plot.ir_curve <- function(x,ylim=c(),xlim=c(),lwd=2, type="l",
         xlab="Maturity (years)",ylab="Percent", 
-  			col="steelblue",lty=1, ...) 
+  	col="steelblue",lty=1, ...) 
 				{
 	plot(x[,1] ,x[,2]*100, type=type, ylim=ylim, xlim=xlim, xlab=xlab,
      ylab=ylab,lwd=lwd,lty=lty,col=col, ... )
@@ -387,12 +387,12 @@ plot.ir_curve <- function(x,ylim=c(),xlim=c(),lwd=2, type="l",
 ###################################################################
 
 plot.spot_curves <- function(x,multiple= FALSE,
-				ylim= c(range(mapply(function(i) 
-				range(x[[i]][,2]),seq(x))))*100,xlim=c(),
-				type="l", lty=1, lwd=2, expoints=NULL, 
-				ylab= "Zero-coupon yields (percent)",
-				xlab= "Maturity (years)",main="Zero-coupon yield curves",
-				...) {
+		   ylim= c(range(mapply(function(i) 
+		   range(x[[i]][,2]),seq(x))))*100,xlim=c(),
+                   type="l", lty=1, lwd=2, expoints=NULL, 
+                   ylab= "Zero-coupon yields (percent)",
+                   xlab= "Maturity (years)",main="Zero-coupon yield curves",
+                            ...) {
 
 	if(multiple) 
 	{ plot(x[[which.max(mapply(function(i) max(x[[i]][,1]),
@@ -449,10 +449,10 @@ plot.fwr_curves <- function(x,multiple= FALSE,
 ###################################################################
 
 plot.df_curves <- function(x,multiple= FALSE,
-					ylim= c(range(mapply(function(i) range(x[[i]][,2]),
-					seq(x))))*100,xlim=c(),type="l", lty=1,
-					lwd=2, expoints=NULL, ylab="Discount factor (percent)",
-					xlab= "Maturity (years)",main="Discount factor curves",...) 
+	ylim= c(range(mapply(function(i) range(x[[i]][,2]),
+	seq(x))))*100,xlim=c(),type="l", lty=1,
+	lwd=2, expoints=NULL, ylab="Discount factor (percent)",
+	xlab= "Maturity (years)",main="Discount factor curves",...) 
 { plot.spot_curves(x,ylab=ylab, xlab=xlab, main=main,
 	multiple=multiple,expoints=expoints,lty=lty,lwd=lwd,type=type, ... )
 
@@ -462,10 +462,10 @@ plot.df_curves <- function(x,multiple= FALSE,
 #                    plot-method for s_curves                     #
 ###################################################################
 plot.s_curves <- function(x,xlim=c(range(mapply(function(i) 
-					range(x[[i]][,1]),seq(x)))),
-					ylim=c(range(mapply(function(i) range(x[[i]][,2]),
-					seq(x))))*10000,expoints=NULL, xlab="Maturity (years)", 
-					ylab="Spread (basis points)", lwd=2,lty=1, main="Spread curves", ...)
+	   range(x[[i]][,1]),seq(x)))),
+	   ylim=c(range(mapply(function(i) range(x[[i]][,2]),
+	   seq(x))))*10000,expoints=NULL, xlab="Maturity (years)", 
+	   ylab="Spread (basis points)", lwd=2,lty=1, main="Spread curves", ...)
 					
 {  if(!is.character(x))
    {
@@ -500,14 +500,14 @@ plot.error <- function(x,type="b",main="", mar= c(7,6,6,2) + 0.1, oma=c(4,2,2,2)
 	old.par <- par(no.readonly = TRUE)
     par(mar=mar, oma=oma, ... )
     
-		plot(x[,1],x[,2],axes=FALSE,pch=19,lwd=c(1,2),xlab="", ylab=ylab,type=type, ...)
-		axis(1,x[,1],rownames(x),las=3,...)
-		axis(2,...)
-		axis(3,x[,1],round(x[,1],2),...)
-		mtext("Maturity (years)",3,line=2.5)
-		lines(x[,1],rep(0,nrow(x)),lty=2,lwd=1,... )
-		title(xlab="ISIN", outer=TRUE,main=main,...) 
+   plot(x[,1],x[,2],axes=FALSE,pch=19,lwd=c(1,2),xlab="", ylab=ylab,type=type, ...)
+   axis(1,x[,1],rownames(x),las=3,...)
+   axis(2,...)
+   axis(3,x[,1],round(x[,1],2),...)
+   mtext("Maturity (years)",3,line=2.5)
+   lines(x[,1],rep(0,nrow(x)),lty=2,lwd=1,... )
+   title(xlab="ISIN", outer=TRUE,main=main,...) 
 	 
-	 on.exit(par(old.par))
+   on.exit(par(old.par))
 }               
 	

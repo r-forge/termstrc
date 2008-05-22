@@ -100,7 +100,8 @@ for (i in 2:length(govbondsts)){
 
 
 
-pdf("paramdevel.pdf",width=8, height=6)
+#pdf("paramdevel.pdf",width=8, height=6)
+postscript("paramdevel.eps",width=8, height=6,horizontal=F)
 par(mfrow = c(2,3))
 plot(opt_result[,1],type="l",xlab="Time", ylab=expression(beta[0]), col=1, lwd=2)
 grid()
@@ -128,8 +129,9 @@ Z <- matrix(spotrates(method="Svensson",opt_result[1,],X),nrow=1)
 for (i in 2:nrow(opt_result)) {
   Z <- rbind(Z, spotrates(method="Svensson",opt_result[i,],X))}
 
-pdf("3dplot.pdf",width=12, height=10)
-persp(X,Y,t(Z),theta = -35, phi = 30, expand = 0.6, col = "lightgreen",
+#pdf("3dplot.pdf",width=12, height=10)
+postscript("3dplot.eps",width=9.5, height=8.5,paper="special",horizontal=FALSE)
+persp(X,Y,t(Z),theta = -35, phi = 35, expand = 0.6, col = "lightgreen",
            ltheta = 120, shade = 0.55, ticktype = "detailed",xlab="Maturity",zlab="Zero-coupon yields",ylab="Time",box=TRUE,border=NA)
 dev.off()
 

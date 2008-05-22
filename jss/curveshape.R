@@ -8,7 +8,7 @@ beta_3 <- 1
 tau_2 <- 10
 
 
-pdf("curveshape.pdf",width=9,height=9)
+postscript("curveshape.eps",width=9,height=9,horizontal=F)
 par(lwd=3)
 # spot rates
 plot(m,beta_0+ beta_1*((1-exp(-m/tau_1))/(m/tau_1))+ beta_2*(((1-exp(-m/tau_1))/(m/tau_1))-exp(-m/tau_1))+beta_3*(((1-exp(-m/tau_2))/(m/tau_2))-exp(-m/tau_2)),
