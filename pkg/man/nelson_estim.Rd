@@ -15,52 +15,52 @@ nelson_estim(group,
              control = list(eval.max = 1000, iter.max= 500))
 }
 \arguments{
-  \item{group}{vector defining the group of bonds used for the estimation,\newline
-               e.g. \code{c("GERMANY","AUSTRIA")}.}
+  \item{group}{vector defining the group of bonds used for the estimation,
+               e.g. \command{c("GERMANY","AUSTRIA")}.}
   \item{bonddata}{a data set of bonds in list format.}
-  \item{matrange}{use \code{"all"} for no restrictions, or restrict the
-    maturity range used for the estimation with \code{c(lower,upper)}. }
-  \item{method}{\code{"Nelson/Siegel"} or \code{"Svensson"}. }
-  \item{fit}{use \code{"prices"} (\code{"yields"}) for minimizing the squared pricing (yield) errors.}
-  \item{weights}{weighting of the errors used in the optimization (\code{"none"} or \code{"duration"}). }
+  \item{matrange}{use \command{"all"} for no restrictions, or restrict the
+    maturity range used for the estimation with \command{c(lower,upper)}. }
+  \item{method}{\command{"Nelson/Siegel"} or \command{"Svensson"}. }
+  \item{fit}{use \command{"prices"} (\command{"yields"}) for minimizing the squared pricing (yield) errors.}
+  \item{weights}{weighting of the errors used in the optimization (\command{"none"} or \command{"duration"}). }
   \item{startparam}{matrix of start parameters, for the Nelson/Siegel (Svensson) method 4 (6) parameters for each each group are required (one row per group).}
-  \item{control}{list of control parameters for the function \code{nlminb()}.}
+  \item{control}{list of control parameters for the function \command{nlminb()}.}
 }
 \details{
- \item{\code{group}}{The first element of the vector will be used as the
+\itemize{
+ \item{\command{group}}{The first element of the vector will be used as the
   			    	  	reference country for the spread curve calculation.
-					 \code{group} can be either a vector of bond groups or a scalar.}
-\item{\code{bonddata}}{The package is designed to work with a certain list data structure. For more information use the function \code{str()} to explore the structure of the example data sets.}
+					 \command{group} can be either a vector of bond groups or a scalar.}
+\item{\command{bonddata}}{The package is designed to work with a certain list data structure. For more information use the function \command{str()} to explore the structure of the example data sets.}
 
- \item{\code{startparam}}{A matrix of start parameters must be provided for the estimation. Due to the possible existence of multiple
+ \item{\command{startparam}}{A matrix of start parameters must be provided for the estimation. Due to the possible existence of multiple
  					 local minima, a great effort should be invested in finding a good start parameter set. For rolling estimation procedures, the previous optimal parameters should be used as inputs for the next iteration.}
 
- \item{\code{control}}{Please refer to the documentation of the function \code{\link{nlminb}}.}
-}
+ \item{\command{control}}{Please refer to the documentation of the function \command{\link{nlminb}}.}
+}}
 \value{
- The function \code{nelson_estim} returns an object of the class \code{"nelson"}. The object
+ The function \command{nelson_estim} returns an object of the class \command{"nelson"}. The object
 contains the following items (mainly lists):
-
   \item{group}{group of bonds (e.g. countries) used for the estimation.}
-  \item{matrange}{\code{"none"} or a vector with the maturity range.}
-  \item{method}{estimation method (\code{"Nelson/Siegel"} or \code{"Svensson"}).}
-  \item{fit}{objective function (\code{"prices"}, or \code{"yields"}).}
-  \item{weights}{weighting of the errors used in the optimization (\code{"none"} or \code{"duration"}).}
-  \item{n_group}{length of object \code{group}, i.e. the number of countries.}
- \item{spot}{zero-coupon yield curves as object of the class \code{"spot_curves"}.}
-  \item{spread}{spread curves as object of the class \code{"s_curves"}.}
-  \item{forward}{forward curves as object of the class \code{"fwr_curves"}.} 
- \item{discount}{discount curves as object of the class \code{"df_curves"}.} 
+  \item{matrange}{\command{"none"} or a vector with the maturity range.}
+  \item{method}{estimation method (\command{"Nelson/Siegel"} or \command{"Svensson"}).}
+  \item{fit}{objective function (\command{"prices"}, or \command{"yields"}).}
+  \item{weights}{weighting of the errors used in the optimization (\command{"none"} or \command{"duration"}).}
+  \item{n_group}{length of object \command{group}, i.e. the number of countries.}
+ \item{spot}{zero-coupon yield curves as object of the class \command{"spot_curves"}.}
+  \item{spread}{spread curves as object of the class \command{"s_curves"}.}
+  \item{forward}{forward curves as object of the class \command{"fwr_curves"}.} 
+ \item{discount}{discount curves as object of the class \command{"df_curves"}.} 
  \item{expoints}{extrapolation points for Nelson/Siegel method.}
  \item{cf}{cashflow matrices.}
   \item{m}{maturity matrices.}
   \item{p}{dirty prices.}
   \item{phat}{estimated bond prices.}
-  \item{perrors}{pricing errors and maturities as object of the class \code{"error"}.}
+  \item{perrors}{pricing errors and maturities as object of the class \command{"error"}.}
   \item{y}{bond yields.}
-  \item{yhat}{one list for each group with the theoretical bond yields calculated with the estimated bond prices \code{phat}.}
-  \item{yerrors}{yield errors and maturities as object of the class \code{"error"}.}
-  \item{opt_result}{optimization results from \code{nlminb}, e.g. optimal parameters, convergence info.}
+  \item{yhat}{one list for each group with the theoretical bond yields calculated with the estimated bond prices \command{phat}.}
+  \item{yerrors}{yield errors and maturities as object of the class \command{"error"}.}
+  \item{opt_result}{optimization results from \command{nlminb}, e.g. optimal parameters, convergence info.}
    
 }
 \references{ 
@@ -75,11 +75,11 @@ Estimating and Interpreting Forward Interest Rates: Sweden 1992 -1994.
 %\author{Robert Ferstl, Josef Hayden}
 
 
-\note{An error message concerning the function \code{uniroot()} is in general caused by wrongly specified start parameters.
+\note{An error message concerning the function \command{uniroot()} is in general caused by wrongly specified start parameters.
  
-For objects of the class \code{"spot_curves"}, \code{"s_curves"}, \code{"df_curves"}, \code{"fwr_curves"}, \code{"error"} appropriate plot methods are offered.  For objects of the class \code{"nelson"} print, summary and plot methods are available. Another term structure estimation method is provided by the function \code{\link{splines_estim}}.} 
+For objects of the class \command{"spot_curves"}, \command{"s_curves"}, \command{"df_curves"}, \command{"fwr_curves"}, \command{"error"} appropriate plot methods are offered.  For objects of the class \command{"nelson"} print, summary and plot methods are available. Another term structure estimation method is provided by the function \command{\link{splines_estim}}.} 
 
-\seealso{\code{\link{print.nelson}}, \code{\link{summary.nelson}},  \code{\link{plot.nelson}},  \code{\link{splines_estim}},  \code{\link{plot.spot_curves}},  \code{\link{plot.s_curves}},  \code{\link{plot.df_curves}},  \code{\link{plot.fwr_curves}},  \code{\link{plot.error}},  \code{\link{uniroot}}.}
+\seealso{\command{\link{print.nelson}}, \command{\link{summary.nelson}},  \command{\link{plot.nelson}},  \command{\link{splines_estim}},  \command{\link{plot.spot_curves}},  \command{\link{plot.s_curves}},  \command{\link{plot.df_curves}},  \command{\link{plot.fwr_curves}},  \command{\link{plot.error}},  \command{\link{uniroot}}.}
 
 
 \examples{ 
@@ -132,5 +132,4 @@ plot(x,ctype="none")
 
 }
 
-\keyword{}
 
