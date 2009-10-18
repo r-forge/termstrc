@@ -1,7 +1,7 @@
 Package: termstrc
 Type: Package
 Title: Zero-coupon Yield Curve Estimation
-Version: 1.1
+Version: 1.1.1
 Date: 2009-10-16
 Author: Robert Ferstl, Josef Hayden
 Maintainer: Josef Hayden <josef.hayden@wiwi.uni-regensburg.de>
