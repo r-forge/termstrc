@@ -14,7 +14,7 @@ Before we come to the problem of zero-coupon yield curve estimation, let us intr
 
 \begin{equation}
   \label{eq:pricediscountbond}
-  p(m_t)=e^{s(m_t)m_t}.
+  p(m_t)=e^{-s(m_t)m_t}.
 \end{equation}
 
 Therefore, the \emph{spot curve} (or \emph{zero-coupon yield curve}) shows the spot rates for different maturities. The \emph{forward rate} $f(t',T)$ is the interest contracted now to be paid for an future investment between the time $t'$ and $T$. The forward rate as a function of maturity is the \emph{forward curve}. With continuous compounding, we have the following relationship between spot rates and forward rates
