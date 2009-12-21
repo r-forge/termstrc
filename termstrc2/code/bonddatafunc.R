@@ -1,110 +1,121 @@
 
 ## Limit a bond data set to a certain maturity range 
-maturity_range <- 
-  function(bonddata,lower,upper) {
+maturity_range <- function(bonddata,lower,upper) {
+  m <- lapply(bonddata,create_maturities_matrix)
+  colmax <- function(m) apply(m,2,max)
+  m_max <- lapply(m,colmax)
 
-m <- lapply(bonddata,create_maturities_matrix)
-colmax <- function(m) apply(m,2,max)
-m_max <- lapply(m,colmax)
-
-bonds_in_range <- function(group) names(group[which(
+  bonds_in_range <- function(group) names(group[which(
                 group>lower & group<upper)])
 
-# list with ISINs of bonds in range
-isins_range <- lapply(m_max,bonds_in_range)
-index_set <- which(unlist(lapply(isins_range,length))>0)
+  # list with ISINs of bonds in range
+  isins_range <- lapply(m_max,bonds_in_range)
+  index_set <- which(unlist(lapply(isins_range,length))>0)
 
-# list with positions of bonds in isins_range
-isins_range_pos <- list()
+  # list with positions of bonds in isins_range
+  isins_range_pos <- list()
 
-for (i in seq_along(bonddata)) {
+  for (i in seq_along(bonddata)) {
         isins_range_pos[[i]] <- which(bonddata[[i]]$ISIN %in% 
             isins_range[[i]])
-    }
-names(isins_range_pos) <- names(bonddata)
+  }
+  names(isins_range_pos) <- names(bonddata)
 
-# first part of bonddata for filtering
+  # first part of bonddata for filtering
 
-N <- which(names(bonddata[[1]]) %in% c("ISIN","MATURITYDATE","STARTDATE","COUPONRATE","PRICE","ACCRUED"))
+  N <- which(names(bonddata[[1]]) %in% c("ISIN","MATURITYDATE","STARTDATE","COUPONRATE","PRICE","ACCRUED"))
 
-first <- function(lst) lst[N]
-filtered <- lapply(bonddata,first)
+  first <- function(lst) lst[N]
+  filtered <- lapply(bonddata,first)
 
-bonddata_range <- list()
-for (i in seq_along(bonddata)) {
-bonddata_range[[i]] <- as.list(as.data.frame(filtered[[i]])
+  bonddata_range <- list()
+    for (i in seq_along(bonddata)) {
+      bonddata_range[[i]] <- as.list(as.data.frame(filtered[[i]])
                        [isins_range_pos[[i]],])
-# convert to character                       
-bonddata_range[[i]][["ISIN"]] <- as.character(bonddata_range[[i]][["ISIN"]])
-bonddata_range[[i]][["MATURITYDATE"]] <- as.character(bonddata_range[[i]][["MATURITYDATE"]])
-bonddata_range[[i]][["STARTDATE"]] <- as.character(bonddata_range[[i]][["STARTDATE"]])
-}
-names(bonddata_range) <- names(bonddata)
+      # convert to character                       
+      bonddata_range[[i]][["ISIN"]] <- as.character(bonddata_range[[i]][["ISIN"]])
+      bonddata_range[[i]][["MATURITYDATE"]] <- as.character(bonddata_range[[i]][["MATURITYDATE"]])
+      bonddata_range[[i]][["STARTDATE"]] <- as.character(bonddata_range[[i]][["STARTDATE"]])
+    }
+  names(bonddata_range) <- names(bonddata)
 
-# list with positions of cashflows in isins_range
+  # list with positions of cashflows in isins_range
 
-isins_range_pos <- list()
-for (i in seq_along(bonddata)) {
-isins_range_pos[[i]] <- which(bonddata[[i]][["CASHFLOWS"]]
+  isins_range_pos <- list()
+    for (i in seq_along(bonddata)) {
+     isins_range_pos[[i]] <- which(bonddata[[i]][["CASHFLOWS"]]
                         [["ISIN"]]%in%isins_range[[i]])
-}
-names(isins_range_pos) <- names(bonddata)
+    }
+  names(isins_range_pos) <- names(bonddata)
 
-for (i in seq_along(bonddata)) {
-CASHFLOWS <- as.list(as.data.frame(bonddata[[i]]
+  for (i in seq_along(bonddata)) {
+    CASHFLOWS <- as.list(as.data.frame(bonddata[[i]]
              [["CASHFLOWS"]])[isins_range_pos[[i]],])
-CASHFLOWS$ISIN <- as.character(CASHFLOWS$ISIN)
-CASHFLOWS$DATE <- as.character(CASHFLOWS$DATE)             
-bonddata_range[[i]][["CASHFLOWS"]] <- list()
-bonddata_range[[i]][["CASHFLOWS"]] <- CASHFLOWS
-}
-names(bonddata_range) <- names(bonddata)
-bonddata_range
+    CASHFLOWS$ISIN <- as.character(CASHFLOWS$ISIN)
+    CASHFLOWS$DATE <- as.character(CASHFLOWS$DATE)             
+    bonddata_range[[i]][["CASHFLOWS"]] <- list()
+    bonddata_range[[i]][["CASHFLOWS"]] <- CASHFLOWS
+  }
+  names(bonddata_range) <- names(bonddata)
+  bonddata_range
 
-# add TODAY from bonddata
-for (i in seq_along(bonddata)) {
-bonddata_range[[i]][["TODAY"]] <- bonddata[[i]][["TODAY"]]
-}
+  # add TODAY from bonddata
+  for (i in seq_along(bonddata)) {
+    bonddata_range[[i]][["TODAY"]] <- bonddata[[i]][["TODAY"]]
+  }
 
-# delete countries where no bonds are available
-bonddata_range <- bonddata_range[index_set]
-bonddata_range
-}
-
-
+  # delete countries where no bonds are available
+  bonddata_range <- bonddata_range[index_set]
+  bonddata_range
+  }
 
 
-  
-      
 
 
-###################################################################
-#                    Bond removal function                        #
-###################################################################
+## remove bonds from a static bonddata set  
+rm_bond <- function(bonddata,ISIN,group){
+    cf_isin_index <- which(bonddata[[group]]$CASHFLOWS$ISIN %in% ISIN)
+ 	isin_index <- which(bonddata[[group]]$ISIN %in% ISIN)	
 
-rm_bond <- function(bdata,ISIN,gr){
-    cf_isin_index <- which(bdata[[gr]]$CASHFLOWS$ISIN %in% ISIN)
- 	isin_index <- which(bdata[[gr]]$ISIN %in% ISIN)	
+    	bonddata[[group]]$ISIN <-  bonddata[[group]]$ISIN[-isin_index]
+    	bonddata[[group]]$MATURITYDATE <- bonddata[[group]]$MATURITYDATE[-isin_index]
+    	bonddata[[group]]$STARTDATE <- bonddata[[group]]$STARTDATE[-isin_index]
+    	bonddata[[group]]$COUPONRATE <- bonddata[[group]]$COUPONRATE[-isin_index]
+    	bonddata[[group]]$PRICE <- bonddata[[group]]$PRICE[-isin_index]
+    	bonddata[[group]]$ACCRUED <- bonddata[[group]]$ACCRUED[-isin_index]
 
-    	bdata[[gr]]$ISIN <-  bdata[[gr]]$ISIN[-isin_index]
-    	bdata[[gr]]$MATURITYDATE <- bdata[[gr]]$MATURITYDATE[-isin_index]
-    	bdata[[gr]]$STARTDATE <- bdata[[gr]]$STARTDATE[-isin_index]
-    	bdata[[gr]]$COUPONRATE <- bdata[[gr]]$COUPONRATE[-isin_index]
-    	bdata[[gr]]$PRICE <- bdata[[gr]]$PRICE[-isin_index]
-    	bdata[[gr]]$ACCRUED <- bdata[[gr]]$ACCRUED[-isin_index]
-
-		bdata[[gr]]$CASHFLOWS$ISIN <- bdata[[gr]]$CASHFLOWS$ISIN[-cf_isin_index]
-		bdata[[gr]]$CASHFLOWS$CF <- bdata[[gr]]$CASHFLOWS$CF[-cf_isin_index]
-		bdata[[gr]]$CASHFLOWS$DATE <- bdata[[gr]]$CASHFLOWS$DATE[-cf_isin_index]
+		bonddata[[group]]$CASHFLOWS$ISIN <- bonddata[[group]]$CASHFLOWS$ISIN[-cf_isin_index]
+		bonddata[[group]]$CASHFLOWS$CF <- bonddata[[group]]$CASHFLOWS$CF[-cf_isin_index]
+		bonddata[[group]]$CASHFLOWS$DATE <- bonddata[[group]]$CASHFLOWS$DATE[-cf_isin_index]
 	
-	bdata
+	bonddata
+}
+
+## remove bonds from a dynamic bonddata set 
+dyn_rm_bond <- function(dynbonddata, ISIN) {
+  for (i in seq(length(dynbonddata))) {
+     cf_isin_index <- which(dynbonddata[[i]]$CASHFLOWS$ISIN %in% ISIN)
+     isin_index <- which(dynbonddata[[i]]$ISIN %in% ISIN)
+     dynbonddata[[i]]$ISIN <- dynbonddata[[i]]$ISIN[-isin_index]
+     dynbonddata[[i]]$MATURITYDATE <- dynbonddata[[i]]$MATURITYDATE[-isin_index]
+     dynbonddata[[i]]$STARTDATE <- dynbonddata[[i]]$STARTDATE[-isin_index]
+     dynbonddata[[i]]$COUPONRATE <- dynbonddata[[i]]$COUPONRATE[-isin_index]
+     dynbonddata[[i]]$PRICE <- dynbonddata[[i]]$PRICE[-isin_index]
+     dynbonddata[[i]]$ACCRUED <- dynbonddata[[i]]$ACCRUED[-isin_index]
+     dynbonddata[[i]]$RY <- dynbonddata[[i]]$RY[-isin_index]
+     dynbonddata[[i]]$IBOX <- dynbonddata[[i]]$IBOX[-isin_index]
+     dynbonddata[[i]]$IBXA <- dynbonddata[[i]]$IBXA[-isin_index]
+     dynbonddata[[i]]$IBXB <- dynbonddata[[i]]$IBXB[-isin_index]
+     dynbonddata[[i]]$CASHFLOWS$ISIN <- dynbonddata[[i]]$CASHFLOWS$ISIN[-cf_isin_index]
+     dynbonddata[[i]]$CASHFLOWS$CF <- dynbonddata[[i]]$CASHFLOWS$CF[-cf_isin_index]
+     dynbonddata[[i]]$CASHFLOWS$DATE <- dynbonddata[[i]]$CASHFLOWS$DATE[-cf_isin_index]
+  }
+    dynbonddata
 }
 
 
 
-###################################################################
-#           Bonddata preprocessing function                       #
-###################################################################
+## preprocess a static bonddataset,i.e., sort data, calculate cashflows, maturity matrix, yields 
 prepro_bond <- function(group,
            bonddata,
            matrange="all",
@@ -158,7 +169,6 @@ prepro_bond <- function(group,
   # extract accrued interest
   ac <- mapply(function(k) bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
 
-  # browser()
   # assign ISIN 
   for(k in sgroup) {names(pd[[k]]) <- bonddata[[k]]$ISIN
                     names(p[[k]]) <- bonddata[[k]]$ISIN
@@ -179,7 +189,7 @@ prepro_bond <- function(group,
   pd <- mapply(function(k) pd[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
   p <- mapply(function(k) p[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
   ac <- mapply(function(k) ac[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  # browser()
+ 
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_pd[[k]],m_p[[k]]),
                    sgroup,SIMPLIFY=FALSE)
@@ -194,8 +204,8 @@ prepro_bond <- function(group,
   durationc <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],yc[[k]][,2]),
                    sgroup,SIMPLIFY=FALSE)
 
-res <- list(n_group=n_group,sgroup=sgroup,positions=positions,cf=cf,cf_p=cf_p,cf_pd=cf_pd,m=m,m_p=m_p,pd=pd,p=p,ac=ac,y=y,yc=yc,duration=duration,durationc=durationc,timestamp=bonddata[[1]]$TODAY)
-res
+  res <- list(n_group=n_group,sgroup=sgroup,positions=positions,cf=cf,cf_p=cf_p,cf_pd=cf_pd,m=m,m_p=m_p,pd=pd,p=p,ac=ac,y=y,yc=yc,duration=duration,durationc=durationc,timestamp=bonddata[[1]]$TODAY)
+  res
 }
 
 
@@ -292,106 +302,4 @@ postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method){
               s_curves=s_curves,expoints=expoints,fwr_curves=fwr_curves,df_curves=df_curves,opt_result=opt_result)
   res
 
-}
-
-###################################################################
-#           Bonddata diagnostics function                         #
-###################################################################
-
-diag_bond <- function(bonddata)  {
-
-  # number of groups 
-  n_group <- length(bonddata) 
-  
-  # group sequence
-  sgroup <- seq(n_group) 
-
-  # create cashflows matrix
-  cf <- lapply(bonddata,create_cashflows_matrix)
-
-  # create cashflows matrix including dirty price (needed for bond yield calculation)
-  cf_pd <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE,ai=TRUE),
-                 sgroup,SIMPLIFY=FALSE)
-  
-  # create maturities matrix
-  m <- lapply(bonddata,create_maturities_matrix)
-
-  # create maturities matrix including zeros (needed for bond yield calculation)
-  m_p <- mapply(function(k) create_maturities_matrix(bonddata[[k]],include_price=TRUE),
-                sgroup,SIMPLIFY=FALSE)
-  
-  # calculate dirty prices
-  pd <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
-  p <- mapply(function(k) bonddata[[k]]$PRICE,sgroup,SIMPLIFY=FALSE)
-  # assign ISIN 
-  for(k in sgroup) names(pd[[k]]) <- bonddata[[k]]$ISIN
-  for(k in sgroup) names(p[[k]]) <- bonddata[[k]]$ISIN
-  # index for ordering
-  positions <- mapply(function(k) order(apply(m[[k]],2,max)),sgroup,SIMPLIFY=FALSE)
-  
-  
-  # order matrices 
-  cf <- mapply(function(k) cf[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  cf_pd <- mapply(function(k) cf_pd[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  m <- mapply(function(k) m[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  pd <- mapply(function(k) pd[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  p <- mapply(function(k) p[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  
-  # calculate bond yields	
-  y <- mapply(function(k) bond_yields(cf_pd[[k]],m_p[[k]]),
-              sgroup,SIMPLIFY=FALSE)
-  res <- list(cf_pd=cf_pd,cf=cf,m_p=m_p,m=m,y=y,p=p,pd=pd)
-  for ( i in 1:length(res)) names(res[[i]]) <- names(bonddata)
-  res
-  }
-
-###################################################################
-#               Remove bonds from dynamic data set                #
-###################################################################
-
-dyn_rm_bond <- function(bdata, ISIN) {
-  for (i in seq(length(bdata))) {
-     cf_isin_index <- which(bdata[[i]]$CASHFLOWS$ISIN %in% ISIN)
-     isin_index <- which(bdata[[i]]$ISIN %in% ISIN)
-     bdata[[i]]$ISIN <- bdata[[i]]$ISIN[-isin_index]
-     bdata[[i]]$MATURITYDATE <- bdata[[i]]$MATURITYDATE[-isin_index]
-     bdata[[i]]$STARTDATE <- bdata[[i]]$STARTDATE[-isin_index]
-     bdata[[i]]$COUPONRATE <- bdata[[i]]$COUPONRATE[-isin_index]
-     bdata[[i]]$PRICE <- bdata[[i]]$PRICE[-isin_index]
-     bdata[[i]]$ACCRUED <- bdata[[i]]$ACCRUED[-isin_index]
-     bdata[[i]]$RY <- bdata[[i]]$RY[-isin_index]
-     bdata[[i]]$IBOX <- bdata[[i]]$IBOX[-isin_index]
-     bdata[[i]]$IBXA <- bdata[[i]]$IBXA[-isin_index]
-     bdata[[i]]$IBXB <- bdata[[i]]$IBXB[-isin_index]
-     bdata[[i]]$CASHFLOWS$ISIN <- bdata[[i]]$CASHFLOWS$ISIN[-cf_isin_index]
-     bdata[[i]]$CASHFLOWS$CF <- bdata[[i]]$CASHFLOWS$CF[-cf_isin_index]
-     bdata[[i]]$CASHFLOWS$DATE <- bdata[[i]]$CASHFLOWS$DATE[-cf_isin_index]
-  }
-    bdata
-}
-
-###################################################################
-#               Diagnostic data checks                            #
-###################################################################
-
-# TODO: - add functionality of testscript.R
-
-dyn_diag <- function(dynbonddata,group,fig=TRUE) {
-  x <- matrix(0,ncol=length(dynbonddata),nrow=length(dynbonddata[[1]]$ISIN))
-  ym <- list()
-  for (i in seq(length(dynbonddata))){
-    bonddata <- list()
-    bonddata[[group]] <- dynbonddata[[i]]
-    ym[[i]] <- diag_bond(bonddata)
-    x[,i] <- diag_bond(bonddata)$y[[1]][,2]
-
-  }
-   
-  if(fig)  {
-    plot(x[1,],ylim=c(min(x),max(x)),type="n")
-    for(i in seq(nrow(x)))  lines(x[i,])
-  }
-  res <- list(x=x,ym=ym)
-  res
 }
