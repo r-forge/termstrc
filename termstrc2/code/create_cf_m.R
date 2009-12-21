@@ -32,7 +32,7 @@ create_maturities_matrix <- function(group,include_price=FALSE) {
   max_cf <- max(n_of_cf)
   pos_cf <- c(0,cumsum(n_of_cf))
   year_diff <- as.numeric(difftime(as.Date(group$CASHFLOW$DATE),
-  				as.Date(group$TODAY),units="days"))/dcc
+  				as.Date(group$TODAY),units="days"))/365
  
   # the number of rows of the matrix is the number of 
   # maturity dates of the bond with the longest maturity

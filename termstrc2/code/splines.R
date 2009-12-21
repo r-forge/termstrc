@@ -5,56 +5,32 @@
 splines_estim <-
   function(group,
            bonddata,
-           matrange="all"
+           matrange="all",
+           bpeq="dirty"
            ) {
+ # data preprocessing 
 
-    
-  # select given group from bonddata
-  bonddata <- bonddata[group]
+  prepro <- prepro_bond(group=group,bonddata=bonddata,
+           matrange=matrange,bpeq="dirty")
 
-  # select data according to chosen maturity range
-  if (length(matrange)==1) {bonddata <- bonddata }else
-   {bonddata <- maturity_range(bonddata,matrange[1],matrange[2]) }
 
-  # number of groups 
-  n_group <- length(bonddata) 
-  
-  # group sequence
-  sgroup <- seq(n_group)
+  n_group=prepro$n_group
+  sgroup=prepro$sgroup
+  positions=prepro$positions
+  cf=prepro$cf
+  cf_p=prepro$cf_p
+  cf_pd=prepro$cf_pd
+  m=prepro$m
+  m_p=prepro$m_p
+  pd=prepro$pd
+  p=prepro$p
+  ac=prepro$ac
+  y=prepro$y
+  yc=prepro$yc
+  duration=prepro$duration
+  durationc=prepro$durationc
     
-  # create cashflows matrix
-  cf <- lapply(bonddata,create_cashflows_matrix)
-
-  # create cashflows matrix including dirty price (needed for bond yield calculation)
-  cf_p <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE),
-                 sgroup,SIMPLIFY=FALSE)
-    
-  # create maturities matrix
-  m <- lapply(bonddata,create_maturities_matrix)
-
-  # create maturities matrix including zeros (needed for bond yield calculation)
-  m_p <- mapply(function(k) create_maturities_matrix(bonddata[[k]],include_price=TRUE),
-                sgroup,SIMPLIFY=FALSE)
-    
-  # calculate dirty prices
-  p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
-  # assign ISIN
-  for(k in sgroup) names(p[[k]]) <- bonddata[[k]]$ISIN
-  
-  # index for ordering
-  positions <- mapply(function(k) order(apply(m[[k]],2,max)),sgroup,SIMPLIFY=FALSE)
-  
-  # order matrices
-  cf <- mapply(function(k) cf[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  cf_p <- mapply(function(k) cf_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  m <- mapply(function(k) m[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  p <- mapply(function(k) p[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  
-  # calculate bond yields	
-  y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
-                   sgroup,SIMPLIFY=FALSE)
-    
+ 
   # Choosing knot points (McCulloch)
   # number of bonds in each group 
   K <- mapply(function(k) ncol(m[[k]]),sgroup,SIMPLIFY=FALSE)  
