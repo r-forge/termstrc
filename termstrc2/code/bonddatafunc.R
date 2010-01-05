@@ -208,23 +208,13 @@ prepro_bond <- function(group,
   res
 }
 
+## Bonddata postprocessing function                      
 
-
-
-###################################################################
-#           Bonddata postprocessing function                      #
-###################################################################
-
-
-
-
-postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method){
- 
-
- 
+postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method,lambda){
+  
  # theoretical bond prices with estimated parameters
  phat <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
-       m[[k]],cf[[k]])$bond_prices,sgroup,SIMPLIFY=FALSE)
+       m[[k]],cf[[k]],lambda)$bond_prices,sgroup,SIMPLIFY=FALSE)
 
  
   # price errors
@@ -250,12 +240,12 @@ postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method){
   
   # calculate zero coupon yield curves  
   zcy_curves <- switch(method,
-              "Nelson/Siegel" = mapply(function(k)
-		            cbind(t,nelson_siegel(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
-              "Svensson" = mapply(function(k) 
-              		cbind(t,svensson(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE),
-              "Diebold" = mapply(function(k)
-		            cbind(t,diebold(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE))
+              "ns" = mapply(function(k)
+		            cbind(t,spr_ns(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
+              "sv" = mapply(function(k) 
+              		cbind(t,spr_sv(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE),
+              "dl" = mapply(function(k)
+		            cbind(t,spr_dl(opt_result[[k]]$par,t,lambda)),sgroup, SIMPLIFY=FALSE))
               
                        
               		 
@@ -278,12 +268,12 @@ postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method){
         
   # calculate forward rate curves 
   fwr_curves <- switch(method,
-              "Nelson/Siegel" = mapply(function(k)
+              "ns" = mapply(function(k)
 		            cbind(t,fwr_ns(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
-              "Svensson" = mapply(function(k) 
+              "sv" = mapply(function(k) 
               		cbind(t,fwr_sv(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE),
-               "Diebold" = mapply(function(k)
-		            cbind(t,fwr_db(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE))
+               "dl" = mapply(function(k)
+		            cbind(t,fwr_dl(opt_result[[k]]$par,t,lambda)),sgroup, SIMPLIFY=FALSE))
                       
                    
                       
