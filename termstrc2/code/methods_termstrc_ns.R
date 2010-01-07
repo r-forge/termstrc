@@ -1,7 +1,7 @@
 print.termstrc_ns <- 
   function(x,...) {
   cat("---------------------------------------------------\n")
-  cat("Parameters for Nelson/Siegel, Svensson estimation:\n")
+  cat("Parameters for Nelson/Siegel, Svensson, Diebold/Li estimation:\n")
   cat("\n")
   cat("Method:",x$method,"\n")
   cat("Fitted:",x$fit,"\n")

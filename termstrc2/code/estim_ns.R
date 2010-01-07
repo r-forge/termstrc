@@ -118,8 +118,8 @@ estim_ns <- function(bonddata,group, matrange="all", method="ns", fit = "prices"
                  yc=yc,                # yield based on clean prices
                  yhat=postpro$yhat,            # estimated yields
                  yerrors=postpro$yerrors,      # yield errors
-                 opt_result=opt_result # optimisation results
-                               
+                 opt_result=opt_result, # optimisation results
+                 lambda=lambda               
                  )
               
   # assign names to results list 
