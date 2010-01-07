@@ -14,7 +14,7 @@ source("methods_curves.R")
 
 group <- "FRANCE"
 dynbonddata  <- dslist
-method="dl"
+method="ns"
 
 bonddata <- list()
 bonddata[[group]] <- dynbonddata[[1]]
