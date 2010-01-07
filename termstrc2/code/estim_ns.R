@@ -1,6 +1,6 @@
 
 estim_ns <- function(bonddata,group, matrange="all", method="ns", fit = "prices", weights="duration", startparam="auto",
-           otype="nlminb", bpeq="dirty", # bond pricing equation: "clean" or "dirty"
+           otype="nlminb",
            control=list(eval.max=1000,iter.max= 500),
            lambda=0.0609
            
@@ -14,7 +14,7 @@ estim_ns <- function(bonddata,group, matrange="all", method="ns", fit = "prices"
   # data preprocessing 
 
   prepro <- prepro_bond(group=group,bonddata=bonddata,
-           matrange=matrange,bpeq="dirty")
+           matrange=matrange)
 
 
   n_group=prepro$n_group
@@ -22,10 +22,8 @@ estim_ns <- function(bonddata,group, matrange="all", method="ns", fit = "prices"
   positions=prepro$positions
   cf=prepro$cf
   cf_p=prepro$cf_p
-  cf_pd=prepro$cf_pd
   m=prepro$m
   m_p=prepro$m_p
-  pd=prepro$pd
   p=prepro$p
   ac=prepro$ac
   y=prepro$y
@@ -112,10 +110,8 @@ estim_ns <- function(bonddata,group, matrange="all", method="ns", fit = "prices"
                  m=m,                  # maturity matrix
                  duration=duration,    # duration, modified duration, weights
                  durationc=durationc,  # duration based on clean yield
-                 p=p,                  # clean prices
-                 pd=pd,                # dirty prices
-                 phat=postpro$phat,            # estimated clean prices
-                 pdhat=postpro$pdhat,          # estimated dirty prices
+                 p=p,                  # dirty prices        
+                 phat=postpro$phat,    # estimated dirty prices         
                  perrors=postpro$perrors,      # price errors
                  ac=ac,                # accrued interest
                  y=y,                  # maturities and yields

@@ -118,8 +118,7 @@ dyn_rm_bond <- function(dynbonddata, ISIN) {
 ## preprocess a static bonddataset,i.e., sort data, calculate cashflows, maturity matrix, yields 
 prepro_bond <- function(group,
            bonddata,
-           matrange="all",
-           bpeq="dirty"){
+           matrange="all"){
 
   # select given group from bonddata
   bonddata <- bonddata[group]
@@ -138,16 +137,8 @@ prepro_bond <- function(group,
   cf <- lapply(bonddata,create_cashflows_matrix)
 
   # create cashflows matrix including dirty price (needed for bond yield calculation)
-  cf_pd <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE,ai=TRUE),
+  cf_p <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE,ai=TRUE),
                  sgroup,SIMPLIFY=FALSE)
- 
-  # create cashflows matrix including clean price
-  if(bpeq=="clean") {
-    cf_p <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE,ai=FALSE),
-                 sgroup,SIMPLIFY=FALSE)
-  } else {
-    cf_p = cf_pd
-  }
   
   # create maturities matrix
   m <- lapply(bonddata,create_maturities_matrix)
@@ -157,20 +148,14 @@ prepro_bond <- function(group,
                 sgroup,SIMPLIFY=FALSE)
   
   # calculate dirty prices
-  pd <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
+  p <- mapply(function(k) bonddata[[k]]$PRICE + bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
 
-  # extract clean prices (new: if-condition)
-  if(bpeq=="clean") {
-    p <- mapply(function(k) bonddata[[k]]$PRICE,sgroup,SIMPLIFY=FALSE)
-  } else {
-    p <- pd
-  }
   
   # extract accrued interest
   ac <- mapply(function(k) bonddata[[k]]$ACCRUED,sgroup,SIMPLIFY=FALSE)
 
   # assign ISIN 
-  for(k in sgroup) {names(pd[[k]]) <- bonddata[[k]]$ISIN
+  for(k in sgroup) {
                     names(p[[k]]) <- bonddata[[k]]$ISIN
                     names(ac[[k]]) <- bonddata[[k]]$ISIN
                  
@@ -183,28 +168,26 @@ prepro_bond <- function(group,
   # order matrices 
   cf <- mapply(function(k) cf[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   cf_p <- mapply(function(k) cf_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  cf_pd <- mapply(function(k) cf_pd[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   m <- mapply(function(k) m[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
   m_p <- mapply(function(k) m_p[[k]][,positions[[k]]],sgroup,SIMPLIFY=FALSE)
-  pd <- mapply(function(k) pd[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
   p <- mapply(function(k) p[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
   ac <- mapply(function(k) ac[[k]][positions[[k]]],sgroup,SIMPLIFY=FALSE)
  
   # calculate bond yields	
-  y <- mapply(function(k) bond_yields(cf_pd[[k]],m_p[[k]]),
+  y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    sgroup,SIMPLIFY=FALSE)
 
   # calculate bond yield based on the clean price
 
   yc <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),sgroup,SIMPLIFY=FALSE)
   # calculate duration   
-  duration <- mapply(function(k) duration(cf_pd[[k]],m_p[[k]],y[[k]][,2]),
+  duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],y[[k]][,2]),
                    sgroup,SIMPLIFY=FALSE)
 
   durationc <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],yc[[k]][,2]),
                    sgroup,SIMPLIFY=FALSE)
 
-  res <- list(n_group=n_group,sgroup=sgroup,positions=positions,cf=cf,cf_p=cf_p,cf_pd=cf_pd,m=m,m_p=m_p,pd=pd,p=p,ac=ac,y=y,yc=yc,duration=duration,durationc=durationc,timestamp=bonddata[[1]]$TODAY)
+  res <- list(n_group=n_group,sgroup=sgroup,positions=positions,cf=cf,cf_p=cf_p,m=m,m_p=m_p,p=p,ac=ac,y=y,yc=yc,duration=duration,durationc=durationc,timestamp=bonddata[[1]]$TODAY)
   res
 }
 
@@ -216,17 +199,13 @@ postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method,lambda
  phat <- mapply(function(k) bond_prices(method,opt_result[[k]]$par,
        m[[k]],cf[[k]],lambda)$bond_prices,sgroup,SIMPLIFY=FALSE)
 
- 
   # price errors
   perrors <- mapply(function(k) cbind(y[[k]][,1],phat[[k]] - p[[k]]),sgroup,SIMPLIFY=FALSE)     
  
   for (k in sgroup) class(perrors[[k]]) <- "error"
-
-  # calculate estimated dirty prices pdhat = phat + a
-  pdhat <- mapply(function(k) phat[[k]]+ac[[k]],sgroup,SIMPLIFY=FALSE)
   
   # calculate estimated yields 
-  yhat <- mapply(function(k) bond_yields(rbind(-pdhat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
+  yhat <- mapply(function(k) bond_yields(rbind(-phat[[k]],cf[[k]]),m_p[[k]]),sgroup,SIMPLIFY=FALSE)
   
   # yield errors
   yerrors <- mapply(function(k) cbind(y[[k]][,1], yhat[[k]][,2] - y[[k]][,2]),sgroup,SIMPLIFY=FALSE)
@@ -288,7 +267,7 @@ postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method,lambda
    for (k in sgroup) class(df_curves[[k]]) <- "ir_curve"
    class(df_curves) <- "df_curves"
 
-  res <- list(phat=phat,perrors=perrors,pdhat=pdhat,yhat=yhat,yerrors=yerrors,t=t,zcy_curves=zcy_curves,
+  res <- list(phat=phat,perrors=perrors,yhat=yhat,yerrors=yerrors,t=t,zcy_curves=zcy_curves,
               s_curves=s_curves,expoints=expoints,fwr_curves=fwr_curves,df_curves=df_curves,opt_result=opt_result)
   res
 
