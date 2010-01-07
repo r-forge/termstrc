@@ -20,7 +20,7 @@ spr_dl <- function(beta,m,lambda){
 }
 
 ## Spot rate wrapper function
-spotrates <- function(method,beta,m,lambda){ 
+spotrates <- function(method,beta,m,lambda = 0.0609){ 
   switch(method,
          "ns" = spr_ns(beta,m),
          "sv" = spr_sv(beta,m),
