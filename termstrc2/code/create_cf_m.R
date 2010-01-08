@@ -3,7 +3,7 @@
 
 create_cashflows_matrix <- function(group,include_price=FALSE,ai=FALSE) {
   
-  n_of_cf <- summary(factor(group$CASHFLOWS$ISIN,levels=group$ISIN))
+  n_of_cf <- table(group$CASHFLOWS$ISIN)
   n_of_bonds <- length(n_of_cf)
   max_cf <- max(n_of_cf)
   pos_cf <- c(0,cumsum(n_of_cf))
@@ -27,7 +27,7 @@ create_cashflows_matrix <- function(group,include_price=FALSE,ai=FALSE) {
 
 create_maturities_matrix <- function(group,include_price=FALSE) {
 
-  n_of_cf <- summary(factor(group$CASHFLOWS$ISIN,levels=group$ISIN))
+  n_of_cf <- table(group$CASHFLOWS$ISIN)
   n_of_bonds <- length(n_of_cf)
   max_cf <- max(n_of_cf)
   pos_cf <- c(0,cumsum(n_of_cf))
