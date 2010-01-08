@@ -3,12 +3,14 @@
 
 print.termstrc_cs <- function(x,...) {
   cat("---------------------------------------------------\n")
-  cat("Parameters for Cubic splines estimation:\n")
-  cat("\n")
+  cat("Estimated parameters and standard errors:\n")
+  cat("---------------------------------------------------\n")
   for(i in seq(x$n_group)) {
-  print.default(paste(names(x$alpha)[[i]],":",sep=""))
-  names(x$alpha[[i]]) <- paste("alpha",c(seq_along(x$alpha[[i]])))
-  print.default(x$alpha[[i]])
+    print.default(paste(names(x$alpha)[[i]],":",sep=""))
+    cs_coef <- (summary(x$regout[[i]]))$coefficients[,1:2]
+   rownames(cs_coef) <- paste("alpha",c(seq_along(x$alpha[[i]])))
+
+  print.default(cs_coef)
   cat("\n")
   x
   }

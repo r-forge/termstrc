@@ -137,7 +137,7 @@ prepro_bond <- function(group,
   cf <- lapply(bonddata,create_cashflows_matrix)
 
   # create cashflows matrix including dirty price (needed for bond yield calculation)
-  cf_p <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE,ai=TRUE),
+  cf_p <- mapply(function(k) create_cashflows_matrix(bonddata[[k]],include_price=TRUE),
                  sgroup,SIMPLIFY=FALSE)
   
   # create maturities matrix
