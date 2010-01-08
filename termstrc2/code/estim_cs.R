@@ -1,10 +1,10 @@
 
 
 ## Cubic spline term structure estimation 
-estim_cs <- function(bonddata, group, matrange="all", bpeq="dirty",rse=TRUE) {
+estim_cs <- function(bonddata, group, matrange="all",rse=TRUE) {
  # data preprocessing 
   prepro <- prepro_bond(group=group,bonddata=bonddata,
-           matrange=matrange,bpeq="dirty")
+           matrange=matrange)
 
 
   n_group=prepro$n_group
@@ -12,10 +12,8 @@ estim_cs <- function(bonddata, group, matrange="all", bpeq="dirty",rse=TRUE) {
   positions=prepro$positions
   cf=prepro$cf
   cf_p=prepro$cf_p
-  cf_pd=prepro$cf_pd
   m=prepro$m
   m_p=prepro$m_p
-  pd=prepro$pd
   p=prepro$p
   ac=prepro$ac
   y=prepro$y
