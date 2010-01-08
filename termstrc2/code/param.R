@@ -17,6 +17,13 @@ param.dyntermstrc <- function(x) {
 
 
 
+print.dyntermstrc_param <- function(x,...){
+
+  summary.default(x)
+
+}
+
+
 summary.dyntermstrc_param <- function(object,type="none",lags=1,selectlags="Fixed", ...) {
   x <- object
 
@@ -80,5 +87,94 @@ print.summary.dyntermstrc_param <- function(x, ...) {
   cat("---------------------------------------------------\n")
   print.default(x$diffparamcor)
   cat("\n")
+
+}
+
+
+plot.dyntermstrc_param <- function(x,type="param",...){
+  old.par <- par(no.readonly = TRUE) 
+  param <- x
+  
+  # 2D plot of parameters
+  if(type=="param") {
+    if(ncol(x)==3) mfrow = c(1,3)
+    if(ncol(x)==4) mfrow = c(2,2)
+    if(ncol(x)==6) mfrow = c(2,3)
+
+    par(mfrow=mfrow,...)
+   
+    plot(param[,1],type="l",xlab="Time",ylab=expression(hat(beta)[0]),
+                col=1,lwd=2,... )
+           grid()
+           plot(param[,2],type="l",xlab="Time",ylab=expression(hat(beta)[1]),
+           col=2,lwd=2,... )
+           grid()
+           plot(param[,3],type="l",xlab="Time",ylab=expression(hat(beta)[2]),
+           col=3,lwd=2,... )
+           grid()
+    
+    if(ncol(x)==4) {
+           plot(param[,4],type="l",xlab="Time",ylab=expression(hat(tau)[1]),
+           col=4,lwd=2,... )
+           grid()
+    }
+    
+    if(ncol(x)==6) {
+           plot(param[,4],type="l",xlab="Time",ylab=expression(hat(tau)[1]),
+           col=4,lwd=2,... )
+           grid()
+           plot(param[,5],type="l",xlab="Time",ylab=expression(hat(beta)[3]),
+           col=5,lwd=2,... )
+           grid()
+           plot(param[,6],type="l",xlab="Time",ylab=expression(hat(tau)[2]),
+           col=6,lwd=2,... )
+           grid()
+    }
+    
+  }
+
+ # 2D plot of parameter differences
+  if(type=="diffparam") {
+    if(ncol(x)==3) mfrow = c(1,3)
+    if(ncol(x)==4) mfrow = c(2,2)
+    if(ncol(x)==6) mfrow = c(2,3)
+
+    par(mfrow=mfrow,...)
+
+    diffparam <- apply(param,2,diff)
+
+    for(i in seq(ncol(diffparam))) {
+      plot(diffparam[,i],type="l",xlab="Time",
+           ylab=colnames(diffparam)[i],col=i,lwd=2,... )
+      grid()
+    }
+  }
+
+    # ACF/PCF
+  if(type=="acf") {
+    if(ncol(x)==3) mfrow = c(2,3)
+    if(ncol(x)==4) mfrow = c(4,2)
+    if(ncol(x)==6) mfrow = c(4,3)
+
+    par(mfrow=mfrow,...)
+    
+    if(ncol(x) > 3 ){
+     for(i in 1:(ncol(param)/2)) acf(param[,i],main=colnames(param)[i])
+     for(i in 1:(ncol(param)/2)) pacf(param[,i],main=colnames(param)[i])
+    
+     for(i in (ncol(param)/2+ 1):ncol(param)) acf(param[,i],main=colnames(param)[i])
+     for(i in (ncol(param)/2+ 1):ncol(param)) pacf(param[,i],main=colnames(param)[i])
+    } else {
+
+     for(i in 1:ncol(param)) acf(param[,i],main=colnames(param)[i])
+     for(i in 1:ncol(param)) pacf(param[,i],main=colnames(param)[i])
+
+    }
+  }
+
+
+
+  on.exit(par(old.par))
+
 
 }
