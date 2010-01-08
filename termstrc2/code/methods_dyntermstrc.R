@@ -52,3 +52,19 @@ plot.dyntermstrc <- function(x,range=c(0,20), ...) {
  
 on.exit(par(old.par))
 }
+
+print.dyntermstrc <- function(x,...){
+  cat("---------------------------------------------------\n")
+  cat("Parameters for dynamic term structure estimation:\n")
+  cat("---------------------------------------------------\n")
+  cat("Method:",x[[1]]$method,"\n")
+  cat("Fitted:",x[[1]]$fit,"\n")
+  cat("Weights:",x[[1]]$weights,"\n")
+  cat("Number of oberservations:",length(x),"\n")
+  cat("Number of bonds:",ncol(x[[1]]$cf[[1]]),"\n")
+  cat("---------------------------------------------------\n")
+  cat("\n")
+  tsparam <- param.dyntermstrc(x)
+  print(summary.default(tsparam))
+  cat("---------------------------------------------------\n")
+}
