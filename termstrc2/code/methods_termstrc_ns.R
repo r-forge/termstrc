@@ -146,7 +146,7 @@ summary.termstrc_ns <-
     rownames(convergence) <- x$group
     sumry <- list(gof,convergencegroup,convergence,otype=x$otype,startparam=x$startparam)
     names(sumry) <- c("gof","convergencegroup","convergence","otype","startparam")
-    class(sumry) <- "summary.nelson"
+    class(sumry) <- "summary.termstrc_ns"
     sumry
 }
 

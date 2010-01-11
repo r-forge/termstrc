@@ -11,6 +11,18 @@ summary.dyntermstrc <- function(object, ...) {
   }
 
   sumry$convprobs <- which(sumry$converge != "converged")
+
+  perrors <- t(mapply(function(i) x[[i]]$perrors[[1]][,2], seq(length(x))))
+  yerrors <- t(mapply(function(i) x[[i]]$yerrors[[1]][,2], seq(length(x))))
+  p_mrsme <- mean(sqrt(apply(perrors^2,2,mean)))
+  p_maabse <- mean(sqrt(apply(abs(perrors),2,mean)))
+  y_mrsme <- mean(sqrt(apply(yerrors^2,2,mean)))
+  y_maabse <- mean(sqrt(apply(abs(yerrors),2,mean)))
+  
+  sumry$gof <- rbind(p_mrsme,p_maabse,y_mrsme,y_maabse)
+  colnames(sumry$gof) <- x[[1]]$group
+  rownames(sumry$gof) <- c("mean RMSE-Prices", "mean AABSE-Prices", "mean RMSE-Yields", "mean AABSE-Yields")
+    
   class(sumry) <- "summary.dyntermstrc"
   sumry
 }
@@ -18,16 +30,27 @@ summary.dyntermstrc <- function(object, ...) {
 
 
 print.summary.dyntermstrc <- function(x,...) {
-    cat("Convergence info:\n")
     cat("---------------------------------------------------\n")
+    cat("Goodness of fit:\n")
+    cat("---------------------------------------------------\n")
+
+    print.default(x$gof)
+
     cat("\n")
+    cat("---------------------------------------------------\n")
+    cat("Convergence information:\n")
+    cat("---------------------------------------------------\n")
+    
     if(length(x$convprobs)==0) {
       print.default("No convergence problems!")
     } else {
       cat("Convergence problems are at:\n")
       print.default(x$convprobs)
     }
-    cat("---------------------------------------------------\n")
+   
+
+ 
+    
 }
 
 
