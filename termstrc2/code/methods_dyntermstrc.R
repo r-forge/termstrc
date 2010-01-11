@@ -55,7 +55,6 @@ print.summary.dyntermstrc <- function(x,...) {
 
 
 
-
 plot.dyntermstrc <- function(x,range=c(0,20), ...) {
 
   old.par <- par(no.readonly = TRUE) 
