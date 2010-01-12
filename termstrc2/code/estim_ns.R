@@ -2,7 +2,7 @@
 estim_ns <- function(bonddata,group, matrange="all", method="ns", fit = "prices", weights="duration", startparam="auto",
            otype="nlminb",
            control=list(eval.max=1000,iter.max= 500),
-           lambda=0.0609
+           lambda=1.37
            
            ) {
 
