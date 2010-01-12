@@ -3,7 +3,7 @@ print.termstrc_ns <-
   cat("---------------------------------------------------\n")
   cat("Parameters for estimation with spot rate function of:\n")
   cat("\n")
-  cat("Method:",x$method,"\n")
+  cat(x$method,"\n")
   cat("\n")
   cat("---------------------------------------------------\n")
   cat("\n")
@@ -123,8 +123,7 @@ plot.termstrc_ns <-
    
 }  
 
-summary.termstrc_ns <-
-    function(object,...) {
+summary.termstrc_ns <- function(object,...) {
     x <- object
     RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
     AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
@@ -137,6 +136,7 @@ summary.termstrc_ns <-
     convergencegroup <- as.matrix(apply(as.matrix(mapply(function(i) x$opt_result[[i]]$convergence,
                               seq_along(x$opt_result))),1,
                               function(x) if(x==1) "no convergence" else "converged"))
+    
     colnames(convergencegroup) <- "Convergence ()"
     rownames(convergencegroup) <- x$group
     convergence <- as.matrix(mapply(function(i) x$opt_result[[i]]$message,seq_along(x$opt_result)))
@@ -155,13 +155,6 @@ print.summary.termstrc_ns<-
     cat("---------------------------------------------------\n")
     cat("\n")
     print.default(x$gof)
-    cat("\n")
-    cat("\n")
-    cat("---------------------------------------------------\n")
-    cat("Optimiser:\n")
-    cat("---------------------------------------------------\n")
-    cat("\n")
-    print.default(x$otype[1])
     cat("\n")
     cat("\n")
     cat("---------------------------------------------------\n")

@@ -1,5 +1,5 @@
 
-estim_ns <- function(bonddata,group, matrange="all", method="ns", startparam="auto",
+estim_ns <- function(bonddata,group, matrange="all", method="ns", startparam=NULL,
                      lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                      deltatau=0.1,              # interval for parameter grid
                      control=list(),            # options or optim() 
@@ -23,16 +23,20 @@ estim_ns <- function(bonddata,group, matrange="all", method="ns", startparam="au
   duration=prepro$duration
  
   ## automatically determine globally optimal start parameters
-  betastart <- matrix(ncol = 6, nrow = n_group)
-  colnames(betastart) <- c("beta0","beta1","beta2","tau1","beta3","tau2")
-  if (method == "dl") betastart <- betastart[,1:3]
-  if (method == "ns") betastart <- betastart[,1:4]
+  if(is.null(startparam)){
+    startparam <- matrix(ncol = 6, nrow = n_group)
+    colnames(startparam) <- c("beta0","beta1","beta2","tau1","beta3","tau2")
+    if (method == "dl") startparam <- startparam[,1:3]
+    if (method == "ns") startparam <- startparam[,1:4]
 
-  for (k in sgroup){
-    print(paste("Searching startparameters for ", group[k]))
-    betastart[k,] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3], method, deltatau, diagnosticplots, group[k])
-    print(betastart[k,])
+    for (k in sgroup){
+      print(paste("Searching startparameters for ", group[k]))
+      startparam[k,] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3], method, deltatau, diagnosticplots, group[k])
+      print(startparam[k,])
+    }
   }
+
+  rownames(startparam) <- group
   
   ## objective function (weighted price error minimization) 
   obj_fct <- function(b) {
@@ -67,7 +71,7 @@ estim_ns <- function(bonddata,group, matrange="all", method="ns", startparam="au
   opt_result <- list()
 
   for (k in sgroup){
-    opt_result[[k]] <- constrOptim(theta = betastart[k,],
+    opt_result[[k]] <- constrOptim(theta = startparam[k,],
                                f = obj_fct,
                                grad = NULL,
                                ui = ui,
