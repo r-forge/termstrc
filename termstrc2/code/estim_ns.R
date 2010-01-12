@@ -123,7 +123,7 @@ estim_ns <- function(bonddata,group, matrange="all", method="ns", fit = "prices"
                  )
               
   # assign names to results list 
-  for ( i in 9:length(result)) names(result[[i]]) <- names(bonddata)
+  for ( i in 9:length(result)) names(result[[i]]) <- group
     
   class(result) <- "termstrc_ns"
   result
