@@ -1,5 +1,6 @@
-load("France_1Y.RData")
+rm(list = ls())
 
+load("govbonds.RData")
 
 source("bonddatafunc.R")
 source("create_cf_m.R")
@@ -11,13 +12,4 @@ source("rates.R")
 source("methods_termstrc_ns.R")
 source("methods_curves.R")
 
-
-group <- "FRANCE"
-dynbonddata  <- dslist
-method="ns"
-
-bonddata <- list()
-bonddata[[group]] <- dynbonddata[[1]]
-
-
-cs_res <- estim_ns(bonddata,group,method=method)
+ns_res <- estim_ns(govbonds, c("GERMANY", "AUSTRIA"), "ns", deltatau = 0.4, diagnosticplots = TRUE)
