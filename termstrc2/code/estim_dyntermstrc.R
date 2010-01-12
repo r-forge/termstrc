@@ -1,8 +1,7 @@
 
 ## dynamic estimation of the term structure
 
-estim_dyntermstrc <- function(dynbonddata,matrange,method,fit,weights,
-                        startparam="auto",lambda=0.0609,otype="nlminb",...) {
+estim_dyntermstrc <- function(dynbonddata,matrange,method,fit,weights,lambda=0.0609*12,otype="nlminb",...) {
 
 res <- list()
  
