@@ -26,8 +26,6 @@ aabse <-function (actual,estimated){
 
 
 ## Loss function: mean squared (weighted error)
-loss_function <- function(p,phat,omega,weights="none") {
-  if (weights=="none") omega <- rep(1,length(p))
+loss_function <- function(p,phat,omega) {
   sum(omega*((p-phat)^2))
-
 }
