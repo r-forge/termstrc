@@ -1,9 +1,16 @@
 
 ## dynamic estimation of the term structure
 
-estim_dyntermstrc <- function(dynbonddata,matrange,method,fit,weights,lambda=0.0609*12,otype="nlminb",...) {
+estim_dyntermstrc <- function(dynbonddata,matrange="all",method="ns",
+                              lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
+                              deltatau=0.1,              # interval for parameter grid
+                              control=list(),            # options or optim() 
+                              outer.iterations = 50,     # options for constrOptim()
+                              outer.eps = 1e-05,
+                              diagnosticplots = FALSE    # plots for start parameter search
+                     ) {
 
-res <- list()
+  res <- list()
  
  
   # perform sequence of term structure estimations
@@ -20,15 +27,13 @@ res <- list()
                             "sv" = c("beta0","beta1","beta2","tau1","beta3","tau2"),
                             "dl" = c("beta0","beta2","beta3"))
                             
-    } else b <- "auto"
+    } else b <- NULL
 
     # static estimation
     group <- names(dynbonddata)[i]
     bonddata <- list()
     bonddata[[group]] <- dynbonddata[[i]]
-    res[[i]] <- estim_ns(bonddata=bonddata,group, matrange, 
-                           method=method, fit, weights, startparam=b,
-                           lambda=lambda,otype=otype,...)
+    res[[i]] <- estim_ns(bonddata=bonddata,group, matrange, method=method, startparam=b, lambda=lambda,deltatau,control,outer.iterations,outer.eps,diagnosticplots)
   }
   class(res) <- "dyntermstrc"
 
