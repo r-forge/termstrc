@@ -1,3 +1,5 @@
+rm(list = ls())
+
 load("France_1Y.RData")
 
 
@@ -18,11 +20,10 @@ library(urca)
 
 group <- "FRANCE"
 dynbonddata  <- dslist
-method="dl"
-fit <- "prices"
-weights <- "duration"
+method="ns"
+
 matrange <- c(0,20)
-myres  <- estim_dyntermstrc(dynbonddata[1:20],matrange,method,fit,weights)
+myres  <- estim_dyntermstrc(dynbonddata[1:20],matrange,method)
 
 summary(myres)
 param <- param(myres)
