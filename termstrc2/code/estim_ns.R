@@ -1,5 +1,11 @@
+## Estimate Nelson/Siegel-type yield curves for bond data
 
-estim_ns <- function(bonddata,group, matrange="all", method="ns", startparam=NULL,
+estim_ns <- function(bonddata,                  # dataset (static)
+                     group,                     # names of countries for estimation c("Country 1", "Country 2", ...)
+                     matrange="all",            # maturity range in years c(min, max) 
+                     method="ns",
+                     startparam=NULL,           # startparameter matrix with columns c("beta0","beta1","beta2","tau1","beta3","tau2")
+                                                # otherwise globally optimal parameters are searched automatically
                      lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                      deltatau=0.1,              # interval for parameter grid
                      control=list(),            # options or optim() 
@@ -26,8 +32,8 @@ estim_ns <- function(bonddata,group, matrange="all", method="ns", startparam=NUL
   if(is.null(startparam)){
     startparam <- matrix(ncol = 6, nrow = n_group)
     colnames(startparam) <- c("beta0","beta1","beta2","tau1","beta3","tau2")
-    if (method == "dl") startparam <- startparam[,1:3]
-    if (method == "ns") startparam <- startparam[,1:4]
+    if (method == "dl") startparam <- startparam[,1:3, drop=FALSE]
+    if (method == "ns") startparam <- startparam[,1:4, drop=FALSE]
 
     for (k in sgroup){
       print(paste("Searching startparameters for ", group[k]))
@@ -115,7 +121,12 @@ estim_ns <- function(bonddata,group, matrange="all", method="ns", startparam=NUL
   result
 }
 
+## Start parameter search routine for bond data
+
 findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnosticplots = FALSE, name = "", control = list(), outer.iterations = 200, outer.eps = 1e-05) {
+
+
+  
     if(method=="ns"){
       tau <- seq(deltatau,10,deltatau) # the first hump is within 10 years
       fmin <- rep(NA, length(tau))

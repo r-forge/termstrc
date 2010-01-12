@@ -12,4 +12,4 @@ source("rates.R")
 source("methods_termstrc_ns.R")
 source("methods_curves.R")
 
-ns_res <- estim_ns(govbonds, c("GERMANY", "AUSTRIA"), "ns", deltatau = 0.4, diagnosticplots = TRUE)
+ns_res <- estim_ns(govbonds, c("GERMANY"), "ns", deltatau = 0.4, diagnosticplots = TRUE)
