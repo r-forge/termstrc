@@ -176,18 +176,11 @@ prepro_bond <- function(group,
   # calculate bond yields	
   y <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),
                    sgroup,SIMPLIFY=FALSE)
-
-  # calculate bond yield based on the clean price
-
-  yc <- mapply(function(k) bond_yields(cf_p[[k]],m_p[[k]]),sgroup,SIMPLIFY=FALSE)
   # calculate duration   
   duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],y[[k]][,2]),
                    sgroup,SIMPLIFY=FALSE)
 
-  durationc <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],yc[[k]][,2]),
-                   sgroup,SIMPLIFY=FALSE)
-
-  res <- list(n_group=n_group,sgroup=sgroup,positions=positions,cf=cf,cf_p=cf_p,m=m,m_p=m_p,p=p,ac=ac,y=y,yc=yc,duration=duration,durationc=durationc,timestamp=bonddata[[1]]$TODAY)
+  res <- list(n_group=n_group,sgroup=sgroup,positions=positions,cf=cf,cf_p=cf_p,m=m,m_p=m_p,p=p,ac=ac,y=y,duration=duration,timestamp=bonddata[[1]]$TODAY)
   res
 }
 
