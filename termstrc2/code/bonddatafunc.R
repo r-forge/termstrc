@@ -180,7 +180,7 @@ prepro_bond <- function(group,
   duration <- mapply(function(k) duration(cf_p[[k]],m_p[[k]],y[[k]][,2]),
                    sgroup,SIMPLIFY=FALSE)
 
-  res <- list(n_group=n_group,sgroup=sgroup,positions=positions,cf=cf,cf_p=cf_p,m=m,m_p=m_p,p=p,ac=ac,y=y,duration=duration,timestamp=bonddata[[1]]$TODAY)
+  res <- list(n_group=n_group,sgroup=sgroup,cf=cf,cf_p=cf_p,m=m,m_p=m_p,p=p,ac=ac,y=y,duration=duration,timestamp=bonddata[[1]]$TODAY)
   res
 }
 
