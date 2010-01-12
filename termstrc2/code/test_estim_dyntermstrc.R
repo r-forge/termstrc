@@ -23,11 +23,13 @@ dynbonddata  <- dslist
 method="ns"
 
 matrange <- c(0,20)
-myres  <- estim_dyntermstrc(dynbonddata[1:20],matrange,method)
+myres  <- estim_dyntermstrc(dynbonddata[1:40],matrange,method, deltatau = 0.2, diagnosticplots = TRUE)
 
 summary(myres)
-param <- param(myres)
-summary(param)
-plot(param,"3D")
-plot(param,"diffparam")
-plot(param,"acf") 
+myparam <- param(myres)
+summary(myparam)
+plot(myparam,"3D")
+X11()
+plot(myparam,"diffparam")
+X11()
+plot(myparam,"acf") 

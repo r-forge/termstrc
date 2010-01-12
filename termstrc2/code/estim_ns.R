@@ -60,7 +60,7 @@ estim_ns <- function(bonddata,                  # dataset (static)
                 c(1,1,0,0),             # beta0 + beta1 > 0
                 c(0,0,0,1),             # tau1 > 0
                 c(0,0,0,-1))            # tau1 < 30
-    ci <- c(0,0,0,-30)
+    ci <- c(0,0,0,-10)
     }
 
    if(method=="sv"){
@@ -124,8 +124,6 @@ estim_ns <- function(bonddata,                  # dataset (static)
 ## Start parameter search routine for bond data
 
 findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnosticplots = FALSE, name = "", control = list(), outer.iterations = 200, outer.eps = 1e-05) {
-
-
   
     if(method=="ns"){
       tau <- seq(deltatau,10,deltatau) # the first hump is within 10 years
@@ -136,7 +134,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnost
             c(1,1,0))                   # beta0 + beta1 > 0
       ci <- c(0,0)
 
-      objfct_dl <- function(b) {
+      objfct <- function(b) {
         loss_function(p,
      	bond_prices("dl",b,m,cf,1/tau[i])$bond_prices,weights)
       }
@@ -144,7 +142,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnost
       theta <- rep(0.01,3) # start parameters for D/L, should not matter because objective function is convex
       for (i in 1:length(tau)){
         lsparam <- constrOptim(theta = theta,
-                               f = objfct_dl,
+                               f = objfct,
                                grad = NULL,
                                ui = ui,
                                ci = ci,
@@ -167,7 +165,8 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnost
       }
     }
     
-     if(method=="sv"){
-     }
-     startparam
+    if(method=="sv"){
+    }
+    
+    startparam
 }
