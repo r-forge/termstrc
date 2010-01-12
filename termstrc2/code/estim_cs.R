@@ -2,14 +2,14 @@
 
 ## Cubic spline term structure estimation 
 estim_cs <- function(bonddata, group, matrange="all",rse=TRUE) {
- # data preprocessing 
+
+  # data preprocessing 
   prepro <- prepro_bond(group=group,bonddata=bonddata,
            matrange=matrange)
 
 
   n_group=prepro$n_group
   sgroup=prepro$sgroup
-  positions=prepro$positions
   cf=prepro$cf
   cf_p=prepro$cf_p
   m=prepro$m
@@ -17,9 +17,8 @@ estim_cs <- function(bonddata, group, matrange="all",rse=TRUE) {
   p=prepro$p
   ac=prepro$ac
   y=prepro$y
-  yc=prepro$yc
   duration=prepro$duration
-  durationc=prepro$durationc
+
     
   # Choosing knot points (McCulloch)
   # number of bonds in each group 
@@ -141,6 +140,7 @@ estim_cs <- function(bonddata, group, matrange="all",rse=TRUE) {
                   matrange=matrange,    # maturity range of bonds
                   n_group=n_group,      # number of groups
                   knotpoints=T,         # knot points
+                  rse=rse,              # robust standard errors
                   spot=zcy_curves, 	# zero coupon yield curves
                   spread=s_curves,      # spread curves
                   discount=df_curves,	# forward rate curves
@@ -154,12 +154,12 @@ estim_cs <- function(bonddata, group, matrange="all",rse=TRUE) {
                   yhat=yhat,            # estimated yields
                   yerrors=yerrors,	# yield errors
                   alpha=alpha,          # cubic splines parameters                             
-                  regout=regout,        # OLS output
-                  rse=rse
+                  regout=regout         # OLS output
+                  
                  )
                  
   # assign names to results list 
-  for ( i in 5:length(result)) names(result[[i]]) <- names(bonddata)
+  for ( i in 6:length(result)) names(result[[i]]) <- group 
     
   class(result) <- "termstrc_cs"
   result
