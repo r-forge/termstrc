@@ -1,7 +1,7 @@
 rm(list = ls())
 
-load("France_1Y.RData")
-
+load("Germany_040707_030708.RData")
+library("rgl")
 
 source("bonddatafunc.R")
 source("create_cf_m.R")
@@ -18,18 +18,20 @@ source("param.R")
 library(urca) 
 
 
-group <- "FRANCE"
-dynbonddata  <- dslist
+group <- "GERMANY"
 method="ns"
 
-matrange <- c(0,20)
-myres  <- estim_dyntermstrc(dynbonddata[1:40],matrange,method, deltatau = 0.2, diagnosticplots = TRUE)
+matrange <- "all"
+myres  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = 0.2, diagnosticplots = TRUE)
 
 summary(myres)
 myparam <- param(myres)
 summary(myparam)
 plot(myparam,"3D")
 X11()
-plot(myparam,"diffparam")
+plot(myparam,"param")
 X11()
 plot(myparam,"acf") 
+
+method <- "sv"
+myres2  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = 2, diagnosticplots = TRUE)
