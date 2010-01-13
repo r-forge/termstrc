@@ -29,8 +29,10 @@ estim_ns <- function(bonddata,                  # dataset (static)
   duration=prepro$duration
  
   ## automatically determine globally optimal start parameters
+  spsearch <- list()
   if(is.null(startparam)){
     startparam <- matrix(ncol = 6, nrow = n_group)
+    
     colnames(startparam) <- c("beta0","beta1","beta2","tau1","beta3","tau2")
     
     if (method == "dl") {startparam <- startparam[,1:3, drop=FALSE]}
@@ -38,8 +40,9 @@ estim_ns <- function(bonddata,                  # dataset (static)
     
     for (k in sgroup){
       print(paste("Searching startparameters for ", group[k]))
-      startparam[k,] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3],
+      spsearch[[k]] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3],
                                             method, deltatau, diagnosticplots, group[k])
+      startparam[k,] <- spsearch[[k]]$startparam 
       print(startparam[k,])
     }
   }
@@ -100,6 +103,7 @@ estim_ns <- function(bonddata,                  # dataset (static)
                  method=method,                 # estimation method
                  startparam=startparam,         # calculated startparameters
                  n_group=n_group,               # number of groups,
+                 spsearch = spsearch,            # detailed data from start param search
                  spot=postpro$zcy_curves,       # zero coupon yield curves
                  spread=postpro$s_curves,       # spread curves
                  forward=postpro$fwr_curves,    # forward rate curves
@@ -177,15 +181,15 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnost
                 c(1,1,0,0))                 # beta0 + beta1 > 0
     ci <- c(0,0)
       
-    tau1 <- seq(deltatau, 20,deltatau)
-    tau2 <- seq(deltatau, 20,deltatau)
-
+    tau1 <- seq(deltatau, max(m),deltatau)
+    tau2 <- seq(deltatau, max(m),deltatau)
+    tau <- cbind(tau1, tau2)
     fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
     lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
     for (i in 1:length(tau1))
-      { print(paste("i =",i))
+      { 
         for (j in 1:length(tau2))
-          { print(paste("j =",j))
+          {
             lsparam <- constrOptim(theta = rep(0.1,4),
                                    f = objfct,
                                    grad = NULL,
@@ -215,6 +219,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnost
     }
     
   }
-  startparam
+  result <- list(startparam = startparam, tau = tau, fmin = fmin)
+  result
 }
 
