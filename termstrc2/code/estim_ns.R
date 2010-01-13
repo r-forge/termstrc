@@ -1,4 +1,4 @@
-## Estimate Nelson/Siegel-type yield curves for bond data
+### Estimate Nelson/Siegel-type yield curves for bond data
 
 estim_ns <- function(bonddata,                  # dataset (static)
                      group,                     # names of countries for estimation c("Country 1", "Country 2", ...)
@@ -9,8 +9,8 @@ estim_ns <- function(bonddata,                  # dataset (static)
                      lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                      deltatau=0.1,              # interval for parameter grid
                      control=list(),            # options or optim() 
-                     outer.iterations = 50,     # options for constrOptim()
-                     outer.eps = 1e-05,
+                     outer.iterations = 30,     # options for constrOptim()
+                     outer.eps = 1e-04,
                      diagnosticplots = FALSE    # plots for start parameter search
            ) {
 
@@ -32,12 +32,14 @@ estim_ns <- function(bonddata,                  # dataset (static)
   if(is.null(startparam)){
     startparam <- matrix(ncol = 6, nrow = n_group)
     colnames(startparam) <- c("beta0","beta1","beta2","tau1","beta3","tau2")
-    if (method == "dl") startparam <- startparam[,1:3, drop=FALSE]
-    if (method == "ns") startparam <- startparam[,1:4, drop=FALSE]
-
+    
+    if (method == "dl") {startparam <- startparam[,1:3, drop=FALSE]}
+    if (method == "ns") {startparam <- startparam[,1:4, drop=FALSE]}
+    
     for (k in sgroup){
       print(paste("Searching startparameters for ", group[k]))
-      startparam[k,] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3], method, deltatau, diagnosticplots, group[k])
+      startparam[k,] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3],
+                                            method, deltatau, diagnosticplots, group[k])
       print(startparam[k,])
     }
   }
@@ -93,27 +95,27 @@ estim_ns <- function(bonddata,                  # dataset (static)
   postpro <- postpro_bond(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method,lambda)
   
   ## return list of results 
-  result <- list(group=group,           # e.g. countries, rating classes
-                 matrange=matrange,    # maturity range of bonds
-                 method=method,        # method (Nelson/Siegel or Svensson)
-                 startparam=startparam,#calculated startparameters
-                 n_group=n_group,      # number of groups,
-                 spot=postpro$zcy_curves,      # zero coupon yield curves
-                 spread=postpro$s_curves,      # spread curves
-                 forward=postpro$fwr_curves,   # forward rate curves
-                 discount=postpro$df_curves,   # discount factor curves
-                 expoints=postpro$expoints,    # extrapolation points
-       		 cf=cf,                # cashflow matrix
-                 m=m,                  # maturity matrix
-                 duration=duration,    # duration, modified duration, weights
-                 p=p,                  # dirty prices        
-                 phat=postpro$phat,    # estimated dirty prices         
-                 perrors=postpro$perrors,      # price errors
-                 ac=ac,                # accrued interest
-                 y=y,                  # maturities and yields
-                 yhat=postpro$yhat,            # estimated yields
-                 yerrors=postpro$yerrors,      # yield errors
-                 opt_result=opt_result # optimisation results           
+  result <- list(group=group,                   # e.g. countries, rating classes
+                 matrange=matrange,             # maturity range of bonds
+                 method=method,                 # estimation method
+                 startparam=startparam,         # calculated startparameters
+                 n_group=n_group,               # number of groups,
+                 spot=postpro$zcy_curves,       # zero coupon yield curves
+                 spread=postpro$s_curves,       # spread curves
+                 forward=postpro$fwr_curves,    # forward rate curves
+                 discount=postpro$df_curves,    # discount factor curves
+                 expoints=postpro$expoints,     # extrapolation points
+       		 cf=cf,                         # cashflow matrix
+                 m=m,                           # maturity matrix
+                 duration=duration,             # duration, modified duration, weights
+                 p=p,                           # dirty prices        
+                 phat=postpro$phat,             # estimated dirty prices         
+                 perrors=postpro$perrors,       # price errors
+                 ac=ac,                         # accrued interest
+                 y=y,                           # maturities and yields
+                 yhat=postpro$yhat,             # estimated yields
+                 yerrors=postpro$yerrors,       # yield errors
+                 opt_result=opt_result          # optimisation results           
                  )
               
   for ( i in 6:length(result)) names(result[[i]]) <- group
@@ -121,27 +123,26 @@ estim_ns <- function(bonddata,                  # dataset (static)
   result
 }
 
-## Start parameter search routine for bond data
+### Start parameter search routine for bond data
 
-findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnosticplots = FALSE, name = "", control = list(), outer.iterations = 200, outer.eps = 1e-05) {
+findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnosticplots = FALSE,
+                                name = "", control = list(), outer.iterations = 200, outer.eps = 1e-05) {
   
-    if(method=="ns"){
-      tau <- seq(deltatau,10,deltatau) # the first hump is within 10 years
-      fmin <- rep(NA, length(tau))
-      lsbeta <- matrix(nrow = length(tau), ncol = 4)
+  if(method=="ns"){
+    tau <- seq(deltatau, 10, deltatau) # the first hump is within 10 years
+    fmin <- rep(NA, length(tau))
+    lsbeta <- matrix(nrow = length(tau), ncol = 4)
 
-      ui <- rbind(c(1,0,0),             # beta0 > 0
-            c(1,1,0))                   # beta0 + beta1 > 0
-      ci <- c(0,0)
+    objfct <- function(b) {
+      loss_function(p,bond_prices("dl",b,m,cf,1/tau[i])$bond_prices,weights)
+    }
 
-      objfct <- function(b) {
-        loss_function(p,
-     	bond_prices("dl",b,m,cf,1/tau[i])$bond_prices,weights)
-      }
-
-      theta <- rep(0.01,3) # start parameters for D/L, should not matter because objective function is convex
-      for (i in 1:length(tau)){
-        lsparam <- constrOptim(theta = theta,
+    ui <- rbind(c(1,0,0),                 # beta0 > 0
+                c(1,1,0))                 # beta0 + beta1 > 0
+    ci <- c(0,0)
+      
+    for (i in 1:length(tau)){
+      lsparam <- constrOptim(theta = rep(0.01,3), # start parameters for D/L, objective function is convex
                                f = objfct,
                                grad = NULL,
                                ui = ui,
@@ -151,22 +152,69 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnost
                                method = "Nelder-Mead",
                                outer.iterations = outer.iterations,
                                outer.eps = outer.eps) 
-        beta <- c(lsparam$par,tau[i])
-        fmin[i] <- lsparam$value
-        lsbeta[i,] <- beta 
-      }
-      optind <- which(fmin == min(fmin))
-      startparam <- lsbeta[optind,]
+      beta <- c(lsparam$par,tau[i])
+      fmin[i] <- lsparam$value
+      lsbeta[i,] <- beta 
+    }
+    optind <- which(fmin == min(fmin))
+    startparam <- lsbeta[optind,]
 
-      if(diagnosticplots){
-        X11()
-        plot(tau,fmin,xlab = "tau_1", ylab = "Objective function", main = name, type = "l")
-        points(tau[optind],fmin[optind],pch = 10, col = "red")
+    if(diagnosticplots){
+      X11() # FIXME
+      plot(tau,fmin,xlab = "tau_1", ylab = "Objective function", main = name, type = "l")
+      points(tau[optind],fmin[optind],pch = 10, col = "red")
+    }
+  }
+    
+  if(method=="sv"){
+
+    objfct <- function(b) {
+      bsv <- c(b[1:3],tau1[i],b[4],tau2[j])
+      loss_function(p,bond_prices("sv",bsv,m,cf)$bond_prices,weights)
+    }
+
+    ui <- rbind(c(1,0,0,0),                 # beta0 > 0
+                c(1,1,0,0))                 # beta0 + beta1 > 0
+    ci <- c(0,0)
+      
+    tau1 <- seq(deltatau, 20,deltatau)
+    tau2 <- seq(deltatau, 20,deltatau)
+
+    fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
+    lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
+    for (i in 1:length(tau1))
+      { print(paste("i =",i))
+        for (j in 1:length(tau2))
+          { print(paste("j =",j))
+            lsparam <- constrOptim(theta = rep(0.1,4),
+                                   f = objfct,
+                                   grad = NULL,
+                                   ui = ui,
+                                   ci = ci,
+                                   mu = 1e-04,
+                                   control = control,
+                                   method = "Nelder-Mead",
+                                   outer.iterations = outer.iterations,
+                                   outer.eps = outer.eps)
+              
+            beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
+            fmin[i,j] <- lsparam$value
+            lsbeta[(i-1)*length(tau1)+j,] <- beta 
+          }
       }
+    
+    optind <- which(fmin == min(fmin),arr.ind=TRUE)
+    startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]
+
+    if(diagnosticplots){
+      contour(tau1,tau2,fmin,nlevels=10,xlab = "tau_1", ylab = "tau_2",main = "Objective function")
+      points(tau1[optind[1]],tau2[optind[2]],pch = 10, col = "red")
+      open3d()
+      persp3d(tau1, tau2, fmin, col = "green3", box = FALSE,xlab = "tau_1", ylab = "tau_2", zlab = "Objective function")
+      points3d(tau1[optind[1]],tau2[optind[2]],min(fmin), col = "red")
     }
     
-    if(method=="sv"){
-    }
-    
-    startparam
+  }
+  startparam
 }
+
