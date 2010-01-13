@@ -98,7 +98,7 @@ estim_ns <- function(bonddata,                  # dataset (static)
 
   ## data post processing 
   postpro <- postpro_bond(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method,lambda)
-  browser()
+  
   ## return list of results 
   result <- list(group=group,                   # e.g. countries, rating classes
                  matrange=matrange,             # maturity range of bonds
