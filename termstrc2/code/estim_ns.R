@@ -10,8 +10,7 @@ estim_ns <- function(bonddata,                  # dataset (static)
                      deltatau=0.1,              # interval for parameter grid
                      control=list(),            # options or optim() 
                      outer.iterations = 30,     # options for constrOptim()
-                     outer.eps = 1e-04,
-                     diagnosticplots = FALSE    # plots for start parameter search
+                     outer.eps = 1e-04
            ) {
 
   ## data preprocessing
@@ -131,7 +130,7 @@ estim_ns <- function(bonddata,                  # dataset (static)
 
 ### Start parameter search routine for bond data
 
-findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnosticplots = FALSE,
+findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
                                 name = "", control = list(), outer.iterations = 200, outer.eps = 1e-05) {
   
   if(method=="ns"){
@@ -164,12 +163,6 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnost
     }
     optind <- which(fmin == min(fmin))
     startparam <- lsbeta[optind,]
-
-    if(diagnosticplots){
-      X11() # FIXME
-      plot(tau,fmin,xlab = "tau_1", ylab = "Objective function", main = name, type = "l")
-      points(tau[optind],fmin[optind],pch = 10, col = "red")
-    }
   }
     
   if(method=="sv"){
@@ -210,18 +203,25 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,diagnost
       }
     
     optind <- which(fmin == min(fmin),arr.ind=TRUE)
-    startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]
-
-    if(diagnosticplots){
-      contour(tau1,tau2,fmin,nlevels=10,xlab = "tau_1", ylab = "tau_2",main = "Objective function")
-      points(tau1[optind[1]],tau2[optind[2]],pch = 10, col = "red")
-      open3d()
-      persp3d(tau1, tau2, fmin, col = "green3", box = FALSE,xlab = "tau_1", ylab = "tau_2", zlab = "Objective function")
-      points3d(tau1[optind[1]],tau2[optind[2]],min(fmin), col = "red")
-    }
-    
+    startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]    
   }
-  result <- list(startparam = startparam, tau = tau, fmin = fmin)
+  result <- list(startparam = startparam, tau = tau, fmin = fmin, optind = optind)
+  class(result) <- "spsearch"
   result
 }
 
+### Startparameter grid search plots
+
+plot.spsearch <- function(obj) {
+
+  if(is.matrix(obj$tau)){
+      contour(obj$tau[,1],obj$tau[,2],obj$fmin,nlevels=10,xlab = "tau_1", ylab = "tau_2",main = "Objective function")
+      points(obj$tau[obj$optind[1],1],obj$tau[obj$optind[2],2],pch = 10, col = "red")
+      open3d()
+      persp3d(obj$tau[,1], obj$tau[,2], obj$fmin, col = "green3", box = FALSE,xlab = "tau_1", ylab = "tau_2", zlab = "Objective function")
+      points3d(obj$tau[obj$optind[1],1],obj$tau[obj$optind[2],2],min(obj$fmin), col = "red")
+  } else {
+      plot(obj$tau,obj$fmin,xlab = "tau_1", ylab = "Objective function", type = "l")
+      points(obj$tau[obj$optind],obj$fmin[obj$optind],pch = 10, col = "red")
+  }
+}

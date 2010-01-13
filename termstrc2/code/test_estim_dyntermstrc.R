@@ -22,7 +22,7 @@ group <- "GERMANY"
 method="ns"
 
 matrange <- "all"
-myres  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = 0.2, diagnosticplots = TRUE)
+myres  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = 0.2)
 
 summary(myres)
 myparam <- param(myres)
@@ -34,7 +34,7 @@ X11()
 plot(myparam,"acf") 
 
 method <- "sv"
-myres2  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = 2, diagnosticplots = TRUE)
+myres2  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = 2)
 
 summary(myres2)
 myparam2 <- param(myres2)
