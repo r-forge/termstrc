@@ -10,7 +10,7 @@ summary.dyntermstrc <- function(object, ...) {
     sumry$solvermsg[i] <- summary(x[[i]])$convergence[[1]]
   }
 
-  sumry$convprobs <- which(sumry$converge != "converged")
+  sumry$convprobs <- which(sumry$convergence != "converged")
 
   perrors <- t(mapply(function(i) x[[i]]$perrors[[1]][,2], seq(length(x))))
   yerrors <- t(mapply(function(i) x[[i]]$yerrors[[1]][,2], seq(length(x))))
@@ -80,8 +80,6 @@ print.dyntermstrc <- function(x,...){
   cat("Parameters for dynamic term structure estimation:\n")
   cat("---------------------------------------------------\n")
   cat("Method:",x[[1]]$method,"\n")
-  cat("Fitted:",x[[1]]$fit,"\n")
-  cat("Weights:",x[[1]]$weights,"\n")
   cat("Number of oberservations:",length(x),"\n")
   cat("Number of bonds:",ncol(x[[1]]$cf[[1]]),"\n")
   cat("---------------------------------------------------\n")

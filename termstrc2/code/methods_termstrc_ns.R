@@ -22,7 +22,7 @@ plot.termstrc_ns <-
   function(x,matrange=c(min(mapply(function(i) min(x$y[[i]][,1]),seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))))
                         ,multiple=FALSE, expoints=unlist(x$expoints), ctype="spot",
-                         errors="price",
+                         errors="none",
                         lwd=2,lty=1,type="l",inset=c(0.8,0.1),ask=TRUE,
                         ...) {
      
@@ -142,8 +142,8 @@ summary.termstrc_ns <- function(object,...) {
     convergence <- as.matrix(mapply(function(i) x$opt_result[[i]]$message,seq_along(x$opt_result)))
     colnames(convergence) <- "Solver message"
     rownames(convergence) <- x$group
-    sumry <- list(gof,convergencegroup,convergence,otype=x$otype,startparam=x$startparam)
-    names(sumry) <- c("gof","convergencegroup","convergence","otype","startparam")
+    sumry <- list(gof,convergencegroup,convergence,startparam=x$startparam)
+    names(sumry) <- c("gof","convergencegroup","convergence","startparam")
     class(sumry) <- "summary.termstrc_ns"
     sumry
 }
