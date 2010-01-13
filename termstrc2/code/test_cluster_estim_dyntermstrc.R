@@ -5,7 +5,7 @@ source("estim_dyntermstrc.R")
 source("methods_dyntermstrc.R")
 source("param.R")
 
-library(urca) 
+# library(urca) 
 
 group <- "GERMANY"
 method="ns"
