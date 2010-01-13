@@ -12,5 +12,5 @@ source("rates.R")
 source("methods_termstrc_ns.R")
 source("methods_curves.R")
 
-sv_res <- estim_ns(dynbonddata, c("GERMANY"), method = "sv", deltatau = 1, diagnosticplots = FALSE)
+sv_res <- estim_ns(dynbonddata, c("GERMANY"), method = "sv", deltatau = 0.2, diagnosticplots = FALSE)
 save(sv_res, file = "sv_res.RData")
