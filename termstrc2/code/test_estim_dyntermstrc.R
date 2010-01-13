@@ -35,3 +35,12 @@ plot(myparam,"acf")
 
 method <- "sv"
 myres2  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = 2, diagnosticplots = TRUE)
+
+summary(myres2)
+myparam2 <- param(myres2)
+summary(myparam2)
+plot(myparam2,"3D")
+X11()
+plot(myparam2,"param")
+X11()
+plot(myparam2,"acf") 
