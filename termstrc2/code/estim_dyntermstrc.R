@@ -3,10 +3,10 @@
 
 estim_dyntermstrc <- function(dynbonddata,matrange="all",method="ns",
                               lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
-                              deltatau=0.1,              # interval for parameter grid
+                              deltatau=1,              # interval for parameter grid
                               control=list(),            # options or optim() 
-                              outer.iterations = 50,     # options for constrOptim()
-                              outer.eps = 1e-05,
+                              outer.iterations = 30,     # options for constrOptim()
+                              outer.eps = 1e-04,
                               diagnosticplots = FALSE    # plots for start parameter search
                      ) {
 
