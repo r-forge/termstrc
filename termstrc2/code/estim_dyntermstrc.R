@@ -6,8 +6,7 @@ estim_dyntermstrc <- function(dynbonddata,matrange="all",method="ns",
                               deltatau=1,              # interval for parameter grid
                               control=list(),            # options or optim() 
                               outer.iterations = 30,     # options for constrOptim()
-                              outer.eps = 1e-04,
-                              diagnosticplots = FALSE    # plots for start parameter search
+                              outer.eps = 1e-04
                      ) {
 
   res <- list()
@@ -33,7 +32,7 @@ estim_dyntermstrc <- function(dynbonddata,matrange="all",method="ns",
     group <- names(dynbonddata)[i]
     bonddata <- list()
     bonddata[[group]] <- dynbonddata[[i]]
-    res[[i]] <- estim_ns(bonddata=bonddata,group, matrange, method=method, startparam=b, lambda=lambda,deltatau,control,outer.iterations,outer.eps,diagnosticplots)
+    res[[i]] <- estim_ns(bonddata=bonddata,group, matrange, method=method, startparam=b, lambda=lambda,deltatau,control,outer.iterations,outer.eps)
   }
   class(res) <- "dyntermstrc"
 
