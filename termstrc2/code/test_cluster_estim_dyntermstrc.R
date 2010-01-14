@@ -21,7 +21,7 @@ method="ns"
 matrange <- "all"
 myres  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = 0.2, diagnosticplots = FALSE)
 
-method <- "sv"
-myres2  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = , diagnosticplots = FALSE)
+#method <- "sv"
+#myres2  <- estim_dyntermstrc(dynbonddata,matrange,method, deltatau = , diagnosticplots = FALSE)
 
-save.image(file = "test_cluster_estim_dyntermstrc.RData")
+#save.image(file = "test_cluster_estim_dyntermstrc.RData")
