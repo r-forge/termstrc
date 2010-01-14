@@ -2,15 +2,14 @@ print.termstrc_ns <-
   function(x,...) {
   cat("---------------------------------------------------\n")
   cat("Parameters for estimation with spot rate function of:\n")
-  cat("\n")
-  cat(x$method,"\n")
-  cat("\n")
+  cat(switch(x$method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson"),"\n")
   cat("---------------------------------------------------\n")
   cat("\n")
   parameters <- mapply(function(i) x$opt_result[[i]]$par,seq_along(x$opt_result))
   colnames(parameters) <- names(x$opt_result)
   n_par <- as.character(nrow(parameters))
   rownames(parameters) <- switch(n_par,
+          "3"=c("beta_0","beta_1","beta_2"),
           "4"=c("beta_0","beta_1","beta_2","tau_1"),
           "6"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2")) 
   print.default(parameters)
