@@ -13,7 +13,7 @@ source("rates.R")
 source("methods_termstrc_ns.R")
 source("methods_curves.R")
 
-dl_res <- estim_ns(govbonds, c("GERMANY"), method = "dl")
+dl_res <- estim_ns(govbonds, c("GERMANY"), method = "dl", lamda = 1/5)
 
 ns_res <- estim_ns(govbonds, c("GERMANY"), "ns", deltatau = 0.5)
 
