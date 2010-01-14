@@ -13,10 +13,10 @@ source("rates.R")
 source("methods_termstrc_ns.R")
 source("methods_curves.R")
 
-#ns_res <- estim_ns(govbonds, c("GERMANY"), "ns", deltatau = 0.5)
+dl_res <- estim_ns(govbonds, c("GERMANY"), method = "dl")
 
-#Rprof(tmp <- tempfile(), interval = 0.01)
-sv_res <- estim_ns(govbonds, c("GERMANY"), method = "sv", deltatau = 5)
+ns_res <- estim_ns(govbonds, c("GERMANY"), "ns", deltatau = 0.5)
 
-#Rprof(NULL)
-#summaryRprof(tmp)
+
+#sv_res <- estim_ns(govbonds, c("GERMANY"), method = "sv", deltatau = 5)
+
