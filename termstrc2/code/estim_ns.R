@@ -42,7 +42,7 @@ estim_ns <- function(bonddata,                  # dataset (static)
     for (k in sgroup){
       print(paste("Searching startparameters for ", group[k]))
       spsearch[[k]] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3],
-                                            method, deltatau, diagnosticplots, group[k])
+                                            method, deltatau)
       startparam[k,] <- spsearch[[k]]$startparam 
       print(startparam[k,])
     }
@@ -131,8 +131,15 @@ estim_ns <- function(bonddata,                  # dataset (static)
 ### Start parameter search routine for bond data
 
 findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
-                                name = "", control = list(), outer.iterations = 200, outer.eps = 1e-05) {
+                                control = list(), outer.iterations = 200, outer.eps = 1e-05) {
   
+  if(method=="dl"){
+    startparam = rep(0.01,3)
+    tau = NULL
+    fmin = NULL
+    optind = NULL
+  }
+ 
   if(method=="ns"){
     tau <- seq(deltatau, 10, deltatau) # the first hump is within 10 years
     fmin <- rep(NA, length(tau))
@@ -147,6 +154,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
     ci <- c(0,0)
       
     for (i in 1:length(tau)){
+      
       lsparam <- constrOptim(theta = rep(0.01,3), # start parameters for D/L, objective function is convex
                                f = objfct,
                                grad = NULL,
@@ -185,7 +193,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
       { 
         for (j in 1:length(tau2))
           {
-            lsparam <- constrOptim(theta = rep(0.1,4),
+            lsparam <- constrOptim(theta = rep(0.01,4),
                                    f = objfct,
                                    grad = NULL,
                                    ui = ui,
