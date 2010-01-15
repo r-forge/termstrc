@@ -134,7 +134,7 @@ summary.termstrc_ns <- function(object,...) {
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields","AABSE-Yields")
     convergencegroup <- as.matrix(apply(as.matrix(mapply(function(i) x$opt_result[[i]]$convergence,
                               seq_along(x$opt_result))),1,
-                              function(x) if(x==1) "no convergence" else "converged"))
+                              function(x) if(x==1) "no convergence" else "converged"))# change !! 
     
     colnames(convergencegroup) <- "Convergence ()"
     rownames(convergencegroup) <- x$group
