@@ -1,6 +1,8 @@
 rm(list = ls())
 
 #load("Germany_040707_030708.RData")
+load("dyngovbonds.RData")
+
 library("rgl")
 
 source("bonddatafunc.R")
@@ -18,7 +20,7 @@ source("param.R")
 library(urca) 
 
 
-group <- "GERMANY"
+group <- c("AUSTRIA","GERMANY")
 method="ns"
 
 matrange <- "all"
