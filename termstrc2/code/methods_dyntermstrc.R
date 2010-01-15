@@ -3,17 +3,18 @@ summary.dyntermstrc <- function(object, ...) {
 
   # extract convergence info
   sumry <- list()
-  sumry$convergence <- vector()
-  sumry$solvermsg <- vector()
-  for (i in 1:length(x)) {
-    sumry$convergence[i] <- summary(x[[i]])$convergencegroup[[1]]
-    sumry$solvermsg[i] <- summary(x[[i]])$convergence[[1]]
-  }
+  sumry$convergence <- t(mapply(function(i) summary(x[[i]])$convergencegroup, seq_along(x)))
+  colnames(sumry$convergence) <- x[[1]]$group 
+  sumry$solvermsg <- t(mapply(function(i) summary(x[[i]])$convergence, seq_along(x)))
+  colnames(sumry$solvermsg) <- x[[1]]$group 
+  sumry$convprobs <- apply(sumry$convergence,2,function(x) which(x != "converged"))
 
-  sumry$convprobs <- which(sumry$convergence != "converged")
-
-  perrors <- t(mapply(function(i) x[[i]]$perrors[[1]][,2], seq(length(x))))
-  yerrors <- t(mapply(function(i) x[[i]]$yerrors[[1]][,2], seq(length(x))))
+  # adapt for multiple countries
+  perrors <- list()
+  yerrors <- list()
+  
+  perrors <- mapply(function(j) t(mapply(function(i) x[[i]]$perrors[[j]][,2], seq(length(x))))
+  yerrors <- t(mapply(function(i) x[[i]]$yerrors[[j]][,2], seq(length(x))))
   p_mrsme <- mean(sqrt(apply(perrors^2,2,mean)))
   p_maabse <- mean(sqrt(apply(abs(perrors),2,mean)))
   y_mrsme <- mean(sqrt(apply(yerrors^2,2,mean)))
@@ -79,12 +80,13 @@ print.dyntermstrc <- function(x,...){
   cat("---------------------------------------------------\n")
   cat("Parameters for dynamic term structure estimation:\n")
   cat("---------------------------------------------------\n")
-  cat("Method:",x[[1]]$method,"\n")
+  cat("Group: ",x[[1]]$group,"\n")
+  cat("Method:",switch(x[[1]]$method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson"),"\n")
   cat("Number of oberservations:",length(x),"\n")
-  cat("Number of bonds:",ncol(x[[1]]$cf[[1]]),"\n")
   cat("---------------------------------------------------\n")
-  cat("\n")
+  cat("Parameter summary:\n")
+  cat("---------------------------------------------------\n")
   tsparam <- param.dyntermstrc(x)
-  print(summary.default(tsparam))
+  print(lapply(tsparam,summary.default))
   cat("---------------------------------------------------\n")
 }
