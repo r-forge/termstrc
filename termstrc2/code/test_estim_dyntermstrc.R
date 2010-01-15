@@ -1,6 +1,6 @@
 rm(list = ls())
 
-load("Germany_040707_030708.RData")
+#load("Germany_040707_030708.RData")
 library("rgl")
 
 source("bonddatafunc.R")
