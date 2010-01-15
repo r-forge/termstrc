@@ -50,11 +50,7 @@ print.summary.dyntermstrc <- function(x,...) {
     } else {
       cat("Convergence problems are at:\n")
       print.default(x$convprobs)
-    }
-   
-
- 
-    
+    }    
 }
 
 
@@ -62,8 +58,6 @@ print.summary.dyntermstrc <- function(x,...) {
 plot.dyntermstrc <- function(x,range=c(0,20), ...) {
 
   old.par <- par(no.readonly = TRUE) 
-  
-      
   # 3D plot of zero-coupon yield curves
     tsparam <- param.dyntermstrc(x)
     par(mfrow=c(1,nrow(tsparam[[1]])),...)
