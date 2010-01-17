@@ -1,7 +1,9 @@
 rm(list = ls())
 
 library("rgl")
-load("govbonds.RData")
+#load("govbonds.RData")
+
+load("GERMANY.RData")
 
 source("bonddatafunc.R")
 source("create_cf_m.R")
@@ -12,6 +14,8 @@ source("helperfunc.R")
 source("rates.R")
 source("methods_termstrc_ns.R")
 source("methods_curves.R")
+
+govbonds <- dslist[[1]]
 
 dl_res <- estim_ns(govbonds, c("GERMANY"), method = "dl", lambda = 1/5)
 
