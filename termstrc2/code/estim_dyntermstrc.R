@@ -1,7 +1,7 @@
 
 ## dynamic estimation of the term structure
 
-estim_dyntermstrc <- function(dynbonddata, group, matrange="all",method="ns",
+estim_nss.dyncouponbonds <- function(dynbonddata, group, matrange="all",method="ns",
                               lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                               deltatau=1,              # interval for parameter grid
                               control=list(),            # options or optim() 
@@ -20,7 +20,7 @@ estim_dyntermstrc <- function(dynbonddata, group, matrange="all",method="ns",
     } else b <- NULL
 
     # static estimation
-    res[[i]] <- estim_ns(bonddata=dynbonddata[[i]],group, matrange, method=method, startparam=b, lambda=lambda,deltatau,control,outer.iterations,outer.eps)
+    res[[i]] <- estim_nss(bonddata=dynbonddata[[i]],group, matrange, method=method, startparam=b, lambda=lambda,deltatau,control,outer.iterations,outer.eps)
   }
   class(res) <- "dyntermstrc"
 
