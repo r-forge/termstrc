@@ -56,6 +56,10 @@ test.estim_nss.couponbonds <- function() {
   load("govbonds.RData")
   ns_res <- estim_nss(govbonds, c("GERMANY", "AUSTRIA"), method = "ns", deltatau = 0.4)
   print(ns_res)
+  plot(ns_res)
+  summary(ns_res)
+  checkTrue(is.numeric(ns_res$opt_result$GERMANY$par))
+  checkTrue(is.numeric(ns_res$opt_result$AUSTRIA$par))
 }
 
 
