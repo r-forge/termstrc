@@ -5,5 +5,7 @@ datadyncouponbonds <- dyncouponbonds(c("DataGermany S.csv", "DataGermany AC.csv"
 
 
 
+
+
   
 
