@@ -1,16 +1,16 @@
-### Estimate Nelson/Siegel-type yield curves for bond data
+### Estimate Nelson/Siegel-type yield curves from bond data
 
-estim_ns <- function(bonddata,                  # dataset (static)
-                     group,                     # names of countries for estimation c("Country 1", "Country 2", ...)
-                     matrange="all",            # maturity range in years c(min, max) 
-                     method="ns",
-                     startparam=NULL,           # startparameter matrix with columns c("beta0","beta1","beta2","tau1","beta3","tau2")
-                                                # otherwise globally optimal parameters are searched automatically
-                     lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
-                     deltatau=0.1,              # interval for parameter grid
-                     control=list(),            # options or optim() 
-                     outer.iterations = 30,     # options for constrOptim()
-                     outer.eps = 1e-04
+estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
+                                  group,                     # names of countries for estimation c("Country 1", "Country 2", ...)
+                                  matrange="all",            # maturity range in years c(min, max) 
+                                  method="ns",
+                                  startparam=NULL,           # startparameter matrix with columns c("beta0","beta1","beta2","tau1","beta3","tau2")
+                                        # otherwise globally optimal parameters are searched automatically
+                                  lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
+                                  deltatau=0.1,              # interval for parameter grid
+                                  control=list(),            # options or optim() 
+                                  outer.iterations = 30,     # options for constrOptim()
+                                  outer.eps = 1e-04
            ) {
 
   ## data preprocessing
@@ -141,7 +141,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
   }
  
   if(method=="ns"){
-    tau <- seq(deltatau, max(m), deltatau) # the first hump is within 10 years
+    tau <- seq(deltatau, max(m), deltatau) 
     fmin <- rep(NA, length(tau))
     lsbeta <- matrix(nrow = length(tau), ncol = 4)
 

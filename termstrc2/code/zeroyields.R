@@ -1,8 +1,7 @@
-### zeroyields
+### Nelson/Siegel and Svensson spot curve estimaton from zero yields 
 
 zeroyields <- function(maturities, yields, dates)
   {
-    # TODO: check input arguments
     zy <- list(maturities = maturities, yields = yields, dates = dates)
     class(zy) <- "zeroyields"
     zy
@@ -35,7 +34,7 @@ estim_nss <- function(obj, ...) UseMethod("estim_nss")
 estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
   {
     if(method=="ns"){
-          spsearch <- findstartparam(obj$yields[1,],obj$maturities, method, deltatau)
+          spsearch <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
           startparam <- spsearch$startparam
           objfct <- objfct_ns
           grad_objfct <- grad_objfct_ns
@@ -48,7 +47,7 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
 
     if(method=="sv"){
       
-          spsearch <- findstartparam(obj$yields[1,],obj$maturities, method, deltatau)
+          spsearch <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
           startparam <- spsearch$startparam
           
           objfct <- objfct_sv
@@ -129,7 +128,7 @@ estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, ui, ci)
           
   }
 
-findstartparam <- function(y,m, method, deltatau = 0.1)
+findstartparamyields <- function(y,m, method, deltatau = 0.1)
   {
     if(method=="ns"){
       tau <- seq(0.1,max(m),deltatau)
@@ -201,13 +200,6 @@ objfct_ns <- function(beta, m, y)
         sum((y - spr_ns(beta,m))^2)
       }
 
-## TODO: remove me later
-## spr_ns <- function(beta,m)
-##   {
-##     beta[1] + beta[2]*((1-exp(-m/beta[4]))/(m/beta[4])) +
-##              beta[3]*(((1-exp(-m/beta[4]))/(m/beta[4]))-exp(-m/beta[4]))
-##   }
-
 ### Gradient of Nelson/Siegel loss function for yields
 grad_objfct_ns <- function(beta, m, y)
       {
@@ -233,13 +225,6 @@ objfct_sv <- function(beta, m, y)
       {
         sum((y - spr_sv(beta,m))^2)
       }
-
-## TODO: remove me later
-spr_sv <- function(beta, m){
-  (beta[1] + beta[2] * ((1 - exp(-m/beta[4]))/(m/beta[4])) +
-   beta[3] * (((1 - exp(-m/beta[4]))/(m/beta[4])) - exp(-m/beta[4])) +
-   beta[5] * (((1 - exp(-m/beta[6]))/(m/beta[6])) - exp(-m/beta[6])))
-}
 
 ### Gradient of Svensson loss function for yields
 grad_objfct_sv <- function(beta, m, y)
@@ -274,30 +259,6 @@ grad_objfct_sv <- function(beta, m, y)
       (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
           )
       }
-
-### old stuff
-
-##     lower_bounds <- c(0, -Inf, -Inf, 0)
-##     upper_bounds <- rep(Inf, 4)
-
-##     beta <- rep(1,4)
-    
-##     opt_result <- nlminb(start = beta,
-##                          objective = objfct,
-##                          gradient = grad_objfct,
-##                          hessian = NULL,
-##                          m,y,
-##                          lower = lower_bounds,
-##                          upper = upper_bounds)
-    
-##     opt_result2 <- optim(par = beta,
-##                          fn = objfct,
-##                          gr = grad_objfct,
-##                          m,y,
-##                          method = "L-BFGS-B",
-##                          lower = lower_bounds,
-##                          upper = upper_bounds,
-##                          hessian = TRUE)
 
 
 

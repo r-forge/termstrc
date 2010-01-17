@@ -18,30 +18,44 @@ bonddata <- govbonds
 ##   ## TODO: check in SV objective function values < N/S objective function value
 ## }
 
-test.estim_nss.zeroyields <- function() {
-  ## Import CSV
-  x <- read.csv("zeroyields.csv",sep=";")
+## test.estim_nss.zeroyields <- function() {
+##   ## Import CSV
+##   x <- read.csv("zeroyields.csv",sep=";")
 
-  maturities <- 1:12
-  yields <- as.matrix(x[100:150,2:13])
-  dates <- as.Date(x[100:150,1],format="%d.%m.%Y")
+##   maturities <- 1:12
+##   yields <- as.matrix(x[100:150,2:13])
+##   dates <- as.Date(x[100:150,1],format="%d.%m.%Y")
 
-  ## Call class constructor
-  datazeroyields <- zeroyields(maturities, yields, dates)
+##   ## Call class constructor
+##   datazeroyields <- zeroyields(maturities, yields, dates)
   
-  ## Perform Nelson/Siegel estimation
-  ns_res <- estim_nss(datazeroyields, "ns", deltatau = 0.2)
+##   ## Perform Nelson/Siegel estimation
+##   ns_res <- estim_nss(datazeroyields, "ns", deltatau = 0.2)
 
-  ## Plot startparameters
-  plot(ns_res$spsearch)
-  checkTrue(is.numeric(ns_res$optparam))
+##   ## Plot startparameters
+##   plot(ns_res$spsearch)
 
-  ## Perform Svensson estimation
-  sv_res <- estim_nss(datazeroyields, "sv", deltatau = 0.2)
+##   ## Plot parameters and curves
+##   plot(ns_res)
   
-  ## Plot startparameters
-  plot(sv_res$spsearch)
-  checkTrue(is.numeric(sv_res$optparam))
+##   checkTrue(is.numeric(ns_res$optparam))
+
+##   ## Perform Svensson estimation
+##   sv_res <- estim_nss(datazeroyields, "sv", deltatau = 0.2)
+  
+##   ## Plot startparameters
+##   plot(sv_res$spsearch)
+
+##   ## Plot parameters and curves
+##   plot(sv_res)
+  
+##   checkTrue(is.numeric(sv_res$optparam))
+## }
+
+test.estim_nss.couponbonds <- function() {
+  load("govbonds.RData")
+  ns_res <- estim_nss(govbonds, c("GERMANY", "AUSTRIA"), method = "ns")
+  print(ns_res)
 }
 
 

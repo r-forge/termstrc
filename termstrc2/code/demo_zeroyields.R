@@ -1,11 +1,4 @@
-rm(list = ls())
-
-source("termstrcPackage.R")
-#mtrace(estim_nss.zeroyields)
-#mtrace(estimateyieldcurve)
-
 ## Import CSV
-
 x <- read.csv("zeroyields.csv",sep=";")
 
 maturities <- 1:12
@@ -17,18 +10,22 @@ dates <- as.Date(x[100:150,1],format="%d.%m.%Y")
 datazeroyields <- zeroyields(maturities, yields, dates)
 
 ## Perform Nelson/Siegel estimation
-#ns_res <- estim_nss(datazeroyields, "ns", deltatau = 0.2)
+ns_res <- estim_nss(datazeroyields, "ns", deltatau = 0.2)
 
 ## Plot startparameters
-#plot(ns_res$spsearch)
+plot(ns_res$spsearch)
+
+## Plot parameters and curves
+plot(ns_res)
 
 ## Perform Svensson estimation
-
 sv_res <- estim_nss(datazeroyields, "sv", deltatau = 0.2)
-
 
 ## Plot startparameters
 plot(sv_res$spsearch)
+
+## Plot parameters and curves
+plot(sv_res)
 
 
 
