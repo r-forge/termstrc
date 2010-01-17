@@ -66,7 +66,7 @@ estim_ns <- function(bonddata,                  # dataset (static)
                 c(1,1,0,0),             # beta0 + beta1 > 0
                 c(0,0,0,1),             # tau1 > 0
                 c(0,0,0,-1))            # tau1 < 30
-    ci <- c(0,0,0,-10)
+    ci <- c(0,0,0,-30)
     }
 
    if(method=="sv"){
@@ -141,7 +141,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
   }
  
   if(method=="ns"){
-    tau <- seq(deltatau, 10, deltatau) # the first hump is within 10 years
+    tau <- seq(deltatau, max(m), deltatau) # the first hump is within 10 years
     fmin <- rep(NA, length(tau))
     lsbeta <- matrix(nrow = length(tau), ncol = 4)
 

@@ -30,23 +30,23 @@ plot.termstrc_ns <-
                     max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))) 
   
      # check plot maturity conformity
-    if(x$matrange[1] != "all") {
-    if(matrange[2]>  x$matrange[2]) { matrange[2] <-  x$matrange[2]
-       warning("The plot range for the maturity violates the estimation maturity range") 
-     }
+    ## if(x$matrange[1] != "all") {
+    ## if(matrange[2]>  x$matrange[2]) { matrange[2] <-  x$matrange[2]
+    ##    warning("The plot range for the maturity violates the estimation maturity range") 
+    ##  }
    
-    if(matrange[1] <  x$matrange[1]) { matrange[1] <-  x$matrange[1]
-       warning("The plot range for the maturity violates the estimation maturity range") 
-     }
-    }
+    ## if(matrange[1] <  x$matrange[1]) { matrange[1] <-  x$matrange[1]
+    ##    warning("The plot range for the maturity violates the estimation maturity range") 
+    ##  }
+    ## }
    
-    if( matrange[2] > samplemat[2]) {matrange[2] <-  samplemat[2]
-       warning("The plot range for the maturity violates the estimation maturity range") 
-     }
+    ## if( matrange[2] > samplemat[2]) {matrange[2] <-  samplemat[2]
+    ##    warning("The plot range for the maturity violates the estimation maturity range") 
+    ##  }
      
-    if( matrange[1] < samplemat[1]) {matrange[1] <- samplemat[1]
-       warning("The plot range for the maturity violates the estimation maturity range") 
-     }
+    ## if( matrange[1] < samplemat[1]) {matrange[1] <- samplemat[1]
+    ##    warning("The plot range for the maturity violates the estimation maturity range") 
+    ##  }
     
                				
     
