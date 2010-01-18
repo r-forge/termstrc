@@ -2,7 +2,7 @@
 param <- function(obj,...) UseMethod("param") 
 
 
-param.dyntermstrc_nss <- function(x) {
+param.dyntermstrc_nss <- function(x,...) {
   param <- list()
   for(i in seq(x[[1]]$n_group)) param[[i]] =  t(mapply(function(j) x[[j]]$opt_result[[i]]$par,seq_along(x)))
   names(param) <- x[[1]]$group                          
@@ -11,11 +11,12 @@ param.dyntermstrc_nss <- function(x) {
 }
 
 
-
-#print.dyntermstrc_param <- function(x,...){
-#  lapply(x,summary.default)
-#}
-
+param.dyntermstrc_yields <- function(x,...){
+    param <- list() 
+    param[[1]] <- x$optparam
+    class(param) <- "dyntermstrc_param"
+    param
+}
 
 summary.dyntermstrc_param <- function(object,type="none",lags=1,selectlags="Fixed", ...) {
     x <- object
@@ -23,8 +24,6 @@ summary.dyntermstrc_param <- function(object,type="none",lags=1,selectlags="Fixe
     length(sumry) <- length(x) 
     for(i in seq_along(x)) {
     
-  
-    #sumry[[i]]$adflevels <- list()
     # Augmented Dickey Fuller Test for levels
     sumry[[i]]$adflevels <- apply(x[[i]],2,function(x) ur.df(x,type=type,lags=lags,selectlags=selectlags)) #alternatively use adf.testx  
 
