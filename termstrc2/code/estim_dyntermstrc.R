@@ -10,7 +10,6 @@ estim_nss.dyncouponbonds <- function(dynbonddata, group, matrange="all",method="
                      ) {
   res <- list()
 
- 
   # perform sequence of term structure estimations
   for (i in seq(length(dynbonddata))) {
     if(i>1){
@@ -18,9 +17,10 @@ estim_nss.dyncouponbonds <- function(dynbonddata, group, matrange="all",method="
       b <- t(mapply(function(j) res[[i-1]]$opt_result[[j]]$par,  seq_along(group)))
       rownames(b) <- group                               
     } else b <- NULL
-
+    
     # static estimation
-    res[[i]] <- estim_nss(bonddata=dynbonddata[[i]],group, matrange, method=method, startparam=b, lambda=lambda,deltatau,control,outer.iterations,outer.eps)
+    bonddata <- dynbonddata[[i]]
+    res[[i]] <- estim_nss(bonddata, group, matrange, method=method, startparam=b, lambda=lambda,deltatau,control,outer.iterations,outer.eps)
   }
   class(res) <- "dyntermstrc_nss"
 
