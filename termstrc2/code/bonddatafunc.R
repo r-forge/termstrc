@@ -90,23 +90,19 @@ rm_bond <- function(bonddata,ISIN,group){
 }
 
 ## remove bonds from a dynamic bonddata set 
-dyn_rm_bond <- function(dynbonddata, ISIN) {
+dyn_rm_bond <- function(dynbonddata,group,ISIN) {
   for (i in seq(length(dynbonddata))) {
-     cf_isin_index <- which(dynbonddata[[i]]$CASHFLOWS$ISIN %in% ISIN)
-     isin_index <- which(dynbonddata[[i]]$ISIN %in% ISIN)
-     dynbonddata[[i]]$ISIN <- dynbonddata[[i]]$ISIN[-isin_index]
-     dynbonddata[[i]]$MATURITYDATE <- dynbonddata[[i]]$MATURITYDATE[-isin_index]
-     dynbonddata[[i]]$STARTDATE <- dynbonddata[[i]]$STARTDATE[-isin_index]
-     dynbonddata[[i]]$COUPONRATE <- dynbonddata[[i]]$COUPONRATE[-isin_index]
-     dynbonddata[[i]]$PRICE <- dynbonddata[[i]]$PRICE[-isin_index]
-     dynbonddata[[i]]$ACCRUED <- dynbonddata[[i]]$ACCRUED[-isin_index]
-     dynbonddata[[i]]$RY <- dynbonddata[[i]]$RY[-isin_index]
-     dynbonddata[[i]]$IBOX <- dynbonddata[[i]]$IBOX[-isin_index]
-     dynbonddata[[i]]$IBXA <- dynbonddata[[i]]$IBXA[-isin_index]
-     dynbonddata[[i]]$IBXB <- dynbonddata[[i]]$IBXB[-isin_index]
-     dynbonddata[[i]]$CASHFLOWS$ISIN <- dynbonddata[[i]]$CASHFLOWS$ISIN[-cf_isin_index]
-     dynbonddata[[i]]$CASHFLOWS$CF <- dynbonddata[[i]]$CASHFLOWS$CF[-cf_isin_index]
-     dynbonddata[[i]]$CASHFLOWS$DATE <- dynbonddata[[i]]$CASHFLOWS$DATE[-cf_isin_index]
+     cf_isin_index <- which(dynbonddata[[i]][[group]]$CASHFLOWS$ISIN %in% ISIN)
+     isin_index <- which(dynbonddata[[i]][[group]]$ISIN %in% ISIN)
+     dynbonddata[[i]][[group]]$ISIN <- dynbonddata[[i]][[group]]$ISIN[-isin_index]
+     dynbonddata[[i]][[group]]$MATURITYDATE <- dynbonddata[[i]][[group]]$MATURITYDATE[-isin_index]
+     dynbonddata[[i]][[group]]$STARTDATE <- dynbonddata[[i]][[group]]$STARTDATE[-isin_index]
+     dynbonddata[[i]][[group]]$COUPONRATE <- dynbonddata[[i]][[group]]$COUPONRATE[-isin_index]
+     dynbonddata[[i]][[group]]$PRICE <- dynbonddata[[i]][[group]]$PRICE[-isin_index]
+     dynbonddata[[i]][[group]]$ACCRUED <- dynbonddata[[i]][[group]]$ACCRUED[-isin_index]
+     dynbonddata[[i]][[group]]$CASHFLOWS$ISIN <- dynbonddata[[i]][[group]]$CASHFLOWS$ISIN[-cf_isin_index]
+     dynbonddata[[i]][[group]]$CASHFLOWS$CF <- dynbonddata[[i]][[group]]$CASHFLOWS$CF[-cf_isin_index]
+     dynbonddata[[i]][[group]]$CASHFLOWS$DATE <- dynbonddata[[i]][[group]]$CASHFLOWS$DATE[-cf_isin_index]
   }
     dynbonddata
 }
