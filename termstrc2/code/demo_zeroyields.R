@@ -1,5 +1,3 @@
-source("termstrcPackage.R")
-
 ## Import CSV
 x <- read.csv("zeroyields.csv",sep=";")
 
