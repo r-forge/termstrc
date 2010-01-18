@@ -124,7 +124,7 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
                  )
               
   for ( i in 6:length(result)) names(result[[i]]) <- group
-  class(result) <- "termstrc_ns"
+  class(result) <- "termstrc_nss"
   result
 }
 

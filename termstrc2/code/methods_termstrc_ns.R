@@ -1,4 +1,4 @@
-print.termstrc_ns <- 
+print.termstrc_nss <- 
   function(x,...) {
   cat("---------------------------------------------------\n")
   cat("Parameters for estimation with spot rate function of:\n")
@@ -17,7 +17,7 @@ print.termstrc_ns <-
   #x
   }
 
-plot.termstrc_ns <-
+plot.termstrc_nss <-
   function(x,matrange=c(min(mapply(function(i) min(x$y[[i]][,1]),seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]),seq(x$n_group))))
                         ,multiple=FALSE, expoints=unlist(x$expoints), ctype="spot",
@@ -101,7 +101,7 @@ plot.termstrc_ns <-
    
 }  
 
-summary.termstrc_ns <- function(object,...) {
+summary.termstrc_nss <- function(object,...) {
     x <- object
     RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
     AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
@@ -111,8 +111,6 @@ summary.termstrc_ns <- function(object,...) {
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields","AABSE-Yields")
-    #convergencegroup <- as.matrix(apply(as.matrix,1,
-    #                          function(x) if(x==1) "no convergence" else "converged"))# change !!
     convergencegroup <- as.matrix(mapply(function(i) x$opt_result[[i]]$convergence,
                               seq_along(x$opt_result)))
     
@@ -123,11 +121,11 @@ summary.termstrc_ns <- function(object,...) {
     rownames(convergence) <- x$group
     sumry <- list(gof,convergencegroup,convergence,startparam=x$startparam)
     names(sumry) <- c("gof","convergencegroup","convergence","startparam")
-    class(sumry) <- "summary.termstrc_ns"
+    class(sumry) <- "summary.termstrc_nss"
     sumry
 }
 
-print.summary.termstrc_ns<-
+print.summary.termstrc_nss <-
     function(x,...) {
     cat("---------------------------------------------------\n")
     cat("Goodness of fit:\n")

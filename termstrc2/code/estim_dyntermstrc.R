@@ -22,7 +22,7 @@ estim_nss.dyncouponbonds <- function(dynbonddata, group, matrange="all",method="
     # static estimation
     res[[i]] <- estim_nss(bonddata=dynbonddata[[i]],group, matrange, method=method, startparam=b, lambda=lambda,deltatau,control,outer.iterations,outer.eps)
   }
-  class(res) <- "dyntermstrc"
+  class(res) <- "dyntermstrc_nss"
 
   res
 }
