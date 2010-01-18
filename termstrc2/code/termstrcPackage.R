@@ -1,4 +1,6 @@
 library("rgl")
+library("urca")
+library("sandwich")
 
 source("bonddatafunc.R")
 source("create_cf_m.R")
@@ -11,3 +13,5 @@ source("methods_termstrc_ns.R")
 source("methods_curves.R")
 source("zeroyields.R")
 source("dyncouponbonds.R")
+source("estim_cs.R")
+source("methods_termstrc_cs.R")
