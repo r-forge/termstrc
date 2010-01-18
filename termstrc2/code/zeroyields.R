@@ -23,7 +23,7 @@ plot.zeroyields <- function(obj)
   {
     z <- as.matrix(obj$yields)
     x <- 1:nrow(obj$yields)
-    y <- 1:ncol(obj$yields)
+    y <- obj$maturities
 
     open3d()
     persp3d(x, y, z, col = "green3", box = FALSE,xlab = "Dates", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
@@ -79,7 +79,7 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
           "ns"=c("beta_0","beta_1","beta_2","tau_1"),
           "sv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2")) 
     result <- list(optparam = optparam, optresult = optresult, method = method,
-                   maturities = obj$maturities, dates = obj$dates, spsearch = spsearch)
+                   maturities = obj$maturities, dates = obj$dates, spsearch = spsearch, yields = obj$yields)
     class(result) <- "termstrc_yields"
     result
   }
@@ -105,8 +105,8 @@ plot.termstrc_yields <- function(obj)
     }
 
     x <- 1:nrow(z)
-    y <- 1:ncol(z)
-
+    y <- obj$maturities
+    
     open3d()
     persp3d(x, y, z, col = "green3", box = FALSE,xlab = "Dates", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
     
