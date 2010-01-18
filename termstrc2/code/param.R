@@ -2,7 +2,7 @@
 param <- function(obj,...) UseMethod("param") 
 
 
-param.dyntermstrc <- function(x) {
+param.dyntermstrc_nss <- function(x) {
   param <- list()
   for(i in seq(x[[1]]$n_group)) param[[i]] =  t(mapply(function(j) x[[j]]$opt_result[[i]]$par,seq_along(x)))
   names(param) <- group                          
