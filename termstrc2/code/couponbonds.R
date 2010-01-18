@@ -220,7 +220,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
 
 ### Startparameter grid search plots
 
-plot.spsearch <- function(obj) {
+plot.spsearch <- function(obj,...) {
 
   if(is.matrix(obj$tau)){
       contour(obj$tau[,1],obj$tau[,2],obj$fmin,nlevels=10,xlab = "tau_1", ylab = "tau_2",main = "Objective function")

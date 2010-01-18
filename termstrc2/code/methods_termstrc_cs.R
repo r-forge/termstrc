@@ -6,10 +6,10 @@ print.termstrc_cs <- function(x,...) {
   cat("Estimated parameters and standard errors:\n")
   cat("---------------------------------------------------\n")
   for(i in seq(x$n_group)) {
-    print.default(paste(names(x$alpha)[[i]],":",sep=""))
+    print(paste(names(x$alpha)[[i]],":",sep=""))
     cs_coef <- (summary(x$regout[[i]]))$coefficients[,1:2]
    rownames(cs_coef) <- paste("alpha",c(seq_along(x$alpha[[i]])))
-
+   colnames(cs_coef) <- c("Estimate",if(x$rse) "Robust s.e." else "s.e.")
   print.default(cs_coef)
   cat("\n")
   x
@@ -63,26 +63,8 @@ plot.termstrc_cs <-
   function(x,matrange =c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))),
                         multiple=FALSE, ctype="spot",
-                        lwd=2,lty=1,type="l",errors="price",inset=c(0.8,0.1),ask=TRUE, ...) {
+                        lwd=2,lty=1,type="l",errors="none",inset=c(0.8,0.1),ask=TRUE, ...) {
        
-     # min and max maturity of all bonds in the sample 
-     samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
-                    max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))) 
-  
-     # check plot maturity conformity
-    if(x$matrange[1] != "all") {
-    if(matrange[2]>  x$matrange[2]) { matrange[2] <-  x$matrange[2]
-       warning("The plot range for the maturity violates the estimation maturity range") 
-    }
-   
-    if(matrange[1] <  x$matrange[1]) { matrange[1] <-  x$matrange[1]
-       warning("The plot range for the maturity violates the estimation maturity range") 
-     }
-    }
-   
-    if( matrange[2] > samplemat[2]) {matrange[2] <-  samplemat[2]
-       warning("The plot range for the maturity violates the estimation maturity range") 
-     }
      
     cdata <- switch(ctype, "spot" = x$spot,
     					   "forward" = x$forward,
@@ -123,7 +105,7 @@ plot.termstrc_cs <-
     	  # knot points 
     	  abline(v=c(x$knotpoints[[k]]),lty=2, col="darkgrey")
             legend("bottom",legend=c("Zero-coupon yield curve",
-    	  "95 % Confidence interval" ,"Yield-to-maturity", "Knot points"),
+    	  if(x$rse) "95 % Confidence interval (robust s.e.)" else "95 % Confidence interval" ,"Yield-to-maturity", "Knot points"),
     	  col=c("steelblue","steelblue","red", "darkgrey"),
     	  lty = c(1,3,-1,2), pch=c(-1,-1,21,-1))
 	
@@ -153,11 +135,11 @@ plot.termstrc_cs <-
      		plot.error(edata[[k]],ask=ask
                 ,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
-    		legend("bottomright", legend=c(paste("  RMSE",
-    		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4),
-                       "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),
-                        paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4),
-                        "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
+    		#legend("bottomright", legend=c(paste("  RMSE",
+    		#switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4),
+                #       "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),
+                #        paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4),
+                #        "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
     		
     	  }
     	

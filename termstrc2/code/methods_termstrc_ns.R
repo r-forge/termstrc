@@ -29,27 +29,6 @@ plot.termstrc_ns <-
      samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
                     max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))) 
   
-     # check plot maturity conformity
-    ## if(x$matrange[1] != "all") {
-    ## if(matrange[2]>  x$matrange[2]) { matrange[2] <-  x$matrange[2]
-    ##    warning("The plot range for the maturity violates the estimation maturity range") 
-    ##  }
-   
-    ## if(matrange[1] <  x$matrange[1]) { matrange[1] <-  x$matrange[1]
-    ##    warning("The plot range for the maturity violates the estimation maturity range") 
-    ##  }
-    ## }
-   
-    ## if( matrange[2] > samplemat[2]) {matrange[2] <-  samplemat[2]
-    ##    warning("The plot range for the maturity violates the estimation maturity range") 
-    ##  }
-     
-    ## if( matrange[1] < samplemat[1]) {matrange[1] <- samplemat[1]
-    ##    warning("The plot range for the maturity violates the estimation maturity range") 
-    ##  }
-    
-               				
-    
     
     cdata <- switch(ctype, "spot" = x$spot,
     					   "forward" = x$forward,
@@ -132,14 +111,15 @@ summary.termstrc_ns <- function(object,...) {
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields","AABSE-Yields")
-    convergencegroup <- as.matrix(apply(as.matrix(mapply(function(i) x$opt_result[[i]]$convergence,
-                              seq_along(x$opt_result))),1,
-                              function(x) if(x==1) "no convergence" else "converged"))# change !! 
+    #convergencegroup <- as.matrix(apply(as.matrix,1,
+    #                          function(x) if(x==1) "no convergence" else "converged"))# change !!
+    convergencegroup <- as.matrix(mapply(function(i) x$opt_result[[i]]$convergence,
+                              seq_along(x$opt_result)))
     
-    colnames(convergencegroup) <- "Convergence ()"
+    colnames(convergencegroup) <- "optim() convergence info"
     rownames(convergencegroup) <- x$group
     convergence <- as.matrix(mapply(function(i) x$opt_result[[i]]$message,seq_along(x$opt_result)))
-    colnames(convergence) <- "Solver message"
+    colnames(convergence) <- "optim() solver message"
     rownames(convergence) <- x$group
     sumry <- list(gof,convergencegroup,convergence,startparam=x$startparam)
     names(sumry) <- c("gof","convergencegroup","convergence","startparam")
