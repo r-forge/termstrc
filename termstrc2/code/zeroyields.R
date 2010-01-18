@@ -7,23 +7,23 @@ zeroyields <- function(maturities, yields, dates)
     zy
   }
 
-print.zeroyields <- function(obj)
+print.zeroyields <- function(x, ...)
   {
     cat("This is a dataset of zero-coupon yields.\n")
-    cat(paste("Maturities range from", min(obj$maturities), "to", max(obj$maturities),"years.\n"))
-    cat(paste("There are",nrow(obj$yields), "observations between",obj$dates[1], "and",obj$dates[length(obj$dates)],".\n"))
+    cat(paste("Maturities range from", min(x$maturities), "to", max(x$maturities),"years.\n"))
+    cat(paste("There are",nrow(x$yields), "observations between",x$dates[1], "and",x$dates[length(x$dates)],".\n"))
   }
 
-summary.zeroyields <- function(obj)
+summary.zeroyields <- function(object, ...)
   {
-    print(summary(obj$yields))
+    print(summary(object$yields))
   }
 
-plot.zeroyields <- function(obj)
+plot.zeroyields <- function(x,...)
   {
-    z <- as.matrix(obj$yields)
-    x <- 1:nrow(obj$yields)
-    y <- obj$maturities
+    z <- as.matrix(x$yields)
+    x <- 1:nrow(x$yields)
+    y <- x$maturities
 
     open3d()
     persp3d(x, y, z, col = "green3", box = FALSE,xlab = "Dates", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
@@ -77,8 +77,13 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
     }
     colnames(optparam) <- switch(method,
           "ns"=c("beta_0","beta_1","beta_2","tau_1"),
-          "sv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2")) 
-    result <- list(optparam = optparam, optresult = optresult, method = method,
+          "sv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2"))
+
+    param <- list() 
+    param[[1]] <- optparam
+    class(param) <- "dyntermstrc_param"
+    
+    result <- list(param = param, optresult = optresult, method = method,
                    maturities = obj$maturities, dates = obj$dates, spsearch = spsearch, yields = obj$yields)
     class(result) <- "termstrc_yields"
     result
@@ -87,13 +92,13 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
 plot.termstrc_yields <- function(obj)
   {
     ## plot parameters
-    nparam <- ncol(obj$optparam) 
-    op <- par(mfrow = c(2,nparam/2))
-    for (i in 1:nparam){
-      plot(obj$optparam[,i], type = "l", xlab = "Time", ylab = colnames(obj$optparam)[i],lwd=2,col=i)
-      grid()
-    }
-    par(op)
+    #nparam <- ncol(obj$optparam) 
+    #op <- par(mfrow = c(2,nparam/2))
+    #for (i in 1:nparam){
+    #  plot(obj$optparam[,i], type = "l", xlab = "Time", ylab = colnames(obj$optparam)[i],lwd=2,col=i)
+    #  grid()
+    #}
+    #par(op)
 
     ## plot estimated yield curves in 3D
     sptrtfct <- switch(obj$method,
