@@ -79,38 +79,44 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
           "ns"=c("beta_0","beta_1","beta_2","tau_1"),
           "sv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2"))
 
-    param <- list() 
-    param[[1]] <- optparam
-    class(param) <- "dyntermstrc_param"
+   
     
-    result <- list(param = param, optresult = optresult, method = method,
+    result <- list(optparam = optparam, optresult = optresult, method = method,
                    maturities = obj$maturities, dates = obj$dates, spsearch = spsearch, yields = obj$yields)
-    class(result) <- "termstrc_yields"
+    class(result) <- "dyntermstrc_yields"
     result
   }
 
-plot.termstrc_yields <- function(obj)
-  {
-    ## plot parameters
-    #nparam <- ncol(obj$optparam) 
-    #op <- par(mfrow = c(2,nparam/2))
-    #for (i in 1:nparam){
-    #  plot(obj$optparam[,i], type = "l", xlab = "Time", ylab = colnames(obj$optparam)[i],lwd=2,col=i)
-    #  grid()
-    #}
-    #par(op)
 
+print.dyntermstrc_yields <- function(x, ...){
+  cat("---------------------------------------------------\n")
+  cat("Parameters for yield based dynamic term structure estimation:\n")
+  cat("---------------------------------------------------\n")
+  cat("Method:",switch(x$method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson"),"\n")
+  cat("Number of oberservations:",length(x$optresult),"\n")
+  cat("---------------------------------------------------\n")
+  cat("Parameter summary:\n")
+  cat("---------------------------------------------------\n")
+  tsparam <- param.dyntermstrc_yields(x)
+  print(lapply(tsparam,summary.default))
+  cat("---------------------------------------------------\n")
+}
+
+
+plot.dyntermstrc_yields <- function(x, ...)
+  {
+   
     ## plot estimated yield curves in 3D
-    sptrtfct <- switch(obj$method,
+    sptrtfct <- switch(x$method,
                        "ns" = spr_ns,
                        "sv" = spr_sv)
-    z = matrix(nrow=nrow(obj$optparam),ncol=length(obj$maturities))
-    for (i in 1:nrow(obj$optparam)){
-      z[i,] <- sptrtfct(obj$optparam[i,],obj$maturities)
+    z = matrix(nrow=nrow(x$optparam),ncol=length(x$maturities))
+    for (i in 1:nrow(x$optparam)){
+      z[i,] <- sptrtfct(x$optparam[i,],x$maturities)
     }
 
     x <- 1:nrow(z)
-    y <- obj$maturities
+    y <- x$maturities
     
     open3d()
     persp3d(x, y, z, col = "green3", box = FALSE,xlab = "Dates", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
