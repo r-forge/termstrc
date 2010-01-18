@@ -26,9 +26,10 @@ create_maturities_matrix(group, include_price = FALSE)
 \seealso{\command{\link{create_cashflows_matrix}}}
 
 \examples{
-data()
-(m <- create_maturities_matrix(bonddata[[1]]))
+data(govbonds)
+(m <- create_maturities_matrix(govbonds[[1]]))
+
 ## maturities matrix with included maturity of the current dirty price, i.e., zero. 
-(m_p <- create_maturities_matrix(bonddata[[1]],include_price=TRUE))
+(m_p <- create_maturities_matrix(govbonds[[1]],include_price=TRUE))
 
 }

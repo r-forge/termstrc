@@ -118,5 +118,5 @@ print.couponbonds <- function(x, ...) {
   cat("This is a dataset of coupon bonds for:\n")
   cat(names(x),",","\n")
   cat(paste("observed at ", x[[1]]$TODAY,".","\n",sep=""))
-  ## TODO: more info
+ 
   }
