@@ -1,4 +1,4 @@
-summary.dyntermstrc <- function(object, ...) {
+summary.dyntermstrc_nss <- function(object, ...) {
   x <- object
 
   # extract convergence info
@@ -27,13 +27,13 @@ summary.dyntermstrc <- function(object, ...) {
   colnames(sumry$gof) <- x[[1]]$group
   rownames(sumry$gof) <- c("mean RMSE-Prices", "mean AABSE-Prices", "mean RMSE-Yields", "mean AABSE-Yields")
     
-  class(sumry) <- "summary.dyntermstrc"
+  class(sumry) <- "summary.dyntermstrc_nss"
   sumry
 }
 
 
 
-print.summary.dyntermstrc <- function(x,...) {
+print.summary.dyntermstrc_nss <- function(x,...) {
     cat("---------------------------------------------------\n")
     cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
@@ -55,7 +55,7 @@ print.summary.dyntermstrc <- function(x,...) {
 
 
 
-plot.dyntermstrc <- function(x,range=c(0,20), ...) {
+plot.dyntermstrc_nss <- function(x,range=c(0,20), ...) {
 
   old.par <- par(no.readonly = TRUE) 
   # 3D plot of zero-coupon yield curves
@@ -73,7 +73,7 @@ plot.dyntermstrc <- function(x,range=c(0,20), ...) {
 on.exit(par(old.par))
 }
 
-print.dyntermstrc <- function(x,...){
+print.dyntermstrc_nss <- function(x,...){
   cat("---------------------------------------------------\n")
   cat("Parameters for dynamic term structure estimation:\n")
   cat("---------------------------------------------------\n")
