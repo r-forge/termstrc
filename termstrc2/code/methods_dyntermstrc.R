@@ -15,8 +15,8 @@ summary.dyntermstrc_nss <- function(object, ...) {
   
   perrors <- mapply(function(j) t(mapply(function(i) x[[i]]$perrors[[j]][,2], seq(length(x)))),seq(x[[1]]$n_group),SIMPLIFY=FALSE)
   yerrors <- mapply(function(j) t(mapply(function(i) x[[i]]$yerrors[[j]][,2], seq(length(x)))),seq(x[[1]]$n_group),SIMPLIFY=FALSE)
-  names(perrors) <- group
-  names(yerrors) <- group
+  names(perrors) <- x[[1]]$group
+  names(yerrors) <- x[[1]]$group
     
   p_mrsme <- mapply(function(i) mean(sqrt(apply(perrors[[i]]^2,2,mean))),seq_along(perrors))
   p_maabse <- mapply(function(i) mean(sqrt(apply(abs(perrors[[i]]),2,mean))),seq_along(perrors))
@@ -59,7 +59,7 @@ plot.dyntermstrc_nss <- function(x,range=c(0,20), ...) {
 
   old.par <- par(no.readonly = TRUE) 
   # 3D plot of zero-coupon yield curves
-    tsparam <- param.dyntermstrc(x)
+    tsparam <- param.dyntermstrc_nss(x)
     par(mfrow=c(1,nrow(tsparam[[1]])),...)
     X <- seq(if(range[1]==0) range[1]+0.1 else range[1],range[2],0.1)
     Y <- seq(nrow(tsparam[[1]]))
@@ -83,7 +83,7 @@ print.dyntermstrc_nss <- function(x,...){
   cat("---------------------------------------------------\n")
   cat("Parameter summary:\n")
   cat("---------------------------------------------------\n")
-  tsparam <- param.dyntermstrc(x)
+  tsparam <- param.dyntermstrc_nss(x)
   print(lapply(tsparam,summary.default))
   cat("---------------------------------------------------\n")
 }

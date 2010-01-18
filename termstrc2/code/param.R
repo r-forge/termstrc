@@ -5,7 +5,7 @@ param <- function(obj,...) UseMethod("param")
 param.dyntermstrc_nss <- function(x) {
   param <- list()
   for(i in seq(x[[1]]$n_group)) param[[i]] =  t(mapply(function(j) x[[j]]$opt_result[[i]]$par,seq_along(x)))
-  names(param) <- group                          
+  names(param) <- x[[1]]$group                          
   class(param) <- "dyntermstrc_param"
   param
 }

@@ -1,5 +1,7 @@
 ## Import CSVs
 datadyncouponbonds <- dyncouponbonds(c("DataGermany S.csv", "DataGermany AC.csv", "DataGermany CP.csv"), "GERMANY")
+datadyncouponbonds <- datadyncouponbonds[10:55]
+class(datadyncouponbonds) <- "dyncouponbonds"
 
 ## Diebold/Li estimation
 dl_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "dl")
@@ -10,7 +12,10 @@ summary(dl_res)
 ns_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "ns", deltatau = 0.5)
 print(ns_res)
 plot(ns_res)
-summary(ns_res)
+
+tsparam <- param(ns_res)
+plot(tsparam)
+
 
 ## Plot startparameter grid search results
 plot(ns_res[[1]]$spsearch$GERMANY)
