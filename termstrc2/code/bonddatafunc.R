@@ -70,8 +70,6 @@ maturity_range <- function(bonddata,lower,upper) {
   }
 
 
-
-
 ## remove bonds from a static bonddata set  
 rm_bond <- function(bonddata,ISIN,group){
     cf_isin_index <- which(bonddata[[group]]$CASHFLOWS$ISIN %in% ISIN)
@@ -217,10 +215,7 @@ postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method,lambda
               "sv" = mapply(function(k) 
               		cbind(t,spr_sv(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE),
               "dl" = mapply(function(k)
-		            cbind(t,spr_dl(opt_result[[k]]$par,t,lambda)),sgroup, SIMPLIFY=FALSE))
-              
-                       
-              		 
+		            cbind(t,spr_dl(opt_result[[k]]$par,t,lambda)),sgroup, SIMPLIFY=FALSE))          		 
 
   for (k in sgroup) class(zcy_curves[[k]]) <- "ir_curve"
   class(zcy_curves) <- "spot_curves"
@@ -244,7 +239,7 @@ postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method,lambda
 		            cbind(t,fwr_ns(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
               "sv" = mapply(function(k) 
               		cbind(t,fwr_sv(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE),
-               "dl" = mapply(function(k)
+              "dl" = mapply(function(k)
 		            cbind(t,fwr_dl(opt_result[[k]]$par,t,lambda)),sgroup, SIMPLIFY=FALSE))
                       
                    

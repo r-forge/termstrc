@@ -32,10 +32,11 @@ create_cashflows_matrix(group, include_price = FALSE)
 \seealso{\command{\link{create_maturities_matrix}} }
 
 \examples{
-data()
-(cf <- create_cashflows_matrix(bonddata[[1]]))
+data(govbonds)
+(cf <- create_cashflows_matrix(govbonds[[1]]))
+
 ## cf matrix with included current dirty price 
-(cf_p <- create_cashflows_matrix(bonddata[[1]],include_price=TRUE))
+(cf_p <- create_cashflows_matrix(govbonds[[1]],include_price=TRUE))
 }
 
 

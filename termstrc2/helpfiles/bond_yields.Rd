@@ -26,10 +26,9 @@ bond_yields(cashflows, m, searchint = c(-1, 1), tol = 1e-10)
 \seealso{ \command{\link{uniroot}}}
 
 \examples{
-
-data()
-cf_p <- create_cashflows_matrix(bonddata[[1]],include_price=TRUE)
-m_p <- create_maturities_matrix(bonddata[[1]],include_price_TRUE)
+data(govbonds)
+cf_p <- create_cashflows_matrix(govbonds[[1]],include_price=TRUE)
+m_p <- create_maturities_matrix(govbonds[[1]],include_price_TRUE)
 bond_yields(cf_p,m_p)
 }
 

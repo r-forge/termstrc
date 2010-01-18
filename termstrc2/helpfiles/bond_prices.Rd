@@ -37,9 +37,9 @@ bond_prices(method = "ns", beta, m, cf, lambda)
 \seealso{ \code{\link{spotrates}}}
 
 \examples{
-data()
-cf <- create_cashflows_matrix(bonddata[[1]])
-m <- create_maturities_matrix(bonddata[[1]])
+data(govbonds)
+cf <- create_cashflows_matrix(govbonds[[1]])
+m <- create_maturities_matrix(govbonds[[1]])
 beta <- c(0.0511,-0.0124,-0.0303,2.5429)
 bond_prices(method="ns",beta,m,cf)$bond_prices
 }
