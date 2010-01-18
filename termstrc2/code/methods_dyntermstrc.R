@@ -4,11 +4,10 @@ summary.dyntermstrc_nss <- function(object, ...) {
   # extract convergence info
   sumry <- list()
   sumry$convergence <- t(mapply(function(i) summary(x[[i]])$convergencegroup, seq_along(x)))
-  colnames(sumry$convergence) <- x[[1]]$group 
+  rownames(sumry$convergence) <- x[[1]]$group 
   sumry$solvermsg <- t(mapply(function(i) summary(x[[i]])$convergence, seq_along(x)))
-  colnames(sumry$solvermsg) <- x[[1]]$group 
-  sumry$convprobs <- apply(sumry$convergence,2,function(x) which(x != "converged"))
-
+  rownames(sumry$solvermsg) <- x[[1]]$group 
+ 
   # adapt for multiple countries
   perrors <- list()
   yerrors <- list()
@@ -42,25 +41,19 @@ print.summary.dyntermstrc_nss <- function(x,...) {
 
     cat("\n")
     cat("---------------------------------------------------\n")
-    cat("Convergence information:\n")
+    cat("Convergence information from optim ():\n")
     cat("---------------------------------------------------\n")
     
-    if(length(x$convprobs)==0) {
-      print.default("No convergence problems!")
-    } else {
-      cat("Convergence problems are at:\n")
-      print.default(x$convprobs)
-    }    
+      print.default(x$convergence)
+        
 }
 
 
 
 plot.dyntermstrc_nss <- function(x,range=c(0,20), ...) {
 
-  old.par <- par(no.readonly = TRUE) 
   # 3D plot of zero-coupon yield curves
     tsparam <- param.dyntermstrc_nss(x)
-    par(mfrow=c(1,nrow(tsparam[[1]])),...)
     X <- seq(if(range[1]==0) range[1]+0.1 else range[1],range[2],0.1)
     Y <- seq(nrow(tsparam[[1]]))
 
@@ -70,7 +63,6 @@ plot.dyntermstrc_nss <- function(x,range=c(0,20), ...) {
       persp3d(X,Y,Z,col = "green3",xlab="Maturity (years)", zlab="Zero-coupon yields (in %)",ylab="Time",box=FALSE)
     }
  
-on.exit(par(old.par))
 }
 
 print.dyntermstrc_nss <- function(x,...){
