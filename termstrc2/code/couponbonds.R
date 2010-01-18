@@ -5,12 +5,11 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
                                   matrange="all",            # maturity range in years c(min, max) 
                                   method="ns",
                                   startparam=NULL,           # startparameter matrix with columns c("beta0","beta1","beta2","tau1","beta3","tau2")
-                                        # otherwise globally optimal parameters are searched automatically
+                                                             # otherwise globally optimal parameters are searched automatically
                                   lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                                   deltatau=0.1,              # interval for parameter grid
-                                  control=list(),            # options or optim() 
-                                  outer.iterations = 30,     # options for constrOptim()
-                                  outer.eps = 1e-04
+                                  nlmbinbOptions = list(control = list()),
+                                  constrOptimOptions = list(control = list(), outer.iterations = 30, outer.eps = 1e-04)
            ) {
 
   ## data preprocessing
@@ -55,44 +54,21 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
      loss_function(p[[k]],
      	bond_prices(method,b,m[[k]],cf[[k]],lambda)$bond_prices,duration[[k]][,3])}
                   
-  if(method=="dl"){
-    ui <- rbind(c(1,0,0),               # beta0 > 0
-                c(1,1,0))               # beta0 + beta1 > 0
-    ci <- c(0,0)
-   }
- 
-  if(method=="ns"){
-    ui <- rbind(c(1,0,0,0),             # beta0 > 0
-                c(1,1,0,0),             # beta0 + beta1 > 0
-                c(0,0,0,1),             # tau1 > 0
-                c(0,0,0,-1))            # tau1 < 30
-    ci <- c(0,0,0,-30)
-    }
-
-   if(method=="sv"){
-     ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
-                 c(1,1,0,0,0,0),        # beta0 + beta1 > 0
-                 c(0,0,0,1,0,0),        # tau1 > 0
-                 c(0,0,0,-1,0,0),       # tau1 < 30
-                 c(0,0,0,0,0,1),        # tau2 > 0
-                 c(0,0,0,0,0,-1))       # tau2 < 30
-     ci <- c(0,0,0,-30,0,-30)
-    }
-
   ## calculate optimal parameter vectors
   opt_result <- list()
 
   for (k in sgroup){
-    opt_result[[k]] <- constrOptim(theta = startparam[k,],
-                               f = obj_fct,
-                               grad = NULL,
-                               ui = ui,
-                               ci = ci,
-                               mu = 1e-04,
-                               control = control,
-                               method = "Nelder-Mead",
-                               outer.iterations = outer.iterations,
-                               outer.eps = outer.eps)              
+    ## opt_result[[k]] <- constrOptim(theta = startparam[k,],
+    ##                            f = obj_fct,
+    ##                            grad = NULL,
+    ##                            ui = ui,
+    ##                            ci = ci,
+    ##                            mu = 1e-04,
+    ##                            control = control,
+    ##                            method = "Nelder-Mead",
+    ##                            outer.iterations = outer.iterations,
+    ##                            outer.eps = outer.eps)
+    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], obj_fct, nlmbinbOptions,constrOptimOptions) 
   }
 
   ## data post processing 
@@ -126,6 +102,72 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
   for ( i in 6:length(result)) names(result[[i]]) <- group
   class(result) <- "termstrc_nss"
   result
+}
+
+### Estimate zero-coupon yield curve
+
+estimatezcyieldcurve <- function(method, startparam, obj_fct, nlmbinbOptions,constrOptimOptions) {
+
+  ## constraints
+
+    if(method=="dl"){
+    ui <- rbind(c(1,0,0),               # beta0 > 0
+                c(1,1,0))               # beta0 + beta1 > 0
+    ci <- c(0,0)
+   }
+ 
+  if(method=="ns"){
+    ui <- rbind(c(1,0,0,0),             # beta0 > 0
+                c(1,1,0,0),             # beta0 + beta1 > 0
+                c(0,0,0,1),             # tau1 > 0
+                c(0,0,0,-1))            # tau1 < 30
+    ci <- c(0,0,0,-30)
+    }
+
+   if(method=="sv"){
+     ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
+                 c(1,1,0,0,0,0),        # beta0 + beta1 > 0
+                 c(0,0,0,1,0,0),        # tau1 > 0
+                 c(0,0,0,-1,0,0),       # tau1 < 30
+                 c(0,0,0,0,0,1),        # tau2 > 0
+                 c(0,0,0,0,0,-1))       # tau2 < 30
+     ci <- c(0,0,0,-30,0,-30)
+    }
+
+
+    lower <- switch(method,
+                    "ns" = c(0, -Inf, -Inf, 0),
+                    "sv" = c(0, -Inf, -Inf, 0, -Inf, 0),
+                    "dl" = c(0,-Inf,-Inf))
+ 
+    upper <- switch(method,
+                    "ns" = rep(Inf, 4),
+                    "sv" = rep(Inf, 6),
+                    "dl" = rep(Inf,3))
+  
+    ## use nlminb() because performance is better
+    ## opt_result <- nlminb(start = startparam,
+    ##                    objective = obj_fct,
+    ##                    grad = NULL,
+    ##                    control = nlmbinbOptions$control,
+    ##                    lower = lower,
+    ##                    upper = upper)
+
+    ##  use constrOptim() if b_0 + b_1 > 0 is not satisfied by nlminb()
+    #if(sum(opt_result$par[1:2])<0) {
+      warning("Constraint beta_0 + beta_1 > was violated by nlminb(), switching to constrOptim()")
+      opt_result <- constrOptim(theta = startparam,
+                                f = obj_fct,
+                                grad = NULL,
+                                ui = ui,
+                                ci = ci,
+                                mu = 1e-04,
+                                control = constrOptimOptions$control,
+                                method = "Nelder-Mead",
+                                outer.iterations = constrOptimOptions$outer.iterations,
+                                outer.eps = constrOptimOptions$outer.eps)
+    #}
+    opt_result
 }
 
 ### Start parameter search routine for bond data
