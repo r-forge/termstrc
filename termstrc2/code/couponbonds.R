@@ -8,7 +8,7 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
                                                              # otherwise globally optimal parameters are searched automatically
                                   lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                                   deltatau=0.1,              # interval for parameter grid
-                                  nlmbinbOptions = list(control = list()),
+                                  #nlmbinbOptions = list(control = list()),
                                   constrOptimOptions = list(control = list(), outer.iterations = 30, outer.eps = 1e-04)
            ) {
 
@@ -68,7 +68,7 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
     ##                            method = "Nelder-Mead",
     ##                            outer.iterations = outer.iterations,
     ##                            outer.eps = outer.eps)
-    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], obj_fct, nlmbinbOptions,constrOptimOptions) 
+    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], obj_fct,constrOptimOptions) 
   }
 
   ## data post processing 
@@ -106,7 +106,7 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
 
 ### Estimate zero-coupon yield curve
 
-estimatezcyieldcurve <- function(method, startparam, obj_fct, nlmbinbOptions,constrOptimOptions) {
+estimatezcyieldcurve <- function(method, startparam, obj_fct, constrOptimOptions) {
 
   ## constraints
 
@@ -135,15 +135,15 @@ estimatezcyieldcurve <- function(method, startparam, obj_fct, nlmbinbOptions,con
     }
 
 
-    lower <- switch(method,
-                    "ns" = c(0, -Inf, -Inf, 0),
-                    "sv" = c(0, -Inf, -Inf, 0, -Inf, 0),
-                    "dl" = c(0,-Inf,-Inf))
+    ## lower <- switch(method,
+    ##                 "ns" = c(0, -Inf, -Inf, 0),
+    ##                 "sv" = c(0, -Inf, -Inf, 0, -Inf, 0),
+    ##                 "dl" = c(0,-Inf,-Inf))
  
-    upper <- switch(method,
-                    "ns" = rep(Inf, 4),
-                    "sv" = rep(Inf, 6),
-                    "dl" = rep(Inf,3))
+    ## upper <- switch(method,
+    ##                 "ns" = rep(Inf, 4),
+    ##                 "sv" = rep(Inf, 6),
+    ##                 "dl" = rep(Inf,3))
   
     ## use nlminb() because performance is better
     ## opt_result <- nlminb(start = startparam,
@@ -154,8 +154,8 @@ estimatezcyieldcurve <- function(method, startparam, obj_fct, nlmbinbOptions,con
     ##                    upper = upper)
 
     ##  use constrOptim() if b_0 + b_1 > 0 is not satisfied by nlminb()
-    #if(sum(opt_result$par[1:2])<0) {
-      warning("Constraint beta_0 + beta_1 > was violated by nlminb(), switching to constrOptim()")
+    ##if(sum(opt_result$par[1:2])<0) {
+   ##   warning("Constraint beta_0 + beta_1 > was violated by nlminb(), switching to constrOptim()")
       opt_result <- constrOptim(theta = startparam,
                                 f = obj_fct,
                                 grad = NULL,
@@ -173,7 +173,7 @@ estimatezcyieldcurve <- function(method, startparam, obj_fct, nlmbinbOptions,con
 ### Start parameter search routine for bond data
 
 findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
-                                control = list(), outer.iterations = 200, outer.eps = 1e-05) {
+                                control = list(), outer.iterations = 30, outer.eps = 1e-04) {
   
   if(method=="dl"){
     startparam = rep(0.01,3)
