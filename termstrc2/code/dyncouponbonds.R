@@ -104,7 +104,8 @@ dyncouponbonds <- function(datafiles,   # vector with CSV files c("COUNTRY S.csv
     class(dslist[[i]]) <- "couponbonds"
   }
   class(dslist) <- "dyncouponbonds"
-  save(dslist,file=paste(gname,".RData",sep=""))
+  
+  if(export) save(dslist,file=paste(gname,".RData",sep=""))
   
   dslist
 }
