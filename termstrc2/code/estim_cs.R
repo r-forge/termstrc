@@ -1,5 +1,7 @@
 
 
+estim_cs <- function(obj, ...) UseMethod("estim_cs")
+
 ## Cubic spline term structure estimation 
 estim_cs.couponbonds <- function(bonddata, group, matrange="all",rse=TRUE) {
 
