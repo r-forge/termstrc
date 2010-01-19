@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/transitional.dtd">
-<html><head><title>RUNIT TEST PROTOCOL--Tue Jan 19 10:31:33 2010</title>
+<html><head><title>RUNIT TEST PROTOCOL--Tue Jan 19 11:25:12 2010</title>
 </head>
-<body><h1 TRUE>RUNIT TEST PROTOCOL--Tue Jan 19 10:31:33 2010</h1>
+<body><h1 TRUE>RUNIT TEST PROTOCOL--Tue Jan 19 11:25:12 2010</h1>
 <p>Number of test functions: 4</p>
 <p style=color:red>Number of errors: 3</p>
 <p>Number of failures: 0</p>
@@ -27,7 +27,8 @@
 <th width="70%">message</th>
 </tr>
 <tr><td><a href="#termstrc tests__home_rferstl_termstrc2_code_unittests.R_test.estim_nss.couponbonds2">termstrc tests : test.estim_nss.couponbonds2</a></td>
-<td>Error in func() : could not find function "estim_ns"
+<td>Error in plot(param(ns_res)) : 
+  error in evaluating the argument 'x' in selecting a method for function 'plot'
 </td>
 </tr>
 <tr><td><a href="#termstrc tests__home_rferstl_termstrc2_code_unittests.R_test.estim_nss.couponbonds3">termstrc tests : test.estim_nss.couponbonds3</a></td>
@@ -43,8 +44,9 @@
 <hr>
 <h3 TRUE>Details</h3>
 <p><a name="termstrc tests"><h5 TRUE>Test Suite: termstrc tests</h5>
-</a>Test function regexp: ^test.+<br/>Test file regexp: unittests.R<br/>Involved directory:<br/>/home/rferstl/termstrc2/code<br/><ul><li><a href="/home/rferstl/termstrc2/code/unittests.R">Test file: unittests.R</a><ul><li><a name="termstrc tests__home_rferstl_termstrc2_code_unittests.R_test.estim_nss.couponbonds">test.estim_nss.couponbonds: (3 checks) ... OK (144.65 seconds)<br/></a></li><li><a name="termstrc tests__home_rferstl_termstrc2_code_unittests.R_test.estim_nss.couponbonds2"><u style=color:red>test.estim_nss.couponbonds2: ERROR !!  </u></a>Error in func() : could not find function "estim_ns"
-<br/></li><li><a name="termstrc tests__home_rferstl_termstrc2_code_unittests.R_test.estim_nss.couponbonds3"><u style=color:red>test.estim_nss.couponbonds3: ERROR !!  </u></a>Error in plot(param(sv_res)) : 
+</a>Test function regexp: ^test.+<br/>Test file regexp: unittests.R<br/>Involved directory:<br/>/home/rferstl/termstrc2/code<br/><ul><li><a href="/home/rferstl/termstrc2/code/unittests.R">Test file: unittests.R</a><ul><li><a name="termstrc tests__home_rferstl_termstrc2_code_unittests.R_test.estim_nss.couponbonds">test.estim_nss.couponbonds: (3 checks) ... OK (143.62 seconds)<br/></a></li><li><a name="termstrc tests__home_rferstl_termstrc2_code_unittests.R_test.estim_nss.couponbonds2"><u style=color:red>test.estim_nss.couponbonds2: ERROR !!  </u></a>Error in plot(param(ns_res)) : 
+  error in evaluating the argument 'x' in selecting a method for function 'plot'
+<br/>Call Stack:<br/><ol><li>system.time(func())</li><li>func()</li><li>plot(param(ns_res))</li><li>param(ns_res)</li><li>function () </li><li>try(dump.frames())</li><li>tryCatch(expr, error = function(e) {</li><li>tryCatchList(expr, classes, parentenv, handlers)</li><li>tryCatchOne(expr, names, parentenv, handlers[[1]])</li></ol></li><li><a name="termstrc tests__home_rferstl_termstrc2_code_unittests.R_test.estim_nss.couponbonds3"><u style=color:red>test.estim_nss.couponbonds3: ERROR !!  </u></a>Error in plot(param(sv_res)) : 
   error in evaluating the argument 'x' in selecting a method for function 'plot'
 <br/>Call Stack:<br/><ol><li>system.time(func())</li><li>func()</li><li>plot(param(sv_res))</li><li>param(sv_res)</li><li>function () </li><li>try(dump.frames())</li><li>tryCatch(expr, error = function(e) {</li><li>tryCatchList(expr, classes, parentenv, handlers)</li><li>tryCatchOne(expr, names, parentenv, handlers[[1]])</li></ol></li><li><a name="termstrc tests__home_rferstl_termstrc2_code_unittests.R_test.estim_nss.zeroyields"><u style=color:red>test.estim_nss.zeroyields: ERROR !!  </u></a>Error in x$maturities : $ operator is invalid for atomic vectors
 <br/></li></ul></li></ul><hr>
@@ -92,7 +94,7 @@
 <td>R version 2.10.1 Patched (2010-01-12 r50993)</td>
 </tr>
 <tr><td>host</td>
-<td>node066.wuc.prod</td>
+<td>node004.wuc.prod</td>
 </tr>
 <tr><td>compiler</td>
 <td>g++</td>
