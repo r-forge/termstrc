@@ -3,21 +3,6 @@ source("termstrcPackage.R")
 load("govbonds.RData")
 bonddata <- govbonds
 
-
-test.estim_ns <- function() {
-  ns_res <- estim_ns(bonddata, c("GERMANY"), method = "ns", deltatau = 0.4)
-  print(ns_res)
-  plot(ns_res)
-  dl_res <- estim_ns(bonddata, c("GERMANY"), method = "dl", lambda = 1/ns_res$opt_result$GERMANY$par[4])
-  print(dl_res)
-  plot(dl_res)
-  
-  ## D/L and N/S should have same objective function value
-  checkEqualsNumeric(ns_res$opt_result$GERMANY$value, dl_res$opt_result$GERMANY$value)
-
-  ## TODO: check in SV objective function values < N/S objective function value
-}
-
 test.estim_nss.zeroyields <- function() {
   ## Import CSV
   x <- read.csv("zeroyields.csv",sep=";")
@@ -61,6 +46,34 @@ test.estim_nss.couponbonds <- function() {
   checkTrue(is.numeric(ns_res$opt_result$AUSTRIA$par))
   checkTrue(is.numeric(ns_res$opt_result$FRANCE$par))
 }
+
+test.estim_nss.couponbonds2 <- function() {
+  load("govbonds.RData")
+  ns_res <- estim_ns(govbonds, c("GERMANY"), method = "ns", deltatau = 1)
+  print(ns_res)
+  plot(ns_res)
+  summary(ns_res)
+  plot(param(ns_res))
+  dl_res <- estim_ns(govbonds, c("GERMANY"), method = "dl", lambda = 1/ns_res$opt_result$GERMANY$par[4])
+  print(dl_res)
+  plot(dl_res)
+  summary(dl_res)
+  plot(param(dl_res))
+  
+  ## D/L and N/S should have same objective function value
+  checkEqualsNumeric(ns_res$opt_result$GERMANY$value, dl_res$opt_result$GERMANY$value)
+}
+
+test.estim_nss.couponbonds3 <- function() {
+  load("govbonds.RData")
+  sv_res <- estim_nss(govbonds, c("GERMANY"), method = "sv", deltatau = 2)
+  print(sv_res)
+  plot(sv_res)
+  plot(param(sv_res))
+  summary(sv_res)
+  checkTrue(is.numeric(sv_res$opt_result$GERMANY$par))
+}
+
 
 
 
