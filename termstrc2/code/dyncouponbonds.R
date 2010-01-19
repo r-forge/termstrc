@@ -7,7 +7,7 @@
 ##       the paper, so a custom import function depending on the
 ##       the data source should be easy to code.
 
-## RESTRICTIONS: only annual coupons, no bond should mature within
+## RESTRICTIONS: use only annual coupons, no bond should mature within
 ##               sample range
 
 dyncouponbonds <- function(datafiles,   # vector with CSV files c("COUNTRY S.csv", "COUNTRY AC.csv", "COUNTRY CP.csv")
@@ -23,7 +23,7 @@ dyncouponbonds <- function(datafiles,   # vector with CSV files c("COUNTRY S.csv
   DATES <- paste(substring(DATES,9,10),substring(DATES,6,7),substring(DATES,1,4),sep="")
 
 
-  ## dates where accrued interest is acutally paid (only works if all list elements are of lenght one)
+  ## dates where accrued interest is acutally paid (only works for sublists of length 1)
   AC_dates <- list()
   for(i in 1:dim(rawdata)[1]){
     AC_dates[[i]] <- rawdata_AC[which(diff(as.numeric(rawdata_AC[,-1][,i]))<0)+1,1]
@@ -34,71 +34,14 @@ dyncouponbonds <- function(datafiles,   # vector with CSV files c("COUNTRY S.csv
   }  
   names(AC_dates) <- rawdata[,1]
   dslist <- list()
-
+  
   
   for(i in 1:length(DATES)) {
-    if (i==66) browser()
+    
     TODAY <- DATES[i]
     AC <- rawdata_AC[,-1][i,]
     CP <- rawdata_CP[,-1][i,]
-    
-    datastreamlist <- function(rawdata, TODAY, AC, CP, AC_dates) {
-      
-      data <- list()
-      data$ISIN <- rawdata[,"ISIN"]
-      data$MATURITYDATE <- as.Date(rawdata[,"MATURITYDATE"],format="%d%m%Y")
-      data$ISSUEDATE <- as.Date(rawdata[,"ISSUEDATE"],format="%d%m%Y")
-      data$COUPONRATE <- as.numeric(rawdata[,"COUPONRATE"])
-      data$PRICE <- as.numeric(CP)
-      data$ACCRUED <- as.numeric(AC)
-      data$CASHFLOWS <- list()
-      data$TODAY <- as.Date(TODAY,format="%d%m%Y")
-      
-      NEXTCOUPON <- ifelse(as.Date(paste(rawdata[,"COUPONDATE"],substring(TODAY,5,8),sep=""),format="%d%m%Y") > data$TODAY,
-                           paste(rawdata[,"COUPONDATE"],substring(TODAY,5,8),sep=""),
-                           paste(rawdata[,"COUPONDATE"],as.character(as.numeric(substring(TODAY,5,8))+1),sep=""))
-      NCOUPON <- as.numeric(substring(rawdata[,"MATURITYDATE"],5,8)) - as.numeric(substring(NEXTCOUPON,5,8))
-
-      ## cash flows ISIN
-      data$CASHFLOWS$ISIN <- vector()
-      for(i in 1:length(NCOUPON)){
-        data$CASHFLOWS$ISIN <-  c(data$CASHFLOWS$ISIN,rep(data$ISIN[i],NCOUPON[i]+1))
-      }
-      
-      ## cash flows
-      data$CASHFLOWS$CF <- vector()
-      for(i in 1:length(NCOUPON)){
-        data$CASHFLOWS$CF <- c(data$CASHFLOWS$CF,c(rep(data$COUPONRATE[i]*100,NCOUPON[i]),100+data$COUPONRATE[i]*100))
-      }
-      
-      ## cash flow dates
-      data$CASHFLOWS$DATE <- vector()
-      for(i in 1:length(NCOUPON)){
-        data$CASHFLOWS$DATE <- c(data$CASHFLOWS$DATE,paste(rawdata[i,"COUPONDATE"],as.numeric(substring(NEXTCOUPON[i],5,8)) + seq(0,NCOUPON[i]),sep=""))
-      }
-
-      ## correct for AC dates
-      ## get indices where new ISINs start
-      cp_ind <- c(1,1+cumsum(1+NCOUPON))
-      cp_ind <- cp_ind[-length(cp_ind)]
-      
-      for(j in 1:length(cp_ind)) {
-        if(length(AC_dates[[j]]) > 1){
-          if(as.numeric(substring(data$CASHFLOWS$DATE[cp_ind[j]],5,8)) <= as.numeric(substring(AC_dates[[j]],5,8))) data$CASHFLOWS$DATE[cp_ind[j]] = AC_dates[[j]]
-        }
-      }
-      
-      ## throw out cashflows at coupon date
-      to_ind <- which(as.Date(data$CASHFLOWS$DATE,format="%d%m%Y") <= as.Date(TODAY,format="%d%m%Y"))
-      if(length(to_ind)>0) {
-        data$CASHFLOWS$ISIN <- data$CASHFLOWS$ISIN[-to_ind]
-        data$CASHFLOWS$DATE <- data$CASHFLOWS$DATE[-to_ind]
-        data$CASHFLOWS$CF <- data$CASHFLOWS$CF[-to_ind]
-      }
-      data$CASHFLOWS$DATE <- as.Date(data$CASHFLOWS$DATE,format="%d%m%Y")
-      data
-    }
-    
+        
     dslist[[i]] <- list(datastreamlist(rawdata, TODAY, AC, CP, AC_dates))
     names(dslist[[i]]) <- gname
     class(dslist[[i]]) <- "couponbonds"
@@ -110,10 +53,73 @@ dyncouponbonds <- function(datafiles,   # vector with CSV files c("COUNTRY S.csv
   dslist
 }
 
+datastreamlist <- function(rawdata, TODAY, AC, CP, AC_dates) {
+   
+  data <- list()
+  data$ISIN <- rawdata[,"ISIN"]
+  data$MATURITYDATE <- as.Date(rawdata[,"MATURITYDATE"],format="%d%m%Y")
+  data$ISSUEDATE <- as.Date(rawdata[,"ISSUEDATE"],format="%d%m%Y")
+  data$COUPONRATE <- as.numeric(rawdata[,"COUPONRATE"])
+  data$PRICE <- as.numeric(CP)
+  data$ACCRUED <- as.numeric(AC)
+  data$CASHFLOWS <- list()
+  data$TODAY <- as.Date(TODAY,format="%d%m%Y")
+  
+  NEXTCOUPON <- ifelse(as.Date(paste(rawdata[,"COUPONDATE"],substring(TODAY,5,8),sep=""),format="%d%m%Y") > data$TODAY,
+                       paste(rawdata[,"COUPONDATE"],substring(TODAY,5,8),sep=""),
+                       paste(rawdata[,"COUPONDATE"],as.character(as.numeric(substring(TODAY,5,8))+1),sep=""))
+  NCOUPON <- as.numeric(substring(rawdata[,"MATURITYDATE"],5,8)) - as.numeric(substring(NEXTCOUPON,5,8))
+  
+  ## cash flows ISIN
+  data$CASHFLOWS$ISIN <- vector()
+  for(i in 1:length(NCOUPON)){
+    data$CASHFLOWS$ISIN <-  c(data$CASHFLOWS$ISIN,rep(data$ISIN[i],NCOUPON[i]+1))
+  }
+  
+  ## cash flows
+  data$CASHFLOWS$CF <- vector()
+  for(i in 1:length(NCOUPON)){
+    data$CASHFLOWS$CF <- c(data$CASHFLOWS$CF,c(rep(data$COUPONRATE[i]*100,NCOUPON[i]),100+data$COUPONRATE[i]*100))
+  }
+  
+  ## cash flow dates
+  data$CASHFLOWS$DATE <- vector()
+  for(i in 1:length(NCOUPON)){
+    data$CASHFLOWS$DATE <- c(data$CASHFLOWS$DATE,paste(rawdata[i,"COUPONDATE"],as.numeric(substring(NEXTCOUPON[i],5,8)) + seq(0,NCOUPON[i]),sep=""))
+  }
+  
+  ## correct for AC dates   !!!WTF!!!
+  ## get indices where new ISINs start
+  cp_ind <- c(1,1+cumsum(1+NCOUPON))
+  cp_ind <- cp_ind[-length(cp_ind)]
+
+
+  
+
+  ## should handle sublist longher than 1, not sure if this works correctly
+  for(j in 1:length(cp_ind)) {
+    if(length(AC_dates[[j]]) > 1){
+      if(as.numeric(substring(data$CASHFLOWS$DATE[cp_ind[j]],5,8)) <= as.numeric(substring(AC_dates[[j]],5,8))) {
+        data$CASHFLOWS$DATE[cp_ind[j]] <- AC_dates[[j]]
+      }
+    }
+  }
+  
+  ## throw out cashflows at coupon date
+  to_ind <- which(as.Date(data$CASHFLOWS$DATE,format="%d%m%Y") <= as.Date(TODAY,format="%d%m%Y"))
+  if(length(to_ind)>0) {
+    data$CASHFLOWS$ISIN <- data$CASHFLOWS$ISIN[-to_ind]
+    data$CASHFLOWS$DATE <- data$CASHFLOWS$DATE[-to_ind]
+    data$CASHFLOWS$CF <- data$CASHFLOWS$CF[-to_ind]
+  }
+  data$CASHFLOWS$DATE <- as.Date(data$CASHFLOWS$DATE,format="%d%m%Y")
+  data
+}
+
 print.dyncouponbonds <- function(x, ...) {
   cat("This is a dynamic dataset of coupon bonds.\n")
   cat(paste("There are",length(x), "observations between",x[[1]][[1]]$TODAY, "and",x[[length(x)]][[1]]$TODAY,".\n"))
-  }
+}
 
 print.couponbonds <- function(x, ...) {
   cat("This is a dataset of coupon bonds for:\n")
