@@ -78,11 +78,15 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
     colnames(optparam) <- switch(method,
           "ns"=c("beta_0","beta_1","beta_2","tau_1"),
           "sv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2"))
-
-   
+    
+    sptrtfct <- switch(method,
+                       "ns" = spr_ns,
+                       "sv" = spr_sv)
+    
+    yhat <- t(apply(optparam,1, function(x) sptrtfct(x,obj$maturities)))
     
     result <- list(optparam = optparam, optresult = optresult, method = method,
-                   maturities = obj$maturities, dates = obj$dates, spsearch = spsearch, yields = obj$yields)
+                   maturities = obj$maturities, dates = obj$dates, spsearch = spsearch, yields = obj$yields,yhat = yhat)
     class(result) <- "dyntermstrc_yields"
     result
   }
@@ -102,6 +106,28 @@ print.dyntermstrc_yields <- function(x, ...){
   cat("---------------------------------------------------\n")
 }
 
+
+
+summary.dyntermstrc_yields <- function(object, ...){
+  x <- object
+  y_mrsme <-  mean(sqrt(apply((x$yields-x$yhat)^2,2,mean)))
+  y_maabse <- mean(apply(abs(x$yields-x$yhat),2,mean))
+  sumry <- list()
+  sumry$gof <- rbind(y_mrsme,y_maabse)
+  rownames(sumry$gof) <- c("mean RMSE-Yields", "mean AABSE-Yields")
+  class(sumry) <- "summary.dyntermstrc_yields"
+  sumry
+}
+
+
+print.summary.dyntermstrc_yields <- function(x,...) {
+    cat("---------------------------------------------------\n")
+    cat("Goodness of fit:\n")
+    cat("---------------------------------------------------\n")
+
+    print.default(x$gof)
+
+  }
 
 plot.dyntermstrc_yields <- function(x, ...)
   {
