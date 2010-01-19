@@ -14,7 +14,7 @@ estim_cs(obj, ...)
 
 \arguments{
   \item{obj}{object of the class \command{"couponbonds"}.}
-  \item{\dots}{}
+  \item{\dots}{further arguments}
 }
 
 
