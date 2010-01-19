@@ -1,27 +1,19 @@
 source("termstrcPackage.R")
 
-## Import CSVs
-datadyncouponbonds <- dyncouponbonds(c("DataGermany S.csv", "DataGermany AC.csv", "DataGermany CP.csv"), "GERMANY")
-
-## datadyncouponbonds <- datadyncouponbonds[1:3]
-## class(datadyncouponbonds) <- "dyncouponbonds"
+load("GermanBonds.RData")
 
 ## Svensson estimation
-sv_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "sv", deltatau = 1, optimtype = "allglobal")
+sv_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "sv", deltatau = 0.5, optimtype = "allglobal")
+sv_res2 <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "sv", deltatau = 0.5, optimtype = "firstglobal")
 
-save(sv_res, file = "demo_dyncoupondbonds_results.RData")
+dl_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "dl", lambda = 1/3)
 
-## print(sv_res)
-## plot(sv_res)
-## summary(sv_res)
+ns_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "ns", deltatau = 0.2, optimtype = "allglobal")
+ns_res2 <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "ns", deltatau = 0.2, optimtype = "allglobal")
 
-## ## Plot startparameter grid search results
-## plot(sv_res[[1]]$spsearch$GERMANY)
+save(sv_res, sv_res2, dl_res, ns_res, ns_res2, file = "demo_dyncoupondbonds_results.RData")
 
-## ## Plot parameters
 
-## plot(param(sv_res))
-## summary(param(sv_res))
 
      
 
