@@ -1,7 +1,7 @@
 
 
 ## Cubic spline term structure estimation 
-estim_cs <- function(bonddata, group, matrange="all",rse=TRUE) {
+estim_cs.couponbonds <- function(bonddata, group, matrange="all",rse=TRUE) {
 
   # data preprocessing 
   prepro <- prepro_bond(group=group,bonddata=bonddata,

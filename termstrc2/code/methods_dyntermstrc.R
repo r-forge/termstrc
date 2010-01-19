@@ -57,7 +57,7 @@ plot.dyntermstrc_nss <- function(x,range=c(0,20), ...) {
     X <- seq(if(range[1]==0) range[1]+0.1 else range[1],range[2],0.1)
     Y <- seq(nrow(tsparam[[1]]))
 
-    for(j in seq_along(x)){
+    for(j in seq(x[[1]]$n_group)){
       Z <-  mapply(function(i) spotrates(method=x[[1]]$method,tsparam[[j]][i,],X,x[[1]]$lambda), seq(nrow(tsparam[[j]])))
       open3d()
       persp3d(X,Y,Z,col = "green3",xlab="Maturity (years)", zlab="Zero-coupon yields (in %)",ylab="Time",box=FALSE)

@@ -80,7 +80,8 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
                  method=method,                 # estimation method
                  startparam=startparam,         # calculated startparameters
                  n_group=n_group,               # number of groups,
-                 spsearch = spsearch,            # detailed data from start param search
+                 lambda=lambda,                 # lambda parameter for dl
+                 spsearch = spsearch,           # detailed data from start param search
                  spot=postpro$zcy_curves,       # zero coupon yield curves
                  spread=postpro$s_curves,       # spread curves
                  forward=postpro$fwr_curves,    # forward rate curves
