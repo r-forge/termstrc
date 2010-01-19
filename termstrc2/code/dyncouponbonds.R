@@ -37,7 +37,7 @@ dyncouponbonds <- function(datafiles,   # vector with CSV files c("COUNTRY S.csv
 
   
   for(i in 1:length(DATES)) {
-
+    if (i==66) browser()
     TODAY <- DATES[i]
     AC <- rawdata_AC[,-1][i,]
     CP <- rawdata_CP[,-1][i,]
@@ -76,7 +76,7 @@ dyncouponbonds <- function(datafiles,   # vector with CSV files c("COUNTRY S.csv
       for(i in 1:length(NCOUPON)){
         data$CASHFLOWS$DATE <- c(data$CASHFLOWS$DATE,paste(rawdata[i,"COUPONDATE"],as.numeric(substring(NEXTCOUPON[i],5,8)) + seq(0,NCOUPON[i]),sep=""))
       }
-      
+
       ## correct for AC dates
       ## get indices where new ISINs start
       cp_ind <- c(1,1+cumsum(1+NCOUPON))
