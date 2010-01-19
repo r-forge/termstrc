@@ -31,6 +31,6 @@ print(cs_res)
 summary(cs_res)
 plot(cs_res)
 ## Pricing errors per bond
-plot(cs_res,errors="price")
+plot(cs_res,errors="price",inset=c(.1,.3))
 
 ## Compare model performance (gofs)

@@ -135,11 +135,11 @@ plot.termstrc_cs <-
      		plot.error(edata[[k]],ask=ask
                 ,main=x$group[k],ylab=paste("Error ",paste(errors,"s)",sep=""),sep=" ("),...)
     		
-    		#legend("bottomright", legend=c(paste("  RMSE",
-    		#switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4),
-                #       "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),
-                #        paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4),
-                #        "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
+    		legend("bottomright", legend=c(paste("  RMSE",
+    		switch(errors,"price" = round(rmse(x$p[[k]],x$phat[[k]]),4),
+                       "yield" = round(rmse(x$y[[k]][,2],x$yhat[[k]][,2]),4)) ,sep=": "),
+                        paste("AABSE",switch(errors,"price" = round(aabse(x$p[[k]],x$phat[[k]]),4),
+                        "yield" = round(aabse(x$y[[k]][,2],x$yhat[[k]][,2]),4)),sep=": ")),bty="n", inset=inset) 
     		
     	  }
     	
