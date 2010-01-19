@@ -49,7 +49,7 @@ test.estim_nss.couponbonds <- function() {
 
 test.estim_nss.couponbonds2 <- function() {
   load("govbonds.RData")
-  ns_res <- estim_ns(govbonds, c("GERMANY"), method = "ns", deltatau = 1)
+  ns_res <- estim_nss(govbonds, c("GERMANY"), method = "ns", deltatau = 1)
   print(ns_res)
   plot(ns_res)
   summary(ns_res)
