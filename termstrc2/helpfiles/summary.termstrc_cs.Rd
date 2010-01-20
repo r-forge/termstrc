@@ -18,4 +18,4 @@
  The summary method for an object of the class \command{"termstrc_cs"} calculates goodness of fit statistics (RMSE, AABSE) of the price and yield errors. Additionally, summary statistics of the regression analysis of the parameters are printed. 
 }
 
-\seealso{\command{\link{plot.termstrc_cs}}, \command{\link{print.termstrc_cs}}, \command{\link{rmse}}, \command{\link{aabse}}, \command{\link{summary.lm}}}
+\seealso{\command{\link{plot.termstrc_cs}}, \command{\link{print.termstrc_cs}}, \command{\link{rmse}}, \command{\link{aabse}}, \command{\link{summary.lm}}
