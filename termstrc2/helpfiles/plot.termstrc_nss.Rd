@@ -16,7 +16,7 @@
 
 \arguments{
   \item{x}{object of the class \command{"termstrc_nss"}.}
-  \item{matrange}{ maturity range for the plot, e.g. c(2,10).}
+  \item{matrange}{ maturity range for the plot, e.g., c(2,10). Only a range within the maturity range of the estimation is allowed.}
   \item{multiple}{if \command{TRUE} all curves are plotted together (default: \command{FALSE}).}
   \item{expoints}{extrapolation points (default: \command{NULL}).}
   \item{ctype}{ parameter setting for the desired curve type, \command{"spot"} (\command{"forward"}, \command{"discount"}, \command{"spread"}) for the spot rate (forward rate, discount factor, spread) curves. Use \command{"none"} if no curve plot is desired.  }
