@@ -11,7 +11,7 @@
 \usage{
 estim_nss(obj, ...)
 }
-.
+
 \arguments{
   \item{obj}{object of the class \command{"zeroyields"}, \command{"couponbonds"} or \command{"dyncouponbonds"}
 }
@@ -19,6 +19,6 @@ estim_nss(obj, ...)
 }
 }
 
-\seealso{\code{\link{estim_nss.zeroyields}}, \code{\link{estim_nss.couponbonds}, \code{\link{estim_nss.dyncouponbonds}}
+\seealso{\code{\link{estim_nss.zeroyields}}, \code{\link{estim_nss.couponbonds}}, \code{\link{estim_nss.dyncouponbonds}}
 }
 

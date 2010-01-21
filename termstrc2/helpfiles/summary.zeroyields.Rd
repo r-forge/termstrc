@@ -2,8 +2,7 @@
 \Rdversion{1.1}
 \alias{summary.zeroyields}
 
-\title{S3 Summary Method
-}
+\title{S3 Summary Method}
 \description{S3 summary method for objects of the class
   \command{"zeroyields"}. The method calculates basic summary statistics
 of the data.}

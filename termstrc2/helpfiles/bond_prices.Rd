@@ -14,17 +14,17 @@
 \usage{
 bond_prices(method = "ns", beta, m, cf, lambda)
 }
-.
+
 \arguments{
   \item{method}{ defines the desired method: \code{"ns"} for the Nelson/Siegel,\code{"dl"} for Diebold/Li, \code{"sv"} for the Svensson approach.}
   \item{beta}{parameter vector, is linked to the chosen approach.}
   \item{m}{maturities matrix, consists of the maturity dates which are appended to the cashflows of the bonds.}
   \item{cf}{ cashflows matrix.}
-}
-  \item{lambda}{additional parameter for the \code{"dl"} spot rate function 
+  \item{lambda}{additional parameter for the \code{"dl"} spot rate function }
+  
 
 }
-}
+
 \value{ 
   Returns a list with:
   \item{spot_rates}{spot rates matrix}

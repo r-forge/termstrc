@@ -8,9 +8,7 @@
 \usage{
 spr_sv(beta, m)
 }
-\title{Spot Rate Function according to Svensson }
-\description{This function calculates the spot rates for certain maturity dates and a parameter vector
-  according to Svensson (1994).}
+
 
 \details{ The spot rate according to Svensson for a maturity \eqn{m} is calculated using the following function:
 

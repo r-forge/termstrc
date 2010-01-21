@@ -1,4 +1,4 @@
-Rd\name{plot.spsearch}
+\name{plot.spsearch}
 \Rdversion{1.1}
 \alias{plot.spsearch}
 
@@ -13,8 +13,6 @@ Rd\name{plot.spsearch}
 }
 
 \arguments{
-  \item{obj}{object of the class \command{"spsearch"}.
-}
-  \item{\dots}{further arguments. 
-}
+  \item{obj}{object of the class \command{"spsearch"}.}
+  \item{\dots}{further arguments.}
 }
