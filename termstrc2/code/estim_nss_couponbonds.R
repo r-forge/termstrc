@@ -1,4 +1,6 @@
-### Estimate Nelson/Siegel-type yield curves from bond data
+##########################################################################
+### Nelson/Siegel-type yield curve estimation method for 'couponbonds' ###
+##########################################################################
 
 estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
                                   group,                     # names of countries for estimation c("Country 1", "Country 2", ...)
