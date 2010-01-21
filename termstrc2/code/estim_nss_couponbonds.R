@@ -2,6 +2,8 @@
 ### Nelson/Siegel-type yield curve estimation method for 'couponbonds' ###
 ##########################################################################
 
+estim_nss <- function(obj, ...) UseMethod("estim_nss")
+
 estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
                                   group,                     # names of countries for estimation c("Country 1", "Country 2", ...)
                                   matrange="all",            # maturity range in years c(min, max) 
