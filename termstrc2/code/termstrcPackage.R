@@ -1,20 +1,31 @@
+## Package dependencies
 library("rgl")
 library("urca")
 library("sandwich")
 
-source("bonddatafunc.R")
-source("create_cf_m.R")
-source("pricing.R") 
-source("cubicfunc.R")
-source("couponbonds.R")
-source("helperfunc.R")
-source("rates.R")
-source("methods_termstrc_ns.R")
-source("methods_curves.R")
-source("zeroyields.R")
-source("dyncouponbonds.R")
+## Estimation kernel
 source("estim_cs.R")
+source("estim_nss_couponbonds.R")
+source("estim_nss_dyncouponbonds.R")
+source("estim_nss_zeroyields.R")
+source("bondpricing.R")
+
+## Parametric forms of spot rate functions
+source("spotfwdratedef.R")
+source("cubicfunc.R")
+
+## Data handling
+source("couponbonds_data.R")
+source("create_cf_m.R")
+
+## Methods for estimation results
+source("methods_curves.R")
+source("methods_dyntermstrc_nss.R")
+source("methods_dyntermstrc_param.R")
+source("methods_dyntermstrc_yields.R")
 source("methods_termstrc_cs.R")
-source("estim_dyntermstrc.R")
-source("methods_dyntermstrc.R")
-source("param.R")
+source("methods_termstrc_nss.R")
+source("methods_zeroyields.R")
+source("gof.R")
+
+
