@@ -1,0 +1,53 @@
+\name{estim_nss.dyncouponbonds}
+\Rdversion{1.1}
+\alias{estim_nss.dyncouponbonds}
+
+\title{S3 Estim_nss method}
+\description{The method performs an iterative term structure estimation procedure
+  on a dynamic bond data set of the class
+  \command{"dyncouponbonds"}. Available methods are Nelson/Siegel,
+  Diebold/Li and Svensson. 
+
+}
+\usage{
+\method{estim_nss}{dyncouponbonds}(dynbonddata, group, matrange = "all", method = "ns", lambda = 0.0609 * 12, deltatau = 1, optimtype = "firstglobal", constrOptimOptions = list(control = list(), outer.iterations = 60, outer.eps = 1e-04))
+}
+
+\arguments{
+  \item{dynbonddata}{dynamic bond data set of the class \command{"dyncouponbonds"}.}
+  \item{group}{vector defining the group of bonds used for the estimation,
+               e.g., \command{c("GERMANY","AUSTRIA")}.
+}
+  \item{matrange}{use \command{"all"} for no restrictions, or restrict
+    the maturity range (in years) used for the estimation with \command{c(lower,upper)}.
+}
+  \item{method}{ \command{"ns"} for Nelson/Siegel (default), \command{"dl"} for
+    Diebold/Li or \command{"sv"} for Svensson.
+}
+  \item{lambda}{parameter on a yearly time scale with fixed value for \command{"dl"} spot rate
+    function (default: 0.0609*12)
+}
+  \item{deltatau}{intervalsize for parameter grid used for globally
+    optimal parameter search
+}
+  \item{optimtype}{use \command{"firstglobal"} for an inital search for
+  globally optimal start parameters or \command{"allglobal"} for a
+  search at every iteration. 
+}
+  \item{constrOptimOptions}{list with solver control parameters
+    (default: control=list(), outer.interations=30,
+    outer.eps.=1e-04). For further documentation please refer to
+    \command{\link{optim}}
+}   
+}
+
+\details{
+The method iteratively applies the method \command{"estim_nss.couponbonds".}
+}
+\value{ The method returns an object of the class
+  \command{"dyntermstrc_nss"}. The object is a list with sublists of the
+  class \command{"termstrc_nss"}. 
+}
+
+\seealso{ \code{\link{estim_nss.couponbonds}}
+}

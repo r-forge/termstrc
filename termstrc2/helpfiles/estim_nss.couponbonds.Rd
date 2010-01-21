@@ -10,7 +10,7 @@ Zero-coupon yield curve estimation with the parametric Nelson/Siegel
 requires an object of the class \command{"couponbonds"}. 
 }
 \usage{
-estim_nss.couponbonds(bonddata, group, matrange = "all", method = "ns", startparam = NULL, lambda = 0.0609 * 12, deltatau = 0.1, constrOptimOptions = list(control = list(), outer.iterations = 30, outer.eps = 1e-04))
+\method{estim_nss}{couponbonds}(bonddata, group, matrange = "all", method = "ns", startparam = NULL, lambda = 0.0609 * 12, deltatau = 0.1, constrOptimOptions = list(control = list(), outer.iterations = 30, outer.eps = 1e-04))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,7 +26,7 @@ estim_nss.couponbonds(bonddata, group, matrange = "all", method = "ns", startpar
     the maturity range (in years) used for the estimation with \command{c(lower,upper)}.
 }
   \item{method}{\command{"ns"} for Nelson/Siegel (default), \command{"dl"} for
-    Diebold/Li or \command{"Svensson"}
+    Diebold/Li or \command{"sv"} for Svensson.
 }
   \item{startparam}{matrix of start parameters (number of columns is the
     number of parameters). If no start parameters are given, globally
