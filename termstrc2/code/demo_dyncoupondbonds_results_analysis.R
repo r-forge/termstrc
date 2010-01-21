@@ -1,49 +1,38 @@
 rm(list = ls())
 source("termstrcPackage.R")
 load("demo_dyncoupondbonds_results.RData")
-load("demo_dyncoupondbonds2_results.RData")
+load("GermanBonds.RData")
 
-## Import CSVs
-datadyncouponbonds <- dyncouponbonds(c("DataGermany S.csv", "DataGermany AC.csv", "DataGermany CP.csv"), "GERMANY")
+## Create figures for paper
 
-## Nelson/Siegel estimation
-ns_res2 <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "ns", deltatau = 1, optimtype = "firstglobal")
+pdf("fig_sv_dyncouponbonds.pdf", width = 10, height = 7)
 
-## Svensson estimation
-sv_res2 <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "sv", deltatau = 1, optimtype = "firstglobal")
+op <- par(mfrow = c(2,3))
+N <- nrow(param(sv_res2)$GERMANY)
+n <- 1
 
-summary(sv_res)
-summary(sv_res2)
+matplot(cbind(param(sv_res)$GERMANY[n:N,1],param(sv_res2)$GERMANY[n:N,1]),type = "l",ylab = expression(hat(beta)[0]),xlab = "Time", lty = c(2,1))
+legend("topleft", c("first global", "all global"), lty = c(2,1), col = 1:2)
+matplot(cbind(param(sv_res)$GERMANY[n:N,2],param(sv_res2)$GERMANY[n:N,2]),type = "l",ylab = expression(hat(beta)[1]),xlab = "Time", lty = c(2,1))
+matplot(cbind(param(sv_res)$GERMANY[n:N,3],param(sv_res2)$GERMANY[n:N,3]),type = "l",ylab = expression(hat(beta)[2]),xlab = "Time", lty = c(2,1))
+matplot(cbind(param(sv_res)$GERMANY[n:N,4],param(sv_res2)$GERMANY[n:N,4]),type = "l",ylab = expression(hat(tau)[1]),xlab = "Time", lty = c(2,1))
+matplot(cbind(param(sv_res)$GERMANY[n:N,5],param(sv_res2)$GERMANY[n:N,5]),type = "l",ylab = expression(hat(beta)[3]),xlab = "Time", lty = c(2,1))
+matplot(cbind(param(sv_res)$GERMANY[n:N,6],param(sv_res2)$GERMANY[n:N,6]),type = "l",ylab = expression(hat(tau)[2]),xlab = "Time", lty = c(2,1))
 
-param_names <- c("beta_0", "beta_1","beta_2","tau_1","beta_3","tau_2")
+par(op)
+dev.off()
 
 pdf("demo_dyncouponbonds_singlecurves.pdf")
 
-for (i in 1:length(param(sv_res2)$GERMANY[,i]))
-  plot(sv_res2[[i]])
+for (i in 1:nrow(param(sv_res2)$GERMANY))
+  plot(sv_res2[[i]], matrange = c(0,6))
 dev.off()
 
-pdf("demo_dyncouponbonds_results.pdf")
-#plot(param(dl_res))
-
-op <- par(mfrow = c(2,3))
-N <- 55#length(param(sv_res)$GERMANY[,i])
-n <- 8
-for (i in 1:6) {
-matplot(cbind(param(sv_res)$GERMANY[n:N,1],param(sv_res2)$GERMANY[n:N,1]),type = "l",ylab = expression(hat(beta)[0]),xlab = "Time")
-matplot(cbind(param(sv_res)$GERMANY[n:N,2],param(sv_res2)$GERMANY[n:N,2]),type = "l",ylab = expression(hat(beta)[1]),xlab = "Time")
-matplot(cbind(param(sv_res)$GERMANY[n:N,3],param(sv_res2)$GERMANY[n:N,3]),type = "l",ylab = expression(hat(beta)[2]),xlab = "Time")
-matplot(cbind(param(sv_res)$GERMANY[n:N,4],param(sv_res2)$GERMANY[n:N,4]),type = "l",ylab = expression(hat(tau)[1]),xlab = "Time")
-matplot(cbind(param(sv_res)$GERMANY[n:N,5],param(sv_res2)$GERMANY[n:N,5]),type = "l",ylab = expression(hat(beta)[3]),xlab = "Time")
-matplot(cbind(param(sv_res)$GERMANY[n:N,6],param(sv_res2)$GERMANY[n:N,6]),type = "l",ylab = expression(hat(tau2)[2]),xlab = "Time")
-}
-par(op)
-
 op <- par(mfrow = c(2,2))
-N <- 55#length(param(ns_res)$GERMANY[,i])
-n <- 8
+N <- 65#nrow(param(sv_res2)$GERMANY)
+n <- 1
 for (i in 1:4) {
-matplot(cbind(param(ns_res)$GERMANY[n:N,i],param(ns_res2)$GERMANY[n:N,i]),type = "l",ylab = param_names[i])
+matplot(cbind(param(ns_res)$GERMANY[n:N,i],param(ns_res2)$GERMANY[n:N,i]),type = "l")
 }
 par(op)
 

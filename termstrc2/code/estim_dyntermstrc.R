@@ -6,7 +6,7 @@ estim_nss.dyncouponbonds <- function(dynbonddata, group, matrange="all",method="
                               deltatau=1,              # interval for parameter grid
                               optimtype = "firstglobal", # 'firstglobal' of 'allglobal'
                              # nlmbinbOptions = list(control = list(iter.max = 1500, eval.max = 1500,trace)),
-                              constrOptimOptions = list(control = list(), outer.iterations = 60, outer.eps = 1e-04)
+                              constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04)
                      ) {
   res <- list()
 

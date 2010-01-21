@@ -9,7 +9,7 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
                                   lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                                   deltatau=0.1,              # interval for parameter grid
                                   #nlmbinbOptions = list(control = list()),
-                                  constrOptimOptions = list(control = list(), outer.iterations = 30, outer.eps = 1e-04)
+                                  constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04)
            ) {
 
   ## data preprocessing
