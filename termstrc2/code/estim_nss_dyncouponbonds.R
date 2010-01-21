@@ -1,5 +1,6 @@
-
-## dynamic estimation of the term structure
+#############################################################################
+### Nelson/Siegel-type yield curve estimation method for 'dyncouponbonds' ###
+#############################################################################
 
 estim_nss.dyncouponbonds <- function(dynbonddata, group, matrange="all",method="ns",
                               lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
@@ -10,15 +11,15 @@ estim_nss.dyncouponbonds <- function(dynbonddata, group, matrange="all",method="
                      ) {
   res <- list()
 
-  # perform sequence of term structure estimations
+  ## perform sequence of term structure estimations
   for (i in seq(length(dynbonddata))) {
     if(i>1 && optimtype == "firstglobal"){
-      # use optimal parameters from previous period as start parameters
+      ## use optimal parameters from previous period as start parameters
       b <- t(mapply(function(j) res[[i-1]]$opt_result[[j]]$par,  seq_along(group)))
       rownames(b) <- group                               
     } else b <- NULL
     
-    # static estimation
+    ## static estimation
     bonddata <- dynbonddata[[i]]
     res[[i]] <- estim_nss(bonddata, group, matrange, method=method, startparam=b, lambda=lambda,deltatau,constrOptimOptions)
   }
