@@ -21,21 +21,21 @@ summary.zeroyields <- function(object, ...)
 
 plot.zeroyields <- function(x,...)
   {
-    z <- as.matrix(x$yields)
-    x <- 1:nrow(x$yields)
-    y <- x$maturities
+    Z <- as.matrix(x$yields)
+    X <- 1:nrow(x$yields)
+    Y <- x$maturities
 
     open3d()
-    persp3d(x, y, z, col = "green3", box = FALSE,xlab = "Dates", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
+    persp3d(X, Y, Z, col = "green3", box = FALSE,xlab = "Dates", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
   }
 
 estim_nss <- function(obj, ...) UseMethod("estim_nss")
 
-estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
+estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1, optimtype = "firstglobal", constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04))
   {
     if(method=="ns"){
-          spsearch <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
-          startparam <- spsearch$startparam
+          sp_search <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
+          startparam <- sp_search$startparam
           objfct <- objfct_ns
           grad_objfct <- grad_objfct_ns
           ui <- rbind(c(1,0,0,0),  # beta0 > 0
@@ -47,8 +47,8 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
 
     if(method=="sv"){
       
-          spsearch <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
-          startparam <- spsearch$startparam
+          sp_search <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
+          startparam <- sp_search$startparam
           
           objfct <- objfct_sv
           grad_objfct <- grad_objfct_sv
@@ -61,20 +61,35 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
           ci <- c(0,0,0,-30,0,-30)
     }
 
-    optresult <- list()
+    opt_result <- list()
+    spsearch <- list()
     optparam <- matrix(nrow = nrow(obj$yields), ncol = length(startparam)) 
+
+    ## Estimation loop
     for (i in 1:nrow(obj$yields)){
     
       yields <- obj$yields[i,]
 
-      if (i<2)
+      if (i==1) {
         beta <- startparam
-      else
+        spsearch[[i]] <- sp_search
+      }
+      
+      if(i>1 && optimtype == "allglobal"){
+          sp_search <- findstartparamyields(yields,obj$maturities, method, deltatau)
+          beta <- sp_search$startparam
+          spsearch[[i]] <- sp_search
+      }
+      if(i>1 && optimtype == "firstglobal"){
         beta <- optparam[i-1,]
-        
-      optresult[[i]] <- estimateyieldcurve(yields, obj$maturities, beta, objfct, grad_objfct, ui, ci)
-      optparam[i,] <- optresult[[i]]$par
+      }
+
+      
+      opt_result[[i]] <- estimateyieldcurve(yields, obj$maturities, beta, objfct, grad_objfct, ui, ci, constrOptimOptions)
+      optparam[i,] <- opt_result[[i]]$par
     }
+
+    
     colnames(optparam) <- switch(method,
           "ns"=c("beta_0","beta_1","beta_2","tau_1"),
           "sv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2"))
@@ -85,7 +100,7 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1)
     
     yhat <- t(apply(optparam,1, function(x) sptrtfct(x,obj$maturities)))
     
-    result <- list(optparam = optparam, optresult = optresult, method = method,
+    result <- list(optparam = optparam, opt_result = opt_result, method = method,
                    maturities = obj$maturities, dates = obj$dates, spsearch = spsearch, yields = obj$yields,yhat = yhat)
     class(result) <- "dyntermstrc_yields"
     result
@@ -97,7 +112,7 @@ print.dyntermstrc_yields <- function(x, ...){
   cat("Parameters for yield based dynamic term structure estimation:\n")
   cat("---------------------------------------------------\n")
   cat("Method:",switch(x$method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson"),"\n")
-  cat("Number of oberservations:",length(x$optresult),"\n")
+  cat("Number of oberservations:",length(x$opt_result),"\n")
   cat("---------------------------------------------------\n")
   cat("Parameter summary:\n")
   cat("---------------------------------------------------\n")
@@ -115,6 +130,13 @@ summary.dyntermstrc_yields <- function(object, ...){
   sumry <- list()
   sumry$gof <- rbind(y_mrsme,y_maabse)
   rownames(sumry$gof) <- c("mean RMSE-Yields", "mean AABSE-Yields")
+
+  ## extract convergence info
+  for (i in (1:length(x$opt_result))) {
+    sumry$convergence[i] <- x$opt_result[[i]]$convergence
+    # TODO: solver message
+  }
+    
   class(sumry) <- "summary.dyntermstrc_yields"
   sumry
 }
@@ -127,40 +149,46 @@ print.summary.dyntermstrc_yields <- function(x,...) {
 
     print.default(x$gof)
 
+    cat("\n")
+    cat("---------------------------------------------------\n")
+    cat("Convergence information from optim ():\n")
+    cat("---------------------------------------------------\n")
+    
+    print.default(x$convergence)
+
   }
 
-plot.dyntermstrc_yields <- function(x, ...)
+plot.dyntermstrc_yields <- function(x,...)
   {
-   
     ## plot estimated yield curves in 3D
     sptrtfct <- switch(x$method,
                        "ns" = spr_ns,
                        "sv" = spr_sv)
-    z = matrix(nrow=nrow(x$optparam),ncol=length(x$maturities))
+    Z <- matrix(nrow=nrow(x$optparam),ncol=length(x$maturities))# OK
     for (i in 1:nrow(x$optparam)){
-      z[i,] <- sptrtfct(x$optparam[i,],x$maturities)
+      Z[i,] <- sptrtfct(x$optparam[i,],x$maturities)
     }
 
-    x <- 1:nrow(z)
-    y <- x$maturities
+    X <- 1:nrow(Z)
+    Y <- x$maturities
     
     open3d()
-    persp3d(x, y, z, col = "green3", box = FALSE,xlab = "Dates", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
+    persp3d(X, Y, Z, col = "green3", box = FALSE,xlab = "Dates", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
     
   }
 
-estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, ui, ci)
+estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, ui, ci, constrOptimOptions)
   {    
     opt_result <- constrOptim(theta = beta,
-                               f = objfct,
-                               grad = grad_objfct,
-                               ui = ui,
-                               ci = ci,
-                               mu = 1e-04,
-                               control = list(),
-                               method = "BFGS",
-                               outer.iterations = 50,
-                               outer.eps = 1e-05,
+                              f = objfct,
+                              grad = grad_objfct,
+                              ui = ui,
+                              ci = ci,
+                              mu = 1e-04,
+                              control = constrOptimOptions$control,
+                              method = "BFGS",
+                              outer.iterations = constrOptimOptions$outer.iterations,
+                              outer.eps = constrOptimOptions$outer.eps,
                                m,y)
           
   }
@@ -296,14 +324,5 @@ grad_objfct_sv <- function(beta, m, y)
       (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
           )
       }
-
-
-
-
-
-
-
-
-
 
 
