@@ -1,4 +1,4 @@
-
+### Cubic splines estimation method for 'couponbonds'
 
 estim_cs <- function(bonddata, group, matrange="all",rse=TRUE) UseMethod("estim_cs")
 
