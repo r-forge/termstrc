@@ -21,17 +21,17 @@ prepro_bond(group, bonddata, matrange = "all")
   \item{cf}{list with cashflows matrices}
  \item{cf_p}{list with cashflows matrices including the current dirty prices}
   \item{m}{list with maturites matrices}
-  \item{m_p}{{list with cashflows matrices including the maturities of the current dirty prices}
+  \item{m_p}{list with cashflows matrices including the maturities of the current dirty prices}
   \item{p}{list with the dirty price vectors}
   \item{ac}{list with the accrued interest vectors}
   \item{y}{list with the yield-to-maturity matrices}
   \item{duration}{list with the duration, duration based weights matrices}
-  \item{timestamp}{Date of the data}
+  \item{timestamp}{date of the data}
 }
 
 \examples{
-data(govbonds)
-bdata <- prepro_bond("GERMANY",govbonds,c(0,10))
+#data(govbonds)
+#bdata <- prepro_bond("GERMANY",govbonds,c(0,10))
 ## print maturites matrix
-bdata$m
+#bdata$m
 }

@@ -102,4 +102,3 @@ of Econometrics}, \bold{130}:337--364.
 For objects of the class \command{"spot_curves"}, \command{"s_curves"}, \command{"df_curves"}, \command{"fwr_curves"}, \command{"error"} appropriate plot methods are offered.  For objects of the class \command{"termstrc_nss"} print, summary and plot methods are available. Another term structure estimation method is provided by the function \command{\link{estim_cs}}.} 
 
 \seealso{\command{\link{print.termstrc_nss}}, \command{\link{summary.termstrc_nss}},  \command{\link{plot.termstrc_nss}},  \command{\link{splines_estim}},  \command{\link{plot.spot_curves}},  \command{\link{plot.s_curves}},  \command{\link{plot.df_curves}},  \command{\link{plot.fwr_curves}},  \command{\link{plot.error}},  \command{\link{uniroot}}.}
-}

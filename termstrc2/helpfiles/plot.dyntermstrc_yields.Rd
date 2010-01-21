@@ -14,6 +14,5 @@
 
 \arguments{
   \item{x}{object of the class \command{"dyntermstrc_yields"}.}
-}
   \item{\dots}{further arguments.}
 }

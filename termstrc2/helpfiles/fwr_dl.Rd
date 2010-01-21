@@ -22,13 +22,10 @@ fwr_dl(beta, m, lambda)
 \value{The function returns the calculated forward rate (vector).}
 
 
-\references{  
 \references{ F.X. Diebold and C. Li: Forecasting the Term Structure of Government Bond Yields. \emph{Journal 
 of Econometrics}, \bold{130}:337--364.}
 
 
 \seealso{\code{\link{fwr_sv}},\code{\link{fwr_ns}}, \code{\link{forwardrates}}}
-\examples{
-fwr_(beta=c(0.03,0.02,0.01),1:30,lambda=1/5)
-}
+\examples{fwr_dl(beta=c(0.03,0.02,0.01),1:30,lambda=1/5)}
 
