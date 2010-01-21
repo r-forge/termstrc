@@ -1,3 +1,5 @@
+rm(list = ls())
+source("termstrcPackage.R")
 ## Import CSV
 x <- read.csv("zeroyields.csv",sep=";")
 
@@ -10,7 +12,8 @@ dates <- as.Date(x[,1],format="%d.%m.%Y")
 datazeroyields <- zeroyields(maturities, yields, dates)
 
 ## Perform Nelson/Siegel estimation
-ns_res <- estim_nss(datazeroyields, "ns", deltatau = 0.2)
+ns_res <- estim_nss(datazeroyields, "ns", deltatau = 0.2, optimtype = "firstglobal")
+ns_res2 <- estim_nss(datazeroyields, "ns", deltatau = 0.2, optimtype = "allglobal")
 
 ## Plot startparameters
 plot(ns_res$spsearch)
@@ -20,6 +23,7 @@ plot(ns_res)
 
 ## Perform Svensson estimation
 sv_res <- estim_nss(datazeroyields, "sv", deltatau = 0.2)
+sv_res2 <- estim_nss(datazeroyields, "sv", deltatau = 0.2, optimtype = "allglobal")
 
 ## Plot startparameters
 plot(sv_res$spsearch)
