@@ -81,12 +81,12 @@ impl_fwr <- function(m,s) {
   impl_fwr	
 }
 
-getparamnames <- function(method){
+get_paramnames <- function(method){
   names <- c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2")
   switch(method,"ns"= names[1:4],"sv"=names,"asv"=names,"dl"=names[1:3])
 }
 
-getrealnames <- function(method){
+get_realnames <- function(method){
   switch(method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson","asv"="Adjusted Svensson")
 }
   

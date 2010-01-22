@@ -70,7 +70,7 @@ print.dyntermstrc_nss <- function(x,...){
   cat("Parameters for dynamic term structure estimation:\n")
   cat("---------------------------------------------------\n")
   cat("Group: ",x[[1]]$group,"\n")
-  cat("Method:",getrealnames(x[[1]]$method),"\n")
+  cat("Method:",get_realnames(x[[1]]$method),"\n")
   cat("Number of oberservations:",length(x),"\n")
   cat("---------------------------------------------------\n")
   cat("Parameter summary:\n")
