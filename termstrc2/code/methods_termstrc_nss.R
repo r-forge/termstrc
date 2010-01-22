@@ -1,13 +1,13 @@
 print.termstrc_nss <- 
   function(x,...) {
   cat("---------------------------------------------------\n")
-  cat("Parameters for estimation with",getrealnames(x$method), "spot rate function:")
+  cat("Parameters for estimation with",get_realnames(x$method), "spot rate function:")
   cat("\n")
   cat("---------------------------------------------------\n")
   cat("\n")
   parameters <- mapply(function(i) x$opt_result[[i]]$par,seq_along(x$opt_result))
   colnames(parameters) <- names(x$opt_result)
-  rownames(parameters) <- getparamnames(x$method)
+  rownames(parameters) <- get_paramnames(x$method)
   print.default(parameters)
   cat("\n")
 
