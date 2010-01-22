@@ -9,10 +9,10 @@
   function of the start parameter search. 
 }
 \usage{
-\method{plot}{spsearch}(obj, ...)
+\method{plot}{spsearch}(x, ...)
 }
 
 \arguments{
-  \item{obj}{object of the class \command{"spsearch"}.}
+  \item{x}{object of the class \command{"spsearch"}.}
   \item{\dots}{further arguments.}
 }

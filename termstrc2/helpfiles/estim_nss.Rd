@@ -9,11 +9,11 @@
   or Svensson.
 }
 \usage{
-estim_nss(obj, ...)
+estim_nss(dataset, ...)
 }
 
 \arguments{
-  \item{obj}{object of the class \command{"zeroyields"}, \command{"couponbonds"} or \command{"dyncouponbonds"}
+  \item{dataset}{object of the class \command{"zeroyields"}, \command{"couponbonds"} or \command{"dyncouponbonds"}
 }
   \item{\dots}{further arguments
 }

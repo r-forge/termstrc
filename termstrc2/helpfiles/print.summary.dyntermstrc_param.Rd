@@ -7,7 +7,7 @@
 S3 print method for an object of the class \command{"summary.dyntermstrc_param"}
 }
 \usage{
-\method{print}{summary}dyntermstrc_param(x, ...)
+\method{print}{summary.dyntermstrc_param}(x, ...)
 }
 
 \arguments{

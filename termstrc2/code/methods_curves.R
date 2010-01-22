@@ -1,7 +1,7 @@
 
 
 plot.ir_curve <- function(x,ylim=c(),xlim=c(),lwd=2, type="l",
-				xlab="Maturity (years)",ylab="Zero-coupon yields (in %)", 
+				xlab="Maturity (years)",ylab="Zero-coupon yields (in percent)", 
 				col="steelblue",lty=1, ...) 
 				{
 	plot(x[,1] ,x[,2]*100, type=type, ylim=ylim, xlim=xlim, xlab=xlab,

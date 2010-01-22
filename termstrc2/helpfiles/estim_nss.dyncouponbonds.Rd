@@ -10,11 +10,11 @@
 
 }
 \usage{
-\method{estim_nss}{dyncouponbonds}(dynbonddata, group, matrange = "all", method = "ns", lambda = 0.0609 * 12, deltatau = 1, optimtype = "firstglobal", constrOptimOptions = list(control = list(), outer.iterations = 60, outer.eps = 1e-04))
+\method{estim_nss}{dyncouponbonds}(dataset, group, matrange = "all", method = "ns", lambda = 0.0609 * 12, deltatau = 1, optimtype = "firstglobal", constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04), ...)
 }
 
 \arguments{
-  \item{dynbonddata}{dynamic bond data set of the class \command{"dyncouponbonds"}.}
+  \item{dataset}{dynamic bond data set of the class \command{"dyncouponbonds"}.}
   \item{group}{vector defining the group of bonds used for the estimation,
                e.g., \command{c("GERMANY","AUSTRIA")}.
 }
@@ -37,8 +37,9 @@
   \item{constrOptimOptions}{list with solver control parameters
     (default: control=list(), outer.interations=30,
     outer.eps.=1e-04). For further documentation please refer to
-    \command{\link{optim}}
-}   
+    \command{\link{optim}}}
+  \item{\dots}{further arguments}
+   
 }
 
 \details{

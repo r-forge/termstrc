@@ -9,7 +9,7 @@ S3 plot method for an object of the class \command{"ir_curve".}
 }
 \usage{
 \method{plot}{ir_curve}(x, ylim = c(), xlim = c(), lwd = 2, type = "l",
-	xlab = "Maturity (years)", ylab = "Percent",
+	xlab = "Maturity (years)", ylab = "Zero-coupon yields (in percent)",
 	col = "steelblue", lty = 1, ...)
 }
 

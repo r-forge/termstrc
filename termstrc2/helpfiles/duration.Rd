@@ -34,8 +34,8 @@ where \eqn{d_j} is the duration of the j-th bond.
 \examples{ 
 data(govbonds)
 cf_p <- create_cashflows_matrix(govbonds[[1]],include_price=TRUE)
-m_p <- create_maturities_matrix(govbonds[[1]],include_price_TRUE)
+m_p <- create_maturities_matrix(govbonds[[1]],include_price=TRUE)
 y <- bond_yields(cf_p,m_p)
-duration(cf_p,m_p,y)
+duration(cf_p,m_p,y[,1])
 
 }
