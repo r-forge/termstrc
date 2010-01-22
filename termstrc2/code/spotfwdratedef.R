@@ -136,7 +136,7 @@ grad_objfct_ns <- function(beta, m, y)
 ### Svensson loss function for yields
 objfct_sv <- function(beta, m, y)
       {
-        sum((y - spr_sv(beta,m))^2)
+        sqrt(sum((y - spr_sv(beta,m))^2))
       }
 
 ### Gradient of Svensson loss function for yields
