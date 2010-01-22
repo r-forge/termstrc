@@ -12,7 +12,6 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
                                                              # otherwise globally optimal parameters are searched automatically
                                   lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                                   deltatau=0.1,              # interval for parameter grid
-                                  #nlmbinbOptions = list(control = list()),
                                   constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04)
            ) {
 
@@ -62,16 +61,6 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
   opt_result <- list()
 
   for (k in sgroup){
-    ## opt_result[[k]] <- constrOptim(theta = startparam[k,],
-    ##                            f = obj_fct,
-    ##                            grad = NULL,
-    ##                            ui = ui,
-    ##                            ci = ci,
-    ##                            mu = 1e-04,
-    ##                            control = control,
-    ##                            method = "Nelder-Mead",
-    ##                            outer.iterations = outer.iterations,
-    ##                            outer.eps = outer.eps)
     opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], obj_fct,constrOptimOptions) 
   }
 
@@ -139,28 +128,6 @@ estimatezcyieldcurve <- function(method, startparam, obj_fct, constrOptimOptions
      ci <- c(0,0,0,-30,0,-30)
     }
 
-
-    ## lower <- switch(method,
-    ##                 "ns" = c(0, -Inf, -Inf, 0),
-    ##                 "sv" = c(0, -Inf, -Inf, 0, -Inf, 0),
-    ##                 "dl" = c(0,-Inf,-Inf))
- 
-    ## upper <- switch(method,
-    ##                 "ns" = rep(Inf, 4),
-    ##                 "sv" = rep(Inf, 6),
-    ##                 "dl" = rep(Inf,3))
-  
-    ## use nlminb() because performance is better
-    ## opt_result <- nlminb(start = startparam,
-    ##                    objective = obj_fct,
-    ##                    grad = NULL,
-    ##                    control = nlmbinbOptions$control,
-    ##                    lower = lower,
-    ##                    upper = upper)
-
-    ##  use constrOptim() if b_0 + b_1 > 0 is not satisfied by nlminb()
-    ##if(sum(opt_result$par[1:2])<0) {
-   ##   warning("Constraint beta_0 + beta_1 > was violated by nlminb(), switching to constrOptim()")
       opt_result <- constrOptim(theta = startparam,
                                 f = obj_fct,
                                 grad = NULL,

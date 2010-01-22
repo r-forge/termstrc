@@ -4,34 +4,13 @@
 
 estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1, optimtype = "firstglobal", constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04))
   {
-    if(method=="ns"){
-          sp_search <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
-          startparam <- sp_search$startparam
-          objfct <- objfct_ns
-          grad_objfct <- grad_objfct_ns
-          ui <- rbind(c(1,0,0,0),  # beta0 > 0
-                      c(1,1,0,0),  # beta0 + beta1 > 0
-                      c(0,0,0,1),  # tau1 > 0
-                      c(0,0,0,-1)) # tau1 < 30
-          ci <- c(0,0,0,-30)
-    }
 
-    if(method=="sv"){
-      
-          sp_search <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
-          startparam <- sp_search$startparam
-          
-          objfct <- objfct_sv
-          grad_objfct <- grad_objfct_sv
-          ui <- rbind(c(1,0,0,0,0,0),  # beta0 > 0
-                      c(1,1,0,0,0,0),  # beta0 + beta1 > 0
-                      c(0,0,0,1,0,0),  # tau1 > 0
-                      c(0,0,0,-1,0,0), # tau1 < 30
-                      c(0,0,0,0,0,1),  # tau2 > 0
-                      c(0,0,0,0,0,-1)) # tau2 < 30
-          ci <- c(0,0,0,-30,0,-30)
-    }
-
+    objfct <- get_objfct(method)
+    grad_objfct <- get_grad_objfct(method)
+    
+    sp_search <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
+    startparam <- sp_search$startparam
+    constraints <- get_constraints(method)
     opt_result <- list()
     spsearch <- list()
     optparam <- matrix(nrow = nrow(obj$yields), ncol = length(startparam)) 
@@ -56,7 +35,7 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1, optimtype = 
       }
 
       
-      opt_result[[i]] <- estimateyieldcurve(yields, obj$maturities, beta, objfct, grad_objfct, ui, ci, constrOptimOptions)
+      opt_result[[i]] <- estimateyieldcurve(yields, obj$maturities, beta, objfct, grad_objfct, constraints, constrOptimOptions)
       optparam[i,] <- opt_result[[i]]$par
     }
 
@@ -79,13 +58,13 @@ estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1, optimtype = 
 
 
 
-estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, ui, ci, constrOptimOptions)
+estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, constraints, constrOptimOptions)
   {    
     opt_result <- constrOptim(theta = beta,
                               f = objfct,
                               grad = grad_objfct,
-                              ui = ui,
-                              ci = ci,
+                              ui = constraints$ui,
+                              ci = constraints$ci,
                               mu = 1e-04,
                               control = constrOptimOptions$control,
                               method = "BFGS",
@@ -144,7 +123,7 @@ findstartparamyields <- function(y,m, method, deltatau = 0.1)
                beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
                }
                ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, beta[2] should not explode)
-               if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20)){
+               if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20) && tau1[i] < tau2[j]){
                  fmin[i,j] <- objfct_sv(beta, m, y)
              } else{
                fmin[i,j] <- 1
@@ -160,6 +139,20 @@ findstartparamyields <- function(y,m, method, deltatau = 0.1)
   class(result) <- "spsearch"
   result
   }
+
+### Loss function for parametric methods
+get_objfct <- function(method) {
+  objfct <- switch(method,
+                   "ns" = objfct_ns,
+                   "sv" = objfct_sv)
+}
+
+### Gradient of loss function for parametric methods
+get_grad_objfct <- function(method) {
+  grad_objfct <- switch(method,
+                   "ns" = grad_objfct_ns,
+                   "sv" = grad_objfct_sv)
+}
 
 ### Nelson/Siegel loss function for yields
 objfct_ns <- function(beta, m, y)
@@ -227,3 +220,47 @@ grad_objfct_sv <- function(beta, m, y)
           )
       }
 
+### Constraints for constrOptim()
+
+get_constraints <- function(method) {
+
+  ## Diebold/Li
+  
+  if (method == "dl") {
+    ui <- rbind(c(1,0,0),               # beta0 > 0
+                c(1,1,0))               # beta0 + beta1 > 0
+    ci <- c(0,0)
+   }
+  
+  ## Nelson/Siegel
+  
+  if (method == "ns") {
+    ui <- rbind(c(1,0,0,0),             # beta0 > 0
+                c(1,1,0,0),             # beta0 + beta1 > 0
+                c(0,0,0,1),             # tau1 > 0
+                c(0,0,0,-1))            # tau1 < 30
+    ci <- c(0,0,0,-30)
+  }
+
+  ## Svensson
+
+  if (method == "sv") {
+     ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
+                 c(1,1,0,0,0,0),        # beta0 + beta1 > 0
+                 c(0,0,0,1,0,0),        # tau1 > 0
+                 c(0,0,0,-1,0,0),       # tau1 < 30
+                 c(0,0,0,0,0,1),        # tau2 > 0
+                 c(0,0,0,0,0,-1),       # tau2 < 30
+                 c(0,0,0,-1,0,1))        # tau2 - tau1 > 0
+     ci <- c(0,0,0,-30,0,-30,0)
+   }
+  
+  ## Adjusted Svennson
+
+  if (method == "asv") {
+    ## TODO
+  }
+  
+  constraints <- list(ui = ui, ci = ci)
+  constraints
+}
