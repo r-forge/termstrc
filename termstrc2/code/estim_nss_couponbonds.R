@@ -58,10 +58,11 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
      	bond_prices(method,b,m[[k]],cf[[k]],lambda)$bond_prices,duration[[k]][,3])}
                   
   ## calculate optimal parameter vectors
+  constraints <- get_constraints(method)
   opt_result <- list()
-
+  
   for (k in sgroup){
-    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], obj_fct,constrOptimOptions) 
+    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], obj_fct, constraints, constrOptimOptions) 
   }
 
   ## data post processing 
@@ -100,45 +101,19 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
 
 ### Estimate zero-coupon yield curve
 
-estimatezcyieldcurve <- function(method, startparam, obj_fct, constrOptimOptions) {
-
-  ## constraints
-
-    if(method=="dl"){
-    ui <- rbind(c(1,0,0),               # beta0 > 0
-                c(1,1,0))               # beta0 + beta1 > 0
-    ci <- c(0,0)
-   }
- 
-  if(method=="ns"){
-    ui <- rbind(c(1,0,0,0),             # beta0 > 0
-                c(1,1,0,0),             # beta0 + beta1 > 0
-                c(0,0,0,1),             # tau1 > 0
-                c(0,0,0,-1))            # tau1 < 30
-    ci <- c(0,0,0,-30)
-    }
-
-   if(method %in% c("sv","asv")) {
-     ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
-                 c(1,1,0,0,0,0),        # beta0 + beta1 > 0
-                 c(0,0,0,1,0,0),        # tau1 > 0
-                 c(0,0,0,-1,0,0),       # tau1 < 30
-                 c(0,0,0,0,0,1),        # tau2 > 0
-                 c(0,0,0,0,0,-1))       # tau2 < 30
-     ci <- c(0,0,0,-30,0,-30)
-    }
+estimatezcyieldcurve <- function(method, startparam, obj_fct, constraints, constrOptimOptions) {
 
       opt_result <- constrOptim(theta = startparam,
                                 f = obj_fct,
                                 grad = NULL,
-                                ui = ui,
-                                ci = ci,
+                                ui = constraints$ui,
+                                ci = constraints$ci,
                                 mu = 1e-04,
                                 control = constrOptimOptions$control,
                                 method = "Nelder-Mead",
                                 outer.iterations = constrOptimOptions$outer.iterations,
                                 outer.eps = constrOptimOptions$outer.eps)
-    #}
+
     opt_result
 }
 
@@ -183,7 +158,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
       fmin[i] <- lsparam$value
       lsbeta[i,] <- beta 
     }
-    optind <- which(fmin == min(fmin))
+    optind <- which(fmin == min(fmin, na.rm = TRUE))
     startparam <- lsbeta[optind,]
   }
     
@@ -207,6 +182,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
       { 
         for (j in 1:length(tau2))
           {
+            if(tau1[i] < tau2[j]) {
             lsparam <- constrOptim(theta = rep(0.01,4),
                                    f = objfct,
                                    grad = NULL,
@@ -220,11 +196,12 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
               
             beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
             fmin[i,j] <- lsparam$value
-            lsbeta[(i-1)*length(tau1)+j,] <- beta 
+            lsbeta[(i-1)*length(tau1)+j,] <- beta
+          }
           }
       }
     
-    optind <- which(fmin == min(fmin),arr.ind=TRUE)
+    optind <- which(fmin == min(fmin, na.rm = TRUE),arr.ind=TRUE)
     startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]    
   }
   result <- list(startparam = startparam, tau = tau, fmin = fmin, optind = optind)
@@ -241,7 +218,7 @@ plot.spsearch <- function(obj,...) {
       points(obj$tau[obj$optind[1],1],obj$tau[obj$optind[2],2],pch = 10, col = "red")
       open3d()
       persp3d(obj$tau[,1], obj$tau[,2], obj$fmin, col = "green3", box = FALSE,xlab = "tau_1", ylab = "tau_2", zlab = "Objective function")
-      points3d(obj$tau[obj$optind[1],1],obj$tau[obj$optind[2],2],min(obj$fmin), col = "red")
+     # points3d(obj$tau[obj$optind[1],1],obj$tau[obj$optind[2],2],min(obj$fmin), col = "red")
   } else {
       plot(obj$tau,obj$fmin,xlab = "tau_1", ylab = "Objective function", type = "l")
       points(obj$tau[obj$optind],obj$fmin[obj$optind],pch = 10, col = "red")
