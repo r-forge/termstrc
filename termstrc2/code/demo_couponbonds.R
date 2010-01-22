@@ -1,3 +1,5 @@
+rm(list = ls())
+source("termstrcPackage.R")
 load("govbonds.RData")
 ns_res <- estim_nss(govbonds, c("GERMANY"),matrange = c(0,30), method = "ns", deltatau = 2)
 ns_res <- estim_nss(govbonds, c("GERMANY", "AUSTRIA", "FRANCE"),matrange = c(0,30), method = "ns", deltatau = 1)

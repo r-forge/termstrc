@@ -89,4 +89,123 @@ get_paramnames <- function(method){
 get_realnames <- function(method){
   switch(method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson","asv"="Adjusted Svensson")
 }
+
+### Loss function for parametric methods
+get_objfct <- function(method) {
+  objfct <- switch(method,
+                   "ns" = objfct_ns,
+                   "sv" = objfct_sv)
+}
+
+### Gradient of loss function for parametric methods
+get_grad_objfct <- function(method) {
+  grad_objfct <- switch(method,
+                   "ns" = grad_objfct_ns,
+                   "sv" = grad_objfct_sv)
+}
+
+### Nelson/Siegel loss function for yields
+objfct_ns <- function(beta, m, y)
+      {
+        sum((y - spr_ns(beta,m))^2)
+      }
+
+### Gradient of Nelson/Siegel loss function for yields
+grad_objfct_ns <- function(beta, m, y)
+      {
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+          (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+           (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
+
+          sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
+           (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+           (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(2*(beta[2]/(beta[4]*exp(m/beta[4])) - (beta[2]*(1 - exp(-m/beta[4])))/m - 
+                 beta[3]*(-(1/(beta[4]*exp(m/beta[4]))) + (1 - exp(-m/beta[4]))/m - m/(beta[4]^2*exp(m/beta[4]))))
+              *(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+                (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
+          )
+      }
+
+### Svensson loss function for yields
+objfct_sv <- function(beta, m, y)
+      {
+        sum((y - spr_sv(beta,m))^2)
+      }
+
+### Gradient of Svensson loss function for yields
+grad_objfct_sv <- function(beta, m, y)
+      {
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+        beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+        (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
+
+          sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
+    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(2*(beta[2]/(beta[4]*exp(m/beta[4])) - (beta[2]*(1 - exp(-m/beta[4])))/m - 
+      beta[3]*(-(1/(beta[4]*exp(m/beta[4]))) + (1 - exp(-m/beta[4]))/m - m/(beta[4]^2*exp(m/beta[4]))))*
+    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(-2*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m)*
+    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(-2*beta[5]*(-(1/(beta[6]*exp(m/beta[6]))) + (1 - exp(-m/beta[6]))/m - m/(beta[6]^2*exp(m/beta[6])))*
+    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
+          )
+      }
+
+### Constraints for constrOptim()
+
+get_constraints <- function(method) {
+
+  ## Diebold/Li
   
+  if (method == "dl") {
+    ui <- rbind(c(1,0,0),               # beta0 > 0
+                c(1,1,0))               # beta0 + beta1 > 0
+    ci <- c(0,0)
+   }
+  
+  ## Nelson/Siegel
+  
+  if (method == "ns") {
+    ui <- rbind(c(1,0,0,0),             # beta0 > 0
+                c(1,1,0,0),             # beta0 + beta1 > 0
+                c(0,0,0,1),             # tau1 > 0
+                c(0,0,0,-1))            # tau1 < 30
+    ci <- c(0,0,0,-30)
+  }
+
+  ## (Adjusted) Svensson
+
+  if (method %in% c("sv","asv")) {
+     ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
+                 c(1,1,0,0,0,0),        # beta0 + beta1 > 0
+                 c(0,0,0,1,0,0),        # tau1 > 0
+                 c(0,0,0,-1,0,0),       # tau1 < 30
+                 c(0,0,0,0,0,1),        # tau2 > 0
+                 c(0,0,0,0,0,-1),       # tau2 < 30
+                 c(0,0,0,-1,0,1))       # tau2 - tau1 > 0
+     ci <- c(0,0,0,-30,0,-30,0)
+   }
+    
+  constraints <- list(ui = ui, ci = ci)
+  constraints
+}
+
