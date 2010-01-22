@@ -129,7 +129,7 @@ estimatezcyieldcurve <- function(method, startparam, obj_fct, constrOptimOptions
     ci <- c(0,0,0,-30)
     }
 
-   if(method=="sv"){
+   if(method %in% c("sv","asv")) {
      ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
                  c(1,1,0,0,0,0),        # beta0 + beta1 > 0
                  c(0,0,0,1,0,0),        # tau1 > 0
@@ -220,11 +220,11 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
     startparam <- lsbeta[optind,]
   }
     
-  if(method=="sv"){
+  if(method %in% c("sv","asv")) {
 
     objfct <- function(b) {
       bsv <- c(b[1:3],tau1[i],b[4],tau2[j])
-      loss_function(p,bond_prices("sv",bsv,m,cf)$bond_prices,weights)
+      loss_function(p,bond_prices(method,bsv,m,cf)$bond_prices,weights)
     }
 
     ui <- rbind(c(1,0,0,0),                 # beta0 > 0

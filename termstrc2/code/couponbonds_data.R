@@ -205,14 +205,8 @@ postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method,lambda
   
   
   # calculate zero coupon yield curves  
-  zcy_curves <- switch(method,
-              "ns" = mapply(function(k)
-		            cbind(t,spr_ns(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
-              "sv" = mapply(function(k) 
-              		cbind(t,spr_sv(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE),
-              "dl" = mapply(function(k)
-		            cbind(t,spr_dl(opt_result[[k]]$par,t,lambda)),sgroup, SIMPLIFY=FALSE))          		 
-
+  zcy_curves <- mapply(function(k) cbind(t,spotrates(method,opt_result[[k]]$par,t,lambda)),sgroup,SIMPLIFY=FALSE)
+ 
   for (k in sgroup) class(zcy_curves[[k]]) <- "ir_curve"
   class(zcy_curves) <- "spot_curves"
                                       
@@ -230,16 +224,8 @@ postpro_bond <- function(opt_result,m,cf,sgroup,n_group,y,p,ac,m_p,method,lambda
                  mapply(function(i) max(y[[i]][,1]), seq(n_group))[k])[1],sgroup, SIMPLIFY=FALSE )  
         
   # calculate forward rate curves 
-  fwr_curves <- switch(method,
-              "ns" = mapply(function(k)
-		            cbind(t,fwr_ns(opt_result[[k]]$par,t)),sgroup, SIMPLIFY=FALSE),
-              "sv" = mapply(function(k) 
-              		cbind(t,fwr_sv(opt_result[[k]]$par,t)),sgroup,SIMPLIFY=FALSE),
-              "dl" = mapply(function(k)
-		            cbind(t,fwr_dl(opt_result[[k]]$par,t,lambda)),sgroup, SIMPLIFY=FALSE))
-                      
-                   
-                      
+  fwr_curves <-  mapply(function(k) cbind(t,forwardrates(method,opt_result[[k]]$par,t,lambda)),sgroup,SIMPLIFY=FALSE)                   
+                                        
   for (k in sgroup) class(fwr_curves[[k]]) <- "ir_curve"
   class(fwr_curves) <- "fwr_curves"
 
