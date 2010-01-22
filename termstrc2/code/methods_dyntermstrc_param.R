@@ -1,5 +1,5 @@
 
-param <- function(obj,...) UseMethod("param") 
+param <- function(x,...) UseMethod("param") 
 
 
 param.dyntermstrc_nss <- function(x,...) {
@@ -101,9 +101,9 @@ plot.dyntermstrc_param <- function(x,type="param",...){
   
   # 2D plot of parameters
   if(type=="param") {
-    if(ncol(x[[1]])==3) mfrow = c(1,3)
+    if(ncol(x[[1]])<=3) mfrow = c(1,3)
     if(ncol(x[[1]])==4) mfrow = c(2,2)
-    if(ncol(x[[1]])==6) mfrow = c(2,3)
+    if(ncol(x[[1]])>4 && ncol(x[[1]]) <= 6) mfrow = c(2,3)
 
     par(mfrow=mfrow,if(length(x)>1) ask=TRUE,...)
         
@@ -143,9 +143,9 @@ plot.dyntermstrc_param <- function(x,type="param",...){
 
  # 2D plot of parameter differences
   if(type=="diffparam") {
-    if(ncol(x[[1]])==3) mfrow = c(1,3)
+     if(ncol(x[[1]])<=3) mfrow = c(1,3)
     if(ncol(x[[1]])==4) mfrow = c(2,2)
-    if(ncol(x[[1]])==6) mfrow = c(2,3)
+    if(ncol(x[[1]])>4 && ncol(x[[1]]) <= 6) mfrow = c(2,3)
 
     par(mfrow=mfrow,if(length(x)>1) ask=TRUE,...)
 
