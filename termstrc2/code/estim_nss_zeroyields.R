@@ -2,9 +2,9 @@
 ### Nelson/Siegel-type yield curve estimation method for 'zeroyields' ###
 #########################################################################
 
-estim_nss.zeroyields <- function (obj, method = "ns", deltatau = 1, optimtype = "firstglobal", constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04))
+estim_nss.zeroyields <- function (dataset, method = "ns", deltatau = 1, optimtype = "firstglobal", constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04),...)
   {
-
+    obj <- dataset
     objfct <- get_objfct(method)
     grad_objfct <- get_grad_objfct(method)
     
