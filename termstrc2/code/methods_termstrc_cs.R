@@ -64,8 +64,12 @@ plot.termstrc_cs <-
                         max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))),
                         multiple=FALSE, ctype="spot",
                         lwd=2,lty=1,type="l",errors="none",inset=c(0.8,0.1),ask=TRUE, ...) {
-       
-     
+    
+   # min and max maturity of all bonds in the sample 
+     samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
+                    max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group))))     
+ 
+    
     cdata <- switch(ctype, "spot" = x$spot,
     					   "forward" = x$forward,
     					   "discount" = x$discount
