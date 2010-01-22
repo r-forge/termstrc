@@ -128,10 +128,8 @@ findstartparamyields <- function(y,m, method, deltatau = 0.1)
                    beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
                  }
                  ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, beta[2] should not explode)
-                 if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20) && tau1[i] < tau2[j]){
+                 if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20)){
                    fmin[i,j] <- objfct_sv(beta, m, y)
-                 } else{
-                   fmin[i,j] <- 1
                  }
                  lsbeta[(i-1)*length(tau1)+j,] <- beta
                }
@@ -162,10 +160,8 @@ findstartparamyields <- function(y,m, method, deltatau = 0.1)
                  beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
                  
                  ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, beta[2] should not explode)
-                 if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20) && tau1[i] < tau2[j]){
+                 if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20)){
                    fmin[i,j] <- objfct_sv(beta, m, y)
-                 } else{
-                   fmin[i,j] <- 1
                  }
                  lsbeta[(i-1)*length(tau1)+j,] <- beta
                }
