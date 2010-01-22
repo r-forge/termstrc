@@ -28,7 +28,7 @@ os.system("cp methods_termstrc_nss.R ~/WORK/termstrc/pkg/R")
 os.system("cp methods_zeroyields.R ~/WORK/termstrc/pkg/R")
 os.system("cp gof.R ~/WORK/termstrc/pkg/R")
 
-os.system("cp -R  ~/WORK/termstrc/termstrc2/helpfiles/*.Rd  ~/WORK/termstrc/pkg/man")
+# os.system("cp -R  ~/WORK/termstrc/termstrc2/helpfiles/*.Rd  ~/WORK/termstrc/pkg/man")
 
 ## Perform R CMD check
 os.system("R CMD check ~/WORK/termstrc/pkg")
