@@ -10,6 +10,12 @@ spr_sv(beta, m)
 }
 
 
+\arguments{
+  \item{beta}{ a vector of parameters \eqn{\bm{\beta} = (\beta_0, \beta_1,\beta_2,\tau_1, \beta_3, \tau_2)}. }
+  \item{m}{ one maturity (or a vector of maturities). }
+}
+
+
 \details{ The spot rate according to Svensson for a maturity \eqn{m} is calculated using the following function:
 
 
