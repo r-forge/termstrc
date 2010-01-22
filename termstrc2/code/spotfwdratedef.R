@@ -94,14 +94,17 @@ get_realnames <- function(method){
 get_objfct <- function(method) {
   objfct <- switch(method,
                    "ns" = objfct_ns,
-                   "sv" = objfct_sv)
+                   "sv" = objfct_sv,
+                   "asv" = objfct_asv)
+  # TODO: replace with swich for spot rate function and remove objfct_*
 }
 
 ### Gradient of loss function for parametric methods
 get_grad_objfct <- function(method) {
   grad_objfct <- switch(method,
                    "ns" = grad_objfct_ns,
-                   "sv" = grad_objfct_sv)
+                   "sv" = grad_objfct_sv,
+                   "asv" = grad_objfct_asv)
 }
 
 ### Nelson/Siegel loss function for yields
@@ -167,6 +170,47 @@ grad_objfct_sv <- function(beta, m, y)
     (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
       beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
       (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
+          )
+      }
+
+### Adjusted Svensson loss function for yields
+objfct_asv <- function(beta, m, y)
+      {
+        sum((y - spr_asv(beta,m))^2)
+      }
+
+### Gradient of adjusted Svensson loss function for yields
+grad_objfct_asv <- function(beta, m, y)
+      {
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+                  beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+                  (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+                                                 beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+                                                 (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
+          
+          sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
+              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+          
+          sum(2*(beta[2]/(beta[4]*exp(m/beta[4])) - (beta[2]*(1 - exp(-m/beta[4])))/m - 
+                 beta[3]*(-(1/(beta[4]*exp(m/beta[4]))) + (1 - exp(-m/beta[4]))/m - m/(beta[4]^2*exp(m/beta[4]))))*
+              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(-2*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m)*
+              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+          
+          sum(-2*beta[5]*(-(1/(beta[6]*exp(m/beta[6]))) + (1 - exp(-m/beta[6]))/m - 
+                          (2*m)/(beta[6]^2*exp((2*m)/beta[6])))*
+              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
           )
       }
 

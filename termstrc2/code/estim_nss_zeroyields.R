@@ -42,11 +42,15 @@ estim_nss.zeroyields <- function (dataset, method = "ns", deltatau = 1, optimtyp
     
     colnames(optparam) <- switch(method,
           "ns"=c("beta_0","beta_1","beta_2","tau_1"),
-          "sv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2"))
+          "sv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2"),
+           "asv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2"))
+
+    ## TODO: replace by get method
     
     sptrtfct <- switch(method,
                        "ns" = spr_ns,
-                       "sv" = spr_sv)
+                       "sv" = spr_sv,
+                       "asv" = spr_asv)
     
     yhat <- t(apply(optparam,1, function(x) sptrtfct(x,obj$maturities)))
     
@@ -104,37 +108,73 @@ findstartparamyields <- function(y,m, method, deltatau = 0.1)
          {
            for (j in 1:length(tau2))
              {
-               ## reparametrize to avoid nonsingular matrix
-               if (i == j){
-                      X <- cbind(rep(1,length(y)),
-                          ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
-                          - exp(-m/tau1[i]))
+               if(tau1[i] < tau2[j]) {
+                 ## reparametrize to avoid nonsingular matrix
+                 if (i == j){
+                   X <- cbind(rep(1,length(y)),
+                              ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
+                              - exp(-m/tau1[i]))
 
-               lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
-               beta <- c(lsparam[1],lsparam[2]-lsparam[3],lsparam[3]/2,tau1[i],lsparam[3]/2,tau2[j])
-             } else
-               {
-                X <- cbind(rep(1,length(y)),
-                          ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
-                          (((1 - exp(-m/tau1[i]))/(m/tau1[i])) - exp(-m/tau1[i])),
-                          (((1 - exp(-m/tau2[j]))/(m/tau2[j])) - exp(-m/tau2[j])))
-
-               lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
-               beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
+                   lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
+                   beta <- c(lsparam[1],lsparam[2]-lsparam[3],lsparam[3]/2,tau1[i],lsparam[3]/2,tau2[j])
+                 } else
+                 {
+                   X <- cbind(rep(1,length(y)),
+                              ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
+                              (((1 - exp(-m/tau1[i]))/(m/tau1[i])) - exp(-m/tau1[i])),
+                              (((1 - exp(-m/tau2[j]))/(m/tau2[j])) - exp(-m/tau2[j])))
+                   
+                   lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
+                   beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
+                 }
+                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, beta[2] should not explode)
+                 if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20) && tau1[i] < tau2[j]){
+                   fmin[i,j] <- objfct_sv(beta, m, y)
+                 } else{
+                   fmin[i,j] <- 1
+                 }
+                 lsbeta[(i-1)*length(tau1)+j,] <- beta
                }
-               ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, beta[2] should not explode)
-               if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20) && tau1[i] < tau2[j]){
-                 fmin[i,j] <- objfct_sv(beta, m, y)
-             } else{
-               fmin[i,j] <- 1
-             }
-               lsbeta[(i-1)*length(tau1)+j,] <- beta 
              } 
          }
-       optind <- which(fmin == min(fmin),arr.ind=TRUE)
+       optind <- which(fmin == min(fmin, na.rm = TRUE),arr.ind=TRUE)
        startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]
      }
-   
+
+     if(method=="asv"){
+       tau1 <- seq(0.1, max(m), deltatau)
+       tau2 <- seq(0.1, max(m), deltatau)
+       tau <- cbind(tau1, tau2)
+       fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
+       lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
+       for (i in 1:length(tau1))
+         {
+           for (j in 1:length(tau2))
+             {
+               if(tau1[i] < tau2[j]) {
+
+                 X <- cbind(rep(1,length(y)),
+                            ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
+                            (((1 - exp(-m/tau1[i]))/(m/tau1[i])) - exp(-m/tau1[i])),
+                            (((1 - exp(-m/tau2[j]))/(m/tau2[j])) - exp(-2*m/tau2[j])))
+                   
+                 lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
+                 beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
+                 
+                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, beta[2] should not explode)
+                 if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20) && tau1[i] < tau2[j]){
+                   fmin[i,j] <- objfct_sv(beta, m, y)
+                 } else{
+                   fmin[i,j] <- 1
+                 }
+                 lsbeta[(i-1)*length(tau1)+j,] <- beta
+               }
+             } 
+         }
+       optind <- which(fmin == min(fmin, na.rm = TRUE),arr.ind=TRUE)
+       startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]
+     }
+    
   result <- list(startparam = startparam, tau = tau, fmin = fmin, optind = optind)
   class(result) <- "spsearch"
   result
