@@ -28,7 +28,17 @@ os.system("cp methods_termstrc_nss.R ~/WORK/termstrc/pkg/R")
 os.system("cp methods_zeroyields.R ~/WORK/termstrc/pkg/R")
 os.system("cp gof.R ~/WORK/termstrc/pkg/R")
 
-# os.system("cp -R  ~/WORK/termstrc/termstrc2/helpfiles/*.Rd  ~/WORK/termstrc/pkg/man")
+## Copy Rd files
+#os.system("cp -R  ~/WORK/termstrc/termstrc2/helpfiles/*.Rd  ~/WORK/termstrc/pkg/man")
 
 ## Perform R CMD check
 os.system("R CMD check ~/WORK/termstrc/pkg")
+
+## Print Log file
+logfile = os.path.join(os.getcwd(),"pkg.Rcheck/00install.out")
+
+inp = open(logfile,"r")
+for line in inp.readlines():
+    print(line)
+    
+inp.close()
