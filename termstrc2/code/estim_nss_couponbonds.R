@@ -2,9 +2,9 @@
 ### Nelson/Siegel-type yield curve estimation method for 'couponbonds' ###
 ##########################################################################
 
-estim_nss <- function(obj, ...) UseMethod("estim_nss")
+estim_nss <- function(dataset, ...) UseMethod("estim_nss")
 
-estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
+estim_nss.couponbonds <- function(dataset,                  # dataset (static)
                                   group,                     # names of countries for estimation c("Country 1", "Country 2", ...)
                                   matrange="all",            # maturity range in years c(min, max) 
                                   method="ns",
@@ -12,11 +12,11 @@ estim_nss.couponbonds <- function(bonddata,                  # dataset (static)
                                                              # otherwise globally optimal parameters are searched automatically
                                   lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                                   deltatau=0.1,              # interval for parameter grid
-                                  constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04)
+                                  constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04),...
            ) {
 
   ## data preprocessing
-  prepro <- prepro_bond(group=group,bonddata=bonddata,matrange=matrange)
+  prepro <- prepro_bond(group=group,bonddata=dataset,matrange=matrange)
 
   n_group=prepro$n_group
   sgroup=prepro$sgroup
@@ -211,16 +211,16 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
 
 ### Startparameter grid search plots
 
-plot.spsearch <- function(obj,...) {
+plot.spsearch <- function(x,...) {
 
-  if(is.matrix(obj$tau)){
-      contour(obj$tau[,1],obj$tau[,2],obj$fmin,nlevels=10,xlab = "tau_1", ylab = "tau_2",main = "Objective function")
-      points(obj$tau[obj$optind[1],1],obj$tau[obj$optind[2],2],pch = 10, col = "red")
+  if(is.matrix(x$tau)){
+      contour(x$tau[,1],x$tau[,2],x$fmin,nlevels=10,xlab = "tau_1", ylab = "tau_2",main = "Xective function")
+      points(x$tau[x$optind[1],1],x$tau[x$optind[2],2],pch = 10, col = "red")
       open3d()
-      persp3d(obj$tau[,1], obj$tau[,2], obj$fmin, col = "green3", box = FALSE,xlab = "tau_1", ylab = "tau_2", zlab = "Objective function")
-     # points3d(obj$tau[obj$optind[1],1],obj$tau[obj$optind[2],2],min(obj$fmin), col = "red")
+      persp3d(x$tau[,1], x$tau[,2], x$fmin, col = "green3", box = FALSE,xlab = "tau_1", ylab = "tau_2", zlab = "Xective function")
+      points3d(x$tau[x$optind[1],1],x$tau[x$optind[2],2],min(x$fmin, na.rm = TRUE), col = "red")
   } else {
-      plot(obj$tau,obj$fmin,xlab = "tau_1", ylab = "Objective function", type = "l")
-      points(obj$tau[obj$optind],obj$fmin[obj$optind],pch = 10, col = "red")
+      plot(x$tau,x$fmin,xlab = "tau_1", ylab = "Xective function", type = "l")
+      points(x$tau[x$optind],x$fmin[x$optind],pch = 10, col = "red")
   }
 }
