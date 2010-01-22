@@ -5,10 +5,10 @@
 \title{Term Structure Parameter Extraction}
 \description{The function extracts the estimated term structure parameters}
 \usage{
-param(obj, ...)
+param(x, ...)
 }
 \arguments{
-  \item{obj}{object of the class \command{"dyntermstrc_yields"} or \command{"dyntermstrc_nss"}}
+  \item{x}{object of the class \command{"dyntermstrc_yields"} or \command{"dyntermstrc_nss"}}
   \item{\dots}{further arguments}
 }
 
@@ -18,6 +18,5 @@ param(obj, ...)
 
 \seealso{ \code{\link{param.dyntermstrc_nss}},
   \code{\link{param.dyntermstrc_yields}},
-  \code{\link{print.dyntermstrc_param}},
   \code{\link{summary.dyntermstrc_param}}, \code{\link{plot.dyntermstrc_param}} }
 

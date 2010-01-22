@@ -10,7 +10,7 @@
 \method{plot}{termstrc_nss}(x, matrange = c(min(mapply(function(i) min(x$y[[i]][, 1]),
 	seq(x$n_group))),max(mapply(function(i) max(x$y[[i]][, 1]), 
 	seq(x$n_group)))), multiple = FALSE, expoints = unlist(x$expoints),
-	ctype = "spot",errors = "price", lwd = 2, lty = 1, type ="l",
+	ctype = "spot",errors = "none", lwd = 2, lty = 1, type ="l",
  	inset = c(0.8, 0.1), ask = TRUE, ...)
 }
 

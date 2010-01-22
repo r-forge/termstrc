@@ -79,7 +79,7 @@ group <- c("GERMANY", "AUSTRIA")
 matrange <- c(0, 19)  
 
 # perform estimation
-x <- estim_cs(bonddata, group, matrange)
+x <- estim_cs(govbonds, group, matrange)
 
 # print the obtained parameters of the estimation
 print(x)

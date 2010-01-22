@@ -8,7 +8,7 @@
 Estimate Zero-coupon Yield curves assuming a certain spot rate function
 }
 \usage{
-estimatezcyieldcurve(method, startparam, obj_fct, constrOptimOptions)
+estimatezcyieldcurve(method, startparam, obj_fct, constraints, constrOptimOptions)
 }
 
 \arguments{
@@ -16,9 +16,8 @@ estimatezcyieldcurve(method, startparam, obj_fct, constrOptimOptions)
 }
   \item{startparam}{start parameter vector 
 }
-  \item{obj_fct}{objective function, e.g., sum of the weighted squared price errors
-
-}
+  \item{obj_fct}{objective function, e.g., sum of the weighted squared price errors}
+  \item{constraints}{constraints for the solver}
   \item{constrOptimOptions}{solver options
 }
 }
