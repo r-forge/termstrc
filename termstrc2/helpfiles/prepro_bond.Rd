@@ -30,8 +30,8 @@ prepro_bond(group, bonddata, matrange = "all")
 }
 
 \examples{
-#data(govbonds)
-#bdata <- prepro_bond("GERMANY",govbonds,c(0,10))
+data(govbonds)
+bdata <- prepro_bond("GERMANY",govbonds,c(0,10))
 ## print maturites matrix
-#bdata$m
+bdata$m
 }

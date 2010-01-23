@@ -16,7 +16,7 @@ spotrates(method, beta, m, lambda)
 
 
 \arguments{
- \item{method}{spot rate function type: \command{"dl"} for Diebold/Li, \command{"ns"} for Nelson/Siegel, \command{"sv"} for Svensson.}
+ \item{method}{spot rate function type: \command{"dl"} for Diebold/Li, \command{"ns"} for Nelson/Siegel, \command{"sv"} for Svensson, \command{"asv"} for adjusted Svensson.}
   \item{beta}{ parameter vector \eqn{\bm{\beta}}.}
   \item{m}{maturity or a vector of maturities.}
   \item{lambda}{\eqn{=1/\tau_1}, a scalar; only required for Diebold/Li spot rate function

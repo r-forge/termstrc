@@ -22,7 +22,7 @@
     the maturity range (in years) used for the estimation with \command{c(lower,upper)}.
 }
   \item{method}{ \command{"ns"} for Nelson/Siegel (default), \command{"dl"} for
-    Diebold/Li or \command{"sv"} for Svensson.
+    Diebold/Li, \command{"sv"} for Svensson or \command{"asv"} for adjusted Svensson.
 }
   \item{lambda}{parameter on a yearly time scale with fixed value for \command{"dl"} spot rate
     function (default: 0.0609*12)

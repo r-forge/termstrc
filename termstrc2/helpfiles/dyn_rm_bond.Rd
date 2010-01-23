@@ -21,6 +21,7 @@ dyn_rm_bond(dynbonddata, group, ISIN)
 
 
 \examples{
-# To do 
+data(GermanBonds)
+newdynbonddata <- dyn_rm_bond(datadyncouponbonds,"GERMANY","DE0001135150")
 }
 
