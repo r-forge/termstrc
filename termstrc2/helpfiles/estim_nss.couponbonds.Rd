@@ -26,7 +26,7 @@ requires an object of the class \command{"couponbonds"}.
     the maturity range (in years) used for the estimation with \command{c(lower,upper)}.
 }
   \item{method}{\command{"ns"} for Nelson/Siegel (default), \command{"dl"} for
-    Diebold/Li or \command{"sv"} for Svensson.
+    Diebold/Li, \command{"sv"} for Svensson or \command{"asv"} for adjusted Svensson.
 }
   \item{startparam}{matrix of start parameters (number of columns is the
     number of parameters). If no start parameters are given, globally
