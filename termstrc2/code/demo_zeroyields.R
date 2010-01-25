@@ -25,7 +25,7 @@ plot(ns_res)
 sv_res <- estim_nss(datazeroyields, "sv", deltatau = 0.2)
 sv_res2 <- estim_nss(datazeroyields, "sv", deltatau = 0.2, optimtype = "allglobal")
 
-## Perform Ajusted Svensson estimation
+## Perform Adjusted Svensson estimation
 asv_res <- estim_nss(datazeroyields, "asv", deltatau = 0.2)
 asv_res2 <- estim_nss(datazeroyields, "asv", deltatau = 0.2, optimtype = "allglobal")
 
