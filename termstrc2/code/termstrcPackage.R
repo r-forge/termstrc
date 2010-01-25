@@ -27,6 +27,6 @@ source("methods_termstrc_cs.R")
 source("methods_termstrc_nss.R")
 source("methods_zeroyields.R")
 source("gof.R")
-source("factor_contrib_nss.R")
+source("factorcontrib.R")
 
 
