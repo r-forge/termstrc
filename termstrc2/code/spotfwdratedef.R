@@ -183,12 +183,12 @@ objfct_asv <- function(beta, m, y)
 grad_objfct_asv <- function(beta, m, y)
       {
         c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-                  beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-                  (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+          beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+          (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
 
           sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-                                                 beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-                                                 (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
+          beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+          (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
           
           sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
               (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
