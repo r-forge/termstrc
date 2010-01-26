@@ -31,8 +31,8 @@ fc3 <- t(mapply(function(i) fc_nss(tparam[[1]][i,],m)$fc3, seq(nrow(tparam[[1]])
      Z <- fc4
      open3d()
      persp3d(X,Y,Z,col = "green3",xlab="Time", zlab="Factor4-  Conbribution",ylab="Maturity (years)",box=FALSE)
-    
-                             
+
+                                                     
    Y <- seq(ncol(fc3))
     X <- seq(nrow(fc3))
     Z <- fc2 + fc4
