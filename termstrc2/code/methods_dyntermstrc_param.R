@@ -95,7 +95,7 @@ print.summary.dyntermstrc_param <- function(x, ...) {
 }
 
 
-plot.dyntermstrc_param <- function(x,type="param",...){
+plot.dyntermstrc_param <- function(x,type="param",index=1,m=1:10,...){
   old.par <- par(no.readonly = TRUE) 
   
   
@@ -186,8 +186,35 @@ plot.dyntermstrc_param <- function(x,type="param",...){
     } 
   }
 
+ if(type=="fcontrib"){
 
+   par(if(length(x) > 1) mfrow=length(x),... )
+   for(i in seq_along(x)){
+     param <- x[[i]]
+     fc1 <- param[index,1]
+     fc2 <- param[index,2]*((1-exp(-m/param[index,4]))/(m/param[index,4]))
+     fc3 <- param[index,3]*(((1-exp(-m/param[index,4]))/(m/param[index,4]))-exp(-m/param[index,4]))
+     if(ncol(param)==6)  fc4 = param[index,5]*(((1 - exp(-m/param[index,6]))/(m/param[index,6])) - exp(-m/param[index,6])) else fc4=NULL
 
+     plot(m,rep(fc1,length(m)), col=1,type="l",lty=1, ylim=c(min(fc1,fc2,fc3),max(fc1,fc2,fc3)), xlab="Time to maturity", ylab="Factor contribution")    
+     # beta_1*( )
+     lines(m, fc2,type="l",col=3,lty=3)
+     # beta_2*()
+     lines(m, fc3,lty=4,col=4)
+     # beta_3*()
+     if(ncol(param)==6) lines(m, fc4,lty=5,col=5)
+     legend("topright",legend=c(
+       expression(beta[0]),
+       expression(beta[1]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1])))),
+       expression(beta[2]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1]))-exp(-frac(m,tau[1])))),
+       if(ncol(param)==6) expression(beta[3]*(frac(1-exp(-frac(m,tau[2])),frac(m,tau[2]))-exp(-frac(m,tau[2]))))
+       ),
+       lty=c(1,3,4,5), col=c(1,3,4,5),bty="n"
+       )
+
+     
+   }
+ }  
   on.exit(par(old.par))
 
 
