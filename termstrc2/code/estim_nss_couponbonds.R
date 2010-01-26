@@ -214,16 +214,16 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
 plot.spsearch <- function(x, rgl = TRUE, ...) {
 
   if(is.matrix(x$tau)){
-      contour(x$tau[,1],x$tau[,2],log(x$fmin),nlevels=10,xlab = "tau_1", ylab = "tau_2",main = "Objective function")
+      contour(x$tau[,1],x$tau[,2],log(x$fmin),nlevels=10,xlab = "tau_1", ylab = "tau_2",main = "Log(Objective function)")
       points(x$tau[x$optind[1],1],x$tau[x$optind[2],2],pch = 10, col = "red")
       if (rgl) {
         open3d()
-        persp3d(x$tau[,1], x$tau[,2], log(x$fmin), col = "green3", box = FALSE,xlab = "tau_1", ylab = "tau_2", zlab = "Objective function")
+        persp3d(x$tau[,1], x$tau[,2], log(x$fmin), col = "green3", box = FALSE,xlab = "tau_1", ylab = "tau_2", zlab = "Log(Objective function)")
         points3d(x$tau[x$optind[1],1],x$tau[x$optind[2],2],min(log(x$fmin), na.rm = TRUE), col = "red")
       }
       else {
         par(ask = TRUE)
-        persp(x$tau[,1], x$tau[,2], log(x$fmin), col = "green3", box = TRUE, xlab = "tau_1", ylab = "tau_2", zlab = "Objective function", shade = TRUE, ticktype = "detailed", border = NA, cex.lab = 1, cex.axis = 0.7,  theta = 0, phi = 25, r = sqrt(3), d = 1, scale = TRUE, expand = 1, ltheta = 135, lphi = 0)
+        persp(x$tau[,1], x$tau[,2], log(x$fmin), col = "green3", box = TRUE, xlab = "tau_1", ylab = "tau_2", zlab = "Log(Objective function)", shade = TRUE, ticktype = "detailed", border = NA, cex.lab = 1, cex.axis = 0.7,  theta = 0, phi = 25, r = sqrt(3), d = 1, scale = TRUE, expand = 1, ltheta = 135, lphi = 0)
       }
   } else {
       plot(x$tau,x$fmin,xlab = "tau_1", ylab = "Objective function", type = "l")
