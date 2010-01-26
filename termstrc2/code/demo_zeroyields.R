@@ -11,9 +11,13 @@ dates <- as.Date(x[,1],format="%d.%m.%Y")
 
 datazeroyields <- zeroyields(maturities, yields, dates)
 
+## Perform Diebold/Li estimation
+dl_res <- estim_nss(datazeroyields, "dl", lambda = 1/2)
+summary(dl_res)
+
 ## Perform Nelson/Siegel estimation
-ns_res <- estim_nss(datazeroyields, "ns", deltatau = 0.2, optimtype = "firstglobal")
-ns_res2 <- estim_nss(datazeroyields, "ns", deltatau = 0.2, optimtype = "allglobal")
+ns_res <- estim_nss(datazeroyields, "ns", deltatau = 0.2, optimtype = "allglobal")
+summary(ns_res)
 
 ## Plot startparameters
 plot(ns_res$spsearch)

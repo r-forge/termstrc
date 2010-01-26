@@ -2,60 +2,73 @@
 ### Nelson/Siegel-type yield curve estimation method for 'zeroyields' ###
 #########################################################################
 
-estim_nss.zeroyields <- function (dataset, method = "ns", deltatau = 1, optimtype = "firstglobal", constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04),...)
+estim_nss.zeroyields <- function (dataset,
+                                  method = "ns",
+                                  lambda = 0.0609*12,
+                                  deltatau = 1,
+                                  optimtype = "allglobal",
+                                  constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04),...)
   {
     obj <- dataset
-    objfct <- get_objfct(method)
-    grad_objfct <- get_grad_objfct(method)
-    
-    sp_search <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
-    startparam <- sp_search$startparam
-    constraints <- get_constraints(method)
+    optparam <- matrix(nrow = nrow(obj$yields), ncol = length(get_paramnames(method))) 
     opt_result <- list()
     spsearch <- list()
-    optparam <- matrix(nrow = nrow(obj$yields), ncol = length(startparam)) 
-
-    ## Estimation loop
-    for (i in 1:nrow(obj$yields)){
     
-      yields <- obj$yields[i,]
+    if(method == "dl") {
 
-      if (i==1) {
-        beta <- startparam
-        spsearch[[i]] <- sp_search
+      ## Estimation loop
+      for (i in 1:nrow(obj$yields)){
+        y <- obj$yields[i,]
+        m <- obj$maturities
+        X <- cbind(rep(1,length(y)),
+                   ((1 - exp(-m/lambda))/(m/lambda)),
+                   (((1 - exp(-m/lambda))/(m/lambda)) - exp(-m/lambda)))
+        browser()
+        optparam[i,] <- solve(t(X)%*%X)%*%t(X)%*%y
       }
       
-      if(i>1 && optimtype == "allglobal"){
+    }
+    else { # other methods that require a start parameter search
+    
+      objfct <- get_objfct(method)
+      grad_objfct <- get_grad_objfct(method)
+      
+      sp_search <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
+      startparam <- sp_search$startparam
+      constraints <- get_constraints(method)
+
+      ## Estimation loop
+      for (i in 1:nrow(obj$yields)){
+        
+        yields <- obj$yields[i,]
+        
+        if (i==1) {
+          beta <- startparam
+          spsearch[[i]] <- sp_search
+        }
+        
+        if(i>1 && optimtype == "allglobal"){
           sp_search <- findstartparamyields(yields,obj$maturities, method, deltatau)
           beta <- sp_search$startparam
           spsearch[[i]] <- sp_search
+        }
+        if(i>1 && optimtype == "firstglobal"){
+          beta <- optparam[i-1,]
+        }
+        
+        opt_result[[i]] <- estimateyieldcurve(yields, obj$maturities, beta, objfct,
+                                              grad_objfct, constraints, constrOptimOptions)
+        optparam[i,] <- opt_result[[i]]$par
       }
-      if(i>1 && optimtype == "firstglobal"){
-        beta <- optparam[i-1,]
-      }
-
-      
-      opt_result[[i]] <- estimateyieldcurve(yields, obj$maturities, beta, objfct, grad_objfct, constraints, constrOptimOptions)
-      optparam[i,] <- opt_result[[i]]$par
     }
-
     
-    colnames(optparam) <- switch(method,
-          "ns"=c("beta_0","beta_1","beta_2","tau_1"),
-          "sv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2"),
-           "asv"=c("beta_0","beta_1","beta_2","tau_1","beta_3","tau_2"))
-
-    ## TODO: replace by get method
+    colnames(optparam) <- get_paramnames(method)
     
-    sptrtfct <- switch(method,
-                       "ns" = spr_ns,
-                       "sv" = spr_sv,
-                       "asv" = spr_asv)
-    
-    yhat <- t(apply(optparam,1, function(x) sptrtfct(x,obj$maturities)))
+    yhat <- t(apply(optparam,1, function(x) spotrates(method,x,obj$maturities,lambda)))
     
     result <- list(optparam = optparam, opt_result = opt_result, method = method,
-                   maturities = obj$maturities, dates = obj$dates, spsearch = spsearch, yields = obj$yields,yhat = yhat)
+                   maturities = obj$maturities, dates = obj$dates, spsearch = spsearch,
+                   yields = obj$yields,yhat = yhat)
     class(result) <- "dyntermstrc_yields"
     result
   }

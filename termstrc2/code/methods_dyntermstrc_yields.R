@@ -22,12 +22,13 @@ summary.dyntermstrc_yields <- function(object, ...){
   sumry$gof <- rbind(y_mrsme,y_maabse)
   rownames(sumry$gof) <- c("mean RMSE-Yields", "mean AABSE-Yields")
 
-  ## extract convergence info
-  for (i in (1:length(x$opt_result))) {
-    sumry$convergence[i] <- x$opt_result[[i]]$convergence
-    # TODO: solver message
-  }
-    
+  if (object$method != "dl") {
+    ## extract convergence info
+    for (i in (1:length(x$opt_result))) {
+      sumry$convergence[i] <- x$opt_result[[i]]$convergence
+      ## TODO: solver message
+    }
+  }  
   class(sumry) <- "summary.dyntermstrc_yields"
   sumry
 }
@@ -40,13 +41,14 @@ print.summary.dyntermstrc_yields <- function(x,...) {
 
     print.default(x$gof)
 
-    cat("\n")
-    cat("---------------------------------------------------\n")
-    cat("Convergence information from optim ():\n")
-    cat("---------------------------------------------------\n")
-    
-    print.default(x$convergence)
-
+    if (length(x) > 1) {
+      cat("\n")
+      cat("---------------------------------------------------\n")
+      cat("Convergence information from optim ():\n")
+      cat("---------------------------------------------------\n")
+      
+      print.default(x$convergence)
+    }
   }
 
 plot.dyntermstrc_yields <- function(x,...)
