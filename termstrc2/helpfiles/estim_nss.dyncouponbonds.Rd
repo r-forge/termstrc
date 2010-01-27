@@ -6,7 +6,7 @@
 \description{The method performs an iterative term structure estimation procedure
   on a dynamic bond data set of the class
   \command{"dyncouponbonds"}. Available methods are Nelson/Siegel,
-  Diebold/Li and Svensson. 
+  Diebold/Li and (adjusted) Svensson. 
 
 }
 \usage{
@@ -27,7 +27,7 @@
   \item{lambda}{parameter on a yearly time scale with fixed value for \command{"dl"} spot rate
     function (default: 0.0609*12)
 }
-  \item{deltatau}{intervalsize for parameter grid used for globally
+  \item{deltatau}{stepsize for parameter grid used for globally
     optimal parameter search
 }
   \item{optimtype}{use \command{"firstglobal"} for an inital search for

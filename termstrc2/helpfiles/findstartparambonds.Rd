@@ -22,7 +22,7 @@ findstartparambonds(p, m, cf, weights, method, deltatau = 0.1, control = list(),
 }
   \item{method}{form of the spot rate function
 }
-  \item{deltatau}{interval for parameter grid
+  \item{deltatau}{stepsize of the grid
 }
   \item{control}{solver control parameters, for details see \code{\link{optim}} 
 }
