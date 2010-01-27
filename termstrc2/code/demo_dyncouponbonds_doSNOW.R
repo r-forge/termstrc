@@ -46,4 +46,6 @@ stopCluster(cl)
 
 class(sv_res) <- "dyntermstrc_nss"
 
-save(sv_res, file = "demo_dyncouponbonds_doSNOW.RData")
+schas = 2,
+
+save(schas,sv_res, file = "demo_dyncouponbonds_doSNOW.RData")
