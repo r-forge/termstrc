@@ -39,7 +39,7 @@ source("methods_termstrc_nss.R")
 source("methods_zeroyields.R")
 source("gof.R")
 source("factorcontrib.R")  
-sv_res <- estim_nss(datadyncouponbonds[[i]], c("GERMANY"), method = "sv", deltatau = 1)
+estim_nss(datadyncouponbonds[[i]], c("GERMANY"), method = "sv", deltatau = 1)
 }
 
 stopCluster(cl)
