@@ -17,6 +17,7 @@ os.system("cp cubicfunc.R ~/WORK/termstrc/pkg/R")
 ## Data handling
 os.system("cp couponbonds_data.R ~/WORK/termstrc/pkg/R")
 os.system("cp create_cf_m.R ~/WORK/termstrc/pkg/R")
+os.system("cp methods_couponbonds.R ~/WORK/termstrc/pkg/R")
 
 ## Methods for estimation results
 os.system("cp methods_curves.R ~/WORK/termstrc/pkg/R")

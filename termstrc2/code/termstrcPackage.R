@@ -17,6 +17,7 @@ source("cubicfunc.R")
 ## Data handling
 source("couponbonds_data.R")
 source("create_cf_m.R")
+source("methods_couponbonds.R")
 
 ## Methods for estimation results
 source("methods_curves.R")
