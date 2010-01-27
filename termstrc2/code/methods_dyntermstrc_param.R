@@ -192,10 +192,10 @@ plot.dyntermstrc_param <- function(x,type="param",...){
 
 }
 
-fcontrib <- function(x, type="static", method="ns",lambda=0.0609*12, index=1, m=1:10, ylim=NULL ,... ) UseMethod("fcontrib")
+fcontrib <- function(x, method="ns",lambda=0.0609*12, index=1, m=1:10, ylim=NULL ,... ) UseMethod("fcontrib")
 
 
-fcontrib.dyntermstrc_param <- function(x, type="static", method="ns",lambda=0.0609*12, index=1, m=1:10, ylim=NULL ,... ){
+fcontrib.dyntermstrc_param <- function(x, method="ns",lambda=0.0609*12, index=1, m=1:10, ylim=NULL ,... ){
   par(if(length(x) > 1) mfrow=length(x),... )
   for(i in seq_along(x)){
      param <- x[[i]]
@@ -208,13 +208,19 @@ fcontrib.dyntermstrc_param <- function(x, type="static", method="ns",lambda=0.06
      if(is.null(ylim)) ylim <- c(min(fc1,fc2,fc3),max(fc1,fc2,fc3))          
 
      plot(m,rep(fc1[index],length(m)), col=1,type="l",lty=1, ylim=ylim, xlab="Time to maturity", ylab="Factor contribution",lwd=2,main=get_realnames(method))
+
+     
      # beta_1*( )
      lines(m, fc2[index,],type="l",col=2,lty=3,lwd=2)
      # beta_2*()
      lines(m, fc3[index,],lty=4,col=4,lwd=2)
      # beta_3*()
      if(ncol(param)==6) lines(m, fc4[index,],lty=5,col=5,lwd=2)
-     legend("topright",legend=c(
+
+     abline(h=0,lty=2)
+
+     
+   legend("topright",bg='white', legend=c(
        expression(beta[0]),
        expression(beta[1]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1])))),
        expression(beta[2]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1]))-exp(-frac(m,tau[1])))),
@@ -223,5 +229,9 @@ fcontrib.dyntermstrc_param <- function(x, type="static", method="ns",lambda=0.06
        ),
        lty=c(1,2,4,5), col=c(1,2,4,5),bty="n"
        ) 
+ 
+
+     
+     
 }
 }
