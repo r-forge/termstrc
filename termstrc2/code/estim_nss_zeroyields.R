@@ -23,7 +23,7 @@ estim_nss.zeroyields <- function (dataset,
         X <- cbind(rep(1,length(y)),
                    ((1 - exp(-m/lambda))/(m/lambda)),
                    (((1 - exp(-m/lambda))/(m/lambda)) - exp(-m/lambda)))
-        browser()
+        
         optparam[i,] <- solve(t(X)%*%X)%*%t(X)%*%y
       }
       
