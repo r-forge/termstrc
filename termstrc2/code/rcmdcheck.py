@@ -30,7 +30,7 @@ os.system("cp methods_zeroyields.R ~/WORK/termstrc/pkg/R")
 os.system("cp gof.R ~/WORK/termstrc/pkg/R")
 
 ## Copy Rd files
-#os.system("cp -R  ~/WORK/termstrc/termstrc2/helpfiles/*.Rd  ~/WORK/termstrc/pkg/man")
+os.system("cp -R  ~/WORK/termstrc/termstrc2/helpfiles/*.Rd  ~/WORK/termstrc/pkg/man")
 
 ## Perform R CMD check
 os.system("R CMD check ~/WORK/termstrc/pkg")
@@ -43,3 +43,7 @@ for line in inp.readlines():
     print(line)
     
 inp.close()
+
+os.system("R CMD build ~/WORK/termstrc/pkg")
+os.system("R CMD INSTALL termstrc_1.2.tar.gz")
+
