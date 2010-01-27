@@ -39,13 +39,11 @@ source("methods_termstrc_nss.R")
 source("methods_zeroyields.R")
 source("gof.R")
 source("factorcontrib.R")  
-estim_nss(datadyncouponbonds[[i]], c("GERMANY"), method = "sv", deltatau = 1)
+estim_nss(datadyncouponbonds[[i]], c("GERMANY"), method = "sv", deltatau = 2)
 }
 
 stopCluster(cl)
 
 class(sv_res) <- "dyntermstrc_nss"
 
-schas = 2,
-
-save(schas,sv_res, file = "demo_dyncouponbonds_doSNOW.RData")
+save(sv_res, file = "demo_dyncouponbonds_doSNOW.RData")
