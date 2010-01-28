@@ -220,16 +220,16 @@ fcontrib.dyntermstrc_param <- function(x, method="ns",lambda=0.0609*12, index=1,
      abline(h=0,lty=2)
 
      
-   legend("topright",bg='white', legend=c(
+   legend("topright",bg='white',box.col="white", legend=c(
        expression(beta[0]),
        expression(beta[1]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1])))),
        expression(beta[2]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1]))-exp(-frac(m,tau[1])))),
        if(method=="sv") expression(beta[3]*(frac(1-exp(-frac(m,tau[2])),frac(m,tau[2]))-exp(-frac(m,tau[2])))),
        if(method=="asv")  expression(beta[3]*(frac(1-exp(-frac(m,tau[2])),frac(m,tau[2]))-exp(-frac(2*m,tau[2]))))                 
        ),
-       lty=c(1,2,4,5), col=c(1,2,4,5),bty="n"
+       lty=c(1,2,4,5), col=c(1,2,4,5),bty="o"
        ) 
- 
+    box()
 
      
      

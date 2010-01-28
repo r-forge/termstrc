@@ -41,3 +41,5 @@
   \command{"dyntermstrc_yields"}.There are print, plot and summary
   method available. 
 }
+
+\examples{## Run: demos(zeroyields) }
