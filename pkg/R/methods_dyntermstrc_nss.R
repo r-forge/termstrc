@@ -17,10 +17,10 @@ summary.dyntermstrc_nss <- function(object, ...) {
   names(perrors) <- x[[1]]$group
   names(yerrors) <- x[[1]]$group
     
-  p_mrsme <- mapply(function(i) mean(sqrt(apply(perrors[[i]]^2,2,mean))),seq_along(perrors))
-  p_maabse <- mapply(function(i) mean(apply(abs(perrors[[i]]),2,mean)),seq_along(perrors))
-  y_mrsme <- mapply(function(i) mean(sqrt(apply(yerrors[[i]]^2,2,mean))),seq_along(yerrors))
-  y_maabse <- mapply(function(i) mean(apply(abs(yerrors[[i]]),2,mean)),seq_along(yerrors))
+  p_mrsme <- mapply(function(i) round(mean(sqrt(apply(perrors[[i]]^2,2,mean))),6),seq_along(perrors))
+  p_maabse <- mapply(function(i) round(mean(apply(abs(perrors[[i]]),2,mean)),6),seq_along(perrors))
+  y_mrsme <- mapply(function(i) round(mean(sqrt(apply(yerrors[[i]]^2,2,mean))),6),seq_along(yerrors))
+  y_maabse <- mapply(function(i) round(mean(apply(abs(yerrors[[i]]),2,mean)),6),seq_along(yerrors))
   
   sumry$gof <- rbind(p_mrsme,p_maabse,y_mrsme,y_maabse)
   colnames(sumry$gof) <- x[[1]]$group
