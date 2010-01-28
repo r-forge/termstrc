@@ -1,5 +1,5 @@
-data(zeroyields)
-x <- zeroyields
+data(zyields)
+x <- zyields
 
 maturities <- c(1/12,3/12,6/12,9/12,1:12)
 yields <- as.matrix(x[,2:ncol(x)])
@@ -24,12 +24,12 @@ plot(ns_res$spsearch[[1]])
 plot(ns_res)
 
 ## Perform Svensson estimation
-sv_res <- estim_nss(datazeroyields, "sv", deltatau = 0.2)
-sv_res2 <- estim_nss(datazeroyields, "sv", deltatau = 0.2, optimtype = "allglobal")
+sv_res <- estim_nss(datazeroyields, "sv", deltatau = 1)
+sv_res2 <- estim_nss(datazeroyields, "sv", deltatau = 1, optimtype = "allglobal")
 
 ## Perform Adjusted Svensson estimation
-asv_res <- estim_nss(datazeroyields, "asv", deltatau = 0.2)
-asv_res2 <- estim_nss(datazeroyields, "asv", deltatau = 0.2, optimtype = "allglobal")
+asv_res <- estim_nss(datazeroyields, "asv", deltatau = 1)
+asv_res2 <- estim_nss(datazeroyields, "asv", deltatau = 1, optimtype = "allglobal")
 
 ## Plot startparameters
 plot(sv_res$spsearch[[1]])

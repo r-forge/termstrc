@@ -52,3 +52,5 @@ The method iteratively applies the method \command{"estim_nss.couponbonds".}
 
 \seealso{ \code{\link{estim_nss.couponbonds}}
 }
+
+\examples{## Run: demos(nss_dynamic)} 

@@ -10,8 +10,8 @@ Zero-coupon Yield Curve Estimation
 
 
 \description{
-Zero-coupon yield curves and spread curves are important inputs for various financial models, e.g. pricing of securities, risk management, monetary policy issues. Since zero-coupon rates are rarely directly observable, they have to be estimated from market data. The literature broadly distinguishes between parametric and spline-based estimation methods for the zero-coupon yield curve. Our package consists of several widely-used approaches, i.e., the parametric Nelson and Siegel (1987), Diebold and Li (2006) and the Svensson (1994) method, and the McCulloch (1975) cubic splines approach.
-Extensive summary statistics and plots are provided to compare the results of the different estimation methods.
+The package offers parametric and spline-based methods for the estimation of zero-coupon yield curves out of observed coupon bond data and zero yields. The methods include Nelson and Siegel (1987), Svensson (1994), Diebold/Li (2006) and the cubic splies approach of McCulloch (1975). Functions for the iterative estimation of the term structue based on a dynamic bond or yield data set are included. Extensive summary statistics and plots are provided to compare the results of the different estimation methods.
+
 }
 
 \references{
