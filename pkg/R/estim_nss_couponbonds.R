@@ -214,7 +214,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
 plot.spsearch <- function(x, rgl = TRUE, ...) {
 
   if(is.matrix(x$tau)){
-      contour(x$tau[,1],x$tau[,2],log(x$fmin),nlevels=10,xlab = "tau_1", ylab = "tau_2",main = "Log(Objective function)")
+      contour(x$tau[,1],x$tau[,2],log(x$fmin),nlevels=10,xlab = expression(tau[1]), ylab = expression(tau[2]),main = "Log(Objective function)")
       points(x$tau[x$optind[1],1],x$tau[x$optind[2],2],pch = 10, col = "red")
       if (rgl) {
         open3d()
