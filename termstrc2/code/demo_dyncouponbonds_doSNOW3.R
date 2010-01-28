@@ -18,6 +18,6 @@ estim_nss(datadyncouponbonds[[i]], c("GERMANY"), method = "ns", deltatau = 0.2)
 
 stopCluster(cl)
 
-class(asv_res) <- "dyntermstrc_nss"
+class(ns_res) <- "dyntermstrc_nss"
 
 save(ns_res, file = "demo_dyncouponbonds_doSNOW3.RData")
