@@ -194,44 +194,39 @@ plot.dyntermstrc_param <- function(x,type="param",...){
 
 fcontrib <- function(x, method="ns",lambda=0.0609*12, index=1, m=1:10, ylim=NULL ,... ) UseMethod("fcontrib")
 
-
 fcontrib.dyntermstrc_param <- function(x, method="ns",lambda=0.0609*12, index=1, m=1:10, ylim=NULL ,... ){
   par(if(length(x) > 1) mfrow=length(x),... )
   for(i in seq_along(x)){
-     param <- x[[i]]
-     if(ncol(param)==3) param <- cbind(param,1/lambda)
-     fc1 <- param[,1]
-     fc2 <- t(mapply(function(i) param[i,2]*((1-exp(-m/param[i,4]))/(m/param[i,4])), seq(nrow(param))))
-     fc3 <- t(mapply(function(i) param[i,3]*(((1-exp(-m/param[i,4]))/(m/param[i,4]))-exp(-m/param[i,4])), seq(nrow(param))))
-     if(ncol(param)==6) fc4 <- t(mapply(function(i) param[i,5]*(((1 - exp(-m/param[i,6]))/(m/param[i,6])) - exp(-m/param[i,6])), seq(nrow(param))))
-
-     if(is.null(ylim)) ylim <- c(min(fc1,fc2,fc3),max(fc1,fc2,fc3))          
-
-     plot(m,rep(fc1[index],length(m)), col=1,type="l",lty=1, ylim=ylim, xlab="Time to maturity", ylab="Factor contribution",lwd=2,main=get_realnames(method))
-
+    param <- x[[i]]
+    if(ncol(param)==3) param <- cbind(param,1/lambda)
+    fc1 <- param[,1]
+    fc2 <- t(mapply(function(i) param[i,2]*((1-exp(-m/param[i,4]))/(m/param[i,4])), seq(nrow(param))))
+    fc3 <- t(mapply(function(i) param[i,3]*(((1-exp(-m/param[i,4]))/(m/param[i,4]))-exp(-m/param[i,4])), seq(nrow(param))))
+    if(ncol(param)==6) fc4 <- t(mapply(function(i) param[i,5]*(((1 - exp(-m/param[i,6]))/(m/param[i,6])) - exp(-m/param[i,6])), seq(nrow(param))))
+    
+    if(is.null(ylim)) ylim <- c(min(fc1,fc2,fc3),max(fc1,fc2,fc3))          
+    
+    plot(m,rep(fc1[index],length(m)), col=1,type="l",lty=1, ylim=ylim, xlab="Time to maturity", ylab="Factor contribution",lwd=2,main=get_realnames(method))
+    
+    
+    ## beta_1*( )
+    lines(m, fc2[index,],type="l",col=2,lty=3,lwd=2)
+    ## beta_2*()
+    lines(m, fc3[index,],lty=4,col=4,lwd=2)
+    ## beta_3*()
+    if(ncol(param)==6) lines(m, fc4[index,],lty=5,col=5,lwd=2)
+    
+    abline(h=0,lty=1, lwd = 1, col = "grey")
      
-     # beta_1*( )
-     lines(m, fc2[index,],type="l",col=2,lty=3,lwd=2)
-     # beta_2*()
-     lines(m, fc3[index,],lty=4,col=4,lwd=2)
-     # beta_3*()
-     if(ncol(param)==6) lines(m, fc4[index,],lty=5,col=5,lwd=2)
-
-     abline(h=0,lty=2)
-
-     
-   legend("topright",bg='white',box.col="white", legend=c(
-       expression(beta[0]),
-       expression(beta[1]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1])))),
-       expression(beta[2]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1]))-exp(-frac(m,tau[1])))),
-       if(method=="sv") expression(beta[3]*(frac(1-exp(-frac(m,tau[2])),frac(m,tau[2]))-exp(-frac(m,tau[2])))),
-       if(method=="asv")  expression(beta[3]*(frac(1-exp(-frac(m,tau[2])),frac(m,tau[2]))-exp(-frac(2*m,tau[2]))))                 
-       ),
-       lty=c(1,2,4,5), col=c(1,2,4,5),bty="o"
-       ) 
-    box()
-
-     
-     
-}
+    legend("topright",bg='white', box.col="white", box.lwd = 0,
+           legend=c(expression(beta[0]),
+             expression(beta[1]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1])))),
+             expression(beta[2]*(frac(1-exp(-frac(m,tau[1])),frac(m,tau[1]))-exp(-frac(m,tau[1])))),
+             if(method=="sv") expression(beta[3]*(frac(1-exp(-frac(m,tau[2])),frac(m,tau[2]))-exp(-frac(m,tau[2])))),
+             if(method=="asv")  expression(beta[3]*(frac(1-exp(-frac(m,tau[2])),frac(m,tau[2]))-exp(-frac(2*m,tau[2]))))                 
+             ),
+           lty=c(1,2,4,5), col=c(1,2,4,5),bty="o", cex = 0.9
+           ) 
+    box()  
+  }
 }
