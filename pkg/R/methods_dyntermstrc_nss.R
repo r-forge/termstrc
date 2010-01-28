@@ -19,8 +19,8 @@ summary.dyntermstrc_nss <- function(object, ...) {
     
   p_mrsme <- mapply(function(i) round(mean(sqrt(apply(perrors[[i]]^2,2,mean))),6),seq_along(perrors))
   p_maabse <- mapply(function(i) round(mean(apply(abs(perrors[[i]]),2,mean)),6),seq_along(perrors))
-  y_mrsme <- mapply(function(i) round(mean(sqrt(apply(yerrors[[i]]^2,2,mean))),6),seq_along(yerrors))
-  y_maabse <- mapply(function(i) round(mean(apply(abs(yerrors[[i]]),2,mean)),6),seq_along(yerrors))
+  y_mrsme <- mapply(function(i) round(mean(sqrt(apply((yerrors[[i]]*100)^2,2,mean))),6),seq_along(yerrors))
+  y_maabse <- mapply(function(i) round(mean(apply(abs((yerrors[[i]]*100)^2),2,mean)),6),seq_along(yerrors))
   
   sumry$gof <- rbind(p_mrsme,p_maabse,y_mrsme,y_maabse)
   colnames(sumry$gof) <- x[[1]]$group
