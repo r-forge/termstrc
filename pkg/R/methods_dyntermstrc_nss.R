@@ -8,7 +8,7 @@ summary.dyntermstrc_nss <- function(object, ...) {
   sumry$solvermsg <- t(mapply(function(i) summary(x[[i]])$convergence, seq_along(x)))
   rownames(sumry$solvermsg) <- x[[1]]$group 
  
-  # adapt for multiple countries
+  
   perrors <- list()
   yerrors <- list()
   
