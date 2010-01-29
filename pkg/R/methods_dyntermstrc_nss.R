@@ -24,7 +24,7 @@ summary.dyntermstrc_nss <- function(object, ...) {
   
   sumry$gof <- rbind(p_mrsme,p_maabse,y_mrsme,y_maabse)
   colnames(sumry$gof) <- x[[1]]$group
-  rownames(sumry$gof) <- c("mean RMSE-Prices", "mean AABSE-Prices", "mean RMSE-Yields", "mean AABSE-Yields")
+  rownames(sumry$gof) <- c("mean RMSE-Prices", "mean AABSE-Prices", "mean RMSE-Yields (in %)", "mean AABSE-Yields (in %)")
     
   class(sumry) <- "summary.dyntermstrc_nss"
   sumry
