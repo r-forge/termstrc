@@ -108,8 +108,8 @@ plot.dyntermstrc_param <- function(x,type="param",...){
     par(mfrow=mfrow,if(length(x)>1) ask=TRUE,...)
         
    for(i in seq_along(x)){
-    const <- switch(as.character(ncol(x[[i]])),"4"=c(100,100,100,1),"3"=rep(100,3),"6"=c(100,100,100,1,100,1))
-    param <- t(apply(x[[i]],1,function(x) x*const))
+  
+    param <- x[[i]]
     
    
     plot(param[,1],type="l",xlab="Time",ylab=expression(hat(beta)[0]),
@@ -198,8 +198,7 @@ fcontrib <- function(x, method="ns",lambda=0.0609*12, index=1, m=1:10, ylim=NULL
 fcontrib.dyntermstrc_param <- function(x, method="ns",lambda=0.0609*12, index=1, m=1:10, ylim=NULL ,... ){
   par(if(length(x) > 1) mfrow=length(x),... )
   for(i in seq_along(x)){
-    const <- switch(as.character(ncol(x[[i]])),"4"=c(100,100,100,1),"3"=rep(100,3),"6"=c(100,100,100,1,100,1))
-    param <- t(apply(x[[i]],1,function(x) x*const))
+    param <- x[[i]]
     if(ncol(param)==3) param <- cbind(param,1/lambda)
     fc1 <- param[,1]
     fc2 <- t(mapply(function(i) param[i,2]*((1-exp(-m/param[i,4]))/(m/param[i,4])), seq(nrow(param))))
