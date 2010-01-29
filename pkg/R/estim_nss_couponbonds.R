@@ -123,7 +123,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
                                 control = list(), outer.iterations = 30, outer.eps = 1e-04) {
   
   if(method=="dl"){
-    startparam = rep(0.01,3)
+    startparam = rep(1,3)
     tau = NULL
     fmin = NULL
     optind = NULL
@@ -144,7 +144,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
       
     for (i in 1:length(tau)){
       
-      lsparam <- constrOptim(theta = rep(0.01,3), # start parameters for D/L, objective function is convex
+      lsparam <- constrOptim(theta = rep(1,3), # start parameters for D/L, objective function is convex
                                f = objfct,
                                grad = NULL,
                                ui = ui,
@@ -183,7 +183,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
         for (j in 1:length(tau2))
           {
             if(tau1[i] < tau2[j]) {
-            lsparam <- constrOptim(theta = rep(0.01,4),
+            lsparam <- constrOptim(theta = rep(1,4),
                                    f = objfct,
                                    grad = NULL,
                                    ui = ui,
