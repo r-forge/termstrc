@@ -3,7 +3,7 @@ print.dyntermstrc_yields <- function(x, ...){
   cat("Parameters for yield based dynamic term structure estimation:\n")
   cat("---------------------------------------------------\n")
   cat("Method:",switch(x$method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson"),"\n")
-  cat("Number of oberservations:",length(x$opt_result),"\n")
+  cat("Number of oberservations:",nrow(x$optparam),"\n")
   cat("---------------------------------------------------\n")
   cat("Parameter summary:\n")
   cat("---------------------------------------------------\n")
@@ -55,11 +55,13 @@ plot.dyntermstrc_yields <- function(x,...)
   {
     ## plot estimated yield curves in 3D
     sptrtfct <- switch(x$method,
+                       "dl" = spr_dl,
                        "ns" = spr_ns,
-                       "sv" = spr_sv)
+                       "sv" = spr_sv,
+                       "asv" = spr_asv)
     Z <- matrix(nrow=nrow(x$optparam),ncol=length(x$maturities))# OK
     for (i in 1:nrow(x$optparam)){
-      Z[i,] <- sptrtfct(x$optparam[i,],x$maturities)
+      Z[i,] <- sptrtfct(x$optparam[i,],x$maturities, x$lambda)
     }
 
     X <- 1:nrow(Z)
