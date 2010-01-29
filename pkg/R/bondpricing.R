@@ -3,7 +3,7 @@
 
 bond_prices <- function(method="ns", beta, m, cf, lambda){
   # calculate spot rates
-  spot_rates <- spotrates(method,beta,m,lambda)
+  spot_rates <- spotrates(method,beta,m,lambda)/100
 
   # replace NaNs by zeros
   spot_rates[is.nan(spot_rates)] <- 0        

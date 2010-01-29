@@ -68,7 +68,7 @@ estim_nss.zeroyields <- function (dataset,
     
     result <- list(optparam = optparam, opt_result = opt_result, method = method,
                    maturities = obj$maturities, dates = obj$dates, spsearch = spsearch,
-                   yields = obj$yields,yhat = yhat)
+                   yields = obj$yields,yhat = yhat, lambda = lambda)
     class(result) <- "dyntermstrc_yields"
     result
   }
