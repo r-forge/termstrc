@@ -2,7 +2,7 @@ print.dyntermstrc_yields <- function(x, ...){
   cat("---------------------------------------------------\n")
   cat("Parameters for yield based dynamic term structure estimation:\n")
   cat("---------------------------------------------------\n")
-  cat("Method:",switch(x$method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson"),"\n")
+  cat("Method:",get_realnames(x$method),"\n")
   cat("Number of oberservations:",nrow(x$optparam),"\n")
   cat("---------------------------------------------------\n")
   cat("Parameter summary:\n")
@@ -16,11 +16,11 @@ print.dyntermstrc_yields <- function(x, ...){
 
 summary.dyntermstrc_yields <- function(object, ...){
   x <- object
-  y_mrsme <-  mean(sqrt(apply((x$yields-x$yhat)^2,2,mean)))
-  y_maabse <- mean(apply(abs(x$yields-x$yhat),2,mean))
+  y_mrsme <-  round(mean(sqrt(apply((x$yields-x$yhat)^2,2,mean))),6)
+  y_maabse <- round(mean(apply(abs(x$yields-x$yhat),2,mean)),6)
   sumry <- list()
   sumry$gof <- rbind(y_mrsme,y_maabse)
-  rownames(sumry$gof) <- c("mean RMSE-Yields", "mean AABSE-Yields")
+  rownames(sumry$gof) <- c("mean RMSE-Yields (in %)", "mean AABSE-Yields (in %)")
 
   if (object$method != "dl") {
     ## extract convergence info
