@@ -26,7 +26,7 @@ summary.dyntermstrc_yields <- function(object, ...){
     ## extract convergence info
     for (i in (1:length(x$opt_result))) {
       sumry$convergence[i] <- x$opt_result[[i]]$convergence
-      ## TODO: solver message
+      sumry$solvermsg <- x$opt_result[[i]]$message
     }
   }  
   class(sumry) <- "summary.dyntermstrc_yields"
@@ -54,14 +54,10 @@ print.summary.dyntermstrc_yields <- function(x,...) {
 plot.dyntermstrc_yields <- function(x,...)
   {
     ## plot estimated yield curves in 3D
-    sptrtfct <- switch(x$method,
-                       "dl" = spr_dl,
-                       "ns" = spr_ns,
-                       "sv" = spr_sv,
-                       "asv" = spr_asv)
+ 
     Z <- matrix(nrow=nrow(x$optparam),ncol=length(x$maturities))# OK
     for (i in 1:nrow(x$optparam)){
-      Z[i,] <- sptrtfct(x$optparam[i,],x$maturities, x$lambda)
+      Z[i,] <- spotrates(x$method,x$optparam[i,],x$maturities, x$lambda)
     }
 
     X <- 1:nrow(Z)
