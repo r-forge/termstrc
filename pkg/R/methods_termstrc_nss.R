@@ -30,6 +30,7 @@ plot.termstrc_nss <-
     					   "forward" = x$forward,
     					   "discount" = x$discount
     					    )
+    
     					   
     cname <- switch(ctype, "spot" = "Zero-coupon yield curve",
     					   "forward" = "Forward rate curve",
