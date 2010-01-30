@@ -16,8 +16,8 @@ print.dyntermstrc_yields <- function(x, ...){
 
 summary.dyntermstrc_yields <- function(object, ...){
   x <- object
-  y_mrsme <-  round(mean(sqrt(apply((x$yields-x$yhat)^2,2,mean))),6)
-  y_maabse <- round(mean(apply(abs(x$yields-x$yhat),2,mean)),6)
+  y_mrsme <-  round(mean(sqrt(apply((x$yields-x$yhat)^2,1,mean))),6)
+  y_maabse <- round(mean(apply(abs(x$yields-x$yhat),1,mean)),6)
   sumry <- list()
   sumry$gof <- rbind(y_mrsme,y_maabse)
   rownames(sumry$gof) <- c("mean RMSE-Yields (in %)", "mean AABSE-Yields (in %)")
