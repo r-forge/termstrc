@@ -13,7 +13,7 @@ registerDoSNOW(cl)
 N <- length(datadyncouponbonds)
 
 ns_res <- foreach(i = 1:N, .packages = "dyntermstrc") %dopar% {  
-estim_nss(datadyncouponbonds[[i]], c("GERMANY"), method = "ns", deltatau = 0.2)
+estim_nss(datadyncouponbonds[[i]], c("GERMANY"), method = "ns", deltatau = 0.1)
 }
 
 stopCluster(cl)

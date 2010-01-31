@@ -2,7 +2,7 @@ library("dyntermstrc")
 
 data("GermanBonds")
 
-NODES <- 10 
+NODES <- 20 
 
 require("snow")
 cl <- makeCluster(NODES, type = "MPI")
@@ -13,7 +13,7 @@ registerDoSNOW(cl)
 N <- length(datadyncouponbonds)
 
 sv_res <- foreach(i = 1:N, .packages = "dyntermstrc") %dopar% {  
-estim_nss(datadyncouponbonds[[i]], c("GERMANY"), method = "sv", deltatau = 0.2)
+estim_nss(datadyncouponbonds[[i]], c("GERMANY"), method = "sv", deltatau = 0.1)
 }
 
 stopCluster(cl)
