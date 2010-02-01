@@ -20,10 +20,10 @@ print.termstrc_cs <- function(x,...) {
 summary.termstrc_cs <-
     function(object,...) {
     x <- object
-    RMSE_p <- mapply(function(i) round(rmse(x$p[[i]],x$phat[[i]]),6),seq(x$n_group))
-    AABSE_p <- mapply(function(i) round(aabse(x$p[[i]],x$phat[[i]]),6),seq(x$n_group))
-    RMSE_y <- mapply(function(i) round(rmse(x$y[[i]][,2]*100,x$yhat[[i]][,2]*100),6),seq(x$n_group))
-    AABSE_y <- mapply(function(i) round(aabse(x$y[[i]][,2]*100,x$yhat[[i]][,2]*100),6),seq(x$n_group))
+    RMSE_p <- mapply(function(i) rmse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
+    AABSE_p <- mapply(function(i) aabse(x$p[[i]],x$phat[[i]]),seq(x$n_group))
+    RMSE_y <- mapply(function(i) rmse(x$y[[i]][,2]*100,x$yhat[[i]][,2]*100),seq(x$n_group))
+    AABSE_y <- mapply(function(i) aabse(x$y[[i]][,2]*100,x$yhat[[i]][,2]*100),seq(x$n_group))
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields (in %)","AABSE-Yields (in %)")
@@ -43,7 +43,7 @@ print.summary.termstrc_cs <-
     cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
     cat("\n")
-    print.default(x$gof)
+    print.default(format(x$gof,digi=6),quote=FALSE)
     cat("\n")
     x$gof
     

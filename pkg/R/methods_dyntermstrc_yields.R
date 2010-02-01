@@ -16,11 +16,11 @@ print.dyntermstrc_yields <- function(x, ...){
 
 summary.dyntermstrc_yields <- function(object, ...){
   x <- object
-  y_mrsme <-  round(mean(sqrt(apply((x$yields-x$yhat)^2,1,mean))),6)
-  y_maabse <- round(mean(apply(abs(x$yields-x$yhat),1,mean)),6)
+  y_mrsme <-  sqrt(mean(apply((x$yields-x$yhat)^2,1,mean)))
+  y_maabse <- mean(apply(abs(x$yields-x$yhat),1,mean))
   sumry <- list()
   sumry$gof <- rbind(y_mrsme,y_maabse)
-  rownames(sumry$gof) <- c("mean RMSE-Yields (in %)", "mean AABSE-Yields (in %)")
+  rownames(sumry$gof) <- c("RMSE-Yields (in %)", "AABSE-Yields (in %)")
 
   if (object$method != "dl") {
     ## extract convergence info
@@ -39,7 +39,7 @@ print.summary.dyntermstrc_yields <- function(x,...) {
     cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
 
-    print.default(x$gof)
+     print.default(format(x$gof,digi=6),quote=FALSE)
 
     if (length(x) > 1) {
       cat("\n")
