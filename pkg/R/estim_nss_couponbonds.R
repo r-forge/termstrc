@@ -226,7 +226,7 @@ plot.spsearch <- function(x, rgl = TRUE, ...) {
         persp(x$tau[,1], x$tau[,2], log(x$fmin), col = "green3", box = TRUE, xlab = "tau_1", ylab = "tau_2", zlab = "Log(Objective function)", shade = TRUE, ticktype = "detailed", border = NA, cex.lab = 1, cex.axis = 0.7,  theta = 0, phi = 25, r = sqrt(3), d = 1, scale = TRUE, expand = 1, ltheta = 135, lphi = 0)
       }
   } else {
-      plot(x$tau,x$fmin,xlab = "tau_1", ylab = "Objective function", type = "l")
-      points(x$tau[x$optind],x$fmin[x$optind],pch = 10, col = "red")
+      plot(x$tau,log(x$fmin),xlab = "tau_1", ylab = "Log(Objective function)", type = "l")
+      points(x$tau[x$optind],log(x$fmin[x$optind]),pch = 10, col = "red")
   }
 }
