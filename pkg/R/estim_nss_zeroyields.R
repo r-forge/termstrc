@@ -5,7 +5,7 @@
 estim_nss.zeroyields <- function (dataset,
                                   method = "ns",
                                   lambda = 0.0609*12,
-                                  deltatau = 1,
+                                  tauconstr = NULL,
                                   optimtype = "allglobal",
                                   constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04),...)
   {
@@ -30,13 +30,20 @@ estim_nss.zeroyields <- function (dataset,
       
     }
     else { # other methods that require a start parameter search
-    
+
+      ## default tau constraints (if not specified by user)
+      if (is.null(tauconstr)){
+        tauconstr <- c(min(obj$maturities), max(obj$maturities), 0.2, 0.5)
+        print("The following constraints are used for the tau parameters:")
+        print(tauconstr)
+      }
+      
       objfct <- get_objfct(method)
       grad_objfct <- get_grad_objfct(method)
       
-      sp_search <- findstartparamyields(obj$yields[1,],obj$maturities, method, deltatau)
+      sp_search <- findstartparamyields(obj$yields[1,],obj$maturities, method, tauconstr)
       startparam <- sp_search$startparam
-      constraints <- get_constraints(method)
+      constraints <- get_constraints(method, tauconstr)
 
       ## Estimation loop
       for (i in 1:nrow(obj$yields)){
@@ -49,7 +56,7 @@ estim_nss.zeroyields <- function (dataset,
         }
         
         if(i>1 && optimtype == "allglobal"){
-          sp_search <- findstartparamyields(yields,obj$maturities, method, deltatau)
+          sp_search <- findstartparamyields(yields,obj$maturities, method, tauconstr)
           beta <- sp_search$startparam
           spsearch[[i]] <- sp_search
         }
@@ -78,7 +85,7 @@ estim_nss.zeroyields <- function (dataset,
 
 
 estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, constraints, constrOptimOptions)
-  {    
+  {
     opt_result <- constrOptim(theta = beta,
                               f = objfct,
                               grad = grad_objfct,
@@ -93,10 +100,10 @@ estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, constraints, con
           
   }
 
-findstartparamyields <- function(y,m, method, deltatau = 0.1)
+findstartparamyields <- function(y,m, method, tauconstr)
   {
     if(method=="ns"){
-      tau <- seq(0.1,max(m),deltatau)
+      tau <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
       fmin <- rep(NA, length(tau))
       lsbeta <- matrix(nrow = length(tau), ncol = 4)
       for (i in 1:length(tau)){
@@ -114,8 +121,8 @@ findstartparamyields <- function(y,m, method, deltatau = 0.1)
     }
     
      if(method=="sv"){
-       tau1 <- seq(0.1, max(m), deltatau)
-       tau2 <- seq(0.1, max(m), deltatau)
+       tau1 <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+       tau2 <- tau1
        tau <- cbind(tau1, tau2)
        fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
        lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
@@ -142,8 +149,8 @@ findstartparamyields <- function(y,m, method, deltatau = 0.1)
                    lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
                    beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
                  }
-                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, beta[2] should not explode)
-                 if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20)){
+                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
+                 if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
                    fmin[i,j] <- objfct_sv(beta, m, y)
                  }
                  lsbeta[(i-1)*length(tau1)+j,] <- beta
@@ -155,8 +162,8 @@ findstartparamyields <- function(y,m, method, deltatau = 0.1)
      }
 
      if(method=="asv"){
-       tau1 <- seq(0.1, max(m), deltatau)
-       tau2 <- seq(0.1, max(m), deltatau)
+       tau1 <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+       tau2 <- tau1
        tau <- cbind(tau1, tau2)
        fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
        lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
@@ -174,8 +181,8 @@ findstartparamyields <- function(y,m, method, deltatau = 0.1)
                  lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
                  beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
                  
-                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, beta[2] should not explode)
-                 if(beta[1]>0 && ((beta[1]+beta[2])>0 && beta[2]<20)){
+                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
+                 if(beta[1]>0 && ((beta[1]+beta[2])>0) && (-tau1[i] + tau2[j]) > 0){
                    fmin[i,j] <- objfct_sv(beta, m, y)
                  }
                  lsbeta[(i-1)*length(tau1)+j,] <- beta

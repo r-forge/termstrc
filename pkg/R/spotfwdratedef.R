@@ -216,8 +216,10 @@ grad_objfct_asv <- function(beta, m, y)
 
 ### Constraints for constrOptim()
 
-get_constraints <- function(method) {
+get_constraints <- function(method, tauconstr) {
 
+  ## tauconstr = c(upper, lower, gridsize, distance)
+  
   ## Diebold/Li
   
   if (method == "dl") {
@@ -231,24 +233,37 @@ get_constraints <- function(method) {
   if (method == "ns") {
     ui <- rbind(c(1,0,0,0),             # beta0 > 0
                 c(1,1,0,0),             # beta0 + beta1 > 0
-                c(0,0,0,1),             # tau1 > 0
-                c(0,0,0,-1))            # tau1 < 30
-    ci <- c(0,0,0,-30)
+                c(0,0,0,1),             # tau1 > tauconstr[1]
+                c(0,0,0,-1))            # tau1 < tauconstr[2]
+    ci <- c(0,0,tauconstr[1],-tauconstr[2])
   }
 
-  ## (Adjusted) Svensson
-
-  if (method %in% c("sv","asv")) {
+  ## Svensson
+  
+  if (method == "sv") {
      ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
                  c(1,1,0,0,0,0),        # beta0 + beta1 > 0
-                 c(0,0,0,1,0,0),        # tau1 > 0
-                 c(0,0,0,-1,0,0),       # tau1 < 30
-                 c(0,0,0,0,0,1),        # tau2 > 0
-                 c(0,0,0,0,0,-1),       # tau2 < 30
-                 c(0,0,0,-1,0,1))       # tau2 - tau1 > 0
-     ci <- c(0,0,0,-30,0,-30,0)
+                 c(0,0,0,1,0,0),        # tau1 > tauconstr[1]
+                 c(0,0,0,-1,0,0),       # tau1 < tauconstr[2]
+                 c(0,0,0,0,0,1),        # tau2 > tauconstr[1]
+                 c(0,0,0,0,0,-1),       # tau1 < tauconstr[2]
+                 c(0,0,0,-1,0,1))       # tau2 - tau1 > tauconstr[4]
+     ci <- c(0,0,tauconstr[1],-tauconstr[2],tauconstr[1],-tauconstr[2],tauconstr[4]) 
    }
-    
+
+## Adjusted Svensson
+  
+  if (method == "asv") {
+     ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
+                 c(1,1,0,0,0,0),        # beta0 + beta1 > 0
+                 c(0,0,0,1,0,0),        # tau1 > tauconstr[1]
+                 c(0,0,0,-1,0,0),       # tau1 < tauconstr[2]
+                 c(0,0,0,0,0,1),        # tau2 > tauconstr[1]
+                 c(0,0,0,0,0,-1),       # tau1 < tauconstr[2]
+                 c(0,0,0,-1,0,1))       # tau2 - tau1 > 0
+     ci <- c(0,0,tauconstr[1],-tauconstr[2],tauconstr[1],-tauconstr[2],0) 
+   }
+  
   constraints <- list(ui = ui, ci = ci)
   constraints
 }
