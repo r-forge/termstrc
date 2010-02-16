@@ -177,12 +177,7 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
     startparam <- lsbeta[optind,]
   }
     
-  if(method %in% c("sv","asv")) {
-
-    objfct <- function(b, m, cf, w, p) {
-      bsv <- c(b[1:3],tau1[i],b[4],tau2[j])
-      loss_function(p,bond_prices(method,bsv,m,cf)$bond_prices,weights)
-    }
+  if(method=="sv") {
 
     ui <- rbind(c(1,0,0,0),                 # beta0 > 0
                 c(1,1,0,0))                 # beta0 + beta1 > 0
@@ -201,28 +196,33 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
             
             if(tau1[i] + tauconstr[4] < tau2[j]) { ## TEST
               print(j) # DEBUG
-            lsparam <- constrOptim(theta = rep(1,4),
-                                   f = objfct,
-                                   grad = NULL,
-                                   ui = ui,
-                                   ci = ci,
-                                   mu = 1e-04,
-                                   control = control,
-                                   method = "Nelder-Mead",
-                                   outer.iterations = outer.iterations,
-                                   outer.eps = outer.eps,
-                                   m, cf, w, p) ## additional inputs for f and grad
               
-            beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
-            
-            fmin[i,j] <- lsparam$value
-            lsbeta[(i-1)*length(tau1)+j,] <- beta
-          }
+              lsparam <- constrOptim(theta = rep(1,4),
+                                     f = objfct_sv_bonds_grid,
+                                     grad = NULL,
+                                     ui = ui,
+                                     ci = ci,
+                                     mu = 1e-04,
+                                     control = control,
+                                     method = "Nelder-Mead",
+                                     outer.iterations = outer.iterations,
+                                     outer.eps = outer.eps,
+                                     c(tau1[i], tau2[j]), m, cf, weights, p) ## additional inputs for f and grad
+              
+              beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
+              
+              fmin[i,j] <- lsparam$value
+              lsbeta[(i-1)*length(tau1)+j,] <- beta
+            }
           }
       }
     
     optind <- which(fmin == min(fmin, na.rm = TRUE),arr.ind=TRUE)
     startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]    
+  }
+
+  if(method=="asv") {
+    ## TODO
   }
   result <- list(startparam = startparam, tau = tau, fmin = fmin, optind = optind)
   class(result) <- "spsearch"
