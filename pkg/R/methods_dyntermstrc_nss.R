@@ -37,7 +37,7 @@ print.summary.dyntermstrc_nss <- function(x,...) {
     cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
 
-     print.default(format(x$gof,digi=6),quote=FALSE)
+     print.default(format(x$gof,digits=6),quote=FALSE)
 
     cat("\n")
     cat("---------------------------------------------------\n")
