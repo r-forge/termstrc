@@ -10,7 +10,7 @@ print.termstrc_cs <- function(x,...) {
     cs_coef <- (summary(x$regout[[i]]))$coefficients[,1:2]
    rownames(cs_coef) <- paste("alpha",c(seq_along(x$alpha[[i]])))
    colnames(cs_coef) <- c("Estimate",if(x$rse) "Robust s.e." else "s.e.")
-  print.default(cs_coef)
+   print.default(format(cs_coef,digits=6),quote=FALSE)
   cat("\n")
   x
   }
@@ -43,7 +43,7 @@ print.summary.termstrc_cs <-
     cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
     cat("\n")
-    print.default(format(x$gof,digi=6),quote=FALSE)
+    print.default(format(x$gof,digits=6),quote=FALSE)
     cat("\n")
     x$gof
     
