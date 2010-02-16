@@ -11,7 +11,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
                                   startparam=NULL,           # startparameter matrix with columns c("beta0","beta1","beta2","tau1","beta3","tau2")
                                                              # otherwise globally optimal parameters are searched automatically
                                   lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
-                                  deltatau=0.1,              # interval for parameter grid
+                                  tauconstr = NULL,              # interval for parameter grid
                                   constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04),...
            ) {
 
@@ -28,7 +28,16 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   ac=prepro$ac
   y=prepro$y
   duration=prepro$duration
- 
+
+  ## default tau constraints (if not specified by user)
+  if (is.null(tauconstr)){
+    tauconstr <- c(min(obj$maturities), max(obj$maturities), 0.2, 0.5)
+    print("The following constraints are used for the tau parameters:")
+    print(tauconstr)
+  }
+  
+  if (method == "asv") {tauconstr[4] = 0}
+
   ## automatically determine globally optimal start parameters
   spsearch <- list()
   length(spsearch) <- n_group
@@ -44,7 +53,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
     for (k in sgroup){
       print(paste("Searching startparameters for ", group[k]))
       spsearch[[k]] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3],
-                                            method, deltatau)
+                                            method, tauconstr)
       startparam[k,] <- spsearch[[k]]$startparam 
       print(startparam[k,])
     }
@@ -58,7 +67,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
      	bond_prices(method,b,m[[k]],cf[[k]],lambda)$bond_prices,duration[[k]][,3])}
                   
   ## calculate optimal parameter vectors
-  constraints <- get_constraints(method)
+  constraints <- get_constraints(method, tauconstr)
   opt_result <- list()
   
   for (k in sgroup){
@@ -119,7 +128,7 @@ estimatezcyieldcurve <- function(method, startparam, obj_fct, constraints, const
 
 ### Start parameter search routine for bond data
 
-findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
+findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
                                 control = list(), outer.iterations = 30, outer.eps = 1e-04) {
   
   if(method=="dl"){
@@ -130,7 +139,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
   }
  
   if(method=="ns"){
-    tau <- seq(deltatau, max(m), deltatau) 
+    tau <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
     fmin <- rep(NA, length(tau))
     lsbeta <- matrix(nrow = length(tau), ncol = 4)
 
@@ -173,8 +182,8 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
                 c(1,1,0,0))                 # beta0 + beta1 > 0
     ci <- c(0,0)
       
-    tau1 <- seq(deltatau, max(m),deltatau)
-    tau2 <- seq(deltatau, max(m),deltatau)
+    tau1 <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+    tau2 <- tau1
     tau <- cbind(tau1, tau2)
     fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
     lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
@@ -182,7 +191,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
       { 
         for (j in 1:length(tau2))
           {
-            if(tau1[i] < tau2[j]) {
+            if(tau1[i] + tauconstr[4] < tau2[j]) { ## TEST
             lsparam <- constrOptim(theta = rep(1,4),
                                    f = objfct,
                                    grad = NULL,
@@ -195,6 +204,7 @@ findstartparambonds <- function(p,m,cf, weights, method, deltatau = 0.1,
                                    outer.eps = outer.eps)
               
             beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
+            
             fmin[i,j] <- lsparam$value
             lsbeta[(i-1)*length(tau1)+j,] <- beta
           }

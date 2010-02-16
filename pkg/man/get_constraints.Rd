@@ -6,11 +6,12 @@
 \description{Selection of the appropriate contraints for constrOptim()
 }
 \usage{
-get_constraints(method)
+get_constraints(method, tauconstr)
 }
 
 \arguments{
   \item{method}{term structure estimation method 
-}
+  }
+  \item{tauconstr}{constraints on tau parameters} 
 }
 

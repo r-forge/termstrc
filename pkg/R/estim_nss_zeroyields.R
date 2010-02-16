@@ -46,8 +46,9 @@ estim_nss.zeroyields <- function (dataset,
       constraints <- get_constraints(method, tauconstr)
 
       ## Estimation loop
+      
       for (i in 1:nrow(obj$yields)){
-        
+       
         yields <- obj$yields[i,]
         
         if (i==1) {
@@ -63,7 +64,7 @@ estim_nss.zeroyields <- function (dataset,
         if(i>1 && optimtype == "firstglobal"){
           beta <- optparam[i-1,]
         }
-
+       
         opt_result[[i]] <- estimateyieldcurve(yields, obj$maturities, beta, objfct,
                                               grad_objfct, constraints, constrOptimOptions)
         optparam[i,] <- opt_result[[i]]$par

@@ -8,7 +8,7 @@
 The algorithm searches for the parameters over a grid spanned over tau1 (tau2). 
 }
 \usage{
-findstartparambonds(p, m, cf, weights, method, deltatau = 0.1, control = list(), outer.iterations = 30, outer.eps = 1e-04)
+findstartparambonds(p, m, cf, weights, method, tauconstr, control = list(), outer.iterations = 30, outer.eps = 1e-04)
 }
 
 \arguments{
@@ -22,7 +22,7 @@ findstartparambonds(p, m, cf, weights, method, deltatau = 0.1, control = list(),
 }
   \item{method}{form of the spot rate function
 }
-  \item{deltatau}{stepsize of the grid
+  \item{tauconstr}{
 }
   \item{control}{solver control parameters, for details see \code{\link{optim}} 
 }

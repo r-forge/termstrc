@@ -1,6 +1,6 @@
 \name{estim_nss.zeroyields}
 \alias{estim_nss.zeroyields}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{S3 estim_nss Method
 }
 \description{The method performs an iterative term structure estimation procedure
@@ -9,7 +9,7 @@
   Diebold/Li and (adjusted) Svensson. 
 }
 \usage{
-\method{estim_nss}{zeroyields}(dataset, method = "ns", lambda = 0.0609 * 12, deltatau = 1, optimtype = "allglobal", constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04), ...)
+\method{estim_nss}{zeroyields}(dataset, method = "ns", lambda = 0.0609 *12, tauconstr = NULL, optimtype = "allglobal", constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,8 +21,17 @@
   \item{lambda}{parameter on a yearly time scale with fixed value for \command{"dl"} spot rate
     function (default: 0.0609*12)
 }
-  \item{deltatau}{stepsize for parameter grid used for globally
-    optimal parameter search
+\item{tauconstr}{This is  vector with parameters for the grid search procedure containing:
+
+  For parametrizations except Diebold/Li, a grid search for the tau-parameter is performed. The parameters must lie within the following bounds.
+  
+  lower bound < [tau_1, tau_2] < upper bound
+  
+  The width of the grid is given by gridsize.
+
+  tau_2 - tau_1 > taudistance
+  
+  (upper bound, lower bound, gridsize, tau distance)
 }
   \item{optimtype}{use \command{"firstglobal"} for an inital search for
   globally optimal start parameters or \command{"allglobal"} for a
@@ -40,6 +49,17 @@
 \value{ The method returns an object of the class
   \command{"dyntermstrc_yields"}.There are print, plot and summary
   method available. 
+}
+
+\references{
+Michiel De Pooter (2007): Examining the Nelson-Siegel Class of Term Structure Models: In-Sample Fit versus Out-of-Sample Forecasting Performance.
+
+F.X. Diebold and C. Li: Forecasting the Term Structure of Government Bond Yields. \emph{Journal of Econometrics}, \bold{130}:337--364.
+
+Charles R. Nelson and Andrew F. Siegel (1987): Parsimonious Modeling of Yield Curves. \emph{The Journal of Business}, \bold{60(4)}:473--489.
+
+Lars E.O. Svensson (1994): Estimating and Interpreting Forward Interest Rates: Sweden 1992 -1994. \emph{Technical Reports 4871, National Bureau of Economic Research}.
+
 }
 
 \examples{## Run: demos(zeroyields) }

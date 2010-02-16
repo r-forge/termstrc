@@ -8,7 +8,7 @@ The algorithm searches for the parameters over a grid spanned over tau1 (tau2).
 
 
 \usage{
-findstartparamyields(y, m, method, deltatau = 0.1)
+findstartparamyields(y, m, method, tauconstr)
 }
 \arguments{
   \item{y}{yields
@@ -17,7 +17,7 @@ findstartparamyields(y, m, method, deltatau = 0.1)
 }
   \item{method}{type of spot rate function
 }
-  \item{deltatau}{stepsize of the grid 
+  \item{tauconstr}{tau parameter constraints
 }
 }
 \details{Used as internal helper function
