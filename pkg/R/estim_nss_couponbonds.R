@@ -11,7 +11,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
                                   startparam=NULL,           # startparameter matrix with columns c("beta0","beta1","beta2","tau1","beta3","tau2")
                                                              # otherwise globally optimal parameters are searched automatically
                                   lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
-                                  tauconstr = NULL,              # interval for parameter grid
+                                  tauconstr = NULL,          # constraints for tau parameter grid
                                   constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04),...
            ) {
 
@@ -33,11 +33,10 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   spsearch <- list()
   length(spsearch) <- n_group
 
+   ## default tau constraints (if not specified by user)
   if (is.null(tauconstr)) {
     tauconstr <- list()
     for (k in sgroup){
-     
-      ## default tau constraints (if not specified by user)
         tauconstr[[k]] <- c(min(m[[k]][1,]), max(m[[k]]), 5, 0.5)
         if (method == "asv") {tauconstr[[k]][4] = 0}
         print("The following constraints are used for the tau parameters:")
@@ -180,7 +179,7 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
     
   if(method %in% c("sv","asv")) {
 
-    objfct <- function(b) {
+    objfct <- function(b, m, cf, w, p) {
       bsv <- c(b[1:3],tau1[i],b[4],tau2[j])
       loss_function(p,bond_prices(method,bsv,m,cf)$bond_prices,weights)
     }
@@ -196,11 +195,12 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
     lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
     for (i in 1:length(tau1))
       {
-        print(tau1[i]) # DEBUG
+        print(i) # DEBUG
         for (j in 1:length(tau2))
           {
-            print(tau2[j]) # DEBUG
+            
             if(tau1[i] + tauconstr[4] < tau2[j]) { ## TEST
+              print(j) # DEBUG
             lsparam <- constrOptim(theta = rep(1,4),
                                    f = objfct,
                                    grad = NULL,
@@ -210,7 +210,8 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
                                    control = control,
                                    method = "Nelder-Mead",
                                    outer.iterations = outer.iterations,
-                                   outer.eps = outer.eps)
+                                   outer.eps = outer.eps,
+                                   m, cf, w, p) ## additional inputs for f and grad
               
             beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
             
