@@ -31,7 +31,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
 
   ## default tau constraints (if not specified by user)
   if (is.null(tauconstr)){
-    tauconstr <- c(min(obj$maturities), max(obj$maturities), 0.2, 0.5)
+    tauconstr <- c(min(m), max(m), 0.2, 0.5)
     print("The following constraints are used for the tau parameters:")
     print(tauconstr)
   }
