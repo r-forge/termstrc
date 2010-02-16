@@ -28,20 +28,23 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   ac=prepro$ac
   y=prepro$y
   duration=prepro$duration
-
-  ## default tau constraints (if not specified by user)
-  if (is.null(tauconstr)){
-    tauconstr <- c(min(m), max(m), 0.2, 0.5)
-    print("The following constraints are used for the tau parameters:")
-    print(tauconstr)
-  }
   
-  if (method == "asv") {tauconstr[4] = 0}
-
   ## automatically determine globally optimal start parameters
   spsearch <- list()
   length(spsearch) <- n_group
-  
+
+  if (is.null(tauconstr)) {
+    tauconstr <- list()
+    for (k in sgroup){
+     
+      ## default tau constraints (if not specified by user)
+        tauconstr[[k]] <- c(min(m[[k]][1,]), max(m[[k]]), 5, 0.5)
+        if (method == "asv") {tauconstr[[k]][4] = 0}
+        print("The following constraints are used for the tau parameters:")
+        print(tauconstr)
+    }
+  }
+
   if(is.null(startparam)){
     startparam <- matrix(ncol = 6, nrow = n_group)
     
@@ -49,16 +52,17 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
     
     if (method == "dl") {startparam <- startparam[,1:3, drop=FALSE]}
     if (method == "ns") {startparam <- startparam[,1:4, drop=FALSE]}
-    
+
     for (k in sgroup){
+      
       print(paste("Searching startparameters for ", group[k]))
       spsearch[[k]] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3],
-                                            method, tauconstr)
+                                            method, tauconstr[[k]])
       startparam[k,] <- spsearch[[k]]$startparam 
       print(startparam[k,])
     }
   }
-
+  
   rownames(startparam) <- group
   
   ## objective function (weighted price error minimization) 
@@ -67,11 +71,14 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
      	bond_prices(method,b,m[[k]],cf[[k]],lambda)$bond_prices,duration[[k]][,3])}
                   
   ## calculate optimal parameter vectors
-  constraints <- get_constraints(method, tauconstr)
+  constraints <- list()
+  for (k in sgroup){
+    constraints[[k]] <- get_constraints(method, tauconstr[[k]])
+  }
   opt_result <- list()
   
   for (k in sgroup){
-    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], obj_fct, constraints, constrOptimOptions) 
+    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], obj_fct, constraints[[k]], constrOptimOptions) 
   }
 
   ## data post processing 
@@ -188,9 +195,11 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
     fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
     lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
     for (i in 1:length(tau1))
-      { 
+      {
+        print(tau1[i]) # DEBUG
         for (j in 1:length(tau2))
           {
+            print(tau2[j]) # DEBUG
             if(tau1[i] + tauconstr[4] < tau2[j]) { ## TEST
             lsparam <- constrOptim(theta = rep(1,4),
                                    f = objfct,
