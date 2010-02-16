@@ -10,7 +10,7 @@ Zero-coupon yield curve estimation with the parametric Nelson/Siegel
 requires an object of the class \command{"couponbonds"}. 
 }
 \usage{
-\method{estim_nss}{couponbonds}(dataset, group, matrange = "all", method = "ns", startparam = NULL, lambda = 0.0609 * 12, deltatau = 0.1, constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04),...)
+\method{estim_nss}{couponbonds}(dataset, group, matrange = "all", method = "ns", startparam = NULL, lambda = 0.0609 * 12, tauconstr = NULL, constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04),...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,8 +35,7 @@ requires an object of the class \command{"couponbonds"}.
   \item{lambda}{parameter on a yearly time scale with fixed value for \command{"dl"} spot rate
     function (default: 0.0609*12)
 }
-  \item{deltatau}{intervalsize for parameter grid used for globally
-    optimal parameter search
+  \item{tauconstr}{
 }
   \item{constrOptimOptions}{list with solver control parameters
     (default: control=list(), outer.interations=30,

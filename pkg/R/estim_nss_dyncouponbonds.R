@@ -4,9 +4,8 @@
 
 estim_nss.dyncouponbonds <- function(dataset, group, matrange="all",method="ns",
                               lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
-                              deltatau=1,              # interval for parameter grid
+                              tauconstr = NULL,              # tau constraints
                               optimtype = "firstglobal", # 'firstglobal' of 'allglobal'
-                             # nlmbinbOptions = list(control = list(iter.max = 1500, eval.max = 1500,trace)),
                               constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04), ...
                      ) {
   
@@ -22,7 +21,7 @@ estim_nss.dyncouponbonds <- function(dataset, group, matrange="all",method="ns",
     
     ## static estimation
     bonddata <- dataset[[i]]
-    res[[i]] <- estim_nss(bonddata, group, matrange, method=method, startparam=b, lambda=lambda,deltatau,constrOptimOptions)
+    res[[i]] <- estim_nss(bonddata, group, matrange, method=method, startparam=b, lambda=lambda,tauconstr,constrOptimOptions)
   }
   class(res) <- "dyntermstrc_nss"
 

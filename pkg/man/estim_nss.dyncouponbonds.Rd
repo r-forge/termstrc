@@ -10,7 +10,7 @@
 
 }
 \usage{
-\method{estim_nss}{dyncouponbonds}(dataset, group, matrange = "all", method = "ns", lambda = 0.0609 * 12, deltatau = 1, optimtype = "firstglobal", constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04), ...)
+\method{estim_nss}{dyncouponbonds}(dataset, group, matrange = "all", method = "ns", lambda = 0.0609 * 12, tauconstr = NULL, optimtype = "firstglobal", constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04), ...)
 }
 
 \arguments{
@@ -27,8 +27,7 @@
   \item{lambda}{parameter on a yearly time scale with fixed value for \command{"dl"} spot rate
     function (default: 0.0609*12)
 }
-  \item{deltatau}{stepsize for parameter grid used for globally
-    optimal parameter search
+  \item{tauconstr}{
 }
   \item{optimtype}{use \command{"firstglobal"} for an inital search for
   globally optimal start parameters or \command{"allglobal"} for a
