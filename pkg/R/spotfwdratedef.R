@@ -136,7 +136,7 @@ grad_objfct_ns <- function(beta, m, y)
 ### Svensson loss function for yields
 objfct_sv <- function(beta, m, y)
       {
-        sqrt(sum((y - spr_sv(beta,m))^2))
+        sum((y - spr_sv(beta,m))^2)
       }
 
 ### Gradient of Svensson loss function for yields
@@ -267,4 +267,11 @@ get_constraints <- function(method, tauconstr) {
   constraints <- list(ui = ui, ci = ci)
   constraints
 }
+
+### Svensson grid loss function for bonds 
+objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
+      bsv <- c(beta[1:3],tau[1],beta[4],tau[2])
+      
+      sum(w*((p - bond_prices("sv",bsv,m,cf)$bond_prices)^2))
+    }
 
