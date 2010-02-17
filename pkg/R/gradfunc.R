@@ -23,7 +23,7 @@ grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p){
   dm <- d*m
   
   gbeta1 <- sum(b*(-colSums(dm,na.rm=TRUE)))
-  gbeta2 <- sum(b*(-colSums(d*tau[1]*(1-emt1))),na.rm=TRUE)
+  gbeta2 <- sum(b*(-colSums(d*tau[1]*(1-emt1),na.rm=TRUE)))
   gbeta3 <- sum(b*(-colSums(dm*(-emt1 +tau[1]*(1-emt1)/m),na.rm=TRUE)))
   gbeta5 <- sum(b*(-colSums(dm*(-emt2 + (tau[2]*(1 - emt2))/m),na.rm=TRUE)))            
 
