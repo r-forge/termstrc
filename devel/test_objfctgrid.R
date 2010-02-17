@@ -1,4 +1,6 @@
 rm(list = ls())
+library("Rcpp")
+library("inline")
 
 library(termstrc)
 data(govbonds)
@@ -18,29 +20,73 @@ objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
 
 grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p){
 
-  a <- exp((-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - beta[4]*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m)*m/100)
+  emt1 <- exp(-m/tau[1])
+  emt2 <- exp(-m/tau[2])
+  t1emt1 <- tau[1]*(1 - emt1)
+  emt1tm <- (-emt1 + t1emt1/m)
+  emt2tm <- (-emt2 + tau[2]*(1 - emt2)/m)
+  
 
-  a[is.nan(a)] <- 0
-  b <- -2*w*(p-apply(a*cf,2,sum))
-  d <- a*cf/100
+  a <- exp((-beta[1] - beta[3]*emt1tm - beta[4]*emt2tm - (beta[2]*t1emt1)/m)*m/100)
+
+ 
+  acf <- a*cf
+  b <- -2*w*(p-cSums(acf,na.rm=TRUE))
+  d <- acf/100
   dm <- d*m
   
-  gbeta1 <- sum(b*(-apply(dm,2,sum)))
-  gbeta2 <- sum(b*(-apply(d*tau[1]*(1-exp(-m/tau[1])),2,sum)))
-
-  b3 <- dm*(-exp(-m/tau[1]) +tau[1]*(1-exp(-m/tau[1]))/m)
-  b3[is.nan(b3)] <- 0
-  gbeta3 <- sum(b*(-apply(b3,2,sum)))
+  gbeta1 <- sum(b*(-cSums(dm,na.rm=TRUE)))
+  gbeta2 <- sum(b*(-cSums(d*t1emt1,na.rm=TRUE)))
+  gbeta3 <- sum(b*(-cSums(dm*emt1tm, na.rm=TRUE)))
+  gbeta5 <- sum(b*(-cSums(dm*emt2tm, na.rm=TRUE)))
   
-  b5 <- dm*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m)
-  b5[is.nan(b5)] <- 0
-  gbeta5 <- sum(b*(-apply(b5,2,sum)))            
-
-
   c(gbeta1,gbeta2,gbeta3,gbeta5)
 }
 
+cSums <- function (x, na.rm = FALSE, dims = 1L) {
+    dn <- dim(x)
+    n <- prod(dn[1L:dims])
+    dn <- dn[-(1L:dims)]
+    z <-  .Internal(colSums(x, n, prod(dn), na.rm))
+    z
+}
+
+
+objfct_sv_bonds_gridCpp <- '
+	RcppVector<double> betac(beta);
+	RcppVector<double> tauc(tau);
+	RcppMatrix<double> mc(m);
+	RcppMatrix<double> cfc(cf);
+	RcppVector<double> wc(w);
+	RcppVector<double> pc(p);
+	RcppVector<double> phat(pc.size());
+	
+	int i = 0;
+	int j = 0;
+	double s;
+        double mse = 0;
+	
+	for (j = 0; j<mc.cols(); j++) {
+                i = 0;
+		while (i<mc.rows() && mc(i,j)>0) {
+			s =  (betac(0) + betac(1) * ((1 - exp(-mc(i,j)/tauc(0)))/(mc(i,j)/tauc(0))) +
+				  betac(2) * (((1 - exp(-mc(i,j)/tauc(0)))/(mc(i,j)/tauc(0))) - exp(-mc(i,j)/tauc(0))) +
+				  betac(3) * (((1 - exp(-mc(i,j)/tauc(1)))/(mc(i,j)/tauc(1))) - exp(-mc(i,j)/tauc(1))))/100;
+
+			phat(j) += cfc(i,j)*exp(-s*mc(i,j));
+			i++;
+		}
+	mse += pow(pc(j) - phat(j),2)*wc(j);
+	}
+	
+	return Rcpp::wrap(mse);
+        '
+
+objfct_sv_bonds_gridC <- cfunction(signature(beta="numeric", tau="numeric", m="numeric", cf="numeric", w="numeric", p="numeric"), objfct_sv_bonds_gridCpp, Rcpp=TRUE, verbose=FALSE)
+
 objfct_sv_bonds_grid(beta, tau, m, cf, w, p)
+objfct_sv_bonds_gridC(beta, tau, m, cf, w, p)
+grad_sv_bonds_grid(beta, tau, m, cf, w, p)
 
 control = list()
 outer.iterations = 30
@@ -50,7 +96,7 @@ ui <- rbind(c(1,0,0,0),                 # beta0 > 0
             c(1,1,0,0))                 # beta0 + beta1 > 0
 ci <- c(0,0)
 
-system.time(
+
 lsparam <- constrOptim(theta = rep(0.01,4),
                        f = objfct_sv_bonds_grid,
                        grad = NULL,
@@ -62,9 +108,8 @@ lsparam <- constrOptim(theta = rep(0.01,4),
                        outer.iterations = outer.iterations,
                        outer.eps = outer.eps,
                        tau, m, cf, w, p) ## additional inputs for f and grad
-)
 
-system.time(
+
 lsparam2 <- constrOptim(theta = rep(0.01,4),
                         f = objfct_sv_bonds_grid,
                         grad = grad_sv_bonds_grid,
@@ -76,12 +121,25 @@ lsparam2 <- constrOptim(theta = rep(0.01,4),
                         outer.iterations = outer.iterations,
                         outer.eps = outer.eps,
                         tau, m, cf, w, p) ## additional inputs for f and grad
-)
 
-## ab hier schas
+lsparam3 <- constrOptim(theta = rep(0.01,4),
+                       f = objfct_sv_bonds_gridC,
+                       grad = NULL,
+                       ui = ui,
+                       ci = ci,
+                       mu = 1e-04,
+                       control = control,
+                       method = "Nelder-Mead",
+                       outer.iterations = outer.iterations,
+                       outer.eps = outer.eps,
+                       tau, m, cf, w, p) ## additional inputs for f and grad
+
+## TESTING
+
+N <- 20
 
 test1 <- function() {
-  for (i in 1:5) {
+  for (i in 1:N) {
     lsparam <- constrOptim(theta = rep(0.01,4),
                        f = objfct_sv_bonds_grid,
                        grad = NULL,
@@ -97,7 +155,7 @@ test1 <- function() {
 }
 
 test2 <- function() {
-  for (i in 1:5) {
+  for (i in 1:N) {
     lsparam2 <- constrOptim(theta = rep(0.01,4),
                         f = objfct_sv_bonds_grid,
                         grad = grad_sv_bonds_grid,
@@ -112,9 +170,41 @@ test2 <- function() {
   }
 }
 
+test3 <- function() {
+  for (i in 1:N) {
+    lsparam <- constrOptim(theta = rep(0.01,4),
+                       f = objfct_sv_bonds_gridC,
+                       grad = NULL,
+                       ui = ui,
+                       ci = ci,
+                       mu = 1e-04,
+                       control = control,
+                       method = "Nelder-Mead",
+                       outer.iterations = outer.iterations,
+                       outer.eps = outer.eps,
+                       tau, m, cf, w, p) ## additional inputs for f and grad
+  }
+}
+
+test4 <- function() {
+  for (i in 1:N) {
+    lsparam2 <- constrOptim(theta = rep(0.01,4),
+                        f = objfct_sv_bonds_gridC,
+                        grad = grad_sv_bonds_grid,
+                        ui = ui,
+                        ci = ci,
+                        mu = 1e-04,
+                        control = control,
+                        method = "BFGS",
+                        outer.iterations = outer.iterations,
+                        outer.eps = outer.eps,
+                        tau, m, cf, w, p) ## additional inputs for f and grad
+  }
+}
 system.time(test1())
 system.time(test2())
-
+system.time(test3())
+system.time(test4())
 
 
 objfct_sv_bonds_grid2 <- function(beta, tau, m, cf, w, p) {
@@ -140,4 +230,18 @@ test2()
 Rprof(NULL)
 summaryRprof()
 
+test3 <- function() {
+  for (i in 1:5) {
+ grad_sv_bonds_grid(beta, tau, m, cf, w, p)
+}
+}
 
+Rprof()
+test3()
+Rprof(NULL)
+summaryRprof()
+
+Rprof()
+ for(i in 1:10000) grad_sv_bonds_grid(beta,tau,m,cf,w,p)
+ Rprof(NULL)
+summaryRprof()
