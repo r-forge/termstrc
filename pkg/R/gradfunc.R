@@ -1,28 +1,39 @@
 
+# beta <- rep(1,4)
+# tau <- rep(1,2)
+# m <- matrix(1:10,10,10)
+# cf <- matrix(c(rep(3,9),103),10,10)
+# w <- rep(1,10)
+# p <- rep(100,10)
+
+
+
+
 grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p){
 
-a <- exp((-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - beta[4]*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m)*m)
+  a <- exp((-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - beta[4]*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m)*m)
+
+  b <- -2*w*(p-apply(a*cf,2,sum))
+  d <- a*cf
+  dm <- d*m
+  
+  gbeta1 <- sum(b*(-apply(dm,2,sum)))
+  gbeta2 <- sum(b*(-apply(d*tau[1]*(1-exp(-m/tau[1])),2,sum)))
+  gbeta3 <- sum(b*(-apply(dm*(-exp(-m/tau[1]) +tau[1]*(1-exp(-m/tau[1]))/m),2,sum)))
+  gbeta4 <- sum(b*(-apply(dm*(-beta[2]*exp(-m/tau[1])/tau[1] + beta[2]*(1-exp(-m/tau[1]))/m + beta[3]*(-exp(-m/tau[1])/tau[1]+ (1-exp(-m/tau[1]))/m - exp(-m/tau[1])*m/tau[1]^2)),2,sum)))                      
 
 
-# general term : sum(-2(p-A*cf)*(-apply(A*Cf*m*st,2,sum))*w
-#st = specific term 
-
+  c(gbeta1,gbeta2,gbeta3,gbeta4)
 }
 
 
+grad_sv_bonds <- function(beta,tau,m,cf,w,p){
 
-                                                                                                                                    # beta2 specific term
-                                                                                                                                    #   beta4
-#   1 - exp(-m/beta4)
-# beta3 specific term
-#  -exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m
+  gbeta5 <- sum(b*(-apply(dm*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m),2,sum)))
+  gbeta6 <- sum(b*(-apply(dm*beta[4]*( -exp(-m/tau[2])/tau[2] + (1-exp(-m/tau[2]))/m - exp(-m/tau[2])*m/tau[2]^2),2,sum)))
+  
+  c(grad_sv_bonds_grid(beta,tau,m,cf,w,p),gbeta5,gbeta6)
 
-# beta 4 specific term
-#          -(beta[2]/(tau[1]*exp(m/tau[1]))) + (beta[2]*(1 - exp(-m/tau[1])))/m + 
-#   beta[3]*(-(1/(tau[1]*exp(m/tau[1]))) + (1 - exp(-m/tau[1]))/m - m/(Power(tau[1],2)*exp(m/tau[1])))
 
-# beta5 specific term
-#          -exp(-m/beta6) + (beta6*(1 - exp(-m/beta6)))/m
-# beta6 specific term
-#beta6
-#          -(1/(beta6*exp(m/beta6))) + (1 - exp(-m/beta6))/m - m/(Power(beta6,2)*exp(m/beta6))
+}
+
