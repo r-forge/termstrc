@@ -197,8 +197,9 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
             if(tau1[i] + tauconstr[4] < tau2[j]) { ## TEST
               print(j) # DEBUG
               
-              lsparam <- constrOptim(theta = rep(1,4),
+              lsparam <- constrOptim(theta = rep(0.01,4),
                                      f = objfct_sv_bonds_grid,
+                                     #grad = grad_sv_bonds_grid,
                                      grad = NULL,
                                      ui = ui,
                                      ci = ci,
@@ -208,7 +209,7 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
                                      outer.iterations = outer.iterations,
                                      outer.eps = outer.eps,
                                      c(tau1[i], tau2[j]), m, cf, weights, p) ## additional inputs for f and grad
-              
+              browser()
               beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
               
               fmin[i,j] <- lsparam$value

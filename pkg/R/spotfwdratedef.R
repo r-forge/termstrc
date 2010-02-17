@@ -271,7 +271,10 @@ get_constraints <- function(method, tauconstr) {
 ### Svensson grid loss function for bonds 
 objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
       bsv <- c(beta[1:3],tau[1],beta[4],tau[2])
-      
-      sum(w*((p - bond_prices("sv",bsv,m,cf)$bond_prices)^2))
+      phat <- bond_prices("sv",bsv,m,cf)$bond_prices
+      sum(w*((p - phat)^2))
     }
+
+### Gradient of Svensson loss function for bonds
+
 
