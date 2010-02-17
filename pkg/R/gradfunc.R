@@ -27,7 +27,7 @@ grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p){
   dm <- d*m
   
   gbeta1 <- sum(b*(-cSums(dm,na.rm=TRUE)))
-  gbeta2 <- sum(b*(-cSums(d*t1emt1,na.rm=TRUE)))
+  gbeta2 <- sum(b*(-cSums(d*t1emt1, na.rm=TRUE)))
   gbeta3 <- sum(b*(-cSums(dm*emt1tm, na.rm=TRUE)))
   gbeta5 <- sum(b*(-cSums(dm*emt2tm, na.rm=TRUE)))            
 
@@ -38,36 +38,33 @@ grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p){
 
 grad_sv_bonds <- function(beta,tau,m,cf,w,p){
 
-   a <- exp((-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - beta[4]*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m)*m/100)
+  emt1 <- exp(-m/tau[1])
+  emt2 <- exp(-m/tau[2])
+  oemt1 <- (1-emt1)
+  t1emt1 <- tau[1]*oemt1
+  emt1tm <- (-emt1 + t1emt1/m)
+  emt2tm <- (-emt2 + tau[2]*(1 - emt2)/m)
+  emt1t <- emt1/tau[1]
+  emt2t <- emt2/tau[2]
 
-  a[is.nan(a)] <- 0
-  b <- -2*w*(p-colSums(a*cf))
-  d <- a*cf/100
+  a <- exp((-beta[1] - beta[3]*emt1tm - beta[4]*emt2tm - (beta[2]*t1emt1)/m)*m/100)
+
+ 
+  acf <- a*cf
+  b <- -2*w*(p-cSums(acf,na.rm=TRUE))
+  d <- acf/100
   dm <- d*m
   
-  gbeta1 <- sum(b*(-colSums(dm)))
-  gbeta2 <- sum(b*(-colSums(d*tau[1]*(1-exp(-m/tau[1])))))
-
-  b3 <- dm*(-exp(-m/tau[1]) +tau[1]*(1-exp(-m/tau[1]))/m)
-  b3[is.nan(b3)] <- 0
-  gbeta3 <- sum(b*(-colSums(b3)))
-
-  b4 <- dm*(-beta[2]*exp(-m/tau[1])/tau[1] + beta[2]*(1-exp(-m/tau[1]))/m + beta[3]*(-exp(-m/tau[1])/tau[1]+ (1-exp(-m/tau[1]))/m - exp(-m/tau[1])*m/tau[1]^2))
-  b4[is.nan(b4)] <- 0
-  gbeta4 <- sum(b*(-colSums(b4)))
-   
-  b5 <- dm*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m)
-  b5[is.nan(b5)] <- 0
-  gbeta5 <- sum(b*(-colSums(b5)))   
-
-  b6 <- dm*beta[4]*( -exp(-m/tau[2])/tau[2] + (1-exp(-m/tau[2]))/m - exp(-m/tau[2])*m/tau[2]^2)
-  b6[is.nan(b6)] <- 0 
-  gbeta6 <- sum(b*(-colSums(b6)))
+  gbeta1 <- sum(b*(-cSums(dm,na.rm=TRUE)))
+  gbeta2 <- sum(b*(-cSums(d*t1emt1, na.rm=TRUE)))
+  gbeta3 <- sum(b*(-cSums(dm*emt1tm, na.rm=TRUE)))
+  gbeta5 <- sum(b*(-cSums(dm*emt2tm, na.rm=TRUE)))     
+  gbeta4 <- sum(b*(-cSums( dm*(-beta[2]*emt1t + beta[2]*oemt1/m + beta[3]*(-emt1t+ oemt1/m - emt1t*m/tau[1])),na.rm=TRUE)))
+  gbeta6 <- sum(b*(-cSums(dm*beta[4]*( -emt2t + (1-emt2)/m - emt2t*m/tau[2]),na.rm=TRUE)))
 
   c(gbeta1,gbeta2,gbeta3,gbeta4,gbeta5,gbeta6)
   
 }
-
 
 
 cSums <- function (x, na.rm = FALSE, dims = 1L) {
@@ -77,3 +74,32 @@ cSums <- function (x, na.rm = FALSE, dims = 1L) {
     z <-  .Internal(colSums(x, n, prod(dn), na.rm))
     z
 }
+
+grad_ns_bonds_grid <- function(beta, tau, m, cf, w, p){
+
+}
+
+
+grad_ns_bonds <- function(beta, tau, m, cf, w, p){
+   emt1 <- exp(-m/tau[1])
+   oemt1 <- (1-emt1)
+   t1emt1 <- tau[1]*oemt1
+   emt1tm <- (-emt1 + t1emt1/m)
+   emt1t <- emt1/tau[1]
+ 
+   a <- exp(-((beta[1] + beta[3]*(-emt1 +t1emt1/m) + 
+         (beta[2]*t1emt1)/m)*m)/100)
+
+   acf <- a*cf
+   b <- -2*w*(p-cSums(acf,na.rm=TRUE))
+   d <- acf/100
+   dm <- d*m
+
+   gbeta1 <- sum(b*(-Csums(dm,na.rm=TRUE)))
+   gbeta2 <- sum(b*(-cSums(d*t1emt1, na.rm=TRUE)))
+   gbeta3 <- sum(b*(-cSums(dm*emt1tm, na.rm=TRUE)))
+   gbeta5 <- sum(b*(-cSums(dm*emt2tm, na.rm=TRUE)))     
+   gbeta4 <- sum(b*(-cSums( dm*(-beta[2]*emt1t + beta[2]*oemt1/m + beta[3]*(-emt1t+ oemt1/m - emt1t*m/tau[1])),na.rm=TRUE)))
+}
+
+
