@@ -22,14 +22,14 @@ grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p){
 
  
   acf <- a*cf
-  b <- -2*w*(p-colSums(acf,na.rm=TRUE))
+  b <- -2*w*(p-cSums(acf,na.rm=TRUE))
   d <- acf/100
   dm <- d*m
   
-  gbeta1 <- sum(b*(-colSums(dm,na.rm=TRUE)))
-  gbeta2 <- sum(b*(-colSums(d*t1emt1,na.rm=TRUE)))
-  gbeta3 <- sum(b*(-colSums(dm*emt1tm, na.rm=TRUE)))
-  gbeta5 <- sum(b*(-colSums(dm*emt2tm, na.rm=TRUE)))            
+  gbeta1 <- sum(b*(-cSums(dm,na.rm=TRUE)))
+  gbeta2 <- sum(b*(-cSums(d*t1emt1,na.rm=TRUE)))
+  gbeta3 <- sum(b*(-cSums(dm*emt1tm, na.rm=TRUE)))
+  gbeta5 <- sum(b*(-cSums(dm*emt2tm, na.rm=TRUE)))            
 
 
   c(gbeta1,gbeta2,gbeta3,gbeta5)
