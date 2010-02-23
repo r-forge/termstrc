@@ -96,7 +96,6 @@ get_objfct <- function(method) {
                    "ns" = objfct_ns,
                    "sv" = objfct_sv,
                    "asv" = objfct_asv)
-  # TODO: replace with swich for spot rate function and remove objfct_*
 }
 
 ### Gradient of loss function for parametric methods
@@ -268,6 +267,23 @@ get_constraints <- function(method, tauconstr) {
   constraints
 }
 
+### Loss function for parametric methods
+get_objfct_bonds <- function(method) {
+  objfct <- switch(method,
+                   "ns" = objfct_ns_bonds,
+                   "sv" = objfct_sv_bonds,
+                   "asv" = objfct_asv_bonds)
+}
+
+### Gradient of loss function for parametric methods
+get_grad_objfct_bonds <- function(method) {
+  grad_objfct <- switch(method,
+                   "ns" = grad_objfct_ns_bonds,
+                   "sv" = grad_objfct_sv_bonds,
+                   "asv" = grad_objfct_asv_bonds)
+}
+
+
 ### Svensson grid loss function for bonds 
 objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
       bsv <- c(beta[1:3],tau[1],beta[4],tau[2])
@@ -276,9 +292,9 @@ objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
     }
 
 ### Svensson grid loss function for bonds  - Rcpp version
-objfct_sv_bonds_gridC <- function(beta, tau, m, cf, w, p) {
-  .Call( "objfct_sv_bonds_gridCpp", PACKAGE = "termstrc" )
-    }
+## objfct_sv_bonds_gridC <- function(beta, tau, m, cf, w, p) {
+##   .Call( "objfct_sv_bonds_gridCpp", PACKAGE = "termstrc" )
+##     }
 
 
 ### Gradient of Svensson loss function for bonds

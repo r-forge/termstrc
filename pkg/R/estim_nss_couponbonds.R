@@ -65,10 +65,15 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   rownames(startparam) <- group
   
   ## objective function (weighted price error minimization) 
-  obj_fct <- function(b) {
+  objfct <- function(b) {
      loss_function(p[[k]],
      	bond_prices(method,b,m[[k]],cf[[k]],lambda)$bond_prices,duration[[k]][,3])}
-                  
+
+
+  
+  ## gradient objective function
+  grad_objfct <- get_grad_objfct_bonds(method)
+  
   ## calculate optimal parameter vectors
   constraints <- list()
   for (k in sgroup){
@@ -77,7 +82,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   opt_result <- list()
   
   for (k in sgroup){
-    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], obj_fct, constraints[[k]], constrOptimOptions) 
+    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], objfct, grad_objfct, constraints[[k]], constrOptimOptions) 
   }
 
   ## data post processing 
@@ -116,16 +121,16 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
 
 ### Estimate zero-coupon yield curve
 
-estimatezcyieldcurve <- function(method, startparam, obj_fct, constraints, constrOptimOptions) {
+estimatezcyieldcurve <- function(method, startparam, objfct, grad_objfct, constraints, constrOptimOptions) {
 
       opt_result <- constrOptim(theta = startparam,
-                                f = obj_fct,
-                                grad = NULL,
+                                f = objfct,
+                                grad = grad_objfct,
                                 ui = constraints$ui,
                                 ci = constraints$ci,
                                 mu = 1e-04,
                                 control = constrOptimOptions$control,
-                                method = "Nelder-Mead",
+                                method = "BFGS",
                                 outer.iterations = constrOptimOptions$outer.iterations,
                                 outer.eps = constrOptimOptions$outer.eps)
 
@@ -199,17 +204,16 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
               
               lsparam <- constrOptim(theta = rep(0.01,4),
                                      f = objfct_sv_bonds_grid,
-                                     #grad = grad_sv_bonds_grid,
-                                     grad = NULL,
+                                     grad = grad_sv_bonds_grid,
                                      ui = ui,
                                      ci = ci,
                                      mu = 1e-04,
                                      control = control,
-                                     method = "Nelder-Mead",
+                                     method = "BFGS",
                                      outer.iterations = outer.iterations,
                                      outer.eps = outer.eps,
                                      c(tau1[i], tau2[j]), m, cf, weights, p) ## additional inputs for f and grad
-              browser()
+              
               beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
               
               fmin[i,j] <- lsparam$value

@@ -1,14 +1,4 @@
 
-# beta <- rep(1,4)
-# tau <- rep(1,2)
-# m <- matrix(1:10,10,10)
-# cf <- matrix(c(rep(3,9),103),10,10)
-# w <- rep(1,10)
-# p <- rep(100,10)
-
-
-
-
 grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p){
 
   emt1 <- exp(-m/tau[1])
