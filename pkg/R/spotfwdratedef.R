@@ -275,6 +275,12 @@ objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
       sum(w*((p - phat)^2))
     }
 
+### Svensson grid loss function for bonds  - Rcpp version
+objfct_sv_bonds_gridC <- function(beta, tau, m, cf, w, p) {
+  .Call( "objfct_sv_bonds_gridCpp", PACKAGE = "termstrc" )
+    }
+
+
 ### Gradient of Svensson loss function for bonds
 
 
