@@ -65,12 +65,8 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   rownames(startparam) <- group
   
   ## objective function (weighted price error minimization) 
-  objfct <- function(b) {
-     loss_function(p[[k]],
-     	bond_prices(method,b,m[[k]],cf[[k]],lambda)$bond_prices,duration[[k]][,3])}
+  objfct <- get_objfct_bonds(method)
 
-
-  
   ## gradient objective function
   grad_objfct <- get_grad_objfct_bonds(method)
   
@@ -82,7 +78,8 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   opt_result <- list()
   
   for (k in sgroup){
-    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], objfct, grad_objfct, constraints[[k]], constrOptimOptions) 
+    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], objfct, grad_objfct, constraints[[k]],
+                                            constrOptimOptions, m[[k]], cf[[k]], duration[[k]][,3], p[[k]]) 
   }
 
   ## data post processing 
@@ -121,7 +118,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
 
 ### Estimate zero-coupon yield curve
 
-estimatezcyieldcurve <- function(method, startparam, objfct, grad_objfct, constraints, constrOptimOptions) {
+estimatezcyieldcurve <- function(method, startparam, objfct, grad_objfct, constraints, constrOptimOptions, m, cf, weights, p) {
 
       opt_result <- constrOptim(theta = startparam,
                                 f = objfct,
@@ -132,7 +129,8 @@ estimatezcyieldcurve <- function(method, startparam, objfct, grad_objfct, constr
                                 control = constrOptimOptions$control,
                                 method = "BFGS",
                                 outer.iterations = constrOptimOptions$outer.iterations,
-                                outer.eps = constrOptimOptions$outer.eps)
+                                outer.eps = constrOptimOptions$outer.eps,
+                                m, cf, weights, p)
 
     opt_result
 }
@@ -154,7 +152,7 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
     fmin <- rep(NA, length(tau))
     lsbeta <- matrix(nrow = length(tau), ncol = 4)
 
-    objfct <- function(b) {
+    objfct <- function(b) { # TODO
       loss_function(p,bond_prices("dl",b,m,cf,1/tau[i])$bond_prices,weights)
     }
 
@@ -199,7 +197,7 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
         for (j in 1:length(tau2))
           {
             
-            if(tau1[i] + tauconstr[4] < tau2[j]) { ## TEST
+            if(tau1[i] + tauconstr[4] < tau2[j]) {
               print(j) # DEBUG
               
               lsparam <- constrOptim(theta = rep(0.01,4),
@@ -248,7 +246,9 @@ plot.spsearch <- function(x, rgl = TRUE, ...) {
       }
       else {
         par(ask = TRUE)
-        persp(x$tau[,1], x$tau[,2], log(x$fmin), col = "green3", box = TRUE, xlab = "tau_1", ylab = "tau_2", zlab = "Log(Objective function)", shade = TRUE, ticktype = "detailed", border = NA, cex.lab = 1, cex.axis = 0.7,  theta = 0, phi = 25, r = sqrt(3), d = 1, scale = TRUE, expand = 1, ltheta = 135, lphi = 0)
+        persp(x$tau[,1], x$tau[,2], log(x$fmin), col = "green3", box = TRUE, xlab = "tau_1", ylab = "tau_2", zlab = "Log(Objective function)",
+              shade = TRUE, ticktype = "detailed", border = NA, cex.lab = 1, cex.axis = 0.7,  theta = 0, phi = 25, r = sqrt(3),
+              d = 1, scale = TRUE, expand = 1, ltheta = 135, lphi = 0)
       }
   } else {
       plot(x$tau,log(x$fmin),xlab = "tau_1", ylab = "Log(Objective function)", type = "l")
