@@ -278,11 +278,17 @@ get_objfct_bonds <- function(method) {
 ### Gradient of loss function for parametric methods
 get_grad_objfct_bonds <- function(method) {
   grad_objfct <- switch(method,
-                   "ns" = grad_objfct_ns_bonds,
-                   "sv" = grad_objfct_sv_bonds,
-                   "asv" = grad_objfct_asv_bonds)
+                   "ns" = grad_ns_bonds,
+                   "sv" = grad_sv_bonds,
+                   "asv" = grad_asv_bonds)
 }
 
+
+### Svensson loss function for bonds 
+objfct_sv_bonds <- function(beta, m, cf, w, p) {
+      phat <- bond_prices("sv",beta,m,cf)$bond_prices
+      sum(w*((p - phat)^2))
+    }
 
 ### Svensson grid loss function for bonds 
 objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
