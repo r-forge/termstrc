@@ -8,7 +8,7 @@ print.termstrc_nss <-
   parameters <- mapply(function(i) x$opt_result[[i]]$par,seq_along(x$opt_result))
   colnames(parameters) <- names(x$opt_result)
   rownames(parameters) <- get_paramnames(x$method)
-  print.default(format(parameters,digits=6),quote=FALSE)
+  print.default(format(parameters,digits=6,scientific=FALSE),quote=FALSE)
   cat("\n")
 
 }
@@ -128,7 +128,7 @@ print.summary.termstrc_nss <-
     cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
     cat("\n")
-    print.default(format(x$gof,digits=6),quote=FALSE)
+    print.default(format(x$gof,digits=6,scientific=FALSE),quote=FALSE)
     cat("\n")
     cat("\n")
     cat("---------------------------------------------------\n")

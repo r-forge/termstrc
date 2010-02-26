@@ -8,7 +8,7 @@ print.dyntermstrc_yields <- function(x, ...){
   cat("Parameter summary:\n")
   cat("---------------------------------------------------\n")
   tsparam <- param.dyntermstrc_yields(x)
-   print.default(format(lapply(tsparam,summary.default),digits=6),quote=FALSE)
+   print.default(format(lapply(tsparam,summary.default),digits=6,scientific=FALSE),quote=FALSE)
   cat("---------------------------------------------------\n")
 }
 
@@ -39,7 +39,7 @@ print.summary.dyntermstrc_yields <- function(x,...) {
     cat("Goodness of fit:\n")
     cat("---------------------------------------------------\n")
 
-     print.default(format(x$gof,digits=6),quote=FALSE)
+     print.default(format(x$gof,digits=6,scientific=FALSE),quote=FALSE)
 
     if (length(x) > 1) {
       cat("\n")
