@@ -47,8 +47,7 @@ estim_nss.zeroyields <- function (dataset,
 
       ## Estimation loop
       
-      for (i in 1:nrow(obj$yields)){
-       
+      for (i in 1:nrow(obj$yields)){  
         yields <- obj$yields[i,]
         
         if (i==1) {
