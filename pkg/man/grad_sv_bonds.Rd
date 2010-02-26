@@ -8,13 +8,11 @@
 Calculates the gradient of the objective function. The objective function minimizes the sum of the weighted squared price errors. The spot rate function is based on Svensson. 
 }
 \usage{
-grad_sv_bonds(beta, tau, m, cf, w, p)
+grad_sv_bonds(beta, m, cf, w, p)
 }
 
 \arguments{
   \item{beta}{Spot rate parameter vector
-}
-  \item{tau}{Spot rate parameter vector
 }
   \item{m}{maturity matrix
 }
