@@ -13,7 +13,7 @@ grad_asv_bonds_grid(beta, tau, m, cf, w, p)
 \arguments{
   \item{beta}{Spot rate parameter vector
 }
-  \item{tau}{Spot rate parameter vector
+  \item{tau}{fixed parameters
 }
   \item{m}{maturity matrix
 }
