@@ -37,7 +37,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   if (is.null(tauconstr)) {
     tauconstr <- list()
     for (k in sgroup){
-        tauconstr[[k]] <- c(min(m[[k]][1,]), max(m[[k]]), 5, 0.5)
+        tauconstr[[k]] <- c(min(m[[k]][1,]), max(m[[k]]), 1, 0.5)
         if (method == "asv") {tauconstr[[k]][4] = 0}
         print("The following constraints are used for the tau parameters:")
         print(tauconstr)
@@ -53,7 +53,6 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
     if (method == "ns") {startparam <- startparam[,1:4, drop=FALSE]}
 
     for (k in sgroup){
-      
       print(paste("Searching startparameters for ", group[k]))
       spsearch[[k]] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3],
                                             method, tauconstr[[k]])
@@ -76,7 +75,6 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
     constraints[[k]] <- get_constraints(method, tauconstr[[k]])
   }
   opt_result <- list()
-  
   for (k in sgroup){
     opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], objfct, grad_objfct, constraints[[k]],
                                             constrOptimOptions, m[[k]], cf[[k]], duration[[k]][,3], p[[k]]) 
