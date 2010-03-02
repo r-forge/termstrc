@@ -1,2 +1,2 @@
-useDynLib(foo)
+useDynLib(objfctsvgrid)
 exportPattern("^[[:alpha:]]+")
