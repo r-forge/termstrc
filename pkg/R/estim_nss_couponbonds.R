@@ -37,13 +37,14 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   if (is.null(tauconstr)) {
     tauconstr <- list()
     for (k in sgroup){
-        tauconstr[[k]] <- c(min(m[[k]][1,]), max(m[[k]]), 1, 0.5)
+        tauconstr[[k]] <- c(min(m[[k]][1,]), max(m[[k]]), 0.5, 0.5)
         if (method == "asv") {tauconstr[[k]][4] = 0}
+        if (method!="dl"){
         print("The following constraints are used for the tau parameters:")
-        print(tauconstr)
+        print(tauconstr)}
     }
   }
-
+  
   if(is.null(startparam)){
     startparam <- matrix(ncol = 6, nrow = n_group)
     
@@ -53,6 +54,10 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
     if (method == "ns") {startparam <- startparam[,1:4, drop=FALSE]}
 
     for (k in sgroup){
+      ## check if grid size is too large
+      if((tauconstr[[k]][1] + tauconstr[[k]][3]) > (tauconstr[[k]][2] - tauconstr[[k]][3])) warning("Grid step size is too large!")
+      if((tauconstr[[k]][1] + 3*tauconstr[[k]][3]) > tauconstr[[k]][2]) warning("Grid step size is too large!")
+         
       print(paste("Searching startparameters for ", group[k]))
       spsearch[[k]] <- findstartparambonds(p[[k]],m[[k]],cf[[k]], duration[[k]][,3],
                                             method, tauconstr[[k]])
@@ -76,7 +81,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
   }
   opt_result <- list()
   for (k in sgroup){
-    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], objfct, grad_objfct, constraints[[k]],
+    opt_result[[k]] <- estimatezcyieldcurve(method, startparam[k,], lambda, objfct, grad_objfct, constraints[[k]],
                                             constrOptimOptions, m[[k]], cf[[k]], duration[[k]][,3], p[[k]]) 
   }
 
@@ -116,8 +121,21 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
 
 ### Estimate zero-coupon yield curve
 
-estimatezcyieldcurve <- function(method, startparam, objfct, grad_objfct, constraints, constrOptimOptions, m, cf, weights, p) {
+estimatezcyieldcurve <- function(method, startparam, lambda, objfct, grad_objfct, constraints, constrOptimOptions, m, cf, weights, p) {
 
+  if(method=="dl") {
+      opt_result <- constrOptim(theta = startparam,
+                                f = objfct,
+                                grad = grad_objfct,
+                                ui = constraints$ui,
+                                ci = constraints$ci,
+                                mu = 1e-04,
+                                control = constrOptimOptions$control,
+                                method = "BFGS",
+                                outer.iterations = constrOptimOptions$outer.iterations,
+                                outer.eps = constrOptimOptions$outer.eps,
+                                lambda, m, cf, weights, p)
+    } else {
       opt_result <- constrOptim(theta = startparam,
                                 f = objfct,
                                 grad = grad_objfct,
@@ -129,7 +147,7 @@ estimatezcyieldcurve <- function(method, startparam, objfct, grad_objfct, constr
                                 outer.iterations = constrOptimOptions$outer.iterations,
                                 outer.eps = constrOptimOptions$outer.eps,
                                 m, cf, weights, p)
-
+    }
     opt_result
 }
 
@@ -150,10 +168,6 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
     fmin <- rep(NA, length(tau))
     lsbeta <- matrix(nrow = length(tau), ncol = 4)
 
-    objfct <- function(b) { # TODO
-      loss_function(p,bond_prices("dl",b,m,cf,1/tau[i])$bond_prices,weights)
-    }
-
     ui <- rbind(c(1,0,0),                 # beta0 > 0
                 c(1,1,0))                 # beta0 + beta1 > 0
     ci <- c(0,0)
@@ -161,15 +175,16 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
     for (i in 1:length(tau)){
       
       lsparam <- constrOptim(theta = rep(1,3), # start parameters for D/L, objective function is convex
-                               f = objfct,
-                               grad = NULL,
+                               f = objfct_ns_bonds_grid,
+                               grad = grad_ns_bonds_grid,
                                ui = ui,
                                ci = ci,
                                mu = 1e-04,
                                control = control,
-                               method = "Nelder-Mead",
+                               method = "BFGS",
                                outer.iterations = outer.iterations,
-                               outer.eps = outer.eps) 
+                               outer.eps = outer.eps,
+                               tau[i], m, cf, weights, p) ## additional inputs for f and grad
       beta <- c(lsparam$par,tau[i])
       fmin[i] <- lsparam$value
       lsbeta[i,] <- beta 
@@ -185,18 +200,19 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
     ci <- c(0,0)
       
     tau1 <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+    print(tau1) # DEBUG
     tau2 <- tau1
     tau <- cbind(tau1, tau2)
     fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
     lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
     for (i in 1:length(tau1))
       {
-        print(i) # DEBUG
+        #print(i) # DEBUG
         for (j in 1:length(tau2))
           {
             
             if(tau1[i] + tauconstr[4] < tau2[j]) {
-              print(j) # DEBUG
+              #print(j) # DEBUG
               
               lsparam <- constrOptim(theta = rep(0.01,4),
                                      f = objfct_sv_bonds_grid,
@@ -223,7 +239,46 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
   }
 
   if(method=="asv") {
-    ## TODO
+    ui <- rbind(c(1,0,0,0),                 # beta0 > 0
+                c(1,1,0,0))                 # beta0 + beta1 > 0
+    ci <- c(0,0)
+      
+    tau1 <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+    tau2 <- tau1
+    tau <- cbind(tau1, tau2)
+    fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
+    lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
+    for (i in 1:length(tau1))
+      {
+        print(i) # DEBUG
+        for (j in 1:length(tau2))
+          {
+            
+            if(tau1[i] + tauconstr[4] < tau2[j]) {
+              #print(j) # DEBUG
+              
+              lsparam <- constrOptim(theta = rep(0.01,4),
+                                     f = objfct_asv_bonds_grid,
+                                     grad = grad_asv_bonds_grid,
+                                     ui = ui,
+                                     ci = ci,
+                                     mu = 1e-04,
+                                     control = control,
+                                     method = "BFGS",
+                                     outer.iterations = outer.iterations,
+                                     outer.eps = outer.eps,
+                                     c(tau1[i], tau2[j]), m, cf, weights, p) ## additional inputs for f and grad
+              
+              beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
+              
+              fmin[i,j] <- lsparam$value
+              lsbeta[(i-1)*length(tau1)+j,] <- beta
+            }
+          }
+      }
+    
+    optind <- which(fmin == min(fmin, na.rm = TRUE),arr.ind=TRUE)
+    startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]   
   }
   result <- list(startparam = startparam, tau = tau, fmin = fmin, optind = optind)
   class(result) <- "spsearch"

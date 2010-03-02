@@ -8,14 +8,23 @@ source("gradfunc.R")
 data(govbonds)
 
 Rprof()
-sv_res2 <- estim_nss(govbonds, c("GERMANY"), matrange = c(0,30), method = "sv")
+sv_res2 <- estim_nss(govbonds, c("GERMANY"), matrange = c(0,30), method = "dl")
 Rprof(NULL)
   summaryRprof()
 
 
 data(GermanBonds)
 
+Rprof()
 sv_res <- estim_nss(datadyncouponbonds[[1]], c("GERMANY"), method = "sv",tauconstr = list(c(1,10,1,0.5)))
-sv_res <- estim_nss(datadyncouponbonds[[1]], c("GERMANY"), method = "sv")
+Rprof(NULL)
+summaryRprof()
 
-seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+# Diebold/Li (German bonds) -> working
+dl_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "dl", lambda = 1/3)
+
+# Nelson/Siegel (German bonds) -> working
+ns_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "ns", tauconstr = list(c(1,6,0.2,0)))
+
+
+
