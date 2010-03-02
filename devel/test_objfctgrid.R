@@ -303,7 +303,7 @@ Rprof(NULL)
 summaryRprof()
 
 Rprof()
-test2()
+test4()
 Rprof(NULL)
 summaryRprof()
 
