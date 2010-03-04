@@ -1,8 +1,16 @@
 useDynLib(termstrc, objfct_sv_bonds_gridCpp)
 
 importFrom(urca, ur.df)
-importFrom(rgl, open3d, persp3d)
-importFrom(sandwich, vcovHAC)
+#importFrom(rgl, open3d, persp3d, points3d)
+import(sandwich)
+
+S3method(estim_cs, couponbonds)
+S3method(estim_nss, couponbonds) 
+S3method(estim_nss, dyncouponbonds)
+S3method(estim_nss, zeroyields)
+S3method(fcontrib, dyntermstrc_param)
+S3method(param, dyntermstrc_nss)
+S3method(param, dyntermstrc_yields)
 
 export(aabse,
 bond_prices,
@@ -47,7 +55,6 @@ grad_objfct_ns,
 grad_objfct_sv,
 grad_sv_bonds,
 grad_sv_bonds_grid,
-i,
 impl_fwr,
 loss_function,
 maturity_range,
@@ -93,7 +100,6 @@ print.termstrc_nss,
 print.zeroyields,
 rm_bond,
 rmse,
-sf,
 spotrates,
 spr_asv,
 spr_dl,

@@ -16,7 +16,7 @@ Rprof(NULL)
 data(GermanBonds)
 
 Rprof()
-sv_res <- estim_nss(datadyncouponbonds[[1]], c("GERMANY"), method = "sv",tauconstr = list(c(1,10,1,0.5)))
+sv_res <- estim_nss(datadyncouponbonds[[1]], c("GERMANY"), method = "sv",tauconstr = list(c(-0.4,10,0.5,0.1)))
 Rprof(NULL)
 summaryRprof()
 
