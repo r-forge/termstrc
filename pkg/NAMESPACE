@@ -1,2 +1,4 @@
-useDynLib(objfctsvgrid)
+useDynLib(termstrc)
 exportPattern("^[[:alpha:]]+")
+
+import()

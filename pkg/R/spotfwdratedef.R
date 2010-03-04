@@ -332,7 +332,7 @@ objfct_asv_bonds_grid <- function(beta, tau, m, cf, w, p) {
 
 ### Svensson grid loss function for bonds  - Rcpp version
 objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
-  .Call("objfct_sv_bonds_gridCpp", beta, tau, m, cf, w, p, PACKAGE="termstrc")
+  .Call("objfct_sv_bonds_gridCpp", beta, tau, m, cf, w, p)
     }
 
 
