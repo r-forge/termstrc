@@ -96,7 +96,7 @@ estim_cs.couponbonds <- function(bonddata, group, matrange="all",rse=TRUE) {
   			gi(t[[k]],T[[k]],sidx,s[[k]]),1:s[[k]]),1,sum) +1, sgroup, SIMPLIFY=FALSE)
 
   #  variance covariance matrix for estimated parameters
-  if(rse) Sigma <- lapply(regout,vcovHAC) else Sigma <- lapply(regout,vcov) 
+  if(rse) Sigma <- lapply(regout,vcovHAC.default) else Sigma <- lapply(regout,vcov) 
   
   var_d <- mapply(function(k) apply(mapply(function(sidx) gi(t[[k]],T[[k]],
   			sidx,s[[k]]),1:s[[k]]),1,function(x) t(x)%*%Sigma[[k]]%*%x), sgroup, SIMPLIFY=FALSE) 
