@@ -297,11 +297,14 @@ objfct_ns_bonds <- function(beta, m, cf, w, p) {
       sum(w*((p - phat)^2))
     }
 
-### Nelson/Siegel grid loss function for bonds 
+### Nelson/Siegel grid loss function for bonds
+
+
 objfct_ns_bonds_grid <- function(beta, tau, m, cf, w, p) {
-      bns <- c(beta,tau)
-      phat <- bond_prices("ns",bns,m,cf)$bond_prices
-      sum(w*((p - phat)^2))
+   .Call("objfct_ns_bonds_gridCpp", beta, tau, m, cf, w, p)
+      ## bns <- c(beta,tau)
+      ## phat <- bond_prices("ns",bns,m,cf)$bond_prices
+      ## sum(w*((p - phat)^2))
     }
 
 ### Svensson loss function for bonds 
