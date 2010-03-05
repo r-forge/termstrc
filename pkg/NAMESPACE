@@ -1,7 +1,6 @@
-useDynLib(termstrc, objfct_sv_bonds_gridCpp)
+useDynLib(termstrc, objfct_sv_bonds_gridCpp, objfct_asv_bonds_gridCpp)
 
 importFrom(urca, ur.df)
-#importFrom(rgl, open3d, persp3d, points3d)
 import(sandwich)
 
 S3method(estim_cs, couponbonds)

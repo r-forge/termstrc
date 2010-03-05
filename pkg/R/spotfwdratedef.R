@@ -286,7 +286,7 @@ get_grad_objfct_bonds <- function(method) {
 }
 
 ### Diebold/Li loss function for bonds 
-objfct_dl_bonds <- function(beta, lambda, m, cf, w, p) { # TODO: test lambda
+objfct_dl_bonds <- function(beta, lambda, m, cf, w, p) {
       phat <- bond_prices("dl",beta,m,cf, lambda)$bond_prices
       sum(w*((p - phat)^2))
     }
@@ -310,7 +310,10 @@ objfct_sv_bonds <- function(beta, m, cf, w, p) {
       sum(w*((p - phat)^2))
     }
 
-### Svensson grid loss function for bonds 
+### Svensson grid loss function for bonds
+objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
+  .Call("objfct_sv_bonds_gridCpp", beta, tau, m, cf, w, p)
+    }
 #objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
 #      bsv <- c(beta[1:3],tau[1],beta[4],tau[2])
 #      phat <- bond_prices("sv",bsv,m,cf)$bond_prices
@@ -323,16 +326,16 @@ objfct_asv_bonds <- function(beta, m, cf, w, p) {
       sum(w*((p - phat)^2))
     }
 
-### Adjusted Svensson grid loss function for bonds 
+### Adjusted Svensson grid loss function for bonds
 objfct_asv_bonds_grid <- function(beta, tau, m, cf, w, p) {
-      bsv <- c(beta[1:3],tau[1],beta[4],tau[2])
-      phat <- bond_prices("asv",bsv,m,cf)$bond_prices
-      sum(w*((p - phat)^2))
+  .Call("objfct_asv_bonds_gridCpp", beta, tau, m, cf, w, p)
     }
+#objfct_asv_bonds_grid <- function(beta, tau, m, cf, w, p) {
+#      bsv <- c(beta[1:3],tau[1],beta[4],tau[2])
+#      phat <- bond_prices("asv",bsv,m,cf)$bond_prices
+#      sum(w*((p - phat)^2))
+#    }
 
-### Svensson grid loss function for bonds  - Rcpp version
-objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
-  .Call("objfct_sv_bonds_gridCpp", beta, tau, m, cf, w, p)
-    }
+
 
 
