@@ -250,12 +250,10 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
     lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
     for (i in 1:length(tau1))
       {
-        print(i) # DEBUG
         for (j in 1:length(tau2))
           {
             
             if(tau1[i] + tauconstr[4] < tau2[j]) {
-              #print(j) # DEBUG
               
               lsparam <- constrOptim(theta = rep(0.01,4),
                                      f = objfct_asv_bonds_grid,
