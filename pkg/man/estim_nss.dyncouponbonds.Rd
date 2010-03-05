@@ -10,7 +10,7 @@
 
 }
 \usage{
-\method{estim_nss}{dyncouponbonds}(dataset, group, matrange = "all", method = "ns", lambda = 0.0609 * 12, tauconstr = NULL, optimtype = "firstglobal", constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04), ...)
+\method{estim_nss}{dyncouponbonds}(dataset, group, matrange = "all", method = "ns", lambda = 0.0609 * 12, tauconstr = NULL, optimtype = "allglobal", constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04), ...)
 }
 
 \arguments{
