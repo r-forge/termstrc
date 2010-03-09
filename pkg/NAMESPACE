@@ -1,4 +1,4 @@
-useDynLib(termstrc, objfct_sv_bonds_gridCpp, objfct_asv_bonds_gridCpp)
+useDynLib(termstrc, objfct_ns_bonds_Cpp, objfct_ns_bonds_gridCpp, objfct_sv_bonds_Cpp, objfct_sv_bonds_gridCpp, objfct_asv_bonds_gridCpp, grad_sv_bonds_gridCpp)
 
 importFrom(urca, ur.df)
 import(sandwich)

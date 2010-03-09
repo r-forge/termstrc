@@ -7,6 +7,6 @@ Author: Robert Ferstl, Josef Hayden
 Maintainer: Josef Hayden <josef.hayden@wiwi.uni-regensburg.de>
 Description: The package offers parametric and spline-based methods for the estimation of zero-coupon yield curves out of observed coupon bond data and zero yields. The methods include Nelson and Siegel (1987), Svensson (1994), Diebold/Li (2006) and the cubic splies approach of McCulloch (1975). Functions for the iterative estimation of the term structue based on a dynamic bond or yield data set are included. Extensive summary statistics and plots are provided to compare the results of the different estimation methods.
 Depends: R (>= 2.9.0), Rcpp, zoo, rgl
-Imports: urca, rgl, sandwich
+Imports: urca, sandwich
 License: GPL
 URL: http://R-Forge.R-project.org/projects/termstrc/
