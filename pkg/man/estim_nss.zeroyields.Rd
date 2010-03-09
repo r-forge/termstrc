@@ -1,4 +1,4 @@
-\name{estim_nss.zeroyields}
+≈\name{estim_nss.zeroyields}
 \alias{estim_nss.zeroyields}
 
 \title{S3 estim_nss Method
@@ -27,7 +27,7 @@
   
   lower bound < [tau_1, tau_2] < upper bound
   
-  The width of the grid is given by gridsize.
+  The width of the grid is given by gridsize.≈
 
   tau_2 - tau_1 > taudistance
   
@@ -47,7 +47,7 @@
 }
 
 \value{ The method returns an object of the class
-  \command{"dyntermstrc_yields"}.There are print, plot and summary
+  \command{"dyntermstrc_yields"}. There are print, plot and summary
   method available. 
 }
 
@@ -62,4 +62,38 @@ Lars E.O. Svensson (1994): Estimating and Interpreting Forward Interest Rates: S
 
 }
 
-\examples{## Run: demos(zeroyields) }
+\examples{
+## Load yields matrix from csv
+data(zyields)
+x <- zyields
+
+maturities <- c(1/12,3/12,6/12,9/12,1:12)
+yields <- as.matrix(x[,2:ncol(x)])
+dates <- as.Date(x[,1],format="%d.%m.%Y")
+
+## Call class constructor
+datazeroyields <- zeroyields(maturities, yields, dates)
+
+## Estimate Diebold/Li model
+dl_res <- estim_nss(datazeroyields, "dl", lambda = 1/2)
+print(dl_res)
+summary(dl_res)
+plot(param(dl_res))
+
+## Estimate Nelson/Siegel model
+ns_res <- estim_nss(datazeroyields, "ns", tauconstr = c(0.1, 6, 0.1))
+print(ns_res)
+summary(ns_res)
+
+## Plot parameter time series
+plot(param(ns_res))
+
+## Plot yield curves in 3D
+plot(ns_res)
+
+## Plot start parameter search for t=1
+plot(ns_res$spsearch[[1]])
+
+## For more examples:
+## Run: demo(zeroyields) 
+}
