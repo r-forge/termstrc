@@ -3,7 +3,7 @@ grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
   .Call("grad_sv_bonds_gridCpp", beta, tau, m, cf, w, p)
     }
 
-### Gradient of Svensson grid loss function for bonds
+### Gradient of Svensson loss function for bonds
 grad_sv_bonds <- function(beta,m,cf,w,p){
 
   emt1 <- exp(-m/beta[4])
@@ -32,15 +32,6 @@ grad_sv_bonds <- function(beta,m,cf,w,p){
 
   c(gbeta1,gbeta2,gbeta3,gbeta4,gbeta5,gbeta6)
   
-}
-
-### Faster version of column sums
-cSums <- function (x, na.rm = FALSE, dims = 1L) {
-    dn <- dim(x)
-    n <- prod(dn[1L:dims])
-    dn <- dn[-(1L:dims)]
-    z <-  .Internal(colSums(x, n, prod(dn), na.rm))
-    z
 }
 
 ### Gradient of Nelson/Siegel grid loss function for bonds
@@ -172,4 +163,13 @@ grad_dl_bonds <- function(beta, lambda, m, cf, w, p){
    gbeta3 <- sum(b*(-cSums(dm*emt1tm, na.rm=TRUE)))    
 
    c(gbeta1,gbeta2,gbeta3)
+}
+
+### Faster version of column sums
+cSums <- function (x, na.rm = FALSE, dims = 1L) {
+    dn <- dim(x)
+    n <- prod(dn[1L:dims])
+    dn <- dn[-(1L:dims)]
+    z <-  .Internal(colSums(x, n, prod(dn), na.rm))
+    z
 }
