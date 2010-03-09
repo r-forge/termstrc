@@ -13,7 +13,7 @@ dates <- as.Date(x[,1],format="%d.%m.%Y")
 datazeroyields <- zeroyields(maturities, yields, dates)
 
 ## Estimate Diebold/Li model
-dl_res <- estim_nss(datazeroyields, "dl". lambda = 1/2)
+dl_res <- estim_nss(datazeroyields, "dl", lambda = 1/2)
 plot(param(dl_res))
 
 ## Estimate Nelson/Siegel model
