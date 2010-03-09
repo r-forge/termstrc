@@ -1,4 +1,4 @@
-≈\name{estim_nss.zeroyields}
+\name{estim_nss.zeroyields}
 \alias{estim_nss.zeroyields}
 
 \title{S3 estim_nss Method
