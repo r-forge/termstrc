@@ -1,3 +1,7 @@
+oldpar <- par(no.readonly = TRUE)
+par(ask=TRUE)
+
+## Load yields matrix from csv
 data(zyields)
 x <- zyields
 
@@ -6,36 +10,38 @@ yields <- as.matrix(x[,2:ncol(x)])
 dates <- as.Date(x[,1],format="%d.%m.%Y")
 
 ## Call class constructor
-
 datazeroyields <- zeroyields(maturities, yields, dates)
 
-## Perform Diebold/Li estimation
-dl_res <- estim_nss(datazeroyields, "dl", lambda = 1/2)
-summary(dl_res)
+## Estimate Diebold/Li model
+dl_res <- estim_nss(datazeroyields, "dl". lambda = 1/2)
+plot(param(dl_res))
 
-## Perform Nelson/Siegel estimation
-ns_res <- estim_nss(datazeroyields, "ns", deltatau = 0.2, optimtype = "allglobal")
-summary(ns_res)
+## Estimate Nelson/Siegel model
+ns_res <- estim_nss(datazeroyields, "ns")
+plot(param(ns_res))
 
-## Plot startparameters
-plot(ns_res$spsearch[[1]])
+## Estimate Svensson model
+sv_res <- estim_nss(datazeroyields, "sv")
+plot(param(sv_res))
 
-## Plot parameters and curves
-plot(ns_res)
+## Estimate Svensson model with restrictions on the tau parameters
+## (this can lead to smoother parameter time series)
+sv_res2 <- estim_nss(datazeroyields, "sv", tauconstr =  c(0.2, 3, 0.1,0.5))
+plot(param(sv_res2))
 
-## Perform Svensson estimation
-sv_res <- estim_nss(datazeroyields, "sv", deltatau = 1)
-sv_res <- estim_nss(datazeroyields, "sv", deltatau = 1, tauconstr =  c(0.2, 3, 0.5), optimtype = "allglobal")
+## Estimate Adjusted Svensson model
+## (this can also lead to smoother parameter time series)
+asv_res <- estim_nss(datazeroyields, "asv")
+plot(param(asv_res))
 
-## Perform Adjusted Svensson estimation
-asv_res <- estim_nss(datazeroyields, "asv", deltatau = 1)
-asv_res2 <- estim_nss(datazeroyields, "asv", deltatau = 1, optimtype = "allglobal")
+## Compare GOF
+allgof <- cbind(summary(dl_res)$gof, summary(ns_res)$gof, summary(sv_res)$gof, summary(sv_res2)$gof, summary(asv_res)$gof)
+colnames(allgof) <- c("Diebold/Li", "Nelson/Siegel", "Svensson unrestr.", "Svensson", "Adj. Svensson")
 
-## Plot startparameters
-plot(sv_res$spsearch[[1]])
+par(oldpar)
 
-## Plot parameters and curves
-plot(sv_res)
+
+
 
 
 

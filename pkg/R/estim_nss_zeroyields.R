@@ -33,7 +33,7 @@ estim_nss.zeroyields <- function (dataset,
 
       ## default tau constraints (if not specified by user)
       if (is.null(tauconstr)){
-        tauconstr <- c(min(obj$maturities), max(obj$maturities), 0.2, 0.5)
+        tauconstr <- c(min(obj$maturities), max(obj$maturities), 0.1, 0.5)
         print("The following constraints are used for the tau parameters:")
         print(tauconstr)
       }
@@ -63,7 +63,7 @@ estim_nss.zeroyields <- function (dataset,
         if(i>1 && optimtype == "firstglobal"){
           beta <- optparam[i-1,]
         }
-       
+
         opt_result[[i]] <- estimateyieldcurve(yields, obj$maturities, beta, objfct,
                                               grad_objfct, constraints, constrOptimOptions)
         optparam[i,] <- opt_result[[i]]$par
@@ -102,8 +102,10 @@ estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, constraints, con
 
 findstartparamyields <- function(y,m, method, tauconstr)
   {
+    epsConst <- 0.0001 ## ensures that starting value for constrOptim can not be on the boundary
+      
     if(method=="ns"){
-      tau <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+      tau <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
       fmin <- rep(NA, length(tau))
       lsbeta <- matrix(nrow = length(tau), ncol = 4)
       for (i in 1:length(tau)){
@@ -121,7 +123,7 @@ findstartparamyields <- function(y,m, method, tauconstr)
     }
     
      if(method=="sv"){
-       tau1 <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+       tau1 <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
        tau2 <- tau1
        tau <- cbind(tau1, tau2)
        fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
@@ -162,7 +164,7 @@ findstartparamyields <- function(y,m, method, tauconstr)
      }
 
      if(method=="asv"){
-       tau1 <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+       tau1 <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
        tau2 <- tau1
        tau <- cbind(tau1, tau2)
        fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
