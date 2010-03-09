@@ -25,13 +25,12 @@ asv_res <- estim_nss(datadyncouponbonds[[1]], c("GERMANY"), method = "asv",tauco
 Rprof(NULL)
 summaryRprof()
 
-# Diebold/Li (German bonds) -> working
+## Diebold/Li (German bonds) -> working
 dl_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "dl", lambda = 1/3)
 
-# Nelson/Siegel (German bonds) -> working
-Rprof()
+## Nelson/Siegel (German bonds) -> working
 ns_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "ns", tauconstr = list(c(1,6,0.2,0)))
-Rprof(NULL)
-summaryRprof()
+
+
 
 

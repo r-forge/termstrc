@@ -14,19 +14,30 @@ datazeroyields <- zeroyields(maturities, yields, dates)
 
 ## Estimate Diebold/Li model
 dl_res <- estim_nss(datazeroyields, "dl", lambda = 1/2)
+print(dl_res)
+summary(dl_res)
 plot(param(dl_res))
 
 ## Estimate Nelson/Siegel model
 ns_res <- estim_nss(datazeroyields, "ns")
+print(ns_res)
+summary(ns_res)
 plot(param(ns_res))
 
 ## Estimate Svensson model
 sv_res <- estim_nss(datazeroyields, "sv")
+print(sv_res)
+summary(sv_res)
 plot(param(sv_res))
+
+## Plot start parameter search for t=1
+plot(sv_res$spsearch[[1]])
 
 ## Estimate Svensson model with restrictions on the tau parameters
 ## (this can lead to smoother parameter time series)
 sv_res2 <- estim_nss(datazeroyields, "sv", tauconstr =  c(0.2, 3, 0.1,0.5))
+print(sv_res2)
+summary(sv_res2)
 plot(param(sv_res2))
 
 ## Estimate Adjusted Svensson model
