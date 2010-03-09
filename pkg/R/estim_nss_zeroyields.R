@@ -34,7 +34,7 @@ estim_nss.zeroyields <- function (dataset,
       ## default tau constraints (if not specified by user)
       if (is.null(tauconstr)){
         tauconstr <- c(min(obj$maturities), max(obj$maturities), 0.1, 0.5)
-        if (method %in% c("asv","ns")) {tauconstr[[k]][4] = 0}
+        if (method %in% c("asv","ns")) {tauconstr[4] = 0}
         print("The following constraints are used for the tau parameters:")
         print(tauconstr)
       }
