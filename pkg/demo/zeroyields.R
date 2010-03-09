@@ -19,12 +19,16 @@ summary(dl_res)
 plot(param(dl_res))
 
 ## Estimate Nelson/Siegel model
-ns_res <- estim_nss(datazeroyields, "ns")
+ns_res <- estim_nss(datazeroyields, "ns", tauconstr = c(0.1, 6, 0.1))
 print(ns_res)
 summary(ns_res)
 plot(param(ns_res))
 
+## Plot start parameter search for t=1
+plot(ns_res$spsearch[[1]])
+
 ## Estimate Svensson model
+## The default grid size of 0.1 ensures a global optimum for this data set, but calculations will take several minutes.
 sv_res <- estim_nss(datazeroyields, "sv")
 print(sv_res)
 summary(sv_res)
@@ -35,7 +39,7 @@ plot(sv_res$spsearch[[1]])
 
 ## Estimate Svensson model with restrictions on the tau parameters
 ## (this can lead to smoother parameter time series)
-sv_res2 <- estim_nss(datazeroyields, "sv", tauconstr =  c(0.2, 3, 0.1,0.5))
+sv_res2 <- estim_nss(datazeroyields, "sv", tauconstr =  c(0.2, 3, 0.1, 0.5))
 print(sv_res2)
 summary(sv_res2)
 plot(param(sv_res2))
@@ -45,6 +49,7 @@ plot(sv_res2)
 
 ## Estimate Adjusted Svensson model
 ## (this can also lead to smoother parameter time series)
+## The default grid size of 0.1 ensures a global optimum for this data set, but calculations will take several minutes.
 asv_res <- estim_nss(datazeroyields, "asv")
 plot(param(asv_res))
 
