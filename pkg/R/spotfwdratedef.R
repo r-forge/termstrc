@@ -292,46 +292,32 @@ objfct_dl_bonds <- function(beta, lambda, m, cf, w, p) {
 ### Nelson/Siegel loss function for bonds 
 objfct_ns_bonds <- function(beta, m, cf, w, p) {
   .Call("objfct_ns_bonds_Cpp", beta, m, cf, w, p)
-  ##       phat <- bond_prices("ns",beta,m,cf)$bond_prices
-  ##       sum(w*((p - phat)^2))
     }
 
 ### Nelson/Siegel grid loss function for bonds
 
 objfct_ns_bonds_grid <- function(beta, tau, m, cf, w, p) {
    .Call("objfct_ns_bonds_gridCpp", beta, tau, m, cf, w, p)
-   ## bns <- c(beta,tau)
-   ## phat <- bond_prices("ns",bns,m,cf)$bond_prices
-   ## sum(w*((p - phat)^2))
     }
 
 ### Svensson loss function for bonds 
 objfct_sv_bonds <- function(beta, m, cf, w, p) {
   .Call("objfct_sv_bonds_Cpp", beta, m, cf, w, p)
-  ##       phat <- bond_prices("sv",beta,m,cf)$bond_prices
-  ##       sum(w*((p - phat)^2))
     }
 
 ### Svensson grid loss function for bonds
 objfct_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
   .Call("objfct_sv_bonds_gridCpp", beta, tau, m, cf, w, p)
-  ##      bsv <- c(beta[1:3],tau[1],beta[4],tau[2])
-  ##      phat <- bond_prices("sv",bsv,m,cf)$bond_prices
-  ##      sum(w*((p - phat)^2))
     }
 
 ### Adjusted Svensson loss function for bonds 
 objfct_asv_bonds <- function(beta, m, cf, w, p) {
-      phat <- bond_prices("asv",beta,m,cf)$bond_prices
-      sum(w*((p - phat)^2))
+   .Call("objfct_asv_bonds_Cpp", beta, m, cf, w, p)
     }
 
 ### Adjusted Svensson grid loss function for bonds
 objfct_asv_bonds_grid <- function(beta, tau, m, cf, w, p) {
   .Call("objfct_asv_bonds_gridCpp", beta, tau, m, cf, w, p)
-  ##      bsv <- c(beta[1:3],tau[1],beta[4],tau[2])
-  ##      phat <- bond_prices("asv",bsv,m,cf)$bond_prices
-  ##      sum(w*((p - phat)^2))
 }
 
 
