@@ -40,6 +40,9 @@ print(sv_res2)
 summary(sv_res2)
 plot(param(sv_res2))
 
+## Plot yield curves in 3D
+plot(sv_res2)
+
 ## Estimate Adjusted Svensson model
 ## (this can also lead to smoother parameter time series)
 asv_res <- estim_nss(datazeroyields, "asv")
