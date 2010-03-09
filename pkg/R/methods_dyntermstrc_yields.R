@@ -8,7 +8,7 @@ print.dyntermstrc_yields <- function(x, ...){
   cat("Parameter summary:\n")
   cat("---------------------------------------------------\n")
   tsparam <- param.dyntermstrc_yields(x)
-   print.default(format(lapply(tsparam,summary.default),digits=6,scientific=FALSE),quote=FALSE)
+   print.default(lapply(tsparam,summary.default))
   cat("---------------------------------------------------\n")
 }
 
