@@ -37,6 +37,7 @@ plot(param(asv_res))
 ## Compare GOF
 allgof <- cbind(summary(dl_res)$gof, summary(ns_res)$gof, summary(sv_res)$gof, summary(sv_res2)$gof, summary(asv_res)$gof)
 colnames(allgof) <- c("Diebold/Li", "Nelson/Siegel", "Svensson unrestr.", "Svensson", "Adj. Svensson")
+print(allgof)
 
 par(oldpar)
 
