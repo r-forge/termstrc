@@ -1,35 +1,9 @@
-
+### Gradient of Svensson grid loss function for bonds
 grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p) {
   .Call("grad_sv_bonds_gridCpp", beta, tau, m, cf, w, p)
     }
 
-## grad_sv_bonds_grid <- function(beta, tau, m, cf, w, p){
-
-##   emt1 <- exp(-m/tau[1])
-##   emt2 <- exp(-m/tau[2])
-##   t1emt1 <- tau[1]*(1 - emt1)
-##   emt1tm <- (-emt1 + t1emt1/m)
-##   emt2tm <- (-emt2 + tau[2]*(1 - emt2)/m)
-  
-
-##   a <- exp((-beta[1] - beta[3]*emt1tm - beta[4]*emt2tm - (beta[2]*t1emt1)/m)*m/100)
-
- 
-##   acf <- a*cf
-##   b <- -2*w*(p-cSums(acf,na.rm=TRUE))
-##   d <- acf/100
-##   dm <- d*m
-  
-##   gbeta1 <- sum(b*(-cSums(dm,na.rm=TRUE)))
-##   gbeta2 <- sum(b*(-cSums(d*t1emt1, na.rm=TRUE)))
-##   gbeta3 <- sum(b*(-cSums(dm*emt1tm, na.rm=TRUE)))
-##   gbeta5 <- sum(b*(-cSums(dm*emt2tm, na.rm=TRUE)))            
-
-
-##   c(gbeta1,gbeta2,gbeta3,gbeta5)
-## }
-
-
+### Gradient of Svensson grid loss function for bonds
 grad_sv_bonds <- function(beta,m,cf,w,p){
 
   emt1 <- exp(-m/beta[4])
@@ -60,7 +34,7 @@ grad_sv_bonds <- function(beta,m,cf,w,p){
   
 }
 
-
+### Faster version of column sums
 cSums <- function (x, na.rm = FALSE, dims = 1L) {
     dn <- dim(x)
     n <- prod(dn[1L:dims])
@@ -69,6 +43,7 @@ cSums <- function (x, na.rm = FALSE, dims = 1L) {
     z
 }
 
+### Gradient of Nelson/Siegel grid loss function for bonds
 grad_ns_bonds_grid <- function(beta, tau, m, cf, w, p){
    emt1 <- exp(-m/tau)
    oemt1 <- (1-emt1)
@@ -91,7 +66,7 @@ grad_ns_bonds_grid <- function(beta, tau, m, cf, w, p){
    c(gbeta1,gbeta2,gbeta3)
 }
 
-
+### Gradient of Nelson/Siegel grid loss function for bonds
 grad_ns_bonds <- function(beta, m, cf, w, p){
    emt1 <- exp(-m/beta[4])
    oemt1 <- (1-emt1)
@@ -115,8 +90,7 @@ grad_ns_bonds <- function(beta, m, cf, w, p){
    c(gbeta1,gbeta2,gbeta3,gbeta4)
 }
 
-
-
+### Gradient of Adjusted Svensson grid loss function for bonds
 grad_asv_bonds_grid <- function(beta, tau, m, cf, w, p){
   emt1 <- exp(-m/tau[1])
   emt2 <- exp(-m/tau[2])
@@ -145,6 +119,7 @@ grad_asv_bonds_grid <- function(beta, tau, m, cf, w, p){
   
 }
 
+### Gradient of Adjusted Svensson loss function for bonds
 grad_asv_bonds <-  function(beta, m, cf, w, p){
   emt1 <- exp(-m/beta[4])
   emt2 <- exp(-m/beta[6])
@@ -175,7 +150,7 @@ grad_asv_bonds <-  function(beta, m, cf, w, p){
 
 }
 
-
+### Gradient of Diebold/Li loss function for bonds
 grad_dl_bonds <- function(beta, lambda, m, cf, w, p){
    tau <- 1/lambda 
    emt1 <- exp(-m/tau)

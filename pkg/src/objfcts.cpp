@@ -1,5 +1,36 @@
 #include <Rcpp.h>
 
+// Nelson/Siegel loss function for bonds 
+RcppExport SEXP objfct_ns_bonds_Cpp(SEXP beta, SEXP m, SEXP cf, SEXP w, SEXP p){
+
+	RcppVector<double> betac(beta);
+	RcppMatrix<double> mc(m);
+	RcppMatrix<double> cfc(cf);
+	RcppVector<double> wc(w);
+	RcppVector<double> pc(p);
+	RcppVector<double> phat(pc.size());
+
+	int i = 0;
+	int j = 0;
+	double s;
+	double mse = 0;
+	
+	for (j = 0; j<mc.cols(); j++) {
+		i = 0;
+		while (i<mc.rows() && mc(i,j)>0) {
+			s =  (betac(0) + betac(1) * ((1 - exp(-mc(i,j)/betac(3)))/(mc(i,j)/betac(3))) +
+				  betac(2) * (((1 - exp(-mc(i,j)/betac(3)))/(mc(i,j)/betac(3))) - exp(-mc(i,j)/betac(3))))/100;
+		
+			phat(j) += cfc(i,j)*exp(-s*mc(i,j));
+			i++;
+		}
+		mse += pow(pc(j) - phat(j),2)*wc(j);
+	}
+
+	return Rcpp::wrap(mse);
+}
+
+// Nelson/Siegel grid loss function for bonds 
 RcppExport SEXP objfct_ns_bonds_gridCpp(SEXP beta, SEXP tau, SEXP m, SEXP cf, SEXP w, SEXP p){
 
 	RcppVector<double> betac(beta);
@@ -30,6 +61,38 @@ RcppExport SEXP objfct_ns_bonds_gridCpp(SEXP beta, SEXP tau, SEXP m, SEXP cf, SE
 	return Rcpp::wrap(mse);
 }
 
+// Svensson loss function for bonds 
+RcppExport SEXP objfct_sv_bonds_Cpp(SEXP beta, SEXP m, SEXP cf, SEXP w, SEXP p){
+
+	RcppVector<double> betac(beta);
+	RcppMatrix<double> mc(m);
+	RcppMatrix<double> cfc(cf);
+	RcppVector<double> wc(w);
+	RcppVector<double> pc(p);
+	RcppVector<double> phat(pc.size());
+
+	int i = 0;
+	int j = 0;
+	double s;
+	double mse = 0;
+	
+	for (j = 0; j<mc.cols(); j++) {
+		i = 0;
+		while (i<mc.rows() && mc(i,j)>0) {
+			s =  (betac(0) + betac(1) * ((1 - exp(-mc(i,j)/betac(3)))/(mc(i,j)/betac(3))) +
+				  betac(2) * (((1 - exp(-mc(i,j)/betac(3)))/(mc(i,j)/betac(3))) - exp(-mc(i,j)/betac(3))) +
+				  betac(4) * (((1 - exp(-mc(i,j)/betac(5)))/(mc(i,j)/betac(5))) - exp(-mc(i,j)/betac(5))))/100;
+		
+			phat(j) += cfc(i,j)*exp(-s*mc(i,j));
+			i++;
+		}
+		mse += pow(pc(j) - phat(j),2)*wc(j);
+	}
+
+	return Rcpp::wrap(mse);
+}
+
+// Svensson grid loss function for bonds
 RcppExport SEXP objfct_sv_bonds_gridCpp(SEXP beta, SEXP tau, SEXP m, SEXP cf, SEXP w, SEXP p){
 
 	RcppVector<double> betac(beta);
@@ -61,6 +124,7 @@ RcppExport SEXP objfct_sv_bonds_gridCpp(SEXP beta, SEXP tau, SEXP m, SEXP cf, SE
 	return Rcpp::wrap(mse);
 }
 
+// Adjusted Svensson grid loss function for bonds
 RcppExport SEXP objfct_asv_bonds_gridCpp(SEXP beta, SEXP tau, SEXP m, SEXP cf, SEXP w, SEXP p){
 
 	RcppVector<double> betac(beta);
@@ -92,6 +156,7 @@ RcppExport SEXP objfct_asv_bonds_gridCpp(SEXP beta, SEXP tau, SEXP m, SEXP cf, S
 	return Rcpp::wrap(mse);
 }
 
+// Gradient of Svensson grid loss function for bonds
 RcppExport SEXP grad_sv_bonds_gridCpp(SEXP beta, SEXP tau, SEXP m, SEXP cf, SEXP w, SEXP p){
 	RcppVector<double> betac(beta);
 	RcppVector<double> tauc(tau);
