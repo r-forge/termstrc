@@ -155,6 +155,8 @@ estimatezcyieldcurve <- function(method, startparam, lambda, objfct, grad_objfct
 
 findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
                                 control = list(), outer.iterations = 30, outer.eps = 1e-04) {
+
+  epsConst <- 0.0001 ## ensures that starting value for constrOptim can not be on the boundary
   
   if(method=="dl"){
     startparam = rep(1,3)
@@ -164,7 +166,7 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
   }
  
   if(method=="ns"){
-    tau <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+    tau <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
     fmin <- rep(NA, length(tau))
     lsbeta <- matrix(nrow = length(tau), ncol = 4)
 
@@ -199,7 +201,7 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
                 c(1,1,0,0))                 # beta0 + beta1 > 0
     ci <- c(0,0)
       
-    tau1 <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+    tau1 <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
     print(tau1) # DEBUG
     tau2 <- tau1
     tau <- cbind(tau1, tau2)
@@ -243,7 +245,7 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
                 c(1,1,0,0))                 # beta0 + beta1 > 0
     ci <- c(0,0)
       
-    tau1 <- seq(tauconstr[1] + tauconstr[3], tauconstr[2] - tauconstr[3], tauconstr[3])
+    tau1 <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
     tau2 <- tau1
     tau <- cbind(tau1, tau2)
     fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
@@ -288,8 +290,9 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
 plot.spsearch <- function(x, rgl = TRUE, ...) {
 
   if(is.matrix(x$tau)){
-      contour(x$tau[,1],x$tau[,2],log(x$fmin),nlevels=10,xlab = expression(tau[1]), ylab = expression(tau[2]),main = "Log(Objective function)")
-      points(x$tau[x$optind[1],1],x$tau[x$optind[2],2],pch = 10, col = "red")
+    image(x$tau[,1],x$tau[,2],log(x$fmin),xlab = expression(tau[1]), ylab = expression(tau[2]),main = "Log(Objective function)")
+      contour(x$tau[,1],x$tau[,2],log(x$fmin),nlevels=10,xlab = expression(tau[1]), ylab = expression(tau[2]),main = "Log(Objective function)", add = TRUE)
+      points(x$tau[x$optind[1],1],x$tau[x$optind[2],2],pch = 10, col = "steelblue")
       if (rgl) {
         open3d()
         persp3d(x$tau[,1], x$tau[,2], log(x$fmin), col = "green3", box = FALSE,xlab = "tau_1", ylab = "tau_2", zlab = "Log(Objective function)")
