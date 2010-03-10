@@ -9,7 +9,7 @@
 get_paramnames(method)
 }
 \arguments{
-  \item{method}{term structure estimation method,i.e., one of the
+  \item{method}{form of the spot rate function,i.e., one of the
     following \command{"ns","sv","asv","dl"}
 }
 }

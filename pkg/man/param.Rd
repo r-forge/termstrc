@@ -16,7 +16,6 @@ param(x, ...)
 \details{For the class \command{"dyntermstrc_param"} print, summary and
   plot methods are offered.}
 
-\seealso{ \code{\link{param.dyntermstrc_nss}},
-  \code{\link{param.dyntermstrc_yields}},
-  \code{\link{summary.dyntermstrc_param}}, \code{\link{plot.dyntermstrc_param}} }
+\seealso{ \code{\link{param.dyntermstrc_nss}}, \code{\link{param.dyntermstrc_yields}},
+\code{\link{summary.dyntermstrc_param}}, \code{\link{plot.dyntermstrc_param}} }
 

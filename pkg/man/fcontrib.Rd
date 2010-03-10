@@ -8,7 +8,8 @@ different spot rate functions at a certain point in time.
 
 }
 \usage{
-fcontrib(x, method = "ns", lambda = 0.0609 * 12, index = 1, m = 1:10, ylim = NULL, ...)
+fcontrib(x, method = "ns", lambda = 0.0609 * 12, index = 1,
+ m = 1:10, ylim = NULL, ...)
 }
 
 

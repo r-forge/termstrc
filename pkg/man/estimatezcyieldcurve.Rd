@@ -8,7 +8,8 @@
 Estimate Zero-coupon Yield curves assuming a certain spot rate function
 }
 \usage{
-estimatezcyieldcurve(method, startparam, lambda, objfct, grad_objfct, constraints, constrOptimOptions, m, cf, weights, p)
+estimatezcyieldcurve(method, startparam, lambda, objfct, grad_objfct,
+ constraints, constrOptimOptions, m, cf, weights, p)
 }
 
 \arguments{

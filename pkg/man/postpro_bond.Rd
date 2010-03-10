@@ -5,7 +5,8 @@
 \title{Post Processing of Term Structure Estimation Results}
 \description{The function calculates based on the term structure estimation results the errors for prices and yields and differnt curves (spot, forward, discount curve).}
 \usage{
-postpro_bond(opt_result, m, cf, sgroup, n_group, y, p, ac, m_p, method, lambda)
+postpro_bond(opt_result, m, cf, sgroup, n_group, y, p,
+ ac, m_p, method, lambda)
 }
 
 \arguments{
