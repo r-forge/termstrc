@@ -10,13 +10,17 @@
 
 }
 \usage{
-\method{estim_nss}{dyncouponbonds}(dataset, group, matrange = "all", method = "ns", lambda = 0.0609 * 12, tauconstr = NULL, optimtype = "allglobal", constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04), ...)
+\method{estim_nss}{dyncouponbonds}(dataset, group, matrange = "all", method = "ns",
+ lambda = 0.0609 * 12, tauconstr = NULL, optimtype = "allglobal", 
+constrOptimOptions = list(control = list(maxit = 2000), 
+outer.iterations = 200, outer.eps = 1e-04), ...)
 }
 
 \arguments{
   \item{dataset}{dynamic bond data set of the class \command{"dyncouponbonds"}.}
   \item{group}{vector defining the group of bonds used for the estimation,
-               e.g., \command{c("GERMANY","AUSTRIA")}.
+
+e.g., \command{c("GERMANY","AUSTRIA")}.
 }
   \item{matrange}{use \command{"all"} for no restrictions, or restrict
     the maturity range (in years) used for the estimation with \command{c(lower,upper)}.

@@ -12,7 +12,9 @@
 
 \arguments{
  \item{bonddata}{a data set of bonds in list format.}
- \item{group}{vector defining the group of bonds used for the estimation, e.g., \command{c("GERMANY","AUSTRIA")}.}
+ \item{group}{vector defining the group of bonds used for the estimation, 
+
+e.g., \command{c("GERMANY","AUSTRIA")}.}
   \item{matrange}{use \command{"all"} for no restrictions, or restrict the
     maturity range used for the estimation with \command{c(lower,upper)}. }
 
@@ -60,12 +62,18 @@ The Tax-Adjusted Yield Curve.
 \emph{The Journal of Finance, \bold{30} 811--830.} 
 }
 
-%\author{Robert Ferstl, Josef Hayden}
+
 
 \note{ For objects of the class \command{"spot_curves"}, 
-\command{"s_curves"}, \command{"df_curves"}, \command{"fwr_curves"}, \command{"error"} appropriate plot methods are offered. For objects of the list item \command{regout} standard \command{lm} methods apply. For objects of the class \command{"termstrc_cs"} print, summary and plot methods are available. Another term structure estimation method is provided by the method \command{\link{estim_nss.couponbonds}}.} 
+\command{"s_curves"}, \command{"df_curves"}, \command{"fwr_curves"}, \command{"error"} appropriate plot methods are offered. For objects of the list item \command{regout} standard \command{lm} methods apply. For objects of the class \command{"termstrc_cs"} print, summary and plot methods are available. Another term structure estimation method is provided by the method 
 
-\seealso{\command{\link{print.termstrc_cs}}, \command{\link{summary.termstrc_cs}},  \command{\link{plot.termstrc_cs}},  \command{\link{estim_nss.couponbonds}},  \command{\link{plot.spot_curves}},  \command{\link{plot.s_curves}},  \command{\link{plot.df_curves}},  \command{\link{plot.fwr_curves}},  \command{\link{plot.error}},  \command{\link{summary.lm}},  \command{\link{print.lm}},  \command{\link{plot.lm}}.}
+\command{\link{estim_nss.couponbonds}}.} 
+
+\seealso{\command{\link{print.termstrc_cs}}, \command{\link{summary.termstrc_cs}},  \command{\link{plot.termstrc_cs}},
+
+  \command{\link{estim_nss.couponbonds}},  \command{\link{plot.spot_curves}},  \command{\link{plot.s_curves}},  \command{\link{plot.df_curves}}, 
+
+\command{\link{plot.fwr_curves}},  \command{\link{plot.error}},  \command{\link{summary.lm}},  \command{\link{print.lm}},  \command{\link{plot.lm}}.}
 
 \examples{
 # load data set

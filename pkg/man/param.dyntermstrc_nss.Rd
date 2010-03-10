@@ -3,8 +3,9 @@
 \alias{param.dyntermstrc_nss}
 
 \title{S3 Param Method}
-\description{The function extracts the estimated term structure
-  parameters from an object of the class \command{"dyntermstrc_nss"}.}
+\description{The function extracts the estimated term structure parameters from
+
+ an object of the class \command{"dyntermstrc_nss"}.}
 \usage{
 \method{param}{dyntermstrc_nss}(x, ...)
 }

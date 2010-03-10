@@ -10,17 +10,21 @@ Zero-coupon yield curve estimation with the parametric Nelson/Siegel
 requires an object of the class \command{"couponbonds"}. 
 }
 \usage{
-\method{estim_nss}{couponbonds}(dataset, group, matrange = "all", method = "ns", startparam = NULL, lambda = 0.0609 * 12, tauconstr = NULL, constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04),...)
+\method{estim_nss}{couponbonds}(dataset, group, matrange = "all", method = "ns",
+ startparam = NULL, lambda = 0.0609 * 12, tauconstr = NULL, 
+constrOptimOptions = list(control = list(maxit = 2000),
+ outer.iterations = 200, outer.eps = 1e-04),...)
 }
-%- maybe also 'usage' for other objects documented here.
+
+
 \arguments{
   \item{dataset}{a static coupon bond data set of the class \command{"couponbonds"}
 }
   \item{group}{vector defining the group of bonds used for the estimation,
-               e.g., \command{c("GERMANY","AUSTRIA"). The spot rate
-		 curve of the first group
-		 element will be used as the reference curve for the
-		 spread curve calculation.}.
+
+               e.g., \command{c("GERMANY","AUSTRIA")}. The spot rate
+		 curve of the first group element will be used as the reference curve for the
+		 spread curve calculation.
 }
   \item{matrange}{use \command{"all"} for no restrictions, or restrict
     the maturity range (in years) used for the estimation with \command{c(lower,upper)}.
@@ -30,7 +34,7 @@ requires an object of the class \command{"couponbonds"}.
 }
   \item{startparam}{matrix of start parameters (number of columns is the
     number of parameters). If no start parameters are given, globally
-    optimal parameters are searched automatically (default: \command{NULL}
+    optimal parameters are searched automatically (default: \command{NULL})
 }
   \item{lambda}{parameter on a yearly time scale with fixed value for \command{"dl"} spot rate
     function (default: 0.0609*12)
@@ -101,7 +105,9 @@ of Econometrics}, \bold{130}:337--364.
  
 For objects of the class \command{"spot_curves"}, \command{"s_curves"}, \command{"df_curves"}, \command{"fwr_curves"}, \command{"error"} appropriate plot methods are offered.  For objects of the class \command{"termstrc_nss"} print, summary and plot methods are available. Another term structure estimation method is provided by the function \command{\link{estim_cs}}.} 
 
-\seealso{\command{\link{print.termstrc_nss}}, \command{\link{summary.termstrc_nss}},  \command{\link{plot.termstrc_nss}},  \command{\link{estim_cs}},  \command{\link{plot.spot_curves}},  \command{\link{plot.s_curves}},  \command{\link{plot.df_curves}},  \command{\link{plot.fwr_curves}},  \command{\link{plot.error}},  \command{\link{uniroot}}.}
+\seealso{\command{\link{print.termstrc_nss}}, \command{\link{summary.termstrc_nss}},  \command{\link{plot.termstrc_nss}},  \command{\link{estim_cs}},  \command{\link{plot.spot_curves}},  \command{\link{plot.s_curves}},  \command{\link{plot.df_curves}},  \command{\link{plot.fwr_curves}},  
+
+\command{\link{plot.error}},  \command{\link{uniroot}}.}
 
 
 \examples{

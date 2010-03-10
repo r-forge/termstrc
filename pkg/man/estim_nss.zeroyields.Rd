@@ -6,7 +6,10 @@
 \description{The method performs an iterative term structure estimation procedure on a dynamic yield data set of the class \command{"zeroyields"}. Available methods are Nelson/Siegel,  Diebold/Li and (adjusted) Svensson. 
 }
 
-\usage{\method{estim_nss}{zeroyields}(dataset, method = "ns", lambda = 0.0609 *12, tauconstr = NULL, optimtype = "allglobal", constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04), ...)
+\usage{\method{estim_nss}{zeroyields}(dataset, method = "ns",
+ lambda = 0.0609 *12, tauconstr = NULL, optimtype = "allglobal",
+ constrOptimOptions = list(control = list(),
+ outer.iterations = 200, outer.eps = 1e-04), ...)
 }
 
 \arguments{
@@ -44,7 +47,8 @@
 }
 
 \references{
-Michiel De Pooter (2007): Examining the Nelson-Siegel Class of Term Structure Models: In-Sample Fit versus Out-of-Sample Forecasting Performance.
+Michiel De Pooter (2007): Examining the Nelson-Siegel Class of Term Structure Models: In-Sample Fit versus Out-of-Sample Forecasting Performance,
+\emph{Working paper}.
 
 F.X. Diebold and C. Li: Forecasting the Term Structure of Government Bond Yields. \emph{Journal of Econometrics}, \bold{130}:337--364.
 
