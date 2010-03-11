@@ -110,25 +110,6 @@ objfct_ns <- function(beta, m, y)
         sum((y - spr_ns(beta,m))^2)
       }
 
-### Gradient of Nelson/Siegel loss function for yields
-grad_objfct_ns <- function(beta, m, y)
-      {
-        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-          (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-
-          sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-           (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
-
-          sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
-           (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-           (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-
-          sum(2*(beta[2]/(beta[4]*exp(m/beta[4])) - (beta[2]*(1 - exp(-m/beta[4])))/m - 
-                 beta[3]*(-(1/(beta[4]*exp(m/beta[4]))) + (1 - exp(-m/beta[4]))/m - m/(beta[4]^2*exp(m/beta[4]))))
-              *(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-                (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
-          )
-      }
 
 ### Svensson loss function for yields
 objfct_sv <- function(beta, m, y)
@@ -136,39 +117,6 @@ objfct_sv <- function(beta, m, y)
         sum((y - spr_sv(beta,m))^2)
       }
 
-### Gradient of Svensson loss function for yields
-grad_objfct_sv <- function(beta, m, y)
-      {
-        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-
-          sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-        beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-        (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
-
-          sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
-    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-
-          sum(2*(beta[2]/(beta[4]*exp(m/beta[4])) - (beta[2]*(1 - exp(-m/beta[4])))/m - 
-      beta[3]*(-(1/(beta[4]*exp(m/beta[4]))) + (1 - exp(-m/beta[4]))/m - m/(beta[4]^2*exp(m/beta[4]))))*
-    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-
-          sum(-2*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m)*
-    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-
-          sum(-2*beta[5]*(-(1/(beta[6]*exp(m/beta[6]))) + (1 - exp(-m/beta[6]))/m - m/(beta[6]^2*exp(m/beta[6])))*
-    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
-          )
-      }
 
 ### Adjusted Svensson loss function for yields
 objfct_asv <- function(beta, m, y)
@@ -176,40 +124,6 @@ objfct_asv <- function(beta, m, y)
         sum((y - spr_asv(beta,m))^2)
       }
 
-### Gradient of adjusted Svensson loss function for yields
-grad_objfct_asv <- function(beta, m, y)
-      {
-        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-          beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-          (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-
-          sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-          beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-          (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
-          
-          sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
-              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-          
-          sum(2*(beta[2]/(beta[4]*exp(m/beta[4])) - (beta[2]*(1 - exp(-m/beta[4])))/m - 
-                 beta[3]*(-(1/(beta[4]*exp(m/beta[4]))) + (1 - exp(-m/beta[4]))/m - m/(beta[4]^2*exp(m/beta[4]))))*
-              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-
-          sum(-2*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m)*
-              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
-          
-          sum(-2*beta[5]*(-(1/(beta[6]*exp(m/beta[6]))) + (1 - exp(-m/beta[6]))/m - 
-                          (2*m)/(beta[6]^2*exp((2*m)/beta[6])))*
-              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
-               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
-               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
-          )
-      }
 
 ### Constraints for constrOptim()
 

@@ -173,3 +173,176 @@ cSums <- function (x, na.rm = FALSE, dims = 1L) {
     z <-  .Internal(colSums(x, n, prod(dn), na.rm))
     z
 }
+
+### Gradient of Nelson/Siegel loss function for yields
+grad_objfct_ns <- function(beta, m, y)
+      {
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+          (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+           (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
+
+          sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
+           (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+           (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(2*(beta[2]/(beta[4]*exp(m/beta[4])) - (beta[2]*(1 - exp(-m/beta[4])))/m - 
+                 beta[3]*(-(1/(beta[4]*exp(m/beta[4]))) + (1 - exp(-m/beta[4]))/m - m/(beta[4]^2*exp(m/beta[4]))))
+              *(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+                (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
+          )
+      }
+
+
+grad_objfct_ns_grid <- function(beta, tau, m, y)
+      {
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+          (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y)),
+
+          sum((-2*tau[1]*(1 - exp(-m/tau[1]))*(-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+           (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y))/m),
+
+          sum(-2*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m)*
+           (-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+           (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y))
+          )
+      }
+
+
+
+### Gradient of Svensson loss function for yields
+grad_objfct_sv <- function(beta, m, y)
+      {
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+        beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+        (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
+
+          sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
+    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(2*(beta[2]/(beta[4]*exp(m/beta[4])) - (beta[2]*(1 - exp(-m/beta[4])))/m - 
+      beta[3]*(-(1/(beta[4]*exp(m/beta[4]))) + (1 - exp(-m/beta[4]))/m - m/(beta[4]^2*exp(m/beta[4]))))*
+    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(-2*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m)*
+    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(-2*beta[5]*(-(1/(beta[6]*exp(m/beta[6]))) + (1 - exp(-m/beta[6]))/m - m/(beta[6]^2*exp(m/beta[6])))*
+    (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+      beta[5]*(-exp(-m/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+      (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
+          )
+      }
+
+
+grad_objfct_sv_grid <- function(beta, tau, m, y)
+      {
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+      beta[5]*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - 
+      (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y)),
+
+          sum((-2*tau[1]*(1 - exp(-m/tau[1]))*(-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+        beta[5]*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - 
+        (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y))/m),
+
+          sum(-2*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m)*
+    (-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+      beta[5]*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - 
+      (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y)),
+
+
+          sum(-2*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m)*
+    (-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+      beta[5]*(-exp(-m/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - 
+      (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y))
+          )
+      }
+
+
+### Gradient of adjusted Svensson loss function for yields
+grad_objfct_asv <- function(beta, m, y)
+      {
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+          beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+          (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum((-2*beta[4]*(1 - exp(-m/beta[4]))*(-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+          beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+          (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))/m),
+          
+          sum(-2*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m)*
+              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+          
+          sum(2*(beta[2]/(beta[4]*exp(m/beta[4])) - (beta[2]*(1 - exp(-m/beta[4])))/m - 
+                 beta[3]*(-(1/(beta[4]*exp(m/beta[4]))) + (1 - exp(-m/beta[4]))/m - m/(beta[4]^2*exp(m/beta[4]))))*
+              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+
+          sum(-2*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m)*
+              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y)),
+          
+          sum(-2*beta[5]*(-(1/(beta[6]*exp(m/beta[6]))) + (1 - exp(-m/beta[6]))/m - 
+                          (2*m)/(beta[6]^2*exp((2*m)/beta[6])))*
+              (-beta[1] - beta[3]*(-exp(-m/beta[4]) + (beta[4]*(1 - exp(-m/beta[4])))/m) - 
+               beta[5]*(-exp((-2*m)/beta[6]) + (beta[6]*(1 - exp(-m/beta[6])))/m) - 
+               (beta[2]*beta[4]*(1 - exp(-m/beta[4])))/m + y))
+          )
+      }
+
+
+
+grad_objfct_asv_grid <- function(beta, tau, m, y)
+      {
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+          beta[5]*(-exp((-2*m)/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - 
+          (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y)),
+
+          sum((-2*tau[1]*(1 - exp(-m/tau[1]))*(-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+          beta[5]*(-exp((-2*m)/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - 
+          (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y))/m),
+          
+          sum(-2*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m)*
+              (-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+               beta[5]*(-exp((-2*m)/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - 
+               (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y)),
+    
+
+          sum(-2*(-exp((-2*m)/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m)*
+              (-beta[1] - beta[3]*(-exp(-m/tau[1]) + (tau[1]*(1 - exp(-m/tau[1])))/m) - 
+               beta[5]*(-exp((-2*m)/tau[2]) + (tau[2]*(1 - exp(-m/tau[2])))/m) - 
+               (beta[2]*tau[1]*(1 - exp(-m/tau[1])))/m + y))
+          )
+      }
+
+
+
+grad_objfct_dl <- function(beta,lambda, m, y)
+      {
+        tau <- 1/lambda
+        c(sum(-2*(-beta[1] - beta[3]*(-exp(-m/tau) + (tau*(1 - exp(-m/tau)))/m) - 
+          (beta[2]*tau*(1 - exp(-m/tau)))/m + y)),
+
+          sum((-2*tau*(1 - exp(-m/tau))*(-beta[1] - beta[3]*(-exp(-m/tau) + (tau*(1 - exp(-m/tau)))/m) - 
+           (beta[2]*tau*(1 - exp(-m/tau)))/m + y))/m),
+
+          sum(-2*(-exp(-m/tau) + (tau*(1 - exp(-m/tau)))/m)*
+           (-beta[1] - beta[3]*(-exp(-m/tau) + (tau*(1 - exp(-m/tau)))/m) - 
+           (beta[2]*tau*(1 - exp(-m/tau)))/m + y))
+          )
+      }
