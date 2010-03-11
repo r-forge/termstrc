@@ -1,12 +1,12 @@
- \name{grad_objfct_asv}
-\alias{grad_objfct_asv}
+\name{grad_asv}
+\alias{grad_asv}
 
 \title{Gradient of the adjusted Svensson Loss Function for Yields
 }
 \description{Calculates the gradient of the adjusted Svensson Loss Function for Yields
 }
 \usage{
-grad_objfct_asv(beta, m, y)
+grad_asv(beta, m, y)
 }
 
 \arguments{
