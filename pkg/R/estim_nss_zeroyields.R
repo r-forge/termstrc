@@ -143,6 +143,7 @@ findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer
        tau2 <- tau1
        tau <- cbind(tau1, tau2)
        fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
+       fminsolver <- matrix(nrow = length(tau1), ncol = length(tau2)) ## DEBUG
        lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
 
        ui <- rbind(c(1,0,0,0),                 # beta0 > 0
@@ -178,6 +179,7 @@ findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer
                  ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
                  if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
                    fmin[i,j] <- objfct_sv(beta, m, y)
+                   fminsolver[i,j] <- 0.2 ## DEBUG
                  } else {
                    print(paste("OLS violated constraints, solving with constrOptim, tau_1 =",tau1[i],"and tau_2 = ", tau2[j])) ## DEBUG
                    ## switch to constrOptim if OLS violates constraints
@@ -195,6 +197,7 @@ findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer
                    
                    beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
                    fmin[i,j] <- lsparam$value
+                   fminsolver[i,j] <- 1
                  }
                  lsbeta[(i-1)*length(tau1)+j,] <- beta
                }
@@ -236,7 +239,7 @@ findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer
        startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]
      }
     
-  result <- list(startparam = startparam, tau = tau, fmin = fmin, optind = optind)
+  result <- list(startparam = startparam, tau = tau, fmin = fmin, optind = optind, fminsolver = fminsolver) ## DEBUG
   class(result) <- "spsearch"
   result
   }
