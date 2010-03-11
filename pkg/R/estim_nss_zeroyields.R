@@ -151,27 +151,51 @@ findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer
        
        for (i in 1:length(tau1))
          {
-           print(i) ## DEBUG
+           #print(i) ## DEBUG
            for (j in 1:length(tau2))
              {
+               ## minimum tau distance constraint
                if(tau1[i] + tauconstr[4] < tau2[j]) {
-                ##print(j) # DEBUG
-                 
-                 lsparam <- constrOptim(theta = rep(0.01,4),
-                                        f = objfct_sv_grid,
-                                        grad = grad_sv_grid,
-                                        ui = ui,
-                                        ci = ci,
-                                        mu = 1e-04,
-                                        control = control,
-                                        method = "BFGS",
-                                        outer.iterations = outer.iterations,
-                                        outer.eps = outer.eps,
-                                        c(tau1[i], tau2[j]), m, y) ## additional inputs for f and grad
-                 
-                 beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
-                 
-                 fmin[i,j] <- lsparam$value
+
+                 ## reparametrize to avoid nonsingular matrix
+                 if (i == j){
+                   X <- cbind(rep(1,length(y)),
+                              ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
+                              - exp(-m/tau1[i]))
+
+                   lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
+                   beta <- c(lsparam[1],lsparam[2]-lsparam[3],lsparam[3]/2,tau1[i],lsparam[3]/2,tau2[j])
+                 } else
+                 {
+                   X <- cbind(rep(1,length(y)),
+                              ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
+                              (((1 - exp(-m/tau1[i]))/(m/tau1[i])) - exp(-m/tau1[i])),
+                              (((1 - exp(-m/tau2[j]))/(m/tau2[j])) - exp(-m/tau2[j])))
+                   
+                   lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
+                   beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
+                 }
+                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
+                 if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
+                   fmin[i,j] <- objfct_sv(beta, m, y)
+                 } else {
+                   print(paste("OLS violated constraints, solving with constrOptim, tau_1 =",tau1[i],"and tau_2 = ", tau2[j])) ## DEBUG
+                   ## switch to constrOptim if OLS violates constraints
+                   lsparam <- constrOptim(theta = rep(0.01,4),
+                                          f = objfct_sv_grid,
+                                          grad = grad_sv_grid,
+                                          ui = ui,
+                                          ci = ci,
+                                          mu = 1e-04,
+                                          control = control,
+                                          method = "BFGS",
+                                          outer.iterations = outer.iterations,
+                                          outer.eps = outer.eps,
+                                          c(tau1[i], tau2[j]), m, y) ## additional inputs for f and grad
+                   
+                   beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
+                   fmin[i,j] <- lsparam$value
+                 }
                  lsbeta[(i-1)*length(tau1)+j,] <- beta
                }
              } 
