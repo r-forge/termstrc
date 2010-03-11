@@ -99,9 +99,9 @@ get_objfct <- function(method) {
 ### Gradient of loss function for parametric methods
 get_grad_objfct <- function(method) {
   grad_objfct <- switch(method,
-                   "ns" = grad_objfct_ns,
-                   "sv" = grad_objfct_sv,
-                   "asv" = grad_objfct_asv)
+                   "ns" = grad_ns,
+                   "sv" = grad_sv,
+                   "asv" = grad_asv)
 }
 
 ### Nelson/Siegel loss function for yields
@@ -110,11 +110,25 @@ objfct_ns <- function(beta, m, y)
         sum((y - spr_ns(beta,m))^2)
       }
 
+### Nelson/Siegel grid loss function for yields
+objfct_ns_grid <- function(beta, tau, m, y)
+      {
+        betans <- c(beta, tau)
+        sum((y - spr_ns(betans,m))^2)
+      }
 
 ### Svensson loss function for yields
 objfct_sv <- function(beta, m, y)
       {
         sum((y - spr_sv(beta,m))^2)
+      }
+
+
+### Svensson grid loss function for yields
+objfct_sv_grid <- function(beta, tau,  m, y)
+      {
+        betasv <- c(beta[1:3], tau[1], beta[4], tau[2])
+        sum((y - spr_sv(betasv,m))^2)
       }
 
 

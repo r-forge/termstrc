@@ -45,4 +45,10 @@ colnames(allgof) <- c("Diebold/Li", "Nelson/Siegel", "Svensson unrestr.", "Svens
 
 par(oldpar)
 
+sv_res3 <- estim_nss(datazeroyields, "sv", tauconstr =  c(0.2, 3, 0.1,0.5), optimtype = "firstglobal")
+
+svstart <- matrix(nrow=80, ncol=6)
+for(i in 1:80) {
+svstart[i,] <- sv_res2$spsearch[[i]]$startparam
+}
 
