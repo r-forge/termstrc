@@ -153,7 +153,8 @@ findstartparamyields <- function(y,m, method, tauconstr)
                    beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
                  }
                  ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
-                 if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
+                 ##if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
+                 if(((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
                    fmin[i,j] <- objfct_sv(beta, m, y)
                  }
                  lsbeta[(i-1)*length(tau1)+j,] <- beta
