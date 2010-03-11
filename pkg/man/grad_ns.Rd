@@ -1,15 +1,17 @@
-\name{grad_objfct_ns}
-\Rdversion{1.1}
-\alias{grad_objfct_ns}
+\name{grad_ns}
+\alias{grad_ns}
 
 \title{Gradient of the Nelson/Siegel Loss Function for Yields
 }
 \description{
 Calculates the gradient of the Nelson/Siegel Loss Function for Yields
 }
+
+
 \usage{
-grad_objfct_ns(beta, m, y)
+grad_ns(beta, m, y)
 }
+
 
 \arguments{
   \item{beta}{Parameter of the Nelson/Siegel spot rate function (for
