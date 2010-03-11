@@ -36,13 +36,17 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
    ## default tau constraints (if not specified by user)
   if (is.null(tauconstr)) {
     tauconstr <- list()
+    length(tauconstr) <- n_group
+    names(tauconstr) <- group
     for (k in sgroup){
         tauconstr[[k]] <- c(min(m[[k]][1,]), max(m[[k]]), 0.5, 0.5)
+        names(tauconstr[[k]]) <- c("tau_min", "tau_max", "gridstepsize", "tau_distance")
         if (method == "asv") {tauconstr[[k]][4] = 0}
-        if (method!="dl"){
-        print("The following constraints are used for the tau parameters:")
-        print(tauconstr)}
+        if (method == "ns") {tauconstr[[k]] = tauconstr[[k]][1:3]}
     }
+    if (method!="dl"){
+      print("The following constraints are used for the tau parameters:")
+      print(tauconstr)}
   }
   
   if(is.null(startparam)){

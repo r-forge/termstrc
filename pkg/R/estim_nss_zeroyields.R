@@ -34,7 +34,8 @@ estim_nss.zeroyields <- function (dataset,
       ## default tau constraints (if not specified by user)
       if (is.null(tauconstr)){
         tauconstr <- c(min(obj$maturities), max(obj$maturities), 0.1, 0.5)
-        if (method %in% c("asv","ns")) {tauconstr[4] = 0}
+        if (method == "asv") {tauconstr[4] = 0}
+        if (method == "ns") {tauconstr = tauconstr[1:3]}
         print("The following constraints are used for the tau parameters:")
         print(tauconstr)
       }
@@ -101,7 +102,7 @@ estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, constraints, con
           
   }
 
-findstartparamyields <- function(y,m, method, tauconstr)
+findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer.iterations = 30, outer.eps = 1e-04)
   {
     epsConst <- 0.0001 ## ensures that starting value for constrOptim can not be on the boundary
       
@@ -109,16 +110,30 @@ findstartparamyields <- function(y,m, method, tauconstr)
       tau <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
       fmin <- rep(NA, length(tau))
       lsbeta <- matrix(nrow = length(tau), ncol = 4)
-      for (i in 1:length(tau)){
-        X <- cbind(rep(1,length(y)),
-                   ((1 - exp(-m/tau[i]))/(m/tau[i])),
-                   (((1 - exp(-m/tau[i]))/(m/tau[i])) - exp(-m/tau[i])))
 
-        lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
-        beta <- c(lsparam[1:3],tau[i])
+      ui <- rbind(c(1,0,0),                 # beta0 > 0
+                  c(1,1,0))                 # beta0 + beta1 > 0
+      ci <- c(0,0)
+      
+      for (i in 1:length(tau)){
+
+      lsparam <- constrOptim(theta = rep(1,3), # start parameters for D/L, objective function is convex
+                               f = objfct_ns_grid,
+                               grad = grad_ns_grid,
+                               ui = ui,
+                               ci = ci,
+                               mu = 1e-04,
+                               control = control,
+                               method = "BFGS",
+                               outer.iterations = outer.iterations,
+                               outer.eps = outer.eps,
+                               tau[i], m, y) ## additional inputs for f and grad
+        
+        beta <- c(lsparam$par,tau[i])
         fmin[i] <- objfct_ns(beta, m, y)
         lsbeta[i,] <- beta 
       }
+      
       optind <- which(fmin == min(fmin))
       startparam <- lsbeta[optind,]
     }
@@ -129,34 +144,34 @@ findstartparamyields <- function(y,m, method, tauconstr)
        tau <- cbind(tau1, tau2)
        fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
        lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
+
+       ui <- rbind(c(1,0,0,0),                 # beta0 > 0
+                   c(1,1,0,0))                 # beta0 + beta1 > 0
+       ci <- c(0,0)
+       
        for (i in 1:length(tau1))
          {
+           print(i) ## DEBUG
            for (j in 1:length(tau2))
              {
-               if(tau1[i] < tau2[j]) {
-                 ## reparametrize to avoid nonsingular matrix
-                 if (i == j){
-                   X <- cbind(rep(1,length(y)),
-                              ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
-                              - exp(-m/tau1[i]))
-
-                   lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
-                   beta <- c(lsparam[1],lsparam[2]-lsparam[3],lsparam[3]/2,tau1[i],lsparam[3]/2,tau2[j])
-                 } else
-                 {
-                   X <- cbind(rep(1,length(y)),
-                              ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
-                              (((1 - exp(-m/tau1[i]))/(m/tau1[i])) - exp(-m/tau1[i])),
-                              (((1 - exp(-m/tau2[j]))/(m/tau2[j])) - exp(-m/tau2[j])))
-                   
-                   lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
-                   beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
-                 }
-                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
-                 ##if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
-                 if(((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
-                   fmin[i,j] <- objfct_sv(beta, m, y)
-                 }
+               if(tau1[i] + tauconstr[4] < tau2[j]) {
+                ##print(j) # DEBUG
+                 
+                 lsparam <- constrOptim(theta = rep(0.01,4),
+                                        f = objfct_sv_grid,
+                                        grad = grad_sv_grid,
+                                        ui = ui,
+                                        ci = ci,
+                                        mu = 1e-04,
+                                        control = control,
+                                        method = "BFGS",
+                                        outer.iterations = outer.iterations,
+                                        outer.eps = outer.eps,
+                                        c(tau1[i], tau2[j]), m, y) ## additional inputs for f and grad
+                 
+                 beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
+                 
+                 fmin[i,j] <- lsparam$value
                  lsbeta[(i-1)*length(tau1)+j,] <- beta
                }
              } 
