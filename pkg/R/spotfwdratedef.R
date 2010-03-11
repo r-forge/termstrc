@@ -131,13 +131,19 @@ objfct_sv_grid <- function(beta, tau,  m, y)
         sum((y - spr_sv(betasv,m))^2)
       }
 
-
 ### Adjusted Svensson loss function for yields
 objfct_asv <- function(beta, m, y)
       {
         sum((y - spr_asv(beta,m))^2)
       }
 
+
+### Adjusted Svensson grid loss function for yields
+objfct_asv_grid <- function(beta, m, y)
+      {
+        betasv <- c(beta[1:3], tau[1], beta[4], tau[2])
+        sum((y - spr_asv(betasv,m))^2)
+      }
 
 ### Constraints for constrOptim()
 
