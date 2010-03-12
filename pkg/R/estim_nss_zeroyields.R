@@ -116,131 +116,161 @@ findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer
       ci <- c(0,0)
       
       for (i in 1:length(tau)){
+        X <- cbind(rep(1,length(y)),
+                   ((1 - exp(-m/tau[i]))/(m/tau[i])),
+                   (((1 - exp(-m/tau[i]))/(m/tau[i])) - exp(-m/tau[i])))
 
-      lsparam <- constrOptim(theta = rep(1,3), # start parameters for D/L, objective function is convex
-                               f = objfct_ns_grid,
-                               grad = grad_ns_grid,
-                               ui = ui,
-                               ci = ci,
-                               mu = 1e-04,
-                               control = control,
-                               method = "BFGS",
-                               outer.iterations = outer.iterations,
-                               outer.eps = outer.eps,
-                               tau[i], m, y) ## additional inputs for f and grad
-        
-        beta <- c(lsparam$par,tau[i])
-        fmin[i] <- objfct_ns(beta, m, y)
+        lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
+        beta <- c(lsparam[1:3],tau[i])
+
+        ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0)
+        if(beta[1]>0 && ((beta[1]+beta[2])>0)){
+          fmin[i,j] <- objfct_ns(beta, m, y)
+        } else {
+          ## switch to constrOptim if OLS violates constraints
+          lsparam <- constrOptim(theta = rep(1,3), # start parameters for D/L, objective function is convex
+                                 f = objfct_ns_grid,
+                                 grad = grad_ns_grid,
+                                 ui = ui,
+                                 ci = ci,
+                                 mu = 1e-04,
+                                 control = control,
+                                 method = "BFGS",
+                                 outer.iterations = outer.iterations,
+                                 outer.eps = outer.eps,
+                                 tau[i], m, y) ## additional inputs for f and grad
+          
+          beta <- c(lsparam$par,tau[i])
+          fmin[i] <- objfct_ns(beta, m, y)
+        }
         lsbeta[i,] <- beta 
       }
-      
       optind <- which(fmin == min(fmin))
       startparam <- lsbeta[optind,]
     }
+
     
-     if(method=="sv"){
-       tau1 <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
-       tau2 <- tau1
-       tau <- cbind(tau1, tau2)
-       fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
-       fminsolver <- matrix(nrow = length(tau1), ncol = length(tau2)) ## DEBUG
-       lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
-
-       ui <- rbind(c(1,0,0,0),                 # beta0 > 0
-                   c(1,1,0,0))                 # beta0 + beta1 > 0
-       ci <- c(0,0)
-       
-       for (i in 1:length(tau1))
-         {
-           #print(i) ## DEBUG
-           for (j in 1:length(tau2))
-             {
-               ## minimum tau distance constraint
-               if(tau1[i] + tauconstr[4] < tau2[j]) {
-
-                 ## reparametrize to avoid nonsingular matrix
-                 if (i == j){
-                   X <- cbind(rep(1,length(y)),
-                              ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
-                              - exp(-m/tau1[i]))
-
-                   lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
-                   beta <- c(lsparam[1],lsparam[2]-lsparam[3],lsparam[3]/2,tau1[i],lsparam[3]/2,tau2[j])
-                 } else
-                 {
-                   X <- cbind(rep(1,length(y)),
-                              ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
-                              (((1 - exp(-m/tau1[i]))/(m/tau1[i])) - exp(-m/tau1[i])),
-                              (((1 - exp(-m/tau2[j]))/(m/tau2[j])) - exp(-m/tau2[j])))
-                   
-                   lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
-                   beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
-                 }
-                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
-                 if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
-                   fmin[i,j] <- objfct_sv(beta, m, y)
-                   fminsolver[i,j] <- 0.2 ## DEBUG
-                 } else {
-                   print(paste("OLS violated constraints, solving with constrOptim, tau_1 =",tau1[i],"and tau_2 = ", tau2[j])) ## DEBUG
-                   ## switch to constrOptim if OLS violates constraints
-                   lsparam <- constrOptim(theta = rep(0.01,4),
-                                          f = objfct_sv_grid,
-                                          grad = grad_sv_grid,
-                                          ui = ui,
-                                          ci = ci,
-                                          mu = 1e-04,
-                                          control = control,
-                                          method = "BFGS",
-                                          outer.iterations = outer.iterations,
-                                          outer.eps = outer.eps,
-                                          c(tau1[i], tau2[j]), m, y) ## additional inputs for f and grad
-                   
-                   beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
-                   fmin[i,j] <- lsparam$value
-                   fminsolver[i,j] <- 1
-                 }
-                 lsbeta[(i-1)*length(tau1)+j,] <- beta
-               }
-             } 
-         }
-       optind <- which(fmin == min(fmin, na.rm = TRUE),arr.ind=TRUE)
-       startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]
-     }
-
-     if(method=="asv"){
-       tau1 <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
-       tau2 <- tau1
-       tau <- cbind(tau1, tau2)
-       fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
-       lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
-       for (i in 1:length(tau1))
-         {
-           for (j in 1:length(tau2))
-             {
-               if(tau1[i] < tau2[j]) {
-
-                 X <- cbind(rep(1,length(y)),
-                            ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
-                            (((1 - exp(-m/tau1[i]))/(m/tau1[i])) - exp(-m/tau1[i])),
-                            (((1 - exp(-m/tau2[j]))/(m/tau2[j])) - exp(-2*m/tau2[j])))
-                   
-                 lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
-                 beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
-                 
-                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
-                 if(beta[1]>0 && ((beta[1]+beta[2])>0) && (-tau1[i] + tau2[j]) > 0){
-                   fmin[i,j] <- objfct_sv(beta, m, y)
-                 }
-                 lsbeta[(i-1)*length(tau1)+j,] <- beta
-               }
-             } 
-         }
-       optind <- which(fmin == min(fmin, na.rm = TRUE),arr.ind=TRUE)
-       startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]
-     }
+    if(method=="sv"){
+      tau1 <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
+      tau2 <- tau1
+      tau <- cbind(tau1, tau2)
+      fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
+      ## fminsolver <- matrix(nrow = length(tau1), ncol = length(tau2)) ## DEBUG
+      lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
+      
+      ui <- rbind(c(1,0,0,0),                 # beta0 > 0
+                  c(1,1,0,0))                 # beta0 + beta1 > 0
+      ci <- c(0,0)
+      
+      for (i in 1:length(tau1))
+        {
+          for (j in 1:length(tau2))
+            {
+              ## minimum tau distance constraint
+              if(tau1[i] + tauconstr[4] < tau2[j]) {
+                
+                ## reparametrize to avoid nonsingular matrix
+                if (i == j){
+                  X <- cbind(rep(1,length(y)),
+                             ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
+                             - exp(-m/tau1[i]))
+                  
+                  lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
+                  beta <- c(lsparam[1],lsparam[2]-lsparam[3],lsparam[3]/2,tau1[i],lsparam[3]/2,tau2[j])
+                } else
+                {
+                  X <- cbind(rep(1,length(y)),
+                             ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
+                             (((1 - exp(-m/tau1[i]))/(m/tau1[i])) - exp(-m/tau1[i])),
+                             (((1 - exp(-m/tau2[j]))/(m/tau2[j])) - exp(-m/tau2[j])))
+                  
+                  lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
+                  beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
+                }
+                ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
+                if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
+                  fmin[i,j] <- objfct_sv(beta, m, y)
+                } else {
+                  ## switch to constrOptim if OLS violates constraints
+                  lsparam <- constrOptim(theta = rep(0.01,4),
+                                         f = objfct_sv_grid,
+                                         grad = grad_sv_grid,
+                                         ui = ui,
+                                         ci = ci,
+                                         mu = 1e-04,
+                                         control = control,
+                                         method = "BFGS",
+                                         outer.iterations = outer.iterations,
+                                         outer.eps = outer.eps,
+                                         c(tau1[i], tau2[j]), m, y) ## additional inputs for f and grad
+                  
+                  beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
+                  fmin[i,j] <- lsparam$value
+                }
+                lsbeta[(i-1)*length(tau1)+j,] <- beta
+              }
+            } 
+        }
+      optind <- which(fmin == min(fmin, na.rm = TRUE),arr.ind=TRUE)
+      startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]
+    }
     
-  result <- list(startparam = startparam, tau = tau, fmin = fmin, optind = optind, fminsolver = fminsolver) ## DEBUG
-  class(result) <- "spsearch"
-  result
+    if(method=="asv"){
+      tau1 <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
+      tau2 <- tau1
+      tau <- cbind(tau1, tau2)
+      fmin <- matrix(nrow = length(tau1), ncol = length(tau2))
+      lsbeta <- matrix(nrow = length(tau1)*length(tau2), ncol = 6)
+      
+      ui <- rbind(c(1,0,0,0),                 # beta0 > 0
+                  c(1,1,0,0))                 # beta0 + beta1 > 0
+      ci <- c(0,0)
+      
+      for (i in 1:length(tau1))
+        {
+          for (j in 1:length(tau2))
+            {
+              if(tau1[i] < tau2[j]) {
+                
+                X <- cbind(rep(1,length(y)),
+                           ((1 - exp(-m/tau1[i]))/(m/tau1[i])),
+                           (((1 - exp(-m/tau1[i]))/(m/tau1[i])) - exp(-m/tau1[i])),
+                           (((1 - exp(-m/tau2[j]))/(m/tau2[j])) - exp(-2*m/tau2[j])))
+                
+                lsparam <- solve(t(X)%*%X)%*%t(X)%*%y
+                beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
+                
+                ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
+                if(beta[1]>0 && ((beta[1]+beta[2])>0) && (-tau1[i] + tau2[j]) > 0){
+                  fmin[i,j] <- objfct_sv(beta, m, y)
+                } else {
+                  print(paste("OLS violated constraints, solving with constrOptim, tau_1 =",tau1[i],"and tau_2 = ", tau2[j])) ## DEBUG
+                  ## switch to constrOptim if OLS violates constraints
+                  lsparam <- constrOptim(theta = rep(0.01,4),
+                                         f = objfct_asv_grid,
+                                         grad = grad_asv_grid,
+                                         ui = ui,
+                                         ci = ci,
+                                         mu = 1e-04,
+                                         control = control,
+                                         method = "BFGS",
+                                         outer.iterations = outer.iterations,
+                                         outer.eps = outer.eps,
+                                         c(tau1[i], tau2[j]), m, y) ## additional inputs for f and grad
+                  
+                  beta <- c(lsparam$par[1:3],tau1[i],lsparam$par[4],tau2[j])
+                  fmin[i,j] <- lsparam$value
+                }
+                lsbeta[(i-1)*length(tau1)+j,] <- beta
+              }
+            } 
+        }
+      optind <- which(fmin == min(fmin, na.rm = TRUE),arr.ind=TRUE)
+      startparam <- lsbeta[(optind[1]-1)*length(tau1) + optind[2],]
+    }
+    
+    result <- list(startparam = startparam, tau = tau, fmin = fmin, optind = optind)
+    class(result) <- "spsearch"
+    result
   }
 
