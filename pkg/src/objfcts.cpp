@@ -243,3 +243,40 @@ RcppExport SEXP grad_sv_bonds_gridCpp(SEXP beta, SEXP tau, SEXP m, SEXP cf, SEXP
 	
 	return gbeta;
 }
+
+
+// Gradient of Svensson grid loss function for yields
+RcppExport SEXP grad_sv_gridCpp(SEXP beta, SEXP tau, SEXP m, SEXP y){
+	RcppVector<double> betac(beta);
+	RcppVector<double> tauc(tau);
+	RcppVector<double> mc(m);
+	RcppVector<double> yc(y);
+	RcppVector<double> yhat(yc.size());
+	Rcpp::NumericVector gbeta(4);
+	
+	int j = 0;
+	
+	for (j = 0; j<mc.size(); j++) {
+		
+		gbeta[0] += -2*(-betac(0) - betac(2)*(-exp(-mc(j)/tauc(0)) + (tauc(0)*(1 - exp(-mc(j)/tauc(0))))/mc(j)) - 
+						betac(3)*(-exp(-mc(j)/tauc(1)) + (tauc(1)*(1 - exp(-mc(j)/tauc(1))))/mc(j)) - 
+						(betac(1)*tauc(0)*(1 - exp(-mc(j)/tauc(0))))/mc(j) + yc(j));
+		
+		gbeta[1] +=  (-2*tauc(0)*(1 - exp(-mc(j)/tauc(0)))*(-betac(0) - betac(2)*(-exp(-mc(j)/tauc(0)) + (tauc(0)*(1 - exp(-mc(j)/tauc(0))))/mc(j)) - 
+					 betac(3)*(-exp(-mc(j)/tauc(1)) + (tauc(1)*(1 - exp(-mc(j)/tauc(1))))/mc(j)) - 
+															(betac(1)*tauc(0)*(1 - exp(-mc(j)/tauc(0))))/mc(j) + yc(j)))/mc(j);
+		
+		gbeta[2] += -2*(-exp(-mc(j)/tauc(0)) + (tauc(0)*(1 - exp(-mc(j)/tauc(0))))/mc(j))*
+		(-betac(0) - betac(2)*(-exp(-mc(j)/tauc(0)) + (tauc(0)*(1 - exp(-mc(j)/tauc(0))))/mc(j)) - 
+		 betac(3)*(-exp(-mc(j)/tauc(1)) + (tauc(1)*(1 - exp(-mc(j)/tauc(1))))/mc(j)) - 
+		 (betac(1)*tauc(0)*(1 - exp(-mc(j)/tauc(0))))/mc(j) + yc(j));
+		
+		
+		gbeta[3] += -2*(-exp(-mc(j)/tauc(1)) + (tauc(1)*(1 - exp(-mc(j)/tauc(1))))/mc(j))*
+		(-betac(0) - betac(2)*(-exp(-mc(j)/tauc(0)) + (tauc(0)*(1 - exp(-mc(j)/tauc(0))))/mc(j)) - 
+		 betac(3)*(-exp(-mc(j)/tauc(1)) + (tauc(1)*(1 - exp(-mc(j)/tauc(1))))/mc(j)) - 
+		 (betac(1)*tauc(0)*(1 - exp(-mc(j)/tauc(0))))/mc(j) + yc(j));
+	}
+	
+	return gbeta;
+}
