@@ -91,6 +91,7 @@ get_realnames <- function(method){
 ### Loss function for parametric methods
 get_objfct <- function(method) {
   objfct <- switch(method,
+                   "dl" = objfct_dl,
                    "ns" = objfct_ns,
                    "sv" = objfct_sv,
                    "asv" = objfct_asv)
@@ -99,10 +100,17 @@ get_objfct <- function(method) {
 ### Gradient of loss function for parametric methods
 get_grad_objfct <- function(method) {
   grad_objfct <- switch(method,
+                   "dl" = grad_dl,
                    "ns" = grad_ns,
                    "sv" = grad_sv,
                    "asv" = grad_asv)
 }
+
+### Diebold/Li loss function for yields
+objfct_dl <- function(beta, lambda, m, y)
+      {
+        sum((y - spr_dl(beta,m, lambda))^2)
+      }
 
 ### Nelson/Siegel loss function for yields
 objfct_ns <- function(beta, m, y)
