@@ -5,7 +5,7 @@
 estim_nss.dyncouponbonds <- function(dataset, group, matrange="all",method="ns",
                               lambda=0.0609*12,          # yearly lambda-value for "Diebold/Li" estimation
                               tauconstr = NULL,              # tau constraints
-                              optimtype = "allglobal", # 'firstglobal' of 'allglobal'
+                              optimtype = "firstglobal", # 'firstglobal' of 'allglobal'
                               constrOptimOptions = list(control = list(maxit = 2000), outer.iterations = 200, outer.eps = 1e-04), ...
                      ) {
   

@@ -1,3 +1,6 @@
+oldpar <- par(no.readonly = TRUE)
+par(ask=TRUE)
+
 data(govbonds)
 
 ns_res <- estim_nss(govbonds, c("GERMANY", "AUSTRIA", "FRANCE"),matrange = c(0,30), method = "ns", deltatau = 1)
@@ -14,3 +17,5 @@ plot(ns_res$spsearch$FRANCE,main="FRANCE")
 ## Plot all yield curves in one figure  
 par(mfrow=c(1,1))
 plot(ns_res,multiple=TRUE)
+
+par(oldpar)

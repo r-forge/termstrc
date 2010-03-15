@@ -6,7 +6,7 @@ estim_nss.zeroyields <- function (dataset,
                                   method = "ns",
                                   lambda = 0.0609*12,
                                   tauconstr = NULL,
-                                  optimtype = "allglobal",
+                                  optimtype = "firstglobal",
                                   constrOptimOptions = list(control = list(), outer.iterations = 200, outer.eps = 1e-04),...)
   {
     obj <- dataset
@@ -14,24 +14,8 @@ estim_nss.zeroyields <- function (dataset,
     opt_result <- list()
     spsearch <- list()
     
-##     if(method == "dl") {
-
-##       ## Estimation loop
-##       for (i in 1:nrow(obj$yields)){
-
-##         y <- obj$yields[i,]
-##         m <- obj$maturities
-##         X <- cbind(rep(1,length(y)),
-##                    ((1 - exp(-m*lambda))/(m*lambda)),
-##                    (((1 - exp(-m*lambda))/(m*lambda)) - exp(-m*lambda)))
-        
-##         optparam[i,] <- t(solve(t(X)%*%X)%*%t(X)%*%y)
-##       }
-      
-##     }
-
       ## default tau constraints (if not specified by user)
-      if (is.null(tauconstr)){
+      if (is.null(tauconstr) && method != "dl"){
         tauconstr <- c(min(obj$maturities), max(obj$maturities), 0.1, 0.5)
         if (method == "asv") {tauconstr[4] = 0}
         if (method == "ns") {tauconstr = tauconstr[1:3]}
