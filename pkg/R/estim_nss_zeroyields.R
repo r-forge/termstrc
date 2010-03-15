@@ -14,22 +14,21 @@ estim_nss.zeroyields <- function (dataset,
     opt_result <- list()
     spsearch <- list()
     
-    if(method == "dl") {
+##     if(method == "dl") {
 
-      ## Estimation loop
-      for (i in 1:nrow(obj$yields)){
+##       ## Estimation loop
+##       for (i in 1:nrow(obj$yields)){
 
-        y <- obj$yields[i,]
-        m <- obj$maturities
-        X <- cbind(rep(1,length(y)),
-                   ((1 - exp(-m*lambda))/(m*lambda)),
-                   (((1 - exp(-m*lambda))/(m*lambda)) - exp(-m*lambda)))
+##         y <- obj$yields[i,]
+##         m <- obj$maturities
+##         X <- cbind(rep(1,length(y)),
+##                    ((1 - exp(-m*lambda))/(m*lambda)),
+##                    (((1 - exp(-m*lambda))/(m*lambda)) - exp(-m*lambda)))
         
-        optparam[i,] <- t(solve(t(X)%*%X)%*%t(X)%*%y)
-      }
+##         optparam[i,] <- t(solve(t(X)%*%X)%*%t(X)%*%y)
+##       }
       
-    }
-    else { # other methods that require a start parameter search
+##     }
 
       ## default tau constraints (if not specified by user)
       if (is.null(tauconstr)){
@@ -65,12 +64,11 @@ estim_nss.zeroyields <- function (dataset,
         if(i>1 && optimtype == "firstglobal"){
           beta <- optparam[i-1,]
         }
-
-        opt_result[[i]] <- estimateyieldcurve(yields, obj$maturities, beta, objfct,
+        
+        opt_result[[i]] <- estimateyieldcurve(method, yields, obj$maturities, beta, lambda, objfct,
                                               grad_objfct, constraints, constrOptimOptions)
         optparam[i,] <- opt_result[[i]]$par
       }
-    }
     
     colnames(optparam) <- get_paramnames(method)
     
@@ -86,8 +84,8 @@ estim_nss.zeroyields <- function (dataset,
 
 
 
-estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, constraints, constrOptimOptions)
-  {
+estimateyieldcurve <- function(method, y, m, beta, lambda, objfct, grad_objfct, constraints, constrOptimOptions) {
+  if(method=="dl") {
     opt_result <- constrOptim(theta = beta,
                               f = objfct,
                               grad = grad_objfct,
@@ -98,14 +96,33 @@ estimateyieldcurve <- function(y, m, beta, objfct, grad_objfct, constraints, con
                               method = "BFGS",
                               outer.iterations = constrOptimOptions$outer.iterations,
                               outer.eps = constrOptimOptions$outer.eps,
-                               m,y)
-          
-  }
+                              lambda, m, y)
+  } else {
+    opt_result <- constrOptim(theta = beta,
+                              f = objfct,
+                              grad = grad_objfct,
+                              ui = constraints$ui,
+                              ci = constraints$ci,
+                              mu = 1e-04,
+                              control = constrOptimOptions$control,
+                              method = "BFGS",
+                              outer.iterations = constrOptimOptions$outer.iterations,
+                              outer.eps = constrOptimOptions$outer.eps,
+                              m,y)
+  }     
+}
 
 findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer.iterations = 30, outer.eps = 1e-04)
   {
     epsConst <- 0.0001 ## ensures that starting value for constrOptim can not be on the boundary
-      
+
+    if(method=="dl"){
+      startparam = rep(1,3)
+      tau = NULL
+      fmin = NULL
+      optind = NULL
+    }
+    
     if(method=="ns"){
       tau <- seq(tauconstr[1] + epsConst, tauconstr[2] - epsConst, tauconstr[3])
       fmin <- rep(NA, length(tau))
@@ -125,7 +142,7 @@ findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer
 
         ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0)
         if(beta[1]>0 && ((beta[1]+beta[2])>0)){
-          fmin[i,j] <- objfct_ns(beta, m, y)
+          fmin[i] <- objfct_ns(beta, m, y)
         } else {
           ## switch to constrOptim if OLS violates constraints
           lsparam <- constrOptim(theta = rep(1,3), # start parameters for D/L, objective function is convex
@@ -188,7 +205,8 @@ findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer
                   beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
                 }
                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
-                if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
+                ##if(beta[1]>0 && ((beta[1]+beta[2])>0  ) && (-tau1[i] + tau2[j]) > tauconstr[4]){
+                if(beta[1]>0 && ((beta[1]+beta[2])>0)){
                   fmin[i,j] <- objfct_sv(beta, m, y)
                 } else {
                   ## switch to constrOptim if OLS violates constraints
@@ -241,10 +259,11 @@ findstartparamyields <- function(y,m, method, tauconstr, control = list(), outer
                 beta <- c(lsparam[1:3],tau1[i],lsparam[4],tau2[j])
                 
                 ## check parameter contraints (beta_0 > 0, beta_0 + beta_1 > 0, tau distance)
-                if(beta[1]>0 && ((beta[1]+beta[2])>0) && (-tau1[i] + tau2[j]) > 0){
+                ##if(beta[1]>0 && ((beta[1]+beta[2])>0) && (-tau1[i] + tau2[j]) > 0){
+                if(beta[1]>0 && ((beta[1]+beta[2])>0)){
                   fmin[i,j] <- objfct_sv(beta, m, y)
                 } else {
-                  print(paste("OLS violated constraints, solving with constrOptim, tau_1 =",tau1[i],"and tau_2 = ", tau2[j])) ## DEBUG
+                  ##print(paste("OLS violated constraints, solving with constrOptim, tau_1 =",tau1[i],"and tau_2 = ", tau2[j])) ## DEBUG
                   ## switch to constrOptim if OLS violates constraints
                   lsparam <- constrOptim(theta = rep(0.01,4),
                                          f = objfct_asv_grid,

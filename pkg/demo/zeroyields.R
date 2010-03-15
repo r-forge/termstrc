@@ -28,8 +28,7 @@ plot(param(ns_res))
 plot(ns_res$spsearch[[1]])
 
 ## Estimate Svensson model
-## The default grid size of 0.1 ensures a global optimum for this data set, but calculations will take several minutes.
-sv_res <- estim_nss(datazeroyields, "sv")
+sv_res <- estim_nss(datazeroyields, "sv", tauconstr =  c(0.2, 5, 0.1, 0.5), optimtype = "firstglobal")
 print(sv_res)
 summary(sv_res)
 plot(param(sv_res))
@@ -37,25 +36,16 @@ plot(param(sv_res))
 ## Plot start parameter search for t=1
 plot(sv_res$spsearch[[1]])
 
-## Estimate Svensson model with restrictions on the tau parameters
-## (this can lead to smoother parameter time series)
-sv_res2 <- estim_nss(datazeroyields, "sv", tauconstr =  c(0.2, 3, 0.1, 0.5))
-print(sv_res2)
-summary(sv_res2)
-plot(param(sv_res2))
-
 ## Plot yield curves in 3D
-plot(sv_res2)
+plot(sv_res)
 
 ## Estimate Adjusted Svensson model
-## (this can also lead to smoother parameter time series)
-## The default grid size of 0.1 ensures a global optimum for this data set, but calculations will take several minutes.
-asv_res <- estim_nss(datazeroyields, "asv")
+asv_res <- estim_nss(datazeroyields, "asv",  tauconstr =  c(0.2, 7, 0.1), optimtype = "firstglobal")
 plot(param(asv_res))
 
 ## Compare GOF
-allgof <- cbind(summary(dl_res)$gof, summary(ns_res)$gof, summary(sv_res)$gof, summary(sv_res2)$gof, summary(asv_res)$gof)
-colnames(allgof) <- c("Diebold/Li", "Nelson/Siegel", "Svensson unrestr.", "Svensson", "Adj. Svensson")
+allgof <- cbind(summary(dl_res)$gof, summary(ns_res)$gof, summary(sv_res)$gof, summary(asv_res)$gof)
+colnames(allgof) <- c("Diebold/Li", "Nelson/Siegel", "Svensson", "Adj. Svensson")
 print(allgof)
 
 par(oldpar)
