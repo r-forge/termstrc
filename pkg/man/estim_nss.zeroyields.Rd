@@ -7,7 +7,7 @@
 }
 
 \usage{\method{estim_nss}{zeroyields}(dataset, method = "ns",
- lambda = 0.0609 *12, tauconstr = NULL, optimtype = "allglobal",
+ lambda = 0.0609 *12, tauconstr = NULL, optimtype = "firstglobal",
  constrOptimOptions = list(control = list(),
  outer.iterations = 200, outer.eps = 1e-04), ...)
 }
