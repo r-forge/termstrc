@@ -2,7 +2,7 @@ data(govbonds)
 data(govbonds)
 
 ## Cubic splines estimation
-cs_res <- estim_cs(govbonds,c("GERMANY"),matrange=c(0,30))
+cs_res <- estim_cs(govbonds,c("FRANCE"),matrange=c(0,30))
 print(cs_res)
 summary(cs_res)
 
