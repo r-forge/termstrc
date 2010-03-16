@@ -3,15 +3,16 @@
 
 print.termstrc_cs <- function(x,...) {
   cat("---------------------------------------------------\n")
-  cat("Estimated parameters and standard errors:\n")
+  if(x$rse) cat("Estimated parameters and robust standard errors:\n") else
+  cat("Estimated parameters and standard errors:\n") 
   cat("---------------------------------------------------\n")
   for(i in seq(x$n_group)) {
     print(paste(names(x$alpha)[[i]],":",sep=""))
-    cs_coef <- (summary(x$regout[[i]]))$coefficients[,1:2]
-   rownames(cs_coef) <- paste("alpha",c(seq_along(x$alpha[[i]])))
-   colnames(cs_coef) <- c("Estimate",if(x$rse) "Robust s.e." else "s.e.")
-   print.default(format(cs_coef,digits=6,scientific=FALSE),quote=FALSE)
-  cat("\n")
+    cs_coef <- if(x$rse) coeftest(x$regout[[i]],vcov=vcovHAC.default) else summary(x$regout[[i]])
+    if(x$rse) rownames(cs_coef) <- paste("alpha",c(seq_along(x$alpha[[i]]))) else
+     rownames(cs_coef$coefficients) <- paste("alpha",c(seq_along(x$alpha[[i]])))
+   print(cs_coef)
+   cat("\n")
   x
   }
  }
@@ -27,11 +28,8 @@ summary.termstrc_cs <-
     gof <- rbind(RMSE_p,AABSE_p,RMSE_y,AABSE_y)
     colnames(gof) <- names(x$p)
     rownames(gof) <- c("RMSE-Prices","AABSE-Prices","RMSE-Yields (in %)","AABSE-Yields (in %)")
-    regsumry <- lapply(x$regout,summary)
-    for (i in seq(x$n_group)) rownames(regsumry[[i]]$coefficients) <- 
-	paste("alpha",c(seq_along(x$alpha[[i]])))
-    sumry <- list(gof,regsumry)
-    names(sumry) <- c("gof", "regsumry")
+    sumry <- list(gof)
+    names(sumry) <- c("gof")
     class(sumry) <- "summary.termstrc_cs"
     sumry
 } 
@@ -46,15 +44,6 @@ print.summary.termstrc_cs <-
     print.default(format(x$gof,digits=6,scientific=FALSE),quote=FALSE)
     cat("\n")
     x$gof
-    
-    cat("---------------------------------------------------\n")
-    cat("Summary statistics for the fitted models:\n")
-    cat("---------------------------------------------------\n")
-    cat("\n")
-    print.default(x$regsumry)
-    cat("\n")
-    x$regsumry
-
     
 }
 

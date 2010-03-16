@@ -3,6 +3,7 @@ useDynLib(termstrc, objfct_ns_bonds_Cpp, objfct_ns_bonds_gridCpp, objfct_sv_bond
 importFrom(urca, ur.df)
 import(sandwich)
 
+
 S3method(estim_cs, couponbonds)
 S3method(estim_nss, couponbonds) 
 S3method(estim_nss, dyncouponbonds)
@@ -72,7 +73,7 @@ objfct_ns_bonds,
 objfct_ns_bonds_grid,
 objfct_sv,
 objfct_sv_grid,
-#objfct_dl,
+objfct_dl,
 objfct_sv_bonds,
 objfct_sv_bonds_grid,
 param,
