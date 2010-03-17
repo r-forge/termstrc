@@ -11,6 +11,8 @@ S3method(estim_nss, zeroyields)
 S3method(fcontrib, dyntermstrc_param)
 S3method(param, dyntermstrc_nss)
 S3method(param, dyntermstrc_yields)
+S3method(rm_bond, couponbonds)
+S3method(rm_bond, dyncouponbonds)
 
 export(aabse,
 bond_prices,
@@ -19,7 +21,9 @@ create_cashflows_matrix,
 create_maturities_matrix,
 cSums,
 duration,
-dyn_rm_bond,
+rm_bond.couponbonds,
+rm_bond.dyncouponbonds,
+rm_bond,
 estimateyieldcurve,
 estimatezcyieldcurve,
 estim_cs,
@@ -106,7 +110,6 @@ print.summary.termstrc_nss,
 print.termstrc_cs,
 print.termstrc_nss,
 print.zeroyields,
-rm_bond,
 rmse,
 spotrates,
 spr_asv,
