@@ -69,42 +69,43 @@ maturity_range <- function(bonddata,lower,upper) {
   bonddata_range
   }
 
+rm_bond <- function(bonddata, group, ISIN) UseMethod("rm_bond")
 
 ## remove bonds from a static bonddata set  
-rm_bond <- function(bonddata,ISIN,group){
-    cf_isin_index <- which(bonddata[[group]]$CASHFLOWS$ISIN %in% ISIN)
+rm_bond.couponbonds <- function(bonddata, group, ISIN){
+        cf_isin_index <- which(bonddata[[group]]$CASHFLOWS$ISIN %in% ISIN)
  	isin_index <- which(bonddata[[group]]$ISIN %in% ISIN)	
-
     	bonddata[[group]]$ISIN <-  bonddata[[group]]$ISIN[-isin_index]
     	bonddata[[group]]$MATURITYDATE <- bonddata[[group]]$MATURITYDATE[-isin_index]
     	bonddata[[group]]$STARTDATE <- bonddata[[group]]$STARTDATE[-isin_index]
     	bonddata[[group]]$COUPONRATE <- bonddata[[group]]$COUPONRATE[-isin_index]
     	bonddata[[group]]$PRICE <- bonddata[[group]]$PRICE[-isin_index]
     	bonddata[[group]]$ACCRUED <- bonddata[[group]]$ACCRUED[-isin_index]
-
-		bonddata[[group]]$CASHFLOWS$ISIN <- bonddata[[group]]$CASHFLOWS$ISIN[-cf_isin_index]
-		bonddata[[group]]$CASHFLOWS$CF <- bonddata[[group]]$CASHFLOWS$CF[-cf_isin_index]
-		bonddata[[group]]$CASHFLOWS$DATE <- bonddata[[group]]$CASHFLOWS$DATE[-cf_isin_index]
+        bonddata[[group]]$CASHFLOWS$ISIN <- bonddata[[group]]$CASHFLOWS$ISIN[-cf_isin_index]
+        bonddata[[group]]$CASHFLOWS$CF <- bonddata[[group]]$CASHFLOWS$CF[-cf_isin_index]
+        bonddata[[group]]$CASHFLOWS$DATE <- bonddata[[group]]$CASHFLOWS$DATE[-cf_isin_index]
 	
-	bonddata
+	class(bonddata) <- "couponbonds"
+        bonddata
 }
 
 ## remove bonds from a dynamic bonddata set 
-dyn_rm_bond <- function(dynbonddata,group,ISIN) {
-  for (i in seq(length(dynbonddata))) {
-     cf_isin_index <- which(dynbonddata[[i]][[group]]$CASHFLOWS$ISIN %in% ISIN)
-     isin_index <- which(dynbonddata[[i]][[group]]$ISIN %in% ISIN)
-     dynbonddata[[i]][[group]]$ISIN <- dynbonddata[[i]][[group]]$ISIN[-isin_index]
-     dynbonddata[[i]][[group]]$MATURITYDATE <- dynbonddata[[i]][[group]]$MATURITYDATE[-isin_index]
-     dynbonddata[[i]][[group]]$STARTDATE <- dynbonddata[[i]][[group]]$STARTDATE[-isin_index]
-     dynbonddata[[i]][[group]]$COUPONRATE <- dynbonddata[[i]][[group]]$COUPONRATE[-isin_index]
-     dynbonddata[[i]][[group]]$PRICE <- dynbonddata[[i]][[group]]$PRICE[-isin_index]
-     dynbonddata[[i]][[group]]$ACCRUED <- dynbonddata[[i]][[group]]$ACCRUED[-isin_index]
-     dynbonddata[[i]][[group]]$CASHFLOWS$ISIN <- dynbonddata[[i]][[group]]$CASHFLOWS$ISIN[-cf_isin_index]
-     dynbonddata[[i]][[group]]$CASHFLOWS$CF <- dynbonddata[[i]][[group]]$CASHFLOWS$CF[-cf_isin_index]
-     dynbonddata[[i]][[group]]$CASHFLOWS$DATE <- dynbonddata[[i]][[group]]$CASHFLOWS$DATE[-cf_isin_index]
+rm_bond.dyncouponbonds <- function(bonddata, group, ISIN) {
+  for (i in seq(length(bonddata))) {
+     cf_isin_index <- which(bonddata[[i]][[group]]$CASHFLOWS$ISIN %in% ISIN)
+     isin_index <- which(bonddata[[i]][[group]]$ISIN %in% ISIN)
+     bonddata[[i]][[group]]$ISIN <- bonddata[[i]][[group]]$ISIN[-isin_index]
+     bonddata[[i]][[group]]$MATURITYDATE <- bonddata[[i]][[group]]$MATURITYDATE[-isin_index]
+     bonddata[[i]][[group]]$STARTDATE <- bonddata[[i]][[group]]$STARTDATE[-isin_index]
+     bonddata[[i]][[group]]$COUPONRATE <- bonddata[[i]][[group]]$COUPONRATE[-isin_index]
+     bonddata[[i]][[group]]$PRICE <- bonddata[[i]][[group]]$PRICE[-isin_index]
+     bonddata[[i]][[group]]$ACCRUED <- bonddata[[i]][[group]]$ACCRUED[-isin_index]
+     bonddata[[i]][[group]]$CASHFLOWS$ISIN <- bonddata[[i]][[group]]$CASHFLOWS$ISIN[-cf_isin_index]
+     bonddata[[i]][[group]]$CASHFLOWS$CF <- bonddata[[i]][[group]]$CASHFLOWS$CF[-cf_isin_index]
+     bonddata[[i]][[group]]$CASHFLOWS$DATE <- bonddata[[i]][[group]]$CASHFLOWS$DATE[-cf_isin_index]
   }
-    dynbonddata
+     class(bonddata) <- "dyncouponbonds"
+     bonddata
 }
 
 
