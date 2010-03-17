@@ -85,7 +85,7 @@ get_paramnames <- function(method){
 }
 
 get_realnames <- function(method){
-  switch(method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson","asv"="Adjusted Svensson")
+  switch(method,"dl"="Diebold/Li","ns"="Nelson/Siegel","sv"="Svensson","asv"="adj. Svensson")
 }
 
 ### Loss function for parametric methods
