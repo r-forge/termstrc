@@ -39,7 +39,7 @@ estim_nss.couponbonds <- function(dataset,                  # dataset (static)
     length(tauconstr) <- n_group
     names(tauconstr) <- group
     for (k in sgroup){
-        tauconstr[[k]] <- c(min(m[[k]][1,]), max(m[[k]]), 0.5, 0.5)
+        tauconstr[[k]] <- c(min(m[[k]][1,]), max(m[[k]]), 0.2, 0.5)
         names(tauconstr[[k]]) <- c("tau_min", "tau_max", "gridstepsize", "tau_distance")
         if (method == "asv") {tauconstr[[k]][4] = 0}
         if (method == "ns") {tauconstr[[k]] = tauconstr[[k]][1:3]}
@@ -290,7 +290,7 @@ findstartparambonds <- function(p,m,cf, weights, method, tauconstr,
 
 ### Startparameter grid search plots
 
-plot.spsearch <- function(x, rgl = TRUE, ...) {
+plot.spsearch <- function(x, main = "Start parameter search", rgl = TRUE, ...) {
 
   if(is.matrix(x$tau)){
     image(x$tau[,1],x$tau[,2],log(x$fmin),xlab = expression(tau[1]), ylab = expression(tau[2]),main = "Log(Objective function)")
@@ -308,7 +308,7 @@ plot.spsearch <- function(x, rgl = TRUE, ...) {
               d = 1, scale = TRUE, expand = 1, ltheta = 135, lphi = 0)
       }
   } else {
-      plot(x$tau,log(x$fmin),xlab = "tau_1", ylab = "Log(Objective function)", type = "l")
+      plot(x$tau,log(x$fmin),xlab = expression(tau[1]), ylab = "Log(Objective function)", type = "l", main = main)
       points(x$tau[x$optind],log(x$fmin[x$optind]),pch = 10, col = "red")
   }
 }
