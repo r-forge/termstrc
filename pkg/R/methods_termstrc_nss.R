@@ -1,7 +1,7 @@
 print.termstrc_nss <- 
   function(x,...) {
   cat("---------------------------------------------------\n")
-  cat("Parameters for estimation with",get_realnames(x$method), "spot rate function:")
+  cat("Estimated",get_realnames(x$method), "parameters:")
   cat("\n")
   cat("---------------------------------------------------\n")
   cat("\n")
