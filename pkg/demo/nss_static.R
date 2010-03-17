@@ -3,7 +3,8 @@ par(ask=TRUE)
 
 data(govbonds)
 
-ns_res <- estim_nss(govbonds, c("GERMANY", "AUSTRIA", "FRANCE"),matrange = c(0,30), method = "ns", deltatau = 1)
+ns_res <- estim_nss(govbonds, c("GERMANY", "AUSTRIA", "FRANCE"),matrange = c(0,30), method = "ns", tauconstr = list(c(0.2,5,0.1),c(0.2,5,0.1), c(0.2,5,0.1)))
+
 print(ns_res)
 plot(ns_res)
 summary(ns_res)
