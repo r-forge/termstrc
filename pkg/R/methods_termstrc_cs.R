@@ -52,7 +52,7 @@ plot.termstrc_cs <-
   function(x,matrange =c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
                         max(mapply(function(i) max(x$y[[i]][,1]), seq(x$n_group)))),
                         multiple=FALSE, ctype="spot",
-                        lwd=2,lty=1,type="l",errors="none",inset=c(0.8,0.1),ask=TRUE, ...) {
+                        lwd=2,lty=1,type="l",errors="none",inset=c(0.1,0.3),ask=TRUE, ...) {
     
    # min and max maturity of all bonds in the sample 
      samplemat <- c(min(mapply(function(i) min(x$y[[i]][,1]), seq(x$n_group))),
