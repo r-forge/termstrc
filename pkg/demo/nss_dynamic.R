@@ -18,14 +18,14 @@ plot(param(ns_res))
 summary(param(ns_res))
 
 ## Estimate Svensson model
-sv_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "sv",tauconstr = list(c(0.2,7,0.2,0.5)), optimtype = "firstglobal")
+sv_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "sv",tauconstr = list(c(0.2,7,0.2,0.5)))
 
 ## Estimated parameters
 plot(param(sv_res))
 summary(param(sv_res))
 
 ## Estimate Adjusted Svensson model
-asv_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "asv",tauconstr = list(c(0.2,10,0.2)), optimtype = "firstglobal")
+asv_res <- estim_nss(datadyncouponbonds, c("GERMANY"), method = "asv",tauconstr = list(c(0.2,10,0.2)))
 
 ## Estimated parameters
 plot(param(asv_res))

@@ -46,7 +46,7 @@ print.summary.dyntermstrc_yields <- function(x,...) {
       cat("Convergence information from optim ():\n")
       cat("---------------------------------------------------\n")
       
-      print.default(x$convergence)
+      print.default(t(as.matrix(x$convergence))
     }
   }
 
