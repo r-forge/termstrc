@@ -24,7 +24,7 @@ print(ns_res)
 summary(ns_res)
 plot(param(ns_res))
 
-## Plot start parameter search for t=1
+## Plot start parameter grid search for t=1
 plot(ns_res$spsearch[[1]])
 
 ## Estimate Svensson model
