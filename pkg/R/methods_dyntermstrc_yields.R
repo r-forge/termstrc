@@ -1,15 +1,14 @@
 print.dyntermstrc_yields <- function(x, ...){
   cat("---------------------------------------------------\n")
-  cat("Parameters for yield based dynamic term structure estimation:\n")
+  cat("Estimated",get_realnames(x$method), "parameters:")
+  cat("\n")
   cat("---------------------------------------------------\n")
-  cat("Method:",get_realnames(x$method),"\n")
+  cat("\n")
   cat("Number of oberservations:",nrow(x$optparam),"\n")
-  cat("---------------------------------------------------\n")
-  cat("Parameter summary:\n")
-  cat("---------------------------------------------------\n")
+  cat("\n")
   tsparam <- param.dyntermstrc_yields(x)
-   print.default(lapply(tsparam,summary.default))
-  cat("---------------------------------------------------\n")
+  print.default(lapply(tsparam,summary.default))
+  cat("\n")
 }
 
 
