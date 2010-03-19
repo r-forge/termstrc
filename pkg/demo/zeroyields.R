@@ -28,7 +28,7 @@ plot(param(ns_res))
 plot(ns_res$spsearch[[1]])
 
 ## Estimate Svensson model
-sv_res <- estim_nss(datazeroyields, "sv", tauconstr =  c(0.2, 5, 0.1, 0.5), optimtype = "firstglobal")
+sv_res <- estim_nss(datazeroyields, "sv", tauconstr =  c(0.2, 5, 0.1, 0.5))
 print(sv_res)
 summary(sv_res)
 plot(param(sv_res))
@@ -40,7 +40,7 @@ plot(sv_res$spsearch[[1]])
 plot(sv_res)
 
 ## Estimate Adjusted Svensson model
-asv_res <- estim_nss(datazeroyields, "asv",  tauconstr =  c(0.2, 7, 0.1), optimtype = "firstglobal")
+asv_res <- estim_nss(datazeroyields, "asv",  tauconstr =  c(0.2, 7, 0.1))
 plot(param(asv_res))
 
 ## Compare GOF
