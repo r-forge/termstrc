@@ -67,15 +67,13 @@ plot.dyntermstrc_nss <- function(x,range=c(0,20), ...) {
 
 print.dyntermstrc_nss <- function(x,...){
   cat("---------------------------------------------------\n")
-  cat("Parameters for dynamic term structure estimation:\n")
+  cat("Estimated",get_realnames(x[[1]]$method), "parameters:")
+  cat("\n")
   cat("---------------------------------------------------\n")
-  cat("Group: ",x[[1]]$group,"\n")
-  cat("Method:",get_realnames(x[[1]]$method),"\n")
+  cat("\n")
   cat("Number of oberservations:",length(x),"\n")
-  cat("---------------------------------------------------\n")
-  cat("Parameter summary:\n")
-  cat("---------------------------------------------------\n")
+  cat("\n")
   tsparam <- param.dyntermstrc_nss(x)
   print(lapply(tsparam,summary.default))
-  cat("---------------------------------------------------\n")
+  cat("\n")
 }
