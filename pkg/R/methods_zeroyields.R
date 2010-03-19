@@ -26,6 +26,6 @@ plot.zeroyields <- function(x,...)
     Y <- x$maturities
 
     open3d()
-    persp3d(X, Y, Z, col = "green3", box = FALSE,xlab = "Dates", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
+    persp3d(X, Y, Z, col = "green3", box = FALSE,xlab = "Time", ylab = "Maturities (years)", zlab = "Zero-yields (%)")
   }
 
