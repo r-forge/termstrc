@@ -19,7 +19,7 @@ summary(dl_res)
 plot(param(dl_res))
 
 ## Estimate Nelson/Siegel model
-ns_res <- estim_nss(datazeroyields, "ns", tauconstr = c(0.1, 6, 0.1))
+ns_res <- estim_nss(datazeroyields, "ns", tauconstr = c(0.2, 6, 0.1))
 print(ns_res)
 summary(ns_res)
 plot(param(ns_res))
