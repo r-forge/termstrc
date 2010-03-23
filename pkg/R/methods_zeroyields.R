@@ -9,7 +9,7 @@ zeroyields <- function(maturities, yields, dates)
 
 print.zeroyields <- function(x, ...)
   {
-    cat("This is a dataset of zero-coupon yields.\n")
+    cat("This is a data set of zero-coupon yields.\n")
     cat(paste("Maturities range from", min(x$maturities), "to", max(x$maturities),"years.\n"))
     cat(paste("There are",nrow(x$yields), "observations between",x$dates[1], "and",x$dates[length(x$dates)],".\n"))
   }
