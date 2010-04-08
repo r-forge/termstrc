@@ -1,5 +1,4 @@
 oldpar <- par(no.readonly = TRUE)
-par(ask=TRUE)
 
 data(govbonds)
 
@@ -15,8 +14,9 @@ plot(ns_res$spsearch$GERMANY,main="GERMANY")
 plot(ns_res$spsearch$AUSTRIA,main="AUSTRIA")
 plot(ns_res$spsearch$FRANCE,main="FRANCE")
 
-## Plot all yield curves in one figure  
+## Plot all yield curves in one figure
 par(mfrow=c(1,1))
 plot(ns_res,multiple=TRUE)
 
 par(oldpar)
+

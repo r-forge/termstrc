@@ -1,3 +1,5 @@
+oldpar <- par(no.readonly = TRUE)
+
 data(GermanBonds)
 
 ## Diebold/Li estimation
@@ -47,3 +49,5 @@ fcontrib(param(asv_res), index = 1, method="asv")
 allgof <- cbind(summary(dl_res)$gof, summary(ns_res)$gof, summary(sv_res)$gof, summary(asv_res)$gof)
 colnames(allgof) <- c("Diebold/Li", "Nelson/Siegel", "Svensson", "Adj. Svensson")
 print(allgof)
+
+par(oldpar)
