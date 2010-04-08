@@ -1,5 +1,4 @@
 oldpar <- par(no.readonly = TRUE)
-par(ask=TRUE)
 
 ## Load yields matrix from csv
 data(zyields)

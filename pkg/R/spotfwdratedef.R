@@ -173,7 +173,7 @@ get_constraints <- function(method, tauconstr) {
     ui <- rbind(c(1,0,0,0),             # beta0 > 0
                 c(1,1,0,0),             # beta0 + beta1 > 0
                 c(0,0,0,1),             # tau1 > tauconstr[1]
-                c(0,0,0,-1))            # tau1 < tauconstr[2]
+                c(0,0,0,-1))            # tau1 <= tauconstr[2]
     ci <- c(0,0,tauconstr[1],-tauconstr[2])
   }
 
@@ -183,9 +183,9 @@ get_constraints <- function(method, tauconstr) {
      ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
                  c(1,1,0,0,0,0),        # beta0 + beta1 > 0
                  c(0,0,0,1,0,0),        # tau1 > tauconstr[1]
-                 c(0,0,0,-1,0,0),       # tau1 < tauconstr[2]
+                 c(0,0,0,-1,0,0),       # tau1 <= tauconstr[2]
                  c(0,0,0,0,0,1),        # tau2 > tauconstr[1]
-                 c(0,0,0,0,0,-1),       # tau1 < tauconstr[2]
+                 c(0,0,0,0,0,-1),       # tau1 <= tauconstr[2]
                  c(0,0,0,-1,0,1))       # tau2 - tau1 > tauconstr[4]
      ci <- c(0,0,tauconstr[1],-tauconstr[2],tauconstr[1],-tauconstr[2],tauconstr[4]) 
    }
@@ -196,9 +196,9 @@ get_constraints <- function(method, tauconstr) {
      ui <- rbind(c(1,0,0,0,0,0),        # beta0 > 0
                  c(1,1,0,0,0,0),        # beta0 + beta1 > 0
                  c(0,0,0,1,0,0),        # tau1 > tauconstr[1]
-                 c(0,0,0,-1,0,0),       # tau1 < tauconstr[2]
+                 c(0,0,0,-1,0,0),       # tau1 <= tauconstr[2]
                  c(0,0,0,0,0,1),        # tau2 > tauconstr[1]
-                 c(0,0,0,0,0,-1),       # tau1 < tauconstr[2]
+                 c(0,0,0,0,0,-1),       # tau1 <= tauconstr[2]
                  c(0,0,0,-1,0,1))       # tau2 - tau1 > 0
      ci <- c(0,0,tauconstr[1],-tauconstr[2],tauconstr[1],-tauconstr[2],0) 
    }
