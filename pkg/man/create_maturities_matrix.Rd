@@ -29,7 +29,8 @@ create_maturities_matrix(group, include_price = FALSE)
 data(govbonds)
 (m <- create_maturities_matrix(govbonds[[1]]))
 
-## maturities matrix with included maturity of the current dirty price, i.e., zero. 
+## maturities matrix with included maturity of the current 
+## dirty price, i.e., zero. 
 (m_p <- create_maturities_matrix(govbonds[[1]],include_price=TRUE))
 
 }
