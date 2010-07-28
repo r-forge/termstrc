@@ -16,6 +16,11 @@ The package offers a wide range of functions for term structure estimation based
 
 \references{
 
+Robert Ferstl, Josef Hayden (2010),
+Zero-Coupon Yield Curve Estimation with the Package \pkg{termstrc},
+\emph{Journal of Statistical Software}, \bold{36(1)}, 1-34.
+URL http://www.jstatsoft.org/v36/i01/
+
 J. Huston McCulloch (1971):
 Measuring the Term Structure of Interest Rates.
 \emph{The Journal of Business, \bold{44} 19--31}. 
