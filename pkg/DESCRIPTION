@@ -19,7 +19,7 @@ Description: The package offers a wide range of functions for term
         bonds and yields.
 URL: http://R-Forge.R-project.org/projects/termstrc/
 LazyLoad: yes
-Depends: R (>= 3.0.0), Rcpp (>= 0.10.6), zoo, rgl, lmtest
+Depends: R (>= 3.0.0),  Rcpp (>= 0.10.6), zoo, rgl, lmtest
 Imports: urca, sandwich
 LinkingTo: Rcpp
 License: GPL (>= 2)
